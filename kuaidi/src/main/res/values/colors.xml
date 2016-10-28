@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/white</color><!--#3F51B5-->
+    <color name="colorPrimaryDark">@color/white</color><!--#303F9F-->
+    <color name="colorAccent">@color/kd_yellow</color><!--#3F51B5-->
+
+    <color name="kd_yellow">#edb821</color>
+</resources>
