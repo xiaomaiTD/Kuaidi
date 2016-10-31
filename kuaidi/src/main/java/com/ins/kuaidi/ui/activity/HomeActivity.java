@@ -94,7 +94,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.img_navi_header:
-                intent.setClass(this, MeActivity.class);
+                intent.setClass(this, MeDetailActivity.class);
                 startActivity(intent);
                 break;
             case R.id.img_home_user:

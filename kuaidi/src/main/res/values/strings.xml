@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">Kuaidi</string>
     <string name="title_activity_home">首页</string>
-    <string name="title_activity_me">个人中心</string>
     <string name="title_activity_searchaddress">选择地点</string>
     <string name="title_activity_sale">分销</string>
     <string name="title_activity_trip">行程</string>
     <string name="title_activity_tripdetail">行程详情</string>
     <string name="title_activity_paydetail">支付明细</string>
     <string name="title_activity_complaint">投诉</string>
+    <string name="title_activity_medetail">个人中心</string>
+    <string name="title_activity_meedit">修改资料</string>
 </resources>

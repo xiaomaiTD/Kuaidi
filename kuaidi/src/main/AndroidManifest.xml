@@ -13,6 +13,7 @@
     <!-- 调用相册、相机 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".app.KuaidiApplication"
@@ -44,11 +45,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.MeActivity"
-            android:label="@string/title_activity_me"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
-        <activity
             android:name=".ui.activity.SearchAddressActivity"
             android:label="@string/title_activity_searchaddress"
             android:screenOrientation="portrait"
@@ -76,6 +72,16 @@
         <activity
             android:name=".ui.activity.ComplaintActivity"
             android:label="@string/title_activity_complaint"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.MeDetailActivity"
+            android:label="@string/title_activity_medetail"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.MeEditActivity"
+            android:label="@string/title_activity_meedit"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
     </application>
