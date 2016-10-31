@@ -9,4 +9,13 @@
     <string name="title_activity_complaint">投诉</string>
     <string name="title_activity_medetail">个人中心</string>
     <string name="title_activity_meedit">修改资料</string>
+    <string name="title_activity_wallet">我的钱包</string>
+    <string name="title_activity_payway">支付方式</string>
+    <string name="title_activity_paywayset">支付方式</string>
+    <string name="title_activity_coupon">优惠券</string>
+    <string name="title_activity_bankcard">绑定银行卡</string>
+    <string name="title_activity_money">我的余额</string>
+    <string name="title_activity_cash">余额提现</string>
+    <string name="title_activity_bindbankcard">绑定银行卡</string>
+    <string name="title_activity_server">客服中心</string>
 </resources>

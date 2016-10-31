@@ -76,8 +76,12 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 startActivity(intent);
                 break;
             case R.id.nav_wallet:
+                intent.setClass(this, WalletActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_server:
+                intent.setClass(this, ServerActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_sale:
                 break;

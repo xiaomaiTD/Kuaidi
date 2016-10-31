@@ -84,6 +84,51 @@
             android:label="@string/title_activity_meedit"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.WalletActivity"
+            android:label="@string/title_activity_wallet"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.PaywayActivity"
+            android:label="@string/title_activity_payway"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.PaywaySetActivity"
+            android:label="@string/title_activity_paywayset"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.CouponActivity"
+            android:label="@string/title_activity_coupon"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.BankCardActivity"
+            android:label="@string/title_activity_bankcard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.MoneyActivity"
+            android:label="@string/title_activity_money"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.CashActivity"
+            android:label="@string/title_activity_cash"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.BindBankCardActivity"
+            android:label="@string/title_activity_bindbankcard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.ServerActivity"
+            android:label="@string/title_activity_server"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
     </application>
 
 </manifest>

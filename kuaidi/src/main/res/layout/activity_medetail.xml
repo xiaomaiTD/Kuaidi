@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="80dp"
             android:paddingBottom="30dp"
+            android:background="@drawable/bk_medetail"
             android:orientation="vertical">
 
             <LinearLayout

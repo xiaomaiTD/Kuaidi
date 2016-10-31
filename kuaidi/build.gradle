@@ -45,10 +45,13 @@ dependencies {
     //bughd
     compile 'im.fir:fir-sdk:latest.integration@aar'
     //侧滑退出
-    //    compile 'com.github.liuguangqiang.swipeback:library:1.0.2@aar'
+    //compile 'com.github.liuguangqiang.swipeback:library:1.0.2@aar'
+    compile project(':library_swipback')
     //spring
     compile 'com.liaoinstan.springview:library:1.2.7'
-    compile project(':library_swipback')
+
+    //仿IOS swichbutton
+    compile 'com.kyleduo.switchbutton:library:1.4.4'
 
     //星星评价
     compile 'com.github.techery:properratingbar:0.0.5'

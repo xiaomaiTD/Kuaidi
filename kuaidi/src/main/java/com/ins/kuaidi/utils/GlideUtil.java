@@ -1,5 +1,6 @@
 package com.ins.kuaidi.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,20 +17,32 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class GlideUtil {
     public static void loadCircleImg(Context context, ImageView imageView, int errorSrc, String url) {
+        if (context instanceof Activity && ((Activity) context).isFinishing()){
+            return;
+        }
         DrawableRequestBuilder<Integer> error = Glide.with(context).load(errorSrc).bitmapTransform(new CropCircleTransformation(context));
         Glide.with(context).load(url).thumbnail(error).bitmapTransform(new CropCircleTransformation(context)).crossFade().into(imageView);
     }
 
     public static void loadImg(Context context, ImageView imageView, int errorSrc, String url) {
+        if (context instanceof Activity && ((Activity) context).isFinishing()){
+            return;
+        }
         DrawableRequestBuilder<Integer> error = Glide.with(context).load(errorSrc);
         Glide.with(context).load(url).thumbnail(error).crossFade().into(imageView);
     }
 
     public static void loadCircleImg(Context context, ImageView imageView, int src) {
+        if (context instanceof Activity && ((Activity) context).isFinishing()){
+            return;
+        }
         Glide.with(context).load(src).bitmapTransform(new CropCircleTransformation(context)).crossFade().into(imageView);
     }
 
     public static void loadImg(Context context, ImageView imageView, int src) {
+        if (context instanceof Activity && ((Activity) context).isFinishing()){
+            return;
+        }
         Glide.with(context).load(src).crossFade().into(imageView);
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="com_text_light">#cccccc</color>
+    <color name="com_text_dark_light">#aaaaaa</color>
     <color name="com_text_dark">#999999</color>
     <color name="com_text_dark_blank">#808080</color>
     <color name="com_text_blank">#666666</color>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/card_noelevation"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="20dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/kd_zhifubao_blue"
+    app:cardCornerRadius="7dp">
+
+    <LinearLayout
+        android:id="@+id/card_payway_zhifubao"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingRight="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingLeft="20dp">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_payway_zhifubao" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="right"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="中国建设银行"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_big" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="**** **** **** 8765"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_big" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已绑定"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_big" />
+
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

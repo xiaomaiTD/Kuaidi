@@ -5,4 +5,6 @@
     <color name="colorAccent">@color/kd_yellow</color><!--#3F51B5-->
 
     <color name="kd_yellow">#edb821</color>
+    <color name="kd_weixin_green">#5ec953</color>
+    <color name="kd_zhifubao_blue">#35b2ea</color>
 </resources>
