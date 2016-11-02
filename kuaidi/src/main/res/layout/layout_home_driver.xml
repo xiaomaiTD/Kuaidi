@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/white"
+    android:gravity="center"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    android:orientation="horizontal"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <ImageView
+        android:id="@+id/img_driver_header"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="陈师傅"
+            android:textColor="@color/com_text_blank"
+            android:textSize="@dimen/text_big_nomal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="车辆型号 颜色 车牌号"
+            android:textColor="@color/com_text_blank"
+            android:textSize="@dimen/text_nomal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <io.techery.properratingbar.ProperRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                app:prb_defaultRating="4"
+                app:prb_tickNormalDrawable="@drawable/icon_eva_star"
+                app:prb_tickSelectedDrawable="@drawable/icon_eva_star_hot"
+                app:prb_tickSpacing="0dp"
+                app:prb_totalTicks="5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rect_corner_yellow"
+                android:gravity="center"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="4.5"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_nomal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="5241单"
+                android:textColor="@color/com_text_light"
+                android:textSize="@dimen/text_nomal_small" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -44,6 +44,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         navi = (NavigationView) findViewById(R.id.navi);
         img_user = (ImageView) findViewById(R.id.img_home_user);
         text_title = (TextView) findViewById(R.id.text_home_title);
+        findViewById(R.id.img_home_msg).setOnClickListener(this);
         img_navi_header = (ImageView) navi.getHeaderView(0).findViewById(R.id.img_navi_header);
         img_navi_header.setOnClickListener(this);
     }
@@ -58,12 +59,20 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             }
         }
         navi.setNavigationItemSelectedListener(this);
+
+        ///测试的页面跳转流程
+        findViewById(R.id.btn_go).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, PayActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initData() {
         GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.test, "http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg");
-//        DrawableRequestBuilder<Integer> error = Glide.with(this).load(R.drawable.test).bitmapTransform(new CropCircleTransformation(this));
-//        Glide.with(this).load("http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg").thumbnail(error).bitmapTransform(new CropCircleTransformation(this)).crossFade().into(img_navi_header);
+        GlideUtil.loadCircleImg(this, (ImageView) findViewById(R.id.img_driver_header), R.drawable.test, "http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg");
     }
 
 
@@ -99,6 +108,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public void onClick(View v) {
         Intent intent = new Intent();
         switch (v.getId()) {
+            case R.id.img_home_msg:
+                intent.setClass(this, MsgClassActivity.class);
+                startActivity(intent);
+                break;
             case R.id.img_navi_header:
                 intent.setClass(this, MeDetailActivity.class);
                 startActivity(intent);

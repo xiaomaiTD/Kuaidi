@@ -38,7 +38,11 @@
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.activity.SearchAddressActivity"
@@ -150,11 +154,6 @@
             android:label="@string/title_activity_safe"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.activity.ModifyPswUserActivity"
@@ -176,6 +175,30 @@
         <activity
             android:name=".ui.activity.CameraActivity"
             android:label="@string/title_activity_camera"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitleFullscreen">
+        </activity>
+        <activity
+            android:name=".ui.activity.PayActivity"
+            android:label="@string/title_activity_pay"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitleFullscreen">
+        </activity>
+        <activity
+            android:name=".ui.activity.EvaActivity"
+            android:label="@string/title_activity_eva"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitleFullscreen">
+        </activity>
+        <activity
+            android:name=".ui.activity.MsgClassActivity"
+            android:label="@string/title_activity_msgclass"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitleFullscreen">
+        </activity>
+        <activity
+            android:name=".ui.activity.MsgActivity"
+            android:label="@string/title_activity_msg"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleFullscreen">
         </activity>

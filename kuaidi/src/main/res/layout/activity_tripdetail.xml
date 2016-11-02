@@ -68,60 +68,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="陈师傅"
-                        android:textColor="@color/com_text_blank"
-                        android:textSize="@dimen/text_big_nomal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="15625145211"
-                        android:textColor="@color/com_text_blank"
-                        android:textSize="@dimen/text_nomal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="车辆型号 颜色 车牌号"
-                        android:textColor="@color/com_text_blank"
-                        android:textSize="@dimen/text_nomal" />
-
-
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/img_tripdetail_header"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:scaleType="centerCrop" />
-
-            </LinearLayout>
+            <include layout="@layout/layout_home_driver"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

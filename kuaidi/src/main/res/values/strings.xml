@@ -27,6 +27,10 @@
     <string name="title_activity_modifypswpay">修改支付密码</string>
     <string name="title_activity_identify">实名认证</string>
     <string name="title_activity_camera">相机</string>
+    <string name="title_activity_pay">支付</string>
+    <string name="title_activity_eva">评价订单</string>
+    <string name="title_activity_msgclass">消息</string>
+    <string name="title_activity_msg">系统消息</string>
 
     <!--cameraview-->
     <string name="camera_permission_confirmation">This app demonstrates the usage of CameraView. In order to do that, it needs permission to access camera.</string>

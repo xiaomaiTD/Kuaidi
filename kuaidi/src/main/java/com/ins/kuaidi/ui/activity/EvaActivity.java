@@ -13,17 +13,20 @@ import com.sobey.common.view.singlepopview.MySinglePopupWindow;
 
 import java.util.ArrayList;
 
-public class TripDetailActivity extends BaseBackActivity implements View.OnClickListener{
+public class EvaActivity extends BaseBackActivity implements View.OnClickListener{
 
     private ViewGroup showingroup;
     private View showin;
 
     private MySinglePopupWindow popupSingle;
 
+    private View lay_eva_detail;
+    private View btn_show;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tripdetail);
+        setContentView(R.layout.activity_eva);
         setToolbar();
 
         initBase();
@@ -45,7 +48,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
         popupSingle.setOnPopSingleClickListenner(new MySinglePopupWindow.OnPopSingleClickListenner() {
             @Override
             public void OnPopClick(String name) {
-                Intent intent = new Intent(TripDetailActivity.this, ComplaintActivity.class);
+                Intent intent = new Intent(EvaActivity.this, ComplaintActivity.class);
                 startActivity(intent);
                 popupSingle.dismiss();
             }
@@ -54,9 +57,12 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
 
     private void initView() {
         showingroup = (ViewGroup) findViewById(R.id.showingroup);
+        lay_eva_detail = findViewById(R.id.lay_eva_detail);
+        btn_show = findViewById(R.id.btn_show);
 
-        findViewById(R.id.text_tripdetail_totaydetail).setOnClickListener(this);
+        btn_show.setOnClickListener(this);
         findViewById(R.id.btn_right).setOnClickListener(this);
+        findViewById(R.id.btn_go).setOnClickListener(this);
     }
 
     private void initData() {
@@ -89,9 +95,11 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
             case R.id.btn_right:
                 popupSingle.showPopupWindow(v);
                 break;
-            case R.id.text_tripdetail_totaydetail:
-                Intent intent = new Intent(this, PayDetailActivity.class);
-                startActivity(intent);
+            case R.id.btn_show:
+                lay_eva_detail.setVisibility(View.VISIBLE);
+                btn_show.setVisibility(View.GONE);
+                break;
+            case R.id.btn_go:
                 break;
         }
     }

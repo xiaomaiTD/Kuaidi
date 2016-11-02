@@ -8,22 +8,16 @@ import android.view.ViewGroup;
 
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.common.LoadingViewUtil;
-import com.ins.kuaidi.utils.GlideUtil;
-import com.sobey.common.view.singlepopview.MySinglePopupWindow;
 
-import java.util.ArrayList;
-
-public class TripDetailActivity extends BaseBackActivity implements View.OnClickListener{
+public class PayActivity extends BaseBackActivity implements View.OnClickListener{
 
     private ViewGroup showingroup;
     private View showin;
 
-    private MySinglePopupWindow popupSingle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tripdetail);
+        setContentView(R.layout.activity_pay);
         setToolbar();
 
         initBase();
@@ -35,28 +29,13 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (popupSingle != null) popupSingle.dismiss();
     }
 
     private void initBase() {
-        popupSingle = new MySinglePopupWindow(this);
-        popupSingle.setResults(new ArrayList<String>(){{add("投诉");}});
-        popupSingle.setShadowView(findViewById(R.id.lay_shadow));
-        popupSingle.setOnPopSingleClickListenner(new MySinglePopupWindow.OnPopSingleClickListenner() {
-            @Override
-            public void OnPopClick(String name) {
-                Intent intent = new Intent(TripDetailActivity.this, ComplaintActivity.class);
-                startActivity(intent);
-                popupSingle.dismiss();
-            }
-        });
     }
 
     private void initView() {
         showingroup = (ViewGroup) findViewById(R.id.showingroup);
-
-        findViewById(R.id.text_tripdetail_totaydetail).setOnClickListener(this);
-        findViewById(R.id.btn_right).setOnClickListener(this);
     }
 
     private void initData() {
@@ -80,17 +59,15 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
     }
 
     private void initCtrl() {
-        GlideUtil.LoadCircleImgTest(this, findViewById(R.id.img_driver_header));
+        findViewById(R.id.btn_go).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        Intent intent = new Intent();
         switch (v.getId()){
-            case R.id.btn_right:
-                popupSingle.showPopupWindow(v);
-                break;
-            case R.id.text_tripdetail_totaydetail:
-                Intent intent = new Intent(this, PayDetailActivity.class);
+            case R.id.btn_go:
+                intent.setClass(this,EvaActivity.class);
                 startActivity(intent);
                 break;
         }
