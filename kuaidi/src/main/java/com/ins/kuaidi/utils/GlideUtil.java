@@ -16,6 +16,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  */
 
 public class GlideUtil {
+    //加载网络图，并设置展位图
     public static void loadCircleImg(Context context, ImageView imageView, int errorSrc, String url) {
         if (context instanceof Activity && ((Activity) context).isFinishing()){
             return;

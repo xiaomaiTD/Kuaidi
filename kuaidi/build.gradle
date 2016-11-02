@@ -49,10 +49,12 @@ dependencies {
     compile project(':library_swipback')
     //spring
     compile 'com.liaoinstan.springview:library:1.2.7'
-
     //仿IOS swichbutton
     compile 'com.kyleduo.switchbutton:library:1.4.4'
-
     //星星评价
     compile 'com.github.techery:properratingbar:0.0.5'
+    compile project(':library_version')
+    //支付密码框
+    compile 'com.jungly:gridPasswordView:0.3'
+    compile project(':library_camera')
 }

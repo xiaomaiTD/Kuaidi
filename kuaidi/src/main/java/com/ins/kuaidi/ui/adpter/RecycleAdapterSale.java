@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.entity.TestEntity;
+import com.ins.kuaidi.utils.GlideUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 
 import java.util.List;
@@ -42,6 +43,8 @@ public class RecycleAdapterSale extends RecyclerView.Adapter<RecycleAdapterSale.
             }
         });
         TestEntity show = results.get(holder.getLayoutPosition());
+
+        GlideUtil.LoadCircleImgTest(context, holder.img_sale_header);
     }
 
     @Override
@@ -51,11 +54,11 @@ public class RecycleAdapterSale extends RecyclerView.Adapter<RecycleAdapterSale.
 
     public class Holder extends RecyclerView.ViewHolder {
 
-        private ImageView img_item_show_pic;
+        private ImageView img_sale_header;
 
         public Holder(View itemView) {
             super(itemView);
-//            img_item_show_pic = (ImageView) itemView.findViewById(R.id.img_item_show_pic);
+            img_sale_header = (ImageView) itemView.findViewById(R.id.img_sale_header);
         }
     }
 

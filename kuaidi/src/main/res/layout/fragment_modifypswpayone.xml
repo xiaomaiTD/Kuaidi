@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/showingroup"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wj_bk"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="验证码"
+                android:textColor="@color/sb_text_dark"
+                android:textSize="@dimen/text_nomal" />
+
+            <com.sobey.common.view.EmojiEditText
+                style="@style/edit_none"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="请填写"
+                android:inputType="number"
+                android:maxLength="4"
+                android:singleLine="true"
+                android:textColor="@color/sb_text_blank"
+                android:textSize="@dimen/text_nomal" />
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:background="@drawable/shape_rect_corner_none_line_yellow"
+                android:gravity="center"
+                android:text="获取验证码"
+                android:textColor="@color/kd_yellow"
+                android:textSize="@dimen/text_nomal" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_go"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/shape_rect_corner_yellow"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="下一步"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_big" />
+
+</LinearLayout>

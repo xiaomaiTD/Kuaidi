@@ -14,10 +14,13 @@ import android.widget.TextView;
 import com.dd.CircularProgressButton;
 import com.ins.kuaidi.common.AppData;
 import com.ins.kuaidi.common.MyActivityCollector;
+import com.jungly.gridpasswordview.GridPasswordView;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.NumUtil;
 import com.sobey.common.utils.StrUtils;
+import com.sobey.common.view.PswView;
 import com.sobey.common.view.bundleimgview.BundleImgEntity;
+import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,5 +133,23 @@ public class AppHelper {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    public static void AttachKeybordWithPswView(VirtualKeyboardView keybord, final PswView pswView){
+        keybord.setOnKeyBordClickListener(new VirtualKeyboardView.OnKeyBordClickListener() {
+            @Override
+            public void onNumClick(int num) {
+                pswView.addNum(num);
+            }
+
+            @Override
+            public void onDotClick() {
+            }
+
+            @Override
+            public void onDelClick() {
+                pswView.back();
+            }
+        });
     }
 }

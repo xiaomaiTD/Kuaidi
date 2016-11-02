@@ -2,7 +2,6 @@
     <string name="app_name">Kuaidi</string>
     <string name="title_activity_home">首页</string>
     <string name="title_activity_searchaddress">选择地点</string>
-    <string name="title_activity_sale">分销</string>
     <string name="title_activity_trip">行程</string>
     <string name="title_activity_tripdetail">行程详情</string>
     <string name="title_activity_paydetail">支付明细</string>
@@ -18,4 +17,24 @@
     <string name="title_activity_cash">余额提现</string>
     <string name="title_activity_bindbankcard">绑定银行卡</string>
     <string name="title_activity_server">客服中心</string>
+    <string name="title_activity_sale">分销</string>
+    <string name="title_activity_setting">设置</string>
+    <string name="title_activity_version">检查更新</string>
+    <string name="title_activity_web">资讯</string>
+    <string name="title_activity_feedback">意见反馈</string>
+    <string name="title_activity_safe">账户安全</string>
+    <string name="title_activity_modifypswuser">修改密码</string>
+    <string name="title_activity_modifypswpay">修改支付密码</string>
+    <string name="title_activity_identify">实名认证</string>
+    <string name="title_activity_camera">相机</string>
+
+    <!--cameraview-->
+    <string name="camera_permission_confirmation">This app demonstrates the usage of CameraView. In order to do that, it needs permission to access camera.</string>
+    <string name="camera_permission_not_granted">Camera app cannot do anything without camera permission.</string>
+    <string name="picture_taken">Picture taken</string>
+    <string name="switch_flash">Switch flash</string>
+    <string name="switch_camera">Switch camera</string>
+    <string name="flash_auto">Flash auto</string>
+    <string name="flash_off">Flash off</string>
+    <string name="flash_on">Flash on</string>
 </resources>

@@ -122,7 +122,7 @@ public class AppData {
         /**
          * 接口请求地址
          */
-        public static final String version			    	= domain + "updateAPK/version.json";	     								//检查更新
+        public static final String version			    	= domain + "updateAPK/versionxx.json";	     								//检查更新
         public static final String getInfo			    	= domain + "app/user/getInfo";												//获取个人信息
         public static final String login			    		= domain + "app/user/login";													//登录
         public static final String updateUser			    = domain + "app/user/updateUser";											//注册填写个人信息

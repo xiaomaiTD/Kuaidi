@@ -36,6 +36,7 @@ public class JSONHandler {
         if(jsonObject.has("created_at")) updateInfo.setCreated_at(jsonObject.getString("created_at"));
         if(jsonObject.has("size")) updateInfo.setSize(jsonObject.getString("size"));
         if(jsonObject.has("isForce")) updateInfo.setIsForce(jsonObject.getInt("isForce"));
+        if(jsonObject.has("isAutoInstall")) updateInfo.setIsAutoInstall(jsonObject.getInt("isAutoInstall"));
         return updateInfo;
     }
 

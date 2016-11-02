@@ -5,7 +5,7 @@ package com.shelwee.update.pojo;
  * Created by ShelWee on 14-5-8.
  */
 public class UpdateInfo {
-	private Integer status;
+	private int status;
     private String appName;
     private String packageName;
     private String versionCode;
@@ -16,7 +16,16 @@ public class UpdateInfo {
     
     private String created_at;
     private String size;
-    private Integer isForce;
+    private int isForce;
+    private int isAutoInstall;
+
+    public int getIsAutoInstall() {
+        return isAutoInstall;
+    }
+
+    public void setIsAutoInstall(int isAutoInstall) {
+        this.isAutoInstall = isAutoInstall;
+    }
 
     public String getAppName() {
         return appName;
@@ -26,11 +35,11 @@ public class UpdateInfo {
         this.appName = appName;
     }
 
-    public Integer getStatus() {
+    public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 
@@ -50,11 +59,11 @@ public class UpdateInfo {
 		this.size = size;
 	}
 
-	public Integer getIsForce() {
+	public int getIsForce() {
 		return isForce;
 	}
 
-	public void setIsForce(Integer isForce) {
+	public void setIsForce(int isForce) {
 		this.isForce = isForce;
 	}
 

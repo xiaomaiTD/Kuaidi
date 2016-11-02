@@ -38,20 +38,11 @@
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.activity.SearchAddressActivity"
             android:label="@string/title_activity_searchaddress"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
-        <activity
-            android:name=".ui.activity.SaleActivity"
-            android:label="@string/title_activity_sale"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
         <activity
@@ -129,6 +120,65 @@
             android:label="@string/title_activity_server"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.SaleActivity"
+            android:label="@string/title_activity_sale"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.VersionActivity"
+            android:label="@string/title_activity_version"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.WebActivity"
+            android:label="@string/title_activity_web"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.FeedbackActivity"
+            android:label="@string/title_activity_feedback"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.SafeActivity"
+            android:label="@string/title_activity_safe"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.ModifyPswUserActivity"
+            android:label="@string/title_activity_modifypswuser"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.ModifyPswPayActivity"
+            android:label="@string/title_activity_modifypswpay"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back">
+        </activity>
+        <activity
+            android:name=".ui.activity.IdentifyActivity"
+            android:label="@string/title_activity_identify"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back">
+        </activity>
+        <activity
+            android:name=".ui.activity.CameraActivity"
+            android:label="@string/title_activity_camera"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoTitleFullscreen">
+        </activity>
     </application>
 
 </manifest>
