@@ -8,15 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.ui.dialog.DialogLoading;
-import com.ins.kuaidi.ui.dialog.DialogPopupPhoto;
-import com.ins.kuaidi.utils.GlideUtil;
+import com.ins.middle.ui.dialog.DialogLoading;
+import com.ins.middle.ui.dialog.DialogPopupPhoto;
+import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.helper.CropHelperSys;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.StrUtils;
-
-import org.greenrobot.eventbus.EventBus;
-
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class MeEditActivity extends BaseBackActivity implements View.OnClickListener, CropHelperSys.CropInterface {
 
     private CropHelperSys cropHelper = new CropHelperSys(this);

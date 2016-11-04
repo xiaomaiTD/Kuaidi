@@ -13,7 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ins.kuaidi.R;
-
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class WebActivity extends BaseBackActivity {
 
     private WebView webView;

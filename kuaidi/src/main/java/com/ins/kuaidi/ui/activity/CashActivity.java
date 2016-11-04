@@ -7,7 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.LoadingViewUtil;
+import com.sobey.common.common.LoadingViewUtil;
+import com.ins.middle.ui.activity.BaseBackActivity;
 
 public class CashActivity extends BaseBackActivity implements View.OnClickListener {
 

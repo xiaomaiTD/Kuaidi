@@ -8,12 +8,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.AppData;
+import com.ins.middle.common.AppData;
 import com.shelwee.update.UpdateHelper;
 import com.shelwee.update.listener.OnUpdateListener;
 import com.shelwee.update.pojo.UpdateInfo;
 import com.shelwee.update.utils.VersionUtil;
-
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class VersionActivity extends BaseBackActivity {
 
     UpdateHelper updateHelper;

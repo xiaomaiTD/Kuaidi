@@ -2,17 +2,16 @@ package com.ins.kuaidi.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.LoadingViewUtil;
-import com.ins.kuaidi.ui.dialog.DialogSure;
+import com.ins.middle.ui.dialog.DialogSure;
 import com.shelwee.update.utils.VersionUtil;
-
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class SettingActivity extends BaseBackActivity implements View.OnClickListener {
 
     private ViewGroup showingroup;

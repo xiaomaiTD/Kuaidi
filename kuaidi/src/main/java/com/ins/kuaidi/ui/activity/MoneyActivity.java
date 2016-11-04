@@ -3,7 +3,6 @@ package com.ins.kuaidi.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,13 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.DividerItemDecoration;
-import com.ins.kuaidi.common.LoadingViewUtil;
-import com.ins.kuaidi.entity.TestEntity;
-import com.ins.kuaidi.ui.adpter.RecycleAdapterMoney;
-import com.liaoinstan.springview.container.AliFooter;
-import com.liaoinstan.springview.container.AliHeader;
-import com.liaoinstan.springview.widget.SpringView;
+import com.sobey.common.common.DividerItemDecoration;
+import com.sobey.common.common.LoadingViewUtil;
+import com.ins.middle.entity.TestEntity;
+import com.ins.kuaidi.ui.adapter.RecycleAdapterMoney;
 import com.sobey.common.helper.SwipeHelper;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.NumAnim;
@@ -26,6 +22,7 @@ import com.sobey.common.utils.NumAnim;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClickListener,View.OnClickListener {
 
     private RecyclerView recyclerView;

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.ui.activity.StartUpActivity;
-
+import com.ins.middle.ui.fragment.BaseFragment;
 
 /**
  * Created by Administrator on 2016/6/2 0002.

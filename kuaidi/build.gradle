@@ -36,27 +36,19 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':baidumapsdk')
-    compile project(':common')
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
-    //加载自定义字体
-    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     //bughd
     compile 'im.fir:fir-sdk:latest.integration@aar'
-    //侧滑退出
-    //compile 'com.github.liuguangqiang.swipeback:library:1.0.2@aar'
-    compile project(':library_swipback')
     //spring
     compile 'com.liaoinstan.springview:library:1.2.7'
     //仿IOS swichbutton
     compile 'com.kyleduo.switchbutton:library:1.4.4'
     //星星评价
     compile 'com.github.techery:properratingbar:0.0.5'
-    compile project(':library_version')
     //支付密码框
     compile 'com.jungly:gridPasswordView:0.3'
     //wheelview
     compile 'com.wx.wheelview:wheelview:1.3.3'
-    compile project(':library_camera')
+    compile project(':middle')
 }

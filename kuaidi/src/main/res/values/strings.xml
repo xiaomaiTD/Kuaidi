@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kuaidi</string>
+    <string name="app_name">快车-乘客</string>
     <string name="title_activity_home">首页</string>
     <string name="title_activity_searchaddress">选择地点</string>
     <string name="title_activity_trip">行程</string>
@@ -33,7 +33,6 @@
     <string name="title_activity_msg">系统消息</string>
     <string name="title_activity_Login">登录</string>
     <string name="title_activity_startup">引导页</string>
-    <string name="title_activity_loadup">启动页</string>
 
     <!--cameraview-->
     <string name="camera_permission_confirmation">This app demonstrates the usage of CameraView. In order to do that, it needs permission to access camera.</string>

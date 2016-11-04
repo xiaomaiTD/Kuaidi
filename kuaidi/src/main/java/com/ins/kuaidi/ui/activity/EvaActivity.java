@@ -7,12 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.LoadingViewUtil;
-import com.ins.kuaidi.utils.GlideUtil;
+import com.ins.middle.utils.GlideUtil;
+import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.view.singlepopview.MySinglePopupWindow;
 
 import java.util.ArrayList;
-
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class EvaActivity extends BaseBackActivity implements View.OnClickListener{
 
     private ViewGroup showingroup;

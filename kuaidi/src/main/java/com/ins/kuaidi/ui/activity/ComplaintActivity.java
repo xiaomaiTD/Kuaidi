@@ -1,27 +1,21 @@
 package com.ins.kuaidi.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.LoadingViewUtil;
-import com.ins.kuaidi.entity.Complaint;
-import com.ins.kuaidi.entity.TestEntity;
-import com.ins.kuaidi.ui.adpter.RecycleAdapterComplaint;
-import com.ins.kuaidi.ui.adpter.RecycleAdapterTrip;
-import com.liaoinstan.springview.container.AliFooter;
-import com.liaoinstan.springview.container.AliHeader;
-import com.liaoinstan.springview.widget.SpringView;
+import com.sobey.common.common.LoadingViewUtil;
+import com.ins.middle.entity.Complaint;
+import com.ins.kuaidi.ui.adapter.RecycleAdapterComplaint;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.ins.middle.ui.activity.BaseBackActivity;
 
 public class ComplaintActivity extends BaseBackActivity implements OnRecycleItemClickListener {
 

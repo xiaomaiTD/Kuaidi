@@ -1,12 +1,8 @@
 package com.ins.kuaidi.ui.activity;
 
-import android.animation.ValueAnimator;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -15,37 +11,27 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.map.ArcOptions;
 import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.CircleOptions;
-import com.baidu.mapapi.map.DotOptions;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolygonOptions;
 import com.baidu.mapapi.map.Polyline;
-import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.Stroke;
-import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.SpatialRelationUtil;
-import com.baidu.platform.comapi.util.PermissionCheck;
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.entity.Car;
+import com.ins.middle.entity.Car;
 import com.sobey.common.utils.PermissionsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.ins.kuaidi.utils.MapUtil;
-
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class TestMapActivity extends BaseAppCompatActivity {
 
     TextView text_latlng;

@@ -23,6 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- 百度地图 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="pbEw6GendVldYzT80cCBEFSoqSUgykkG" />
+
         <!-- bugHD -->
         <meta-data
             android:name="BUG_HD_SDK_GENERAL_KEY"
@@ -38,6 +43,10 @@
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="kuaidi.HomeActivity"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.activity.SearchAddressActivity"
@@ -211,7 +220,6 @@
         </activity>
         <activity
             android:name=".ui.activity.LoadUpActivity"
-            android:label="@string/title_activity_loadup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleFullscreen">
             <intent-filter>

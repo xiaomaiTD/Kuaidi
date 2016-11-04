@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/lay_prog_one"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.9"
+        android:background="@drawable/icon_prog_white_start">
+
+        <TextView
+            android:id="@+id/text_prog_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="12dp"
+            android:drawableLeft="@drawable/icon_prog_finish"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="支付定金"
+            android:textColor="@color/com_text_blank"
+            android:textSize="@dimen/text_nomal" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/lay_prog_two"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="-30dp"
+        android:layout_weight="1"
+        android:background="@drawable/icon_prog_yellow_end">
+
+        <TextView
+            android:id="@+id/text_prog_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="12dp"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="接到乘客"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_nomal" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/lay_prog_three"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="-30dp"
+        android:layout_weight="0.8"
+        android:background="@drawable/icon_prog_gray_end">
+
+        <TextView
+            android:id="@+id/text_prog_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="已送达"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_nomal" />
+
+    </FrameLayout>
+
+
+</LinearLayout>
+

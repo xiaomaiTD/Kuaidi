@@ -19,11 +19,12 @@ import com.baidu.mapapi.map.MapView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.entity.Position;
-import com.ins.kuaidi.ui.dialog.DialogLoading;
+import com.ins.middle.entity.Position;
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.dialog.DialogLoading;
 import com.ins.kuaidi.ui.dialog.DialogMouthPicker;
 import com.ins.kuaidi.ui.dialog.DialogPopupMsg;
-import com.ins.kuaidi.utils.GlideUtil;
+import com.ins.middle.utils.GlideUtil;
 import com.ins.kuaidi.view.HoldcarView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -111,6 +112,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         lay_map_bubble = findViewById(R.id.lay_map_bubble);
 
         findViewById(R.id.img_home_msg).setOnClickListener(this);
+        findViewById(R.id.img_home_order).setOnClickListener(this);
         img_navi_header = (ImageView) navi.getHeaderView(0).findViewById(R.id.img_navi_header);
         img_navi_header.setOnClickListener(this);
     }
@@ -235,6 +237,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             case R.id.img_home_msg:
                 intent.setClass(this, MsgClassActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.img_home_order:
+//                intent.setClass(this, MsgClassActivity.class);
+//                startActivity(intent);
                 break;
             case R.id.img_navi_header:
                 intent.setClass(this, MeDetailActivity.class);

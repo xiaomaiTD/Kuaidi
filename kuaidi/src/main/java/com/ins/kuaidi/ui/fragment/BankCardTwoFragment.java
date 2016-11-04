@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.ui.activity.BindBankCardActivity;
 
-
+import com.ins.middle.ui.fragment.BaseFragment;
 /**
  * Created by Administrator on 2016/6/2 0002.
  */

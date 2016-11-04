@@ -1,30 +1,14 @@
 package com.ins.kuaidi.utils;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.dd.CircularProgressButton;
-import com.ins.kuaidi.common.AppData;
-import com.ins.kuaidi.common.MyActivityCollector;
-import com.jungly.gridpasswordview.GridPasswordView;
+import com.ins.middle.common.AppData;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
-import com.sobey.common.utils.NumUtil;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.PswView;
-import com.sobey.common.view.bundleimgview.BundleImgEntity;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2016/8/9.

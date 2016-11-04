@@ -14,6 +14,7 @@ import com.ins.kuaidi.ui.fragment.IdentifyOneFragment;
 import com.ins.kuaidi.ui.fragment.IdentifyTwoFragment;
 import com.ins.kuaidi.ui.fragment.ModifyPswPayOneFragment;
 import com.ins.kuaidi.ui.fragment.ModifyPswPayTwoFragment;
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
 
 
 /**

@@ -12,12 +12,13 @@ import android.widget.TextView;
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.ui.fragment.BankCardOneFragment;
 import com.ins.kuaidi.ui.fragment.BankCardTwoFragment;
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
 
 
 /**
  * type:0 急修项目 1:保养项目
  */
-public class BindBankCardActivity extends BaseAppCompatActivity{
+public class BindBankCardActivity extends BaseAppCompatActivity {
 
     private ViewPager viewPager;
     private MyPagerAdapter pagerAdapter;

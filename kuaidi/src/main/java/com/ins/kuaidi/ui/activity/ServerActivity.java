@@ -1,20 +1,14 @@
 package com.ins.kuaidi.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.ui.dialog.DialogLoading;
-import com.ins.kuaidi.ui.dialog.DialogPopupPhoto;
-import com.ins.kuaidi.utils.GlideUtil;
-import com.sobey.common.helper.CropHelperSys;
-import com.sobey.common.utils.PermissionsUtil;
-import com.sobey.common.utils.StrUtils;
-
+import com.ins.middle.utils.GlideUtil;
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class ServerActivity extends BaseBackActivity implements View.OnClickListener{
 
     private ViewGroup showingroup;

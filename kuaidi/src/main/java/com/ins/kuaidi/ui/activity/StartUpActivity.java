@@ -9,12 +9,13 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.AppData;
-import com.ins.kuaidi.entity.User;
+import com.ins.middle.common.AppData;
+import com.ins.middle.entity.User;
 import com.ins.kuaidi.ui.fragment.StartUpFragment;
 import com.ins.kuaidi.utils.AppHelper;
 import com.sobey.common.view.DotView;
-
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class StartUpActivity extends BaseAppCompatActivity {
 
     private ViewPager viewPager;
@@ -74,7 +75,7 @@ public class StartUpActivity extends BaseAppCompatActivity {
             intent.setClass(this, HomeActivity.class);
         } else {
             //去登录页
-            intent.setClass(this, LoginActivity.class);
+            intent.setClass(this, HomeActivity.class);
         }
         startActivity(intent);
         finish();

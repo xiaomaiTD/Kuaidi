@@ -7,11 +7,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.AppData;
-import com.ins.kuaidi.common.CommonNet;
-import com.ins.kuaidi.entity.User;
+import com.ins.middle.common.AppData;
+import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.User;
 import com.ins.kuaidi.utils.AppHelper;
-import com.sobey.common.utils.StrUtils;
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
 
 import org.xutils.http.RequestParams;
 

@@ -19,7 +19,6 @@ import com.ins.kuaidi.ui.fragment.BankCardTwoFragment;
 import com.ins.kuaidi.ui.fragment.LoginPhoneFragment;
 import com.ins.kuaidi.ui.fragment.LoginPswFragment;
 import com.ins.kuaidi.ui.fragment.LoginValiFragment;
-import com.ins.kuaidi.utils.GlideUtil;
 
 public class LoginActivity extends AppCompatActivity{
 

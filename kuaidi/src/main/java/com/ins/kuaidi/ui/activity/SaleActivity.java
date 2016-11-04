@@ -1,39 +1,19 @@
 package com.ins.kuaidi.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.LoadingViewUtil;
-import com.ins.kuaidi.entity.TestEntity;
-import com.ins.kuaidi.ui.adpter.RecycleAdapterBankCard;
-import com.ins.kuaidi.ui.fragment.BankCardOneFragment;
-import com.ins.kuaidi.ui.fragment.BankCardTwoFragment;
 import com.ins.kuaidi.ui.fragment.SaleLevelFragment;
 import com.ins.kuaidi.ui.fragment.SalePeopleFragment;
-import com.ins.kuaidi.utils.GlideUtil;
-import com.liaoinstan.springview.container.AliFooter;
-import com.liaoinstan.springview.container.AliHeader;
-import com.liaoinstan.springview.widget.SpringView;
-import com.sobey.common.interfaces.OnRecycleItemClickListener;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class SaleActivity extends BaseBackActivity {
 
     private ViewPager viewPager;

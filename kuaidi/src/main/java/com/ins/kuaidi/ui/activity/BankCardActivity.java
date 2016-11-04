@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.LoadingViewUtil;
-import com.ins.kuaidi.entity.TestEntity;
-import com.ins.kuaidi.ui.adpter.RecycleAdapterBankCard;
-import com.ins.kuaidi.ui.adpter.RecycleAdapterCoupon;
+import com.ins.middle.ui.activity.BaseBackActivity;
+import com.sobey.common.common.LoadingViewUtil;
+import com.ins.middle.entity.TestEntity;
+import com.ins.kuaidi.ui.adapter.RecycleAdapterBankCard;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;

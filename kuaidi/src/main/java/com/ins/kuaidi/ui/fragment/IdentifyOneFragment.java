@@ -11,7 +11,7 @@ import com.ins.kuaidi.R;
 import com.ins.kuaidi.ui.activity.IdentifyActivity;
 import com.ins.kuaidi.ui.activity.ModifyPswPayActivity;
 import com.sobey.common.utils.KeyBoardUtil;
-
+import com.ins.middle.ui.fragment.BaseFragment;
 
 /**
  * Created by Administrator on 2016/6/2 0002.

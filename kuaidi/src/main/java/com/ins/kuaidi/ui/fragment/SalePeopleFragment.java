@@ -11,17 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.LoadingViewUtil;
-import com.ins.kuaidi.entity.TestEntity;
-import com.ins.kuaidi.ui.activity.BindBankCardActivity;
+import com.sobey.common.common.LoadingViewUtil;
+import com.ins.middle.entity.TestEntity;
 import com.ins.kuaidi.ui.activity.MeDetailActivity;
 import com.ins.kuaidi.ui.activity.SaleActivity;
-import com.ins.kuaidi.ui.adpter.RecycleAdapterBankCard;
-import com.ins.kuaidi.ui.adpter.RecycleAdapterSale;
-import com.ins.kuaidi.utils.GlideUtil;
+import com.ins.kuaidi.ui.adapter.RecycleAdapterSale;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
@@ -29,7 +25,7 @@ import com.sobey.common.interfaces.OnRecycleItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.ins.middle.ui.fragment.BaseFragment;
 
 /**
  * Created by Administrator on 2016/6/2 0002.

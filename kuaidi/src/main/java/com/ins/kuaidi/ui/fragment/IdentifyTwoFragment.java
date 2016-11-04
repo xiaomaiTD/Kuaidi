@@ -17,13 +17,13 @@ import android.widget.Toast;
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.ui.activity.CameraActivity;
 import com.ins.kuaidi.ui.activity.IdentifyActivity;
-import com.ins.kuaidi.utils.GlideUtil;
+import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.utils.StrUtils;
 
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
-
+import com.ins.middle.ui.fragment.BaseFragment;
 
 /**
  * Created by Administrator on 2016/6/2 0002.

@@ -13,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.entity.Position;
-import com.ins.kuaidi.entity.Seat;
-import com.ins.kuaidi.ui.adpter.RecycleAdapterSeat;
+import com.ins.middle.entity.Position;
+import com.ins.middle.entity.Seat;
+import com.ins.kuaidi.ui.adapter.RecycleAdapterSeat;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.ui.dialog.DialogMsg;
-import com.ins.kuaidi.ui.dialog.DialogSure;
-
+import com.ins.middle.ui.dialog.DialogMsg;
+import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.BaseBackActivity;
 public class ModifyPswUserActivity extends BaseBackActivity implements View.OnClickListener {
 
     private ViewGroup showingroup;

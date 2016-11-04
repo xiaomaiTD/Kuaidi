@@ -13,7 +13,7 @@ import com.ins.kuaidi.ui.activity.ModifyPswPayActivity;
 import com.ins.kuaidi.utils.AppHelper;
 import com.sobey.common.view.PswView;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
-
+import com.ins.middle.ui.fragment.BaseFragment;
 
 /**
  * type:0 第一次输入密码 1: 确认密码
