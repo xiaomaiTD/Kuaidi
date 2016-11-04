@@ -1,9 +1,11 @@
 package com.ins.kuaidi.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/6/12 0012.
  */
-public class TestEntity {
+public class TestEntity implements Serializable {
     private int id;
     private String name;
     private boolean isCheck;

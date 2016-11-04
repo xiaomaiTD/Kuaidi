@@ -83,33 +83,16 @@ public class TimeUtil {
 
     /**
      * 把时间字符串转为指定格式的时间字符串
+     *
      * @param formatfrom
      * @param formatto
      * @param dateStr
      * @return
      */
-    public static String getStrByStr(String formatfrom,String formatto, String dateStr){
+    public static String getStrByStr(String formatfrom, String formatto, String dateStr) {
         Date date = getDateByStr(formatfrom, dateStr);
         String ret = getTimeFor(formatto, date);
         return ret;
-    }
-
-    /**
-     * 去掉日期后面的时分秒
-     *
-     * @param date
-     * @return
-     */
-    public static Date getDateNoSC(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String temp = sdf.format(date);
-        try {
-            date = sdf.parse(temp);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return date;
     }
 
     /**
@@ -125,7 +108,7 @@ public class TimeUtil {
         return gc.getTime();
     }
 
-    public static String add(String format,String datestr, int field, int value) {
+    public static String add(String format, String datestr, int field, int value) {
         Date date = TimeUtil.getDateByStr(format, datestr);
         Date datelast = TimeUtil.add(date, field, value);
         return TimeUtil.getTimeFor(format, datelast);
@@ -134,8 +117,8 @@ public class TimeUtil {
     /**
      * 两天相减获取天数
      */
-    public static int subDay(Date beginDate, Date endDate){
-        return (int) ((endDate.getTime()-beginDate.getTime())/(24*60*60*1000));
+    public static int subDay(Date beginDate, Date endDate) {
+        return (int) ((endDate.getTime() - beginDate.getTime()) / (24 * 60 * 60 * 1000));
     }
 
     /**
@@ -173,6 +156,34 @@ public class TimeUtil {
             return (year * 12 + month - 1) < 0 ? 0 : (year * 12 + month);
         }
     }
+
+    public static int getHour(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+//        // 当前年
+//        int year = cal.get(Calendar.YEAR);
+//        // 当前月
+//        int month = (cal.get(Calendar.MONTH)) + 1;
+//        // 当前月的第几天：即当前日
+//        int day_of_month = cal.get(Calendar.DAY_OF_MONTH);
+        // 当前时：HOUR_OF_DAY-24小时制；HOUR-12小时制
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+//        // 当前分
+//        int minute = cal.get(Calendar.MINUTE);
+//        // 当前秒
+//        int second = cal.get(Calendar.SECOND);
+//        // 0-上午；1-下午
+//        int ampm = cal.get(Calendar.AM_PM);
+//        // 当前年的第几周
+//        int week_of_year = cal.get(Calendar.WEEK_OF_YEAR);
+//        // 当前月的第几周
+//        int week_of_month = cal.get(Calendar.WEEK_OF_MONTH);
+//        // 当前年的第几天
+//        int day_of_year = cal.get(Calendar.DAY_OF_YEAR);
+
+        return hour;
+    }
+
 
     public static String cutDateStr(String dateStr) {
         return dateStr.substring(0, 7);

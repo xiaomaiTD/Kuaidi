@@ -15,6 +15,7 @@ import com.dd.CircularProgressButton;
 import com.ins.kuaidi.common.AppData;
 import com.ins.kuaidi.common.MyActivityCollector;
 import com.jungly.gridpasswordview.GridPasswordView;
+import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.NumUtil;
 import com.sobey.common.utils.StrUtils;
@@ -30,24 +31,24 @@ import java.util.List;
  */
 public class AppHelper {
 
-//    public static boolean getStartUp() {
-//        int versionCodeSave = AppData.App.getVersionCode();
-//        int versionCode = VersionUtil.getAppVersionCode(ApplicationHelp.getApplicationContext());
-//        if (versionCode > versionCodeSave) {
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
-//
-//    public static void saveStartUp() {
-//        int versionCode = VersionUtil.getAppVersionCode(ApplicationHelp.getApplicationContext());
-//        AppData.App.saveVersionCode(versionCode);
-//    }
-//
-//    public static void removeStartUp() {
-//        AppHelper.removeStartUp();
-//    }
+    public static boolean getStartUp() {
+        int versionCodeSave = AppData.App.getVersionCode();
+        int versionCode = VersionUtil.getAppVersionCode(ApplicationHelp.getApplicationContext());
+        if (versionCode > versionCodeSave) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static void saveStartUp() {
+        int versionCode = VersionUtil.getAppVersionCode(ApplicationHelp.getApplicationContext());
+        AppData.App.saveVersionCode(versionCode);
+    }
+
+    public static void removeStartUp() {
+        AppHelper.removeStartUp();
+    }
 
     ////////////////////////////////////////
     ////////////////////////////////////////

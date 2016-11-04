@@ -31,6 +31,9 @@
     <string name="title_activity_eva">评价订单</string>
     <string name="title_activity_msgclass">消息</string>
     <string name="title_activity_msg">系统消息</string>
+    <string name="title_activity_Login">登录</string>
+    <string name="title_activity_startup">引导页</string>
+    <string name="title_activity_loadup">启动页</string>
 
     <!--cameraview-->
     <string name="camera_permission_confirmation">This app demonstrates the usage of CameraView. In order to do that, it needs permission to access camera.</string>

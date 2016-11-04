@@ -10,6 +10,9 @@ public class AppConstant {
     public static final Integer EVENT_UPDATE_MSG = 0xfe04;
     public static final Integer EVENT_UPDATE_PRIVATE = 0xfe05;
 
+    public static final Integer EVENT_DIALOGLOGON_NEXT = 0xfe06;
+    public static final Integer EVENT_DIALOGLOGON_BACK = 0xfe07;
+
 
     public static final String FLAG_UPDATE_ME_PHONE = "FLAG_UPDATE_ME_PHONE";
 

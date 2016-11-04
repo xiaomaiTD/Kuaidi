@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.sobey.common.view.EmojiEditText
+        android:id="@+id/edit_popupmsg_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_rect_corner_white"
+        android:gravity="left|top"
+        android:hint="在这里输入您对本次行程的建议或要求。司机师傅会收到您的信息。"
+        android:inputType="textMultiLine"
+        android:lineSpacingExtra="8dp"
+        android:minLines="10"
+        android:padding="10dp"
+        android:textColor="@color/cc_text_blank"
+        android:textColorHint="@color/sb_text_dark"
+        android:textSize="@dimen/text_nomal" />
+
+    <TextView
+        android:id="@+id/btn_go"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_rect_corner_yellow"
+        android:gravity="center"
+        android:text="发送消息"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_big" />
+
+
+</LinearLayout>

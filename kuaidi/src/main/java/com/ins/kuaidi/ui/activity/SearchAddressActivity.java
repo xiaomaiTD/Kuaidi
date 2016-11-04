@@ -28,6 +28,8 @@ import com.liaoinstan.springview.widget.SpringView;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.StrUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +132,9 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
 
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-
+        Position position = adapter.getResults().get(viewHolder.getLayoutPosition());
+        EventBus.getDefault().post(position);
+        finish();
     }
 
     @Override

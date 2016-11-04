@@ -73,27 +73,85 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/icon_map_pick" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/view_center"
+                    android:layout_width="1px"
+                    android:layout_height="1px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/view_center"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lay_map_bubble"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/icon_map_bubble"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingBottom="4dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="10dp"
+                            android:drawableRight="@drawable/icon_next"
+                            android:gravity="center"
+                            android:text="在这里上车"
+                            android:textColor="@color/com_text_blank" />
+
+                    </LinearLayout>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/icon_map_pick" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
 
             <include layout="@layout/layout_home_driver" />
 
-            <TextView
-                android:id="@+id/btn_go"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rect_corner_yellow"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:text="支付定金"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_big" />
+                android:orientation="vertical">
+
+                <com.ins.kuaidi.view.HoldcarView
+                    android:id="@+id/holdcar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:id="@+id/btn_go"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/shape_rect_corner_yellow"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="支付定金"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_big" />
+
+            </LinearLayout>
 
         </FrameLayout>
 
