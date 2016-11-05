@@ -177,12 +177,6 @@
             android:theme="@style/AppTheme.Back">
         </activity>
         <activity
-            android:name=".ui.activity.CameraActivity"
-            android:label="@string/title_activity_camera"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleFullscreen">
-        </activity>
-        <activity
             android:name=".ui.activity.PayActivity"
             android:label="@string/title_activity_pay"
             android:screenOrientation="portrait"

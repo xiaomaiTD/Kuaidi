@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.fragment;
+package com.ins.driver.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,14 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ins.kuaidi.R;
+import com.ins.driver.R;
 import com.ins.middle.ui.activity.CameraActivity;
-import com.ins.kuaidi.ui.activity.IdentifyActivity;
+import com.ins.driver.ui.activity.IdentifyActivity;
+import com.ins.middle.ui.fragment.BaseFragment;
 import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.utils.StrUtils;
 
 import static android.app.Activity.RESULT_OK;
-import com.ins.middle.ui.fragment.BaseFragment;
 
 /**
  * Created by Administrator on 2016/6/2 0002.
@@ -34,16 +34,12 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
 
     private IdentifyActivity activity;
 
-    private ImageView img_identify_idcardfront;
-    private ImageView img_identify_idcardback;
-    private TextView text_identify_idcardfront;
-    private TextView text_identify_idcardback;
+    private ImageView img_identify_drivercard;
+    private TextView text_identify_drivercard;
 
     private static final int RESULT_CAMERA = 0xf104;
 
-    //表示当前点击的位置（正面，反面）
-    private int cardposition;
-    private String[] paths = new String[2];
+    private String path;
 
     public static Fragment newInstance(int position) {
         IdentifyTwoFragment f = new IdentifyTwoFragment();
@@ -81,13 +77,10 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
 
     private void initView() {
         showingroup = (ViewGroup) getView().findViewById(R.id.showingroup);
-        img_identify_idcardfront = (ImageView) getView().findViewById(R.id.img_identify_idcardfront);
-        img_identify_idcardback = (ImageView) getView().findViewById(R.id.img_identify_idcardback);
-        text_identify_idcardfront = (TextView) getView().findViewById(R.id.text_identify_idcardfront);
-        text_identify_idcardback = (TextView) getView().findViewById(R.id.text_identify_idcardback);
+        img_identify_drivercard = (ImageView) getView().findViewById(R.id.img_identify_drivercard);
+        text_identify_drivercard = (TextView) getView().findViewById(R.id.text_identify_drivercard);
 
-        img_identify_idcardfront.setOnClickListener(this);
-        img_identify_idcardback.setOnClickListener(this);
+        img_identify_drivercard.setOnClickListener(this);
         getView().findViewById(R.id.btn_go).setOnClickListener(this);
     }
 
@@ -104,18 +97,12 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
     public void onClick(View v) {
         Intent intent = new Intent();
         switch (v.getId()) {
-            case R.id.img_identify_idcardfront:
-                cardposition = 0;   //表示点击正面
-                intent.setClass(getActivity(), CameraActivity.class);
-                startActivityForResult(intent, RESULT_CAMERA);
-                break;
-            case R.id.img_identify_idcardback:
-                cardposition = 1;   //表示点击背面
+            case R.id.img_identify_drivercard:
                 intent.setClass(getActivity(), CameraActivity.class);
                 startActivityForResult(intent, RESULT_CAMERA);
                 break;
             case R.id.btn_go:
-                getActivity().finish();
+                activity.next();
                 break;
         }
     }
@@ -130,7 +117,7 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
                     String path = data.getStringExtra("path");
                     if (!StrUtils.isEmpty(path)) {
                         //保存当前照片路径
-                        paths[cardposition] = path;
+                        this.path = path;
                         //打印测试
                         testpritpaths();
                         setPicData(path);
@@ -145,23 +132,13 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
     }
 
     private void setPicData(String path) {
-        if (cardposition == 0) {
-            GlideUtil.loadImg(getActivity(), img_identify_idcardfront, R.drawable.test, path);
-            text_identify_idcardfront.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            text_identify_idcardfront.setText("点击图片再次拍摄");
-            text_identify_idcardfront.setTextColor(Color.WHITE);
-        } else {
-            GlideUtil.loadImg(getActivity(), img_identify_idcardback, R.drawable.test, path);
-            text_identify_idcardback.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            text_identify_idcardback.setText("点击图片再次拍摄");
-            text_identify_idcardback.setTextColor(Color.WHITE);
-        }
+        GlideUtil.loadImg(getActivity(), img_identify_drivercard, R.drawable.test, path);
+        text_identify_drivercard.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        text_identify_drivercard.setText("点击图片再次拍摄");
+        text_identify_drivercard.setTextColor(Color.WHITE);
     }
 
     private void testpritpaths() {
-        Log.e("liao", "paths size:" + paths.length);
-        for (String path : paths) {
-            Log.e("liao", "" + path);
-        }
+        Log.e("liao", "" + path);
     }
 }

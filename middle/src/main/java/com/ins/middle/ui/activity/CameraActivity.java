@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -46,7 +46,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.cameraview.CameraView;
-import com.ins.kuaidi.R;
+import com.ins.middle.R;
 import com.sobey.common.utils.FileUtil;
 import com.sobey.common.utils.others.BitmapUtil;
 import com.sobey.common.view.IDCardView;
@@ -89,12 +89,11 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.take_picture:
-                    if (mCameraView != null) {
-                        mCameraView.takePicture();
-                    }
-                    break;
+            int i = v.getId();
+            if (i == R.id.take_picture) {
+                if (mCameraView != null) {
+                    mCameraView.takePicture();
+                }
             }
         }
     };
@@ -185,25 +184,24 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.switch_flash:
-                if (mCameraView != null) {
-                    mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
-                    item.setTitle(FLASH_TITLES[mCurrentFlash]);
-                    item.setIcon(FLASH_ICONS[mCurrentFlash]);
-                    mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
-                }
-                break;
-            case R.id.switch_camera:
-                if (mCameraView != null) {
-                    int facing = mCameraView.getFacing();
-                    mCameraView.setFacing(facing == CameraView.FACING_FRONT ?
-                            CameraView.FACING_BACK : CameraView.FACING_FRONT);
-                }
-                break;
+        int i = item.getItemId();
+        if (i == android.R.id.home) {
+            finish();
+            return true;
+        } else if (i == R.id.switch_flash) {
+            if (mCameraView != null) {
+                mCurrentFlash = (mCurrentFlash + 1) % FLASH_OPTIONS.length;
+                item.setTitle(FLASH_TITLES[mCurrentFlash]);
+                item.setIcon(FLASH_ICONS[mCurrentFlash]);
+                mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
+            }
+
+        } else if (i == R.id.switch_camera) {
+            if (mCameraView != null) {
+                int facing = mCameraView.getFacing();
+                mCameraView.setFacing(facing == CameraView.FACING_FRONT ?
+                        CameraView.FACING_BACK : CameraView.FACING_FRONT);
+            }
         }
         return false;
     }

@@ -137,7 +137,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Intent intent = new Intent();
         switch (item.getItemId()) {
-            case R.id.nav_trip:
+            case R.id.nav_setting:
+                intent.setClass(this,IdentifyActivity.class);
+                startActivity(intent);
                 break;
         }
         return false;

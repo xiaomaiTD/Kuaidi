@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.ins.driver.ui.adapter.RecycleAdapterProg;
 import com.ins.driver.R;
+import com.ins.driver.ui.dialog.DialogPayStatus;
 import com.ins.middle.entity.TestEntity;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.liaoinstan.springview.container.AliFooter;
@@ -31,6 +32,8 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
     private ViewGroup showingroup;
     private View showin;
 
+    private DialogPayStatus dialogPayStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +46,14 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
         initData();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialogPayStatus != null) dialogPayStatus.dismiss();
+    }
+
     private void initBase() {
+        dialogPayStatus = new DialogPayStatus(this, "27.5");
     }
 
     private void initView() {
@@ -111,6 +121,8 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
                 }, 2000);
             }
         });
+
+        dialogPayStatus.show();
     }
 
     private void freshCtrl() {

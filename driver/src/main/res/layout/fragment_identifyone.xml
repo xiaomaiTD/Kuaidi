@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/showingroup"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/wj_bk"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/item_identify"
+            android:layout_width="match_parent"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="认证状态"
+                android:textColor="@color/com_text_blank"
+                android:textSize="@dimen/text_nomal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_setting_safe"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="未认证"
+                android:textColor="@color/com_text_blank"
+                android:textSize="@dimen/text_nomal" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
