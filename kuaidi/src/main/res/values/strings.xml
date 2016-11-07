@@ -6,8 +6,6 @@
     <string name="title_activity_tripdetail">行程详情</string>
     <string name="title_activity_paydetail">支付明细</string>
     <string name="title_activity_complaint">投诉</string>
-    <string name="title_activity_medetail">个人中心</string>
-    <string name="title_activity_meedit">修改资料</string>
     <string name="title_activity_wallet">我的钱包</string>
     <string name="title_activity_payway">支付方式</string>
     <string name="title_activity_paywayset">支付方式</string>
@@ -31,7 +29,6 @@
     <string name="title_activity_eva">评价订单</string>
     <string name="title_activity_msgclass">消息</string>
     <string name="title_activity_msg">系统消息</string>
-    <string name="title_activity_Login">登录</string>
     <string name="title_activity_startup">引导页</string>
 
     <!--cameraview-->

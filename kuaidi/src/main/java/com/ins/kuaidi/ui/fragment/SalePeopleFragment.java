@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.ins.kuaidi.R;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.entity.TestEntity;
-import com.ins.kuaidi.ui.activity.MeDetailActivity;
+import com.ins.middle.ui.activity.MeDetailActivity;
 import com.ins.kuaidi.ui.activity.SaleActivity;
 import com.ins.kuaidi.ui.adapter.RecycleAdapterSale;
 import com.liaoinstan.springview.container.AliFooter;

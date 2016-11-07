@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:fitsSystemWindows="true"
-    tools:context="com.ins.kuaidi.ui.activity.PayDetailActivity">
+    tools:context="com.ins.middle.ui.activity.MeDetailActivity">
 
     <LinearLayout
         android:id="@+id/showingroup"
@@ -37,6 +37,7 @@
                     android:scaleType="centerCrop" />
 
                 <TextView
+                    android:id="@+id/text_me_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -45,6 +46,7 @@
                     android:textSize="@dimen/text_big" />
 
                 <TextView
+                    android:id="@+id/text_me_sign"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -70,6 +72,7 @@
             android:paddingRight="20dp">
 
             <TextView
+                android:id="@+id/text_me_identify"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -81,6 +84,7 @@
                 android:textSize="@dimen/text_nomal" />
 
             <TextView
+                android:id="@+id/text_me_identifystatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/icon_setting_safe"
@@ -98,81 +102,54 @@
             android:background="@color/com_line" />
 
         <LinearLayout
+            android:id="@+id/lay_me_fen"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/icon_sale_drivercard"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:text="车主认证"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/icon_setting_safe"
-                android:drawablePadding="8dp"
-                android:gravity="center_vertical"
-                android:text="未认证"
-                android:textColor="@color/com_text_dark"
-                android:textSize="@dimen/text_nomal" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/com_line" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@color/com_line" />
+            android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/com_line" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/icon_saledetail_fen"
-                android:drawablePadding="10dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:gravity="center_vertical"
-                android:text="积分贡献"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="350元"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
+                <TextView
+                    android:id="@+id/text_me_fen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/icon_saledetail_fen"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="积分贡献"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
+
+                <TextView
+                    android:id="@+id/text_me_fenstatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="350元"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/com_line" />
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/com_line" />
-
     </LinearLayout>
 
 

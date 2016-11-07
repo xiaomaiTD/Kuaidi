@@ -123,7 +123,8 @@ public class CommonNet {
 
                 switch (status) {
                     case 200:
-                    case 203:
+                    case 1010:
+                    case 1012:
                         hander.netGo(status, pojo, msg, obj);
                         break;
                     case 1005:

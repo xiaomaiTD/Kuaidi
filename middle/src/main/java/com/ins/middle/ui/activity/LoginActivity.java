@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,17 +8,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.ins.kuaidi.R;
-import com.ins.kuaidi.ui.fragment.BankCardOneFragment;
-import com.ins.kuaidi.ui.fragment.BankCardTwoFragment;
-import com.ins.kuaidi.ui.fragment.LoginPhoneFragment;
-import com.ins.kuaidi.ui.fragment.LoginPswFragment;
-import com.ins.kuaidi.ui.fragment.LoginValiFragment;
+import com.ins.middle.R;
+import com.ins.middle.ui.fragment.LoginPhoneFragment;
+import com.ins.middle.ui.fragment.LoginPswFragment;
+import com.ins.middle.ui.fragment.LoginValiFragment;
 
 public class LoginActivity extends AppCompatActivity{
 
@@ -46,6 +40,12 @@ public class LoginActivity extends AppCompatActivity{
             setPage(position - 1);
         } else if (position == 0) {
             finish();
+        }
+    }
+
+    public void goPosition(int position){
+        if (position>=0&&position<title.length) {
+            setPage(position);
         }
     }
 

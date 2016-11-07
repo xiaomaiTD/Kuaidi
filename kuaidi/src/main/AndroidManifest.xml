@@ -44,7 +44,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="kuaidi.HomeActivity"/>
+                <action android:name="kuaidi.HomeActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -71,16 +71,6 @@
         <activity
             android:name=".ui.activity.ComplaintActivity"
             android:label="@string/title_activity_complaint"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
-        <activity
-            android:name=".ui.activity.MeDetailActivity"
-            android:label="@string/title_activity_medetail"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
-        <activity
-            android:name=".ui.activity.MeEditActivity"
-            android:label="@string/title_activity_meedit"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
         <activity
@@ -157,8 +147,7 @@
             android:name=".ui.activity.SafeActivity"
             android:label="@string/title_activity_safe"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back">
-        </activity>
+            android:theme="@style/AppTheme.Back"></activity>
         <activity
             android:name=".ui.activity.ModifyPswUserActivity"
             android:label="@string/title_activity_modifypswuser"
@@ -168,57 +157,52 @@
             android:name=".ui.activity.ModifyPswPayActivity"
             android:label="@string/title_activity_modifypswpay"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back">
-        </activity>
+            android:theme="@style/AppTheme.Back"></activity>
         <activity
             android:name=".ui.activity.IdentifyActivity"
             android:label="@string/title_activity_identify"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back">
-        </activity>
+            android:theme="@style/AppTheme.Back"></activity>
         <activity
             android:name=".ui.activity.PayActivity"
             android:label="@string/title_activity_pay"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back">
-        </activity>
+            android:theme="@style/AppTheme.Back"></activity>
         <activity
             android:name=".ui.activity.EvaActivity"
             android:label="@string/title_activity_eva"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back">
-        </activity>
+            android:theme="@style/AppTheme.Back"></activity>
         <activity
             android:name=".ui.activity.MsgClassActivity"
             android:label="@string/title_activity_msgclass"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back">
-        </activity>
+            android:theme="@style/AppTheme.Back"></activity>
         <activity
             android:name=".ui.activity.MsgActivity"
             android:label="@string/title_activity_msg"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back">
-        </activity>
-        <activity
-            android:name=".ui.activity.LoginActivity"
-            android:label="@string/title_activity_Login"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyle">
-        </activity>
+            android:theme="@style/AppTheme.Back"></activity>
         <activity
             android:name=".ui.activity.StartUpActivity"
             android:label="@string/title_activity_startup"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleFullscreen">
-        </activity>
+            android:theme="@style/AppTheme.NoTitleFullscreen"></activity>
         <activity
             android:name=".ui.activity.LoadUpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleFullscreen">
             <intent-filter>
+                <action android:name="kuaidi.LoadUpActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.DomainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

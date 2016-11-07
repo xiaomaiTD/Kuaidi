@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
@@ -32,4 +33,16 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile project(':library_camera')
     compile project(':baidumapsdk')
+
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:design:24.2.1'
+
+    //spring
+    compile 'com.liaoinstan.springview:library:1.2.7'
+    //仿IOS swichbutton
+    compile 'com.kyleduo.switchbutton:library:1.4.4'
+    //星星评价
+    compile 'com.github.techery:properratingbar:0.0.5'
 }

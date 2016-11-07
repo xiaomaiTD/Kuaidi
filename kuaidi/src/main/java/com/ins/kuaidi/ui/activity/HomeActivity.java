@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,11 +20,17 @@ import com.baidu.mapapi.map.MapView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.ins.kuaidi.R;
+import com.ins.middle.common.AppConstant;
+import com.ins.middle.common.AppData;
 import com.ins.middle.entity.Position;
+import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.LoginActivity;
+import com.ins.middle.ui.activity.MeDetailActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
 import com.ins.kuaidi.ui.dialog.DialogMouthPicker;
 import com.ins.kuaidi.ui.dialog.DialogPopupMsg;
+import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.ins.kuaidi.view.HoldcarView;
 
@@ -37,17 +44,19 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private NavigationView navi;
 
     private HoldcarView holdcarView;
-    private ImageView img_user;
-    private TextView text_title;
-    private View lay_map_bubble;
     private MapView mapView;
     private BaiduMap baiduMap;
+
+    private ImageView img_user;
+    private TextView text_username;
+    private TextView text_title;
+    private View lay_map_bubble;
 
     private DialogLoading dialogLoading;
     private DialogMouthPicker dialogTime;
     private DialogPopupMsg dialogPopupMsg;
 
-//    private static final int RESULT_SEARCHADDRESS = 0xf101;
+    //    private static final int RESULT_SEARCHADDRESS = 0xf101;
     private int type = 0;   //0:点击出发地点 1:点击目的地
 
     @Override
@@ -65,12 +74,20 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     @Subscribe
     public void onEventMainThread(Position position) {
-        if (type==0){
+        if (type == 0) {
             //选择了出发点
             holdcarView.setStartPosition(position);
-        }else {
+        } else {
             //选择了目的地
             holdcarView.setEndPosition(position);
+        }
+    }
+
+    @Subscribe
+    public void onEventMainThread(Integer flag) {
+        if (flag == AppConstant.EVENT_UPDATE_HOME) {
+            Log.e("liao", "login");
+            setUserData();
         }
     }
 
@@ -84,6 +101,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     private long exitTime;
+
     @Override
     public void onBackPressed() {
         //双击退出
@@ -111,10 +129,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         text_title = (TextView) findViewById(R.id.text_home_title);
         lay_map_bubble = findViewById(R.id.lay_map_bubble);
 
+        img_navi_header = (ImageView) navi.getHeaderView(0).findViewById(R.id.img_navi_header);
+        text_username = (TextView) navi.getHeaderView(0).findViewById(R.id.text_navi_username);
+        img_navi_header.setOnClickListener(this);
         findViewById(R.id.img_home_msg).setOnClickListener(this);
         findViewById(R.id.img_home_order).setOnClickListener(this);
-        img_navi_header = (ImageView) navi.getHeaderView(0).findViewById(R.id.img_navi_header);
-        img_navi_header.setOnClickListener(this);
     }
 
     private void initCtrl() {
@@ -197,8 +216,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     private void initData() {
-        GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.test, "http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg");
-        GlideUtil.loadCircleImg(this, (ImageView) findViewById(R.id.img_driver_header), R.drawable.test, "http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg");
+        //设置用户信息
+        setUserData();
+//        GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.test, "http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg");
+        GlideUtil.loadCircleImg(this, (ImageView) findViewById(R.id.img_driver_header), R.drawable.default_header, "http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg");
     }
 
 
@@ -257,6 +278,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 intent.setClass(this, LoginActivity.class);
                 startActivity(intent);
                 break;
+        }
+    }
+
+    private void setUserData() {
+        User user = AppData.App.getUser();
+        if (user != null) {
+            text_username.setText(user.getNickName());
+            GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header, AppHelper.getRealImgPath(user.getAvatar()));
         }
     }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/wj_bk"
     android:fitsSystemWindows="true"
-    tools:context="com.ins.kuaidi.ui.activity.PayDetailActivity">
+    tools:context="com.ins.middle.ui.activity.MeEditActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -116,11 +116,23 @@
                         android:textColor="@color/com_text_dark"
                         android:textSize="@dimen/text_nomal" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="尼古拉斯·凯奇"
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="尼古拉斯·凯奇"-->
+                        <!--android:textColor="@color/com_text_blank"-->
+                        <!--android:textSize="@dimen/text_nomal" />-->
+
+                    <com.sobey.common.view.EmojiEditText
+                        android:id="@+id/edit_meedit_nike"
+                        style="@style/edit_none"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="请输入"
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
                         android:textColor="@color/com_text_blank"
+                        android:textColorHint="@color/sb_text_dark"
                         android:textSize="@dimen/text_nomal" />
 
                 </LinearLayout>
@@ -131,6 +143,7 @@
                     android:background="@color/com_line" />
 
                 <LinearLayout
+                    android:id="@+id/lay_meedit_sex"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
@@ -146,6 +159,7 @@
                         android:textSize="@dimen/text_nomal" />
 
                     <TextView
+                        android:id="@+id/text_meedit_sex"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="男"
@@ -160,6 +174,7 @@
                     android:background="@color/com_line" />
 
                 <LinearLayout
+                    android:id="@+id/lay_meedit_age"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
@@ -175,6 +190,7 @@
                         android:textSize="@dimen/text_nomal" />
 
                     <TextView
+                        android:id="@+id/text_meedit_age"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="90后"
@@ -206,7 +222,7 @@
                         android:textSize="@dimen/text_nomal" />
 
                     <com.sobey.common.view.EmojiEditText
-                        android:id="@+id/edit_feedback_describe"
+                        android:id="@+id/edit_meedit_sign"
                         style="@style/edit_none"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

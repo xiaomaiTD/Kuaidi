@@ -67,4 +67,7 @@
     <color name="wj_blue_hint">#444fc0e8</color>
 
     <color name="wj_blank_trans">#66000000</color>
+
+    <color name="kd_yellow">#edb821</color>
+    <color name="kd_yellow_hint_trans">#33edb821</color>
 </resources>

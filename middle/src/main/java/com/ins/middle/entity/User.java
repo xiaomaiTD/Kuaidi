@@ -7,141 +7,44 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    /**平台管理员*/
-    public static final int PLATFORM_MANAGER = 1;
-    /**片区管理员/片区经理*/
-    public static final int AREA_MANAGER = 2;
-    /**片区技术员*/
-    public static final int AREA_TECH = 3;
-    /**片区副经理*/
-    public static final int AREA_ASSISTANT_MANAGER = 4;
-    /**办事处人员*/
-    public static final int OFFICE_WORKER = 5;
-    /**水厂工作人员*/
-    public static final int WATER_FACTORY_WORKER = 6;
-    /**物业人员*/
-    public static final int ESTATE_WORKER=7;
+    /**未认证*/
+    public static final int UNAUTHORIZED = 0;
+    /**认证中*/
+    public static final int CERTIFICATIONING = 1;
+    /**已认证*/
+    public static final int AUTHENTICATED = 2;
 
-
-    private String msg;
-    private int code;
-    private String data;
-    private long updatetime;
-    private long createtime;
-    private String realName;
-    private String pwd;
     private int id;
-    private String email;
-    private String mobile;
-    private String qq;
-    private String avatar;
-    private int roleId;
-    private String roleName;
+    private String realName;
     private int status;
-    private int gender;
     private String token;
-    private int companyId;
+    private String password;
+    private String driveLicenseImg;
+    private String driveLicenseNumber;
+    private String driveingLicenseImg;
+    private String driveingLicenseNumber;
+    private String mobile;
+    private String avatar;
     private int deviceType;
     private String deviceToken;
-    private String jobNumber;
-    private String jobTitle;
-    private String userName;
+    private int gender;
+    private String nickName;
+    private String idCardNumber;
+    private String idCardImgs;
+    private String autograph;
+    private int isValid;
+    private long createtime;
+    private int age;
+    private int adminUserId;
+    private long updatetime;
+    private String email;
 
-    private String unitName;
-    private String unitNumber;
-
-    //新增
-    private int idType;
-    private int silence;
-    //本地实例字段
-
-
-    public int getSilence() {
-        return silence;
+    public String getEmail() {
+        return email;
     }
 
-    public void setSilence(int silence) {
-        this.silence = silence;
-    }
-
-    public int getIdType() {
-        return idType;
-    }
-
-    public void setIdType(int idType) {
-        this.idType = idType;
-    }
-
-    public String getUnitName() {
-        return unitName;
-    }
-
-    public void setUnitName(String unitName) {
-        this.unitName = unitName;
-    }
-
-    public String getUnitNumber() {
-        return unitNumber;
-    }
-
-    public void setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    public long getUpdatetime() {
-        return updatetime;
-    }
-
-    public void setUpdatetime(long updatetime) {
-        this.updatetime = updatetime;
-    }
-
-    public long getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(long createtime) {
-        this.createtime = createtime;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public String getPwd() {
-        return pwd;
-    }
-
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getId() {
@@ -152,52 +55,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public int getStatus() {
@@ -208,14 +71,6 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
     public String getToken() {
         return token;
     }
@@ -224,12 +79,60 @@ public class User implements Serializable {
         this.token = token;
     }
 
-    public int getCompanyId() {
-        return companyId;
+    public String getPassword() {
+        return password;
     }
 
-    public void setCompanyId(int companyId) {
-        this.companyId = companyId;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getDriveLicenseImg() {
+        return driveLicenseImg;
+    }
+
+    public void setDriveLicenseImg(String driveLicenseImg) {
+        this.driveLicenseImg = driveLicenseImg;
+    }
+
+    public String getDriveLicenseNumber() {
+        return driveLicenseNumber;
+    }
+
+    public void setDriveLicenseNumber(String driveLicenseNumber) {
+        this.driveLicenseNumber = driveLicenseNumber;
+    }
+
+    public String getDriveingLicenseImg() {
+        return driveingLicenseImg;
+    }
+
+    public void setDriveingLicenseImg(String driveingLicenseImg) {
+        this.driveingLicenseImg = driveingLicenseImg;
+    }
+
+    public String getDriveingLicenseNumber() {
+        return driveingLicenseNumber;
+    }
+
+    public void setDriveingLicenseNumber(String driveingLicenseNumber) {
+        this.driveingLicenseNumber = driveingLicenseNumber;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public int getDeviceType() {
@@ -248,56 +151,83 @@ public class User implements Serializable {
         this.deviceToken = deviceToken;
     }
 
-    public String getJobNumber() {
-        return jobNumber;
+    public int getGender() {
+        return gender;
     }
 
-    public void setJobNumber(String jobNumber) {
-        this.jobNumber = jobNumber;
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 
-    public String getJobTitle() {
-        return jobTitle;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getIdCardNumber() {
+        return idCardNumber;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "msg='" + msg + '\'' +
-                ", code=" + code +
-                ", data='" + data + '\'' +
-                ", updatetime=" + updatetime +
-                ", createtime=" + createtime +
-                ", realName='" + realName + '\'' +
-                ", pwd='" + pwd + '\'' +
-                ", id=" + id +
-                ", email='" + email + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", qq='" + qq + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", roleId=" + roleId +
-                ", roleName='" + roleName + '\'' +
-                ", status=" + status +
-                ", gender=" + gender +
-                ", token='" + token + '\'' +
-                ", companyId=" + companyId +
-                ", deviceType=" + deviceType +
-                ", deviceToken='" + deviceToken + '\'' +
-                ", jobNumber='" + jobNumber + '\'' +
-                ", jobTitle='" + jobTitle + '\'' +
-                ", userName='" + userName + '\'' +
-                '}';
+    public String getIdCardImgs() {
+        return idCardImgs;
+    }
+
+    public void setIdCardImgs(String idCardImgs) {
+        this.idCardImgs = idCardImgs;
+    }
+
+    public String getAutograph() {
+        return autograph;
+    }
+
+    public void setAutograph(String autograph) {
+        this.autograph = autograph;
+    }
+
+    public int getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(int isValid) {
+        this.isValid = isValid;
+    }
+
+    public long getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(long createtime) {
+        this.createtime = createtime;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getAdminUserId() {
+        return adminUserId;
+    }
+
+    public void setAdminUserId(int adminUserId) {
+        this.adminUserId = adminUserId;
+    }
+
+    public long getUpdatetime() {
+        return updatetime;
+    }
+
+    public void setUpdatetime(long updatetime) {
+        this.updatetime = updatetime;
     }
 }

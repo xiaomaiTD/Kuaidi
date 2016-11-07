@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Middle</string>
     <string name="title_activity_camera">相机</string>
+    <string name="title_activity_Login">登录</string>
+    <string name="title_activity_medetail">个人中心</string>
+    <string name="title_activity_meedit">修改资料</string>
 
     <!--cameraview-->
     <string name="camera_permission_confirmation">This app demonstrates the usage of CameraView. In order to do that, it needs permission to access camera.</string>

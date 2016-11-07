@@ -1,0 +1,83 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text_dialogage_90"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/hot_lay_item_dark"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="90 后"
+        android:textColor="@color/sb_text_blank"
+        android:textSize="@dimen/text_big" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:src="@color/com_line" />
+
+    <TextView
+        android:id="@+id/text_dialogage_80"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/hot_lay_item_dark"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="80 后"
+        android:textColor="@color/sb_text_blank"
+        android:textSize="@dimen/text_big" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:src="@color/com_line" />
+
+    <TextView
+        android:id="@+id/text_dialogage_70"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/hot_lay_item_dark"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="70 后"
+        android:textColor="@color/sb_text_blank"
+        android:textSize="@dimen/text_big" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:src="@color/com_line" />
+
+    <TextView
+        android:id="@+id/text_dialogage_60"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/hot_lay_item_dark"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="60 后"
+        android:textColor="@color/sb_text_blank"
+        android:textSize="@dimen/text_big" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:src="@color/com_line" />
+
+    <TextView
+        android:id="@+id/text_dialogage_50"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/hot_lay_item_dark"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="50 后"
+        android:textColor="@color/sb_text_blank"
+        android:textSize="@dimen/text_big" />
+
+</LinearLayout>

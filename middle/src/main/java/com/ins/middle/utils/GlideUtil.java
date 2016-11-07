@@ -48,6 +48,6 @@ public class GlideUtil {
     }
 
     public static void LoadCircleImgTest(Context context, View imageView) {
-        loadCircleImg(context, (ImageView) imageView, R.drawable.test, "http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg");
+        loadCircleImg(context, (ImageView) imageView, R.drawable.default_header, "http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg");
     }
 }

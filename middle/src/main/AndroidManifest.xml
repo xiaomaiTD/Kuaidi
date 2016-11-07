@@ -10,9 +10,26 @@
             android:name="com.ins.middle.ui.activity.CameraActivity"
             android:label="@string/title_activity_camera"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitleFullscreen">
-        </activity>
-
+            android:theme="@style/AppTheme.NoTitleFullscreen"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.LoginActivity"
+            android:label="@string/title_activity_Login"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyle"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.MeDetailActivity"
+            android:label="@string/title_activity_medetail"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.MeEditActivity"
+            android:label="@string/title_activity_meedit"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.DomainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

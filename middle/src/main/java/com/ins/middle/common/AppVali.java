@@ -39,17 +39,12 @@ public class AppVali {
         }
     }
 
-    public static String login_logindetail(String name, String phone, String qq) {
-        if (isEmpty(name)) {
-            return "请输入姓名";
-        } else if (isEmpty(phone)) {
-            return "请输入手机号";
-        }
-        //QQ又不是必填了，操尼玛
-//        else if (isEmpty(qq)) {
-//            return "请输入QQ";
-//        }
-        else {
+    public static String valicode(String valicode, String vali) {
+        if (isEmpty(vali)) {
+            return "请输入验证码";
+        } else if (!vali.equals(valicode)) {
+            return "验证码错误";
+        } else {
             return null;
         }
     }
