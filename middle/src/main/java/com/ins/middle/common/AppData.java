@@ -20,7 +20,7 @@ public class AppData {
         private static final String KEY_VERSIONCODE = "versioncode";
         private static final String KEY_TOKEN = "token";
         private static final String KEY_LASTUSERNAME = "lastusername";
-        private static final String KEY_PHONE = "phone";
+        private static final String KEY_DOMAIN = "domain";
         private static final String KEY_USER = "user";
 
         public static int getVersionCode() {
@@ -53,17 +53,17 @@ public class AppData {
             PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_TOKEN);
         }
 
-        public static String getPhone() {
-            String token = PreferenceUtil.getString(ApplicationHelp.getApplicationContext(), KEY_PHONE);
+        public static String getDomain() {
+            String token = PreferenceUtil.getString(ApplicationHelp.getApplicationContext(), KEY_DOMAIN);
             return token;
         }
 
-        public static void savePhone(String phone) {
-            PreferenceUtil.saveString(ApplicationHelp.getApplicationContext(), KEY_PHONE, phone);
+        public static void saveDomain(String phone) {
+            PreferenceUtil.saveString(ApplicationHelp.getApplicationContext(), KEY_DOMAIN, phone);
         }
 
-        public static void removePhone() {
-            PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_PHONE);
+        public static void removeDomain() {
+            PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_DOMAIN);
         }
 
         public static void saveUser(User user) {
@@ -103,7 +103,7 @@ public class AppData {
      * 记录了app中所有全局控制常量
      */
     public static class Config {
-        public static final boolean showVali = true;            //显示验证码（仅测试）
+        public static boolean showVali = true;            //显示验证码（仅测试）
     }
 
     /**
@@ -126,11 +126,16 @@ public class AppData {
         public static String checkMobile			    = domain + "mobile/user/checkMobile";											//检测用户是否注册
         public static String sendCode			    	= domain + "mobile/user/sendCode";												//发送验证码
         public static String login			    	= domain + "mobile/user/login";													//登录
+        public static String logout			    	= domain + "mobile/user/logout";													//注销
         public static String register			    	= domain + "mobile/user/register";												//注册
-        public static String setPsw			    	= domain + "mobile/user/updateByMobile";										//已创建账号设置密码
+        public static String setPsw			    	= domain + "mobile/user/updateByMobile";										//已创建账号设置密码（乘客）
         public static String getInfo			    	= domain + "mobile/user/getInfo";												//token登陆
         public static String upload			    	= domain + "res/upload";												            //上传资源
         public static String updateUser		    	= domain + "mobile/user/update";												    //修改个人信息
+        public static String identify   		    	= domain + "mobile/user/submitAuth";										    //车主认证
+        public static String feedback   		    	= domain + "mobile/suggest/add";										            //意见反馈
+        public static String onOffLine   		    	= domain + "mobile/order/onOffLine";										    //司机上下线（司机）
+        public static String updateLat   		    	= domain + "mobile/order/updateLat";										    //司机上传经纬度（司机）
 
     }
 }

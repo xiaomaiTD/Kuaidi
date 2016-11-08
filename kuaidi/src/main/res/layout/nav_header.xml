@@ -31,7 +31,8 @@
         <ImageView
             android:id="@+id/img_navi_header"
             android:layout_width="80dp"
-            android:layout_height="80dp"/>
+            android:layout_height="80dp"
+            android:src="@drawable/default_header"/>
 
         <TextView
             android:id="@+id/text_navi_username"

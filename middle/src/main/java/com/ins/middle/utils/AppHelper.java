@@ -10,6 +10,8 @@ import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.PswView;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/8/9.
  */
@@ -136,5 +138,17 @@ public class AppHelper {
                 pswView.back();
             }
         });
+    }
+
+    /**
+     * 获取逗号分隔的字符串形式
+     */
+    public static String getClipStr(List<String> urls) {
+        String ret = "";
+        for (String url : urls) {
+            ret += url + ",";
+        }
+        ret = StrUtils.subLastChart(ret, ",");
+        return ret;
     }
 }

@@ -1,6 +1,7 @@
 package com.ins.middle.common;
 
 import com.ins.middle.entity.User;
+import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.ValidateUtil;
 import com.sobey.common.view.bundleimgview.BundleImgEntity;
 
@@ -44,6 +45,54 @@ public class AppVali {
             return "请输入验证码";
         } else if (!vali.equals(valicode)) {
             return "验证码错误";
+        } else {
+            return null;
+        }
+    }
+
+    public static String vali_identify_passenger(String[] paths, String realName, String idcardnum) {
+        if (isEmpty(realName)) {
+            return "请输入真实姓名";
+        } else if (isEmpty(idcardnum)) {
+            return "请输入身份证号";
+        } else if (!ValidateUtil.IDcard(idcardnum)) {
+            return "身份证号格式不正确";
+        } else if (StrUtils.isEmpty(paths)) {
+            return "验证失败";
+        } else {
+            if (StrUtils.isEmpty(paths[0])) {
+                return "请上传身份证正面照";
+            } else if (StrUtils.isEmpty(paths[1])) {
+                return "请上传身份证反面照";
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public static String vali_identify_driverone(String path, String realName, String drivernum) {
+        if (isEmpty(realName)) {
+            return "请输入真实姓名";
+        } else if (isEmpty(drivernum)) {
+            return "请输入驾驶证证号";
+        } else if (isEmpty(path)) {
+            return "拍摄驾驶证正面照";
+        } else {
+            return null;
+        }
+    }
+
+    public static String vali_identify_drivertwo(String path, String carnum, String cartype, String carcolor, String carowner) {
+        if (isEmpty(carnum)) {
+            return "请输入车牌号";
+        } else if (isEmpty(cartype)) {
+            return "请输入车辆型号";
+        } else if (isEmpty(carcolor)) {
+            return "请输入车辆颜色";
+        } else if (isEmpty(carowner)) {
+            return "请输入车辆所有人";
+        } else if (isEmpty(path)) {
+            return "拍摄行驶证正面照";
         } else {
             return null;
         }
@@ -148,9 +197,9 @@ public class AppVali {
         }
     }
 
-    public static String orderVarifi(String describe) {
+    public static String feedback(String describe) {
         if (isEmpty(describe)) {
-            return "请填写订单进度描述";
+            return "请填写描述";
         } else {
             return null;
         }

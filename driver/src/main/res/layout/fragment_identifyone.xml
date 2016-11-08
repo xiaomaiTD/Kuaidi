@@ -17,8 +17,8 @@
         <LinearLayout
             android:id="@+id/item_identify"
             android:layout_width="match_parent"
-            android:foreground="?attr/selectableItemBackground"
             android:layout_height="50dp"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
@@ -34,6 +34,7 @@
                 android:textSize="@dimen/text_nomal" />
 
             <TextView
+                android:id="@+id/text_identify_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/icon_setting_safe"

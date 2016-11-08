@@ -39,6 +39,17 @@ public class User implements Serializable {
     private long updatetime;
     private String email;
 
+    //司机特色字段 1 在线0 不在线
+    private int isOnline;
+
+    public int getIsOnline() {
+        return isOnline;
+    }
+
+    public void setIsOnline(int isOnline) {
+        this.isOnline = isOnline;
+    }
+
     public String getEmail() {
         return email;
     }

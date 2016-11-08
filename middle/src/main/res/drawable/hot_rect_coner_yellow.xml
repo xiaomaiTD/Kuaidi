@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android" android:exitFadeDuration="@android:integer/config_shortAnimTime">
+    <item android:state_enabled="false" android:drawable="@drawable/shape_rect_corner_dark" />
+    <item android:state_selected="true" android:drawable="@drawable/shape_rect_corner_red" />
+    <item android:state_selected="false" android:drawable="@drawable/shape_rect_corner_yellow" />
+</selector>

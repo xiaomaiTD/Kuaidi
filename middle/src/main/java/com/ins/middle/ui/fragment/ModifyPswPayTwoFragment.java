@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.fragment;
+package com.ins.middle.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,12 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ins.kuaidi.R;
-import com.ins.kuaidi.ui.activity.ModifyPswPayActivity;
-import com.ins.kuaidi.utils.AppHelper;
+import com.ins.middle.R;
+import com.ins.middle.ui.activity.ModifyPswPayActivity;
+import com.ins.middle.utils.AppHelper;
 import com.sobey.common.view.PswView;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
-import com.ins.middle.ui.fragment.BaseFragment;
 
 /**
  * type:0 第一次输入密码 1: 确认密码
@@ -106,10 +105,10 @@ public class ModifyPswPayTwoFragment extends BaseFragment implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_go:
-                activity.next();
-                break;
+        int i = v.getId();
+        if (i == R.id.btn_go) {
+            activity.next();
+
         }
     }
 }

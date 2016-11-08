@@ -51,9 +51,9 @@
                 android:src="@drawable/icon_home_msg" />
 
             <FrameLayout
-                android:layout_gravity="right"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="right">
 
                 <ImageView
                     android:id="@+id/img_home_order"
@@ -63,12 +63,12 @@
                     android:src="@drawable/icon_home_order" />
 
                 <ImageView
-                    android:layout_gravity="right|bottom"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/shape_oval_red"/>
+                    android:layout_gravity="right|bottom"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/shape_oval_red" />
             </FrameLayout>
 
         </android.support.v7.widget.Toolbar>
@@ -107,18 +107,33 @@
                 android:textColor="@color/com_text_blank"
                 android:textSize="@dimen/text_nomal" />
 
-            <TextView
-                android:id="@+id/btn_go"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rect_corner_yellow"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:text="上线"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_big" />
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/btn_map_relocate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/icon_map_relocate2"/>
+
+                <TextView
+                    android:id="@+id/btn_go"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/hot_rect_coner_yellow"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="上线"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_big" />
+
+            </LinearLayout>
 
         </FrameLayout>
 

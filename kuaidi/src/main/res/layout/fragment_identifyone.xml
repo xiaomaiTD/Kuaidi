@@ -34,6 +34,7 @@
                 android:textSize="@dimen/text_nomal" />
 
             <TextView
+                android:id="@+id/text_identify_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/icon_setting_safe"

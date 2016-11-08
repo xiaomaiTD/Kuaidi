@@ -87,6 +87,8 @@ public class LoadUpActivity extends BaseAppCompatActivity {
             @Override
             public void netSetError(int code, String text) {
                 Toast.makeText(LoadUpActivity.this, text, Toast.LENGTH_SHORT).show();
+                AppData.App.removeUser();
+                AppData.App.removeToken();
                 long time = System.currentTimeMillis() - lasttime;
                 if (time < 2000) {
                     new Handler().postDelayed(new Runnable() {

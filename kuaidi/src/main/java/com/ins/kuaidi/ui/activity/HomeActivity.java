@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,9 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.ins.kuaidi.R;
@@ -27,12 +33,14 @@ import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.ins.middle.ui.activity.LoginActivity;
 import com.ins.middle.ui.activity.MeDetailActivity;
+import com.ins.middle.ui.activity.SettingActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
 import com.ins.kuaidi.ui.dialog.DialogMouthPicker;
 import com.ins.kuaidi.ui.dialog.DialogPopupMsg;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.ins.kuaidi.view.HoldcarView;
+import com.sobey.common.utils.PermissionsUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -65,6 +73,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         setContentView(R.layout.activity_home);
         setToolbar(null, false);
         EventBus.getDefault().register(this);
+        PermissionsUtil.checkAndRequestPermissions(this);
 
         initBase();
         initView();
@@ -85,14 +94,21 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     @Subscribe
     public void onEventMainThread(Integer flag) {
-        if (flag == AppConstant.EVENT_UPDATE_HOME) {
-            Log.e("liao", "login");
+        if (flag == AppConstant.EVENT_UPDATE_LOGIN) {
+            setUserData();
+        }else if (flag == AppConstant.EVENT_UPDATE_ME){
             setUserData();
         }
     }
 
     @Override
     protected void onDestroy() {
+        // 退出时销毁定位
+        locationClient.stop();
+        // 关闭定位图层
+        baiduMap.setMyLocationEnabled(false);
+        mapView.onDestroy();
+        mapView = null;
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         if (dialogLoading != null) dialogLoading.dismiss();
@@ -218,6 +234,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private void initData() {
         //设置用户信息
         setUserData();
+        startlocation();
 //        GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.test, "http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg");
         GlideUtil.loadCircleImg(this, (ImageView) findViewById(R.id.img_driver_header), R.drawable.default_header, "http://tupian.qqjay.com/tou3/2016/0725/037697b0e2cbb48ccb5a8c4d1ef0f65c.jpg");
     }
@@ -264,8 +281,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 //                startActivity(intent);
                 break;
             case R.id.img_navi_header:
-                intent.setClass(this, MeDetailActivity.class);
-                startActivity(intent);
+                if (AppData.App.getUser()!=null) {
+                    intent.setClass(this, MeDetailActivity.class);
+                    startActivity(intent);
+                }else {
+                    intent.setClass(this, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.img_home_user:
                 drawer.openDrawer(Gravity.LEFT);
@@ -286,6 +308,70 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         if (user != null) {
             text_username.setText(user.getNickName());
             GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header, AppHelper.getRealImgPath(user.getAvatar()));
+        } else {
+            text_username.setText("未登陆");
+            GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header);
         }
+    }
+
+    ////////////////////////////////////
+    /////////////定位相关
+    /////////////////////////////////////
+    LocationClient locationClient;
+    public MyLocationListenner locationListenner = new MyLocationListenner();
+    boolean isFirstLoc = true; // 是否首次定位
+    /**
+     * 定位SDK监听函数
+     */
+    public class MyLocationListenner implements BDLocationListener {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            // map view 销毁后不在处理新接收的位置
+            if (location == null || mapView == null) {
+                return;
+            }
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(location.getRadius())
+                    // 此处设置开发者获取到的方向信息，顺时针0-360
+                    .direction(location.getDirection())
+                    .latitude(location.getLatitude()).longitude(location.getLongitude()).build();
+            baiduMap.setMyLocationData(locData);
+            if (isFirstLoc) {
+                isFirstLoc = false;
+                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+                MapStatus.Builder builder = new MapStatus.Builder();
+                builder.target(ll).zoom(13.0f);
+                baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+            }
+        }
+
+        public void onReceivePoi(BDLocation poiLocation) {
+        }
+    }
+
+    private void startlocation() {
+        // 开启定位图层
+        baiduMap.setMyLocationEnabled(true);
+        // 定位初始化
+        locationClient = new LocationClient(this);
+        locationClient.registerLocationListener(locationListenner);
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true); // 打开gps
+        option.setCoorType("bd09ll"); // 设置坐标类型
+        option.setScanSpan(1000);
+
+        option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
+        option.setNeedDeviceDirect(true);// 返回的定位结果包含手机机头的方向
+//        option.setOpenGps(true);//可选，默认false,设置是否使用gps
+//        option.setLocationNotify(true);//可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
+//        option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
+//        option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
+//        option.setIgnoreKillProcess(false);//可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+//        option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
+//        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
+
+        locationClient.setLocOption(option);
+        locationClient.start();
     }
 }

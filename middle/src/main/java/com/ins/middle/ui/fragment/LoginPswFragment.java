@@ -1,6 +1,5 @@
 package com.ins.middle.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -164,7 +163,7 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
                         public void callback() {
                             AppData.App.saveToken(user.getToken());
                             AppData.App.saveUser(user);
-                            EventBus.getDefault().post(AppConstant.EVENT_UPDATE_HOME);
+                            EventBus.getDefault().post(AppConstant.EVENT_UPDATE_LOGIN);
                             activity.finish();
                         }
                     });

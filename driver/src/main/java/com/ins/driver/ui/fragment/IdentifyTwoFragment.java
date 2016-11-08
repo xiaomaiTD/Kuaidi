@@ -9,16 +9,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ins.driver.R;
+import com.ins.middle.common.AppConstant;
+import com.ins.middle.common.AppVali;
 import com.ins.middle.ui.activity.CameraActivity;
 import com.ins.driver.ui.activity.IdentifyActivity;
 import com.ins.middle.ui.fragment.BaseFragment;
 import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.utils.StrUtils;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -31,11 +40,14 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
     private View rootView;
     private ViewGroup showingroup;
     private View showin;
+    private View btn_go;
 
     private IdentifyActivity activity;
 
     private ImageView img_identify_drivercard;
     private TextView text_identify_drivercard;
+    private EditText edit_identify_name;
+    private EditText edit_identify_drivernum;
 
     private static final int RESULT_CAMERA = 0xf104;
 
@@ -79,9 +91,12 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
         showingroup = (ViewGroup) getView().findViewById(R.id.showingroup);
         img_identify_drivercard = (ImageView) getView().findViewById(R.id.img_identify_drivercard);
         text_identify_drivercard = (TextView) getView().findViewById(R.id.text_identify_drivercard);
+        edit_identify_name = (EditText) getView().findViewById(R.id.edit_identify_name);
+        edit_identify_drivernum = (EditText) getView().findViewById(R.id.edit_identify_drivernum);
+        btn_go = getView().findViewById(R.id.btn_go);
 
         img_identify_drivercard.setOnClickListener(this);
-        getView().findViewById(R.id.btn_go).setOnClickListener(this);
+        btn_go.setOnClickListener(this);
     }
 
     private void initData() {
@@ -102,7 +117,18 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
                 startActivityForResult(intent, RESULT_CAMERA);
                 break;
             case R.id.btn_go:
-                activity.next();
+
+                String realName = edit_identify_name.getText().toString();
+                String idcardnum = edit_identify_drivernum.getText().toString();
+
+                String msg = AppVali.vali_identify_driverone(path, realName, idcardnum);
+                if (!StrUtils.isEmpty(msg)) {
+                    Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                    btn_go.setEnabled(true);
+                } else {
+                    EventBus.getDefault().post(new IdentifyBus(realName, idcardnum, path));
+                    activity.next();
+                }
                 break;
         }
     }
@@ -132,7 +158,7 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
     }
 
     private void setPicData(String path) {
-        GlideUtil.loadImg(getActivity(), img_identify_drivercard, R.drawable.test, path);
+        GlideUtil.loadImg(getActivity(), img_identify_drivercard, R.drawable.default_bk, path);
         text_identify_drivercard.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         text_identify_drivercard.setText("点击图片再次拍摄");
         text_identify_drivercard.setTextColor(Color.WHITE);
@@ -140,5 +166,17 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
 
     private void testpritpaths() {
         Log.e("liao", "" + path);
+    }
+
+    public class IdentifyBus implements Serializable {
+        public IdentifyBus(String name, String driverCardNum, String path) {
+            this.name = name;
+            this.driverCardNum = driverCardNum;
+            this.path = path;
+        }
+
+        public String name;
+        public String driverCardNum;
+        public String path;
     }
 }

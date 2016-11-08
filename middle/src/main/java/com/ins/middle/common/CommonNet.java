@@ -1,9 +1,12 @@
 package com.ins.middle.common;
 
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.ins.middle.ui.activity.LoginActivity;
+import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.utils.ApplicationHelp;
 
 import org.json.JSONException;
@@ -128,10 +131,11 @@ public class CommonNet {
                         hander.netGo(status, pojo, msg, obj);
                         break;
                     case 1005:
-//                        AppHelper.toLogin("你的账号在其他设备登录，强制下线");
-                        break;
                     case 1007:
-//                        AppHelper.toLogin("你的账号已被冻结，请联系管理员");
+                        hander.netSetError(status, msg);
+                        Intent intent = new Intent(ApplicationHelp.getApplicationContext(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        ApplicationHelp.getApplicationContext().startActivity(intent);
                         break;
                     default:
                         hander.netSetFalse(status, msg);

@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ins.kuaidi.R;
+import com.ins.middle.R;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.ins.middle.ui.activity.BaseBackActivity;
 public class WebActivity extends BaseBackActivity {

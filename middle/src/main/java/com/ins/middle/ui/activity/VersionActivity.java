@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -7,7 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.ins.kuaidi.R;
+import com.ins.middle.R;
 import com.ins.middle.common.AppData;
 import com.shelwee.update.UpdateHelper;
 import com.shelwee.update.listener.OnUpdateListener;

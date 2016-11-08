@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,10 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.ins.kuaidi.R;
+import com.ins.middle.R;
 import com.ins.middle.ui.dialog.DialogMsg;
-import com.ins.middle.ui.activity.BaseAppCompatActivity;
-import com.ins.middle.ui.activity.BaseBackActivity;
+
 public class ModifyPswUserActivity extends BaseBackActivity implements View.OnClickListener {
 
     private ViewGroup showingroup;
@@ -60,10 +59,10 @@ public class ModifyPswUserActivity extends BaseBackActivity implements View.OnCl
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
-        switch (v.getId()) {
-            case R.id.btn_go:
-                dialogMsg.show();
-                break;
+        int i = v.getId();
+        if (i == R.id.btn_go) {
+            dialogMsg.show();
+
         }
     }
 }

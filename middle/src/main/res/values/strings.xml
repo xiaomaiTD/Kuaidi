@@ -4,6 +4,37 @@
     <string name="title_activity_Login">登录</string>
     <string name="title_activity_medetail">个人中心</string>
     <string name="title_activity_meedit">修改资料</string>
+    <string name="title_activity_setting">设置</string>
+    <string name="title_activity_feedback">意见反馈</string>
+    <string name="title_activity_version">检查更新</string>
+    <string name="title_activity_web">资讯</string>
+
+    <string name="title_activity_home">首页</string>
+    <string name="title_activity_searchaddress">选择地点</string>
+    <string name="title_activity_trip">行程</string>
+    <string name="title_activity_tripdetail">行程详情</string>
+    <string name="title_activity_paydetail">支付明细</string>
+    <string name="title_activity_complaint">投诉</string>
+    <string name="title_activity_wallet">我的钱包</string>
+    <string name="title_activity_payway">支付方式</string>
+    <string name="title_activity_paywayset">支付方式</string>
+    <string name="title_activity_coupon">优惠券</string>
+    <string name="title_activity_bankcard">绑定银行卡</string>
+    <string name="title_activity_money">我的余额</string>
+    <string name="title_activity_cash">余额提现</string>
+    <string name="title_activity_bindbankcard">绑定银行卡</string>
+    <string name="title_activity_server">客服中心</string>
+    <string name="title_activity_sale">分销</string>
+
+    <string name="title_activity_safe">账户安全</string>
+    <string name="title_activity_modifypswuser">修改密码</string>
+    <string name="title_activity_modifypswpay">修改支付密码</string>
+    <string name="title_activity_identify">实名认证</string>
+    <string name="title_activity_pay">支付</string>
+    <string name="title_activity_eva">评价订单</string>
+    <string name="title_activity_msgclass">消息</string>
+    <string name="title_activity_msg">系统消息</string>
+    <string name="title_activity_startup">引导页</string>
 
     <!--cameraview-->
     <string name="camera_permission_confirmation">This app demonstrates the usage of CameraView. In order to do that, it needs permission to access camera.</string>

@@ -33,13 +33,14 @@
                 android:textSize="@dimen/text_nomal" />
 
             <com.sobey.common.view.EmojiEditText
+                android:id="@+id/edit_identify_carnum"
                 style="@style/edit_none"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="请填写"
-                android:inputType="number"
-                android:maxLength="11"
+                android:inputType="textPersonName"
+                android:maxLength="16"
                 android:singleLine="true"
                 android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_nomal" />
@@ -66,13 +67,14 @@
                 android:textSize="@dimen/text_nomal" />
 
             <com.sobey.common.view.EmojiEditText
+                android:id="@+id/edit_identify_cartype"
                 style="@style/edit_none"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="请填写"
-                android:inputType="number"
-                android:maxLength="11"
+                android:inputType="textPersonName"
+                android:maxLength="32"
                 android:singleLine="true"
                 android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_nomal" />
@@ -99,12 +101,13 @@
                 android:textSize="@dimen/text_nomal" />
 
             <com.sobey.common.view.EmojiEditText
+                android:id="@+id/edit_identify_carcolor"
                 style="@style/edit_none"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="请填写"
-                android:inputType="number"
+                android:inputType="textPersonName"
                 android:maxLength="11"
                 android:singleLine="true"
                 android:textColor="@color/sb_text_blank"
@@ -132,13 +135,14 @@
                 android:textSize="@dimen/text_nomal" />
 
             <com.sobey.common.view.EmojiEditText
+                android:id="@+id/edit_identify_carowner"
                 style="@style/edit_none"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="请填写"
-                android:inputType="number"
-                android:maxLength="11"
+                android:inputType="textPersonName"
+                android:maxLength="16"
                 android:singleLine="true"
                 android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_nomal" />

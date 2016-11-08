@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.fragment;
+package com.ins.middle.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,18 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ins.kuaidi.R;
-import com.ins.kuaidi.common.AppConstant;
-import com.ins.kuaidi.ui.activity.BindBankCardActivity;
-import com.ins.kuaidi.ui.activity.LoginActivity;
-
-import org.greenrobot.eventbus.EventBus;
-import com.ins.middle.ui.fragment.BaseFragment;
+import com.ins.middle.R;
+import com.ins.middle.ui.activity.ModifyPswPayActivity;
+import com.sobey.common.utils.KeyBoardUtil;
 
 /**
  * Created by Administrator on 2016/6/2 0002.
  */
-public class LoginPswFragment extends BaseFragment implements View.OnClickListener{
+public class ModifyPswPayOneFragment extends BaseFragment implements View.OnClickListener{
 
     private int position;
     private View rootView;
@@ -26,11 +22,11 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
     private View showin;
 
     private View btn_go;
+    private ModifyPswPayActivity activity;
 
-    private LoginActivity activity;
 
     public static Fragment newInstance(int position) {
-        LoginPswFragment f = new LoginPswFragment();
+        ModifyPswPayOneFragment f = new ModifyPswPayOneFragment();
         Bundle b = new Bundle();
         b.putInt("position", position);
         f.setArguments(b);
@@ -46,7 +42,7 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_loginpsw, container, false);
+        rootView = inflater.inflate(R.layout.fragment_modifypswpayone, container, false);
         return rootView;
     }
 
@@ -60,7 +56,7 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void initBase() {
-        activity = (LoginActivity) getActivity();
+        activity = (ModifyPswPayActivity) getActivity();
     }
 
     private void initView() {
@@ -80,11 +76,11 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_go:
-                activity.next();
-//                EventBus.getDefault().post(AppConstant.EVENT_DIALOGLOGON_NEXT);
-                break;
+        int i = v.getId();
+        if (i == R.id.btn_go) {
+            KeyBoardUtil.hideKeybord(getActivity());
+            activity.next();
+
         }
     }
 }

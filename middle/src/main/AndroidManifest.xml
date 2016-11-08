@@ -30,6 +30,41 @@
             android:name="com.ins.middle.ui.activity.DomainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.FeedbackActivity"
+            android:label="@string/title_activity_feedback"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.WebActivity"
+            android:label="@string/title_activity_web"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.VersionActivity"
+            android:label="@string/title_activity_version"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name=".ui.activity.SafeActivity"
+            android:label="@string/title_activity_safe"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.ModifyPswUserActivity"
+            android:label="@string/title_activity_modifypswuser"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.ModifyPswPayActivity"
+            android:label="@string/title_activity_modifypswpay"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
     </application>
 
 </manifest>

@@ -32,14 +32,14 @@
             android:id="@+id/img_navi_header"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/default_header" />
 
         <TextView
-            android:id="@+id/text_username"
+            android:id="@+id/text_navi_username"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名"
+            android:text="未登陆"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/com_text_dark_blank" />
 
