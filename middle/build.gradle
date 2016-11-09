@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -24,6 +24,11 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    compile "com.android.support:design:$supportLibraryVersion"
+//    compile 'com.android.support:appcompat-v7:24.2.1'
+//    compile 'com.android.support:design:24.2.1'
+
     compile project(':common')
     //侧滑退出
     //compile 'com.github.liuguangqiang.swipeback:library:1.0.2@aar'
@@ -34,10 +39,6 @@ dependencies {
     compile project(':library_camera')
     compile project(':baidumapsdk')
 
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
 
     //spring
     compile 'com.liaoinstan.springview:library:1.2.7'

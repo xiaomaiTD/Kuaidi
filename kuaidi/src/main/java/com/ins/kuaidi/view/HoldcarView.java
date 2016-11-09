@@ -13,12 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.kuaidi.R;
+import com.ins.kuaidi.entity.LineConfig;
+import com.ins.kuaidi.utils.AppHelper;
 import com.ins.middle.entity.Position;
-import com.ins.middle.entity.Seat;
 import com.ins.kuaidi.ui.adapter.RecycleAdapterSeat;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2016/11/1.
@@ -31,7 +29,7 @@ public class HoldcarView extends FrameLayout implements View.OnClickListener {
     private LayoutInflater inflater;
 
     private RecyclerView recyclerView;
-    private List<Seat> results = new ArrayList<>();
+//    private List<Seat> results = new ArrayList<>();
     private RecycleAdapterSeat adapter;
 
     private TextView text_notice;
@@ -113,16 +111,16 @@ public class HoldcarView extends FrameLayout implements View.OnClickListener {
 
     private void initCtrl() {
         //初始化座位数据并设置
-        for (int i = 1; i <= 40; i++) {
-            results.add(new Seat(i));
-        }
-        adapter = new RecycleAdapterSeat(context, results);
-        adapter.setNotice(text_notice);
-        adapter.setCount(text_count);
+        adapter = new RecycleAdapterSeat(context);
+        adapter.setPriceView(text_price);
+        adapter.setNoticeView(text_notice);
+        adapter.setCountView(text_count);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
         //隐藏和显示事件
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -153,15 +151,78 @@ public class HoldcarView extends FrameLayout implements View.OnClickListener {
         }
     }
 
+    private Position startPosition;
+    private Position endPosition;
+    private int day = 4;    //默认4：现在
+    private String time;
+    private String msg;
+    //////////////设置数据的对外方法
+
     public void setStartPosition(Position position) {
-        text_start.setText(position.getCity() + " " + position.getKey());
+        if (position != null) {
+            text_start.setText(position.getCity() + " " + position.getKey());
+            startPosition = position;
+        } else {
+            text_start.setText("出发地");
+            startPosition = null;
+        }
     }
 
     public void setEndPosition(Position position) {
         text_end.setText(position.getCity() + " " + position.getKey());
+        endPosition = position;
         lay_price.setVisibility(VISIBLE);
         lay_seat.setVisibility(VISIBLE);
     }
+
+    public void setStartTime(int day, String time) {
+        this.day = day;
+        this.time = time;
+        if (day != 4) {
+            text_starttime.setText(AppHelper.getTimeStr(day, time));
+        } else {
+            text_starttime.setText("现在");
+        }
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+
+    public void setLineConfig(LineConfig lineConfig){
+        adapter.setLineConfig(lineConfig);
+    }
+
+    /////////////////////////
+    /////////get方法
+    /////////////////////////
+
+    public Position getStartPosition() {
+        return startPosition;
+    }
+
+    public Position getEndPosition() {
+        return endPosition;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public int getSelectCount(){
+        return adapter.getSelectCount();
+    }
+
+    /////////////////////////接口
 
     private OnHoldcarListener onHoldcarListener;
 

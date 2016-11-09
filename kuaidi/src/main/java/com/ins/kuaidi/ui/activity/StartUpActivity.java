@@ -12,7 +12,7 @@ import com.ins.kuaidi.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.entity.User;
 import com.ins.kuaidi.ui.fragment.StartUpFragment;
-import com.ins.kuaidi.utils.AppHelper;
+import com.ins.middle.utils.AppHelper;
 import com.sobey.common.view.DotView;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.ins.middle.ui.activity.BaseBackActivity;

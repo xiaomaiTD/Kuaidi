@@ -163,6 +163,12 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
                         public void callback() {
                             AppData.App.saveToken(user.getToken());
                             AppData.App.saveUser(user);
+                            //如果是车主登录后，且没有认证则打开认证页面
+                            //////////////////////////////
+                            if (!PackageUtil.isClient() && user.getStatus() == User.UNAUTHORIZED) {
+                                startActivity(PackageUtil.getSmIntent("IdentifyActivity"));
+                            }
+                            //////////////////////////////
                             EventBus.getDefault().post(AppConstant.EVENT_UPDATE_LOGIN);
                             activity.finish();
                         }

@@ -34,7 +34,13 @@ public class DialogPopupMsg extends Dialog {
         View mView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_popupmsg, null);
         edit_detail = (EditText) mView.findViewById(R.id.edit_popupmsg_detail);
         btn_go = (TextView) mView.findViewById(R.id.btn_go);
-        btn_go.setOnClickListener(listener);
+        btn_go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onSendListener!=null) onSendListener.onSendMsg(edit_detail.getText().toString());
+                dismiss();
+            }
+        });
 
         this.setCanceledOnTouchOutside(true);    //点击外部关闭
 
@@ -54,14 +60,17 @@ public class DialogPopupMsg extends Dialog {
         super.show();
     }
 
-    public void setOnSendListener(View.OnClickListener listener) {
-        btn_go.setOnClickListener(listener);
+    public void setMsg(String msg){
+        edit_detail.setText(msg);
     }
 
-    private View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            DialogPopupMsg.this.dismiss();
-        }
-    };
+    private OnSendListener onSendListener;
+
+    public void setOnSendListener(OnSendListener onSendListener) {
+        this.onSendListener = onSendListener;
+    }
+
+    public interface OnSendListener{
+        void onSendMsg(String msg);
+    }
 }

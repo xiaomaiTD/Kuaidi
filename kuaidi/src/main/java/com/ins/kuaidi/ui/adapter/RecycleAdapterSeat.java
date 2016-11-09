@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ins.kuaidi.R;
+import com.ins.kuaidi.entity.LineConfig;
 import com.ins.middle.entity.Seat;
 import com.sobey.common.utils.SpannableStringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,28 +22,50 @@ public class RecycleAdapterSeat extends RecyclerView.Adapter<RecycleAdapterSeat.
 
     private Context context;
     private List<Seat> results;
+    private TextView text_price;
     private TextView text_notice;
     private TextView text_count;
 
-    public void setNotice(TextView textView) {
-        this.text_notice = textView;
-        setNotice(new Seat(4));
-    }
-
-    public void setCount(TextView textView) {
-        this.text_count = textView;
-        setCount(new Seat(4));
-    }
-
+    private int maxseat = 4;
     private int selectPosition = 3;
+    private LineConfig lineConfig;
+
+    public void setLineConfig(LineConfig lineConfig) {
+        this.lineConfig = lineConfig;
+
+        //设置车容量和默认选中位置
+        maxseat = lineConfig.getCarCapacity();
+        selectPosition = maxseat - 1;
+        results.clear();
+        results.addAll(getInitSeats(maxseat));
+        notifyDataSetChanged();
+        setNotice(new Seat(maxseat));
+        setCount(new Seat(maxseat));
+        setPrice(new Seat(maxseat));
+    }
+
+    public void setPriceView(TextView textView) {
+        this.text_price = textView;
+        setPrice(new Seat(maxseat));
+    }
+
+    public void setNoticeView(TextView textView) {
+        this.text_notice = textView;
+        setNotice(new Seat(maxseat));
+    }
+
+    public void setCountView(TextView textView) {
+        this.text_count = textView;
+        setCount(new Seat(maxseat));
+    }
 
     public List<Seat> getResults() {
         return results;
     }
 
-    public RecycleAdapterSeat(Context context, List<Seat> results) {
+    public RecycleAdapterSeat(Context context) {
         this.context = context;
-        this.results = results;
+        this.results = getInitSeats(maxseat);
     }
 
     @Override
@@ -62,6 +86,7 @@ public class RecycleAdapterSeat extends RecyclerView.Adapter<RecycleAdapterSeat.
                     notifyItemChanged(lastPosition);
                     setNotice(seat);
                     setCount(seat);
+                    setPrice(seat);
                 }
             }
         });
@@ -76,21 +101,44 @@ public class RecycleAdapterSeat extends RecyclerView.Adapter<RecycleAdapterSeat.
         ((TextView) holder.itemView).setText(seat.getCount() + "人");
     }
 
+    private List<Seat> getInitSeats(int maxseat) {
+        ArrayList<Seat> seats = new ArrayList<>();
+        for (int i = 1; i <= 4 * maxseat; i++) {
+            seats.add(new Seat(i));
+        }
+        return seats;
+    }
+
+    private void setPrice(Seat seat) {
+        if (text_price != null) {
+            if (lineConfig != null) {
+                float price = seat.getCount() * lineConfig.getPayMoney() * lineConfig.getDiscount() / 10;
+                text_price.setText(price + "元起");
+            } else {
+                text_price.setText("价格获取中");
+            }
+        }
+    }
+
     private void setNotice(Seat seat) {
         if (text_notice != null) {
-            int carcount = (seat.getCount() - 1) / 4 + 1;
-            SpannableString str = SpannableStringUtils.create(context, new String[]{"若要包 ", carcount + "辆", " 车，请选择 ", carcount * 4 + "人"}, new int[]{R.color.com_text_light, R.color.kd_yellow, R.color.com_text_light, R.color.kd_yellow});
+            int carcount = (seat.getCount() - 1) / maxseat + 1;
+            SpannableString str = SpannableStringUtils.create(context, new String[]{"若要包 ", carcount + "辆", " 车，请选择 ", carcount * maxseat + "人"}, new int[]{R.color.com_text_light, R.color.kd_yellow, R.color.com_text_light, R.color.kd_yellow});
             text_notice.setText(str);
         }
     }
 
     private void setCount(Seat seat) {
         if (text_count != null) {
-            int carcount = (seat.getCount() - 1) / 4 + 1;
-            boolean isFull = seat.getCount() % 4 == 0 ? true : false;
+            int carcount = (seat.getCount() - 1) / maxseat + 1;
+            boolean isFull = seat.getCount() % maxseat == 0 ? true : false;
             String str = carcount + "辆车(" + (isFull ? "包车" : "拼车") + ")";
             text_count.setText(str);
         }
+    }
+
+    public int getSelectCount(){
+        return results.get(selectPosition).getCount();
     }
 
     @Override

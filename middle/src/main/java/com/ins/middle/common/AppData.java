@@ -136,6 +136,9 @@ public class AppData {
         public static String feedback   		    	= domain + "mobile/suggest/add";										            //意见反馈
         public static String onOffLine   		    	= domain + "mobile/order/onOffLine";										    //司机上下线（司机）
         public static String updateLat   		    	= domain + "mobile/order/updateLat";										    //司机上传经纬度（司机）
+        public static String getArea   		    	= domain + "mobile/order/getLatByCityName";								    //乘客获取地理围栏（乘客）
+        public static String getLineConfig	    	= domain + "mobile/order/getLineConfig";								        //乘客线路配置（乘客）
+        public static String orderadd       	    	= domain + "mobile/order/add";								                    //乘客下单（乘客）
 
     }
 }

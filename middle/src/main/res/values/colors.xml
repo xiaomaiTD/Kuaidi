@@ -7,4 +7,6 @@
     <color name="kd_yellow">#edb821</color>
     <color name="kd_weixin_green">#5ec953</color>
     <color name="kd_zhifubao_blue">#35b2ea</color>
+    <color name="kd_eara">#edb821</color>
+    <color name="kd_eara_trans">#4cedb821</color>
 </resources>

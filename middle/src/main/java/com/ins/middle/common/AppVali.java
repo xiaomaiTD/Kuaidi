@@ -1,5 +1,6 @@
 package com.ins.middle.common;
 
+import com.ins.middle.entity.Position;
 import com.ins.middle.entity.User;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.ValidateUtil;
@@ -103,6 +104,20 @@ public class AppVali {
             return "请输入手机号";
         } else if (!ValidateUtil.Mobile(phone)) {
             return "请输入正确的手机号";
+        } else {
+            return null;
+        }
+    }
+
+    public static String orderadd(int day, String time, int count, Position startPosition, Position endPersition) {
+        if (StrUtils.isEmpty(time)) {
+            return "请选择上车时间";
+        } else if (StrUtils.isEmpty(startPosition)) {
+            return "请选择上车地点";
+        } else if (StrUtils.isEmpty(endPersition)) {
+            return "请选择下车地点";
+        } else if (count == 0) {
+            return "请选择打车人数";
         } else {
             return null;
         }

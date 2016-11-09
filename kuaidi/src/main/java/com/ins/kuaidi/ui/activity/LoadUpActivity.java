@@ -10,7 +10,7 @@ import com.ins.kuaidi.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.User;
-import com.ins.kuaidi.utils.AppHelper;
+import com.ins.middle.utils.AppHelper;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 
 import org.xutils.http.RequestParams;

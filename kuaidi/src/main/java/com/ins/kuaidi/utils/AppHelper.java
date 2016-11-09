@@ -3,7 +3,9 @@ package com.ins.kuaidi.utils;
 import android.os.Handler;
 
 import com.dd.CircularProgressButton;
+import com.ins.kuaidi.view.HoldcarView;
 import com.ins.middle.common.AppData;
+import com.ins.middle.entity.Position;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.StrUtils;
@@ -14,127 +16,70 @@ import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
  * Created by Administrator on 2016/8/9.
  */
 public class AppHelper {
+    public static String getTimeStr(int day, String time) {
+        String daystr = "今天";
+        if (day == 0) {
+            daystr = "今天";
+        } else if (day == 1) {
+            daystr = "明天";
+        } else if (day == 2) {
+            daystr = "后天";
+        } else if (day == 3) {
+            daystr = "大后天";
+        } else if (day == 4) {
+            daystr = "现在";
+        }
+        String[] split = time.split(":");
+        if (split[0].length() == 1) {
+            split[0] = "0" + split[0];
+        }
+        if (split[1].length() == 1) {
+            split[1] = "0" + split[1];
+        }
+        return daystr + " " + split[0] + ":" + split[1];
+    }
 
-    public static boolean getStartUp() {
-        int versionCodeSave = AppData.App.getVersionCode();
-        int versionCode = VersionUtil.getAppVersionCode(ApplicationHelp.getApplicationContext());
-        if (versionCode > versionCodeSave) {
+    public static int getdayBystr(String daystr) {
+        int day = 0;
+        if ("今天".endsWith(daystr)) {
+            day = 0;
+        } else if ("明天".endsWith(daystr)) {
+            day = 1;
+        } else if ("后天".endsWith(daystr)) {
+            day = 2;
+        } else if ("大后天".endsWith(daystr)) {
+            day = 3;
+        } else if ("现在".endsWith(daystr)) {
+            day = 4;
+        }
+        return day;
+    }
+
+    public static boolean needNetConfigStart(HoldcarView holdcarView, String newStartCity) {
+        Position startPosition = holdcarView.getStartPosition();
+        Position endPosition = holdcarView.getEndPosition();
+        if (endPosition != null) {
+            if (startPosition != null && startPosition.getCity().endsWith(newStartCity)) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
             return false;
-        } else {
-            return true;
         }
     }
 
-    public static void saveStartUp() {
-        int versionCode = VersionUtil.getAppVersionCode(ApplicationHelp.getApplicationContext());
-        AppData.App.saveVersionCode(versionCode);
-    }
-
-    public static void removeStartUp() {
-        AppHelper.removeStartUp();
-    }
-
-    ////////////////////////////////////////
-    ////////////////////////////////////////
-    ////////////////////////////////////////
-
-    public static String getRealImgPath(String path) {
-        if (!StrUtils.isEmpty(path) && path.startsWith("upload")) {
-            return AppData.Url.domain + path;
+    public static boolean needNetConfigEnd(HoldcarView holdcarView, String newEndCity) {
+        Position startPosition = holdcarView.getStartPosition();
+        Position endPosition = holdcarView.getEndPosition();
+        if (startPosition != null) {
+            if (endPosition != null && endPosition.getCity().endsWith(newEndCity)) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
-            return path;
+            return false;
         }
-    }
-
-    public static void progError2dle(final CircularProgressButton btn_go) {
-        btn_go.setProgress(-1);
-        handlProgressButton(btn_go, null, 0);
-    }
-
-    public static void progOk2dle(final CircularProgressButton btn_go) {
-        btn_go.setProgress(100);
-        handlProgressButton(btn_go, null, 0);
-    }
-
-    public static void progOk(final CircularProgressButton btn_go) {
-        btn_go.setProgress(100);
-        handlProgressButton(btn_go, null, -2);
-    }
-
-    public static void progError2dle(final CircularProgressButton btn_go, final ProgressCallback callback) {
-        btn_go.setProgress(-1);
-        handlProgressButton(btn_go, callback, 0);
-    }
-
-    public static void progOk2dle(final CircularProgressButton btn_go, final ProgressCallback callback) {
-        btn_go.setProgress(100);
-        handlProgressButton(btn_go, callback, 0);
-    }
-
-    public static void progOk(final CircularProgressButton btn_go, final ProgressCallback callback) {
-        btn_go.setProgress(100);
-        handlProgressButton(btn_go, callback, -2);
-    }
-
-    public static void handlProgressButton(final CircularProgressButton btn_go, final ProgressCallback callback, final int value) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (btn_go != null) {
-                    btn_go.setClickable(true);
-                    if (value != -2) {
-                        btn_go.setProgress(value);
-                    }
-                }
-                if (callback != null) {
-                    callback.callback();
-                }
-            }
-        }, 800);
-    }
-
-
-    public interface ProgressCallback {
-        void callback();
-    }
-
-
-
-    public static void toLogin() {
-        toLogin(null);
-    }
-
-    public static void toLogin(String msg) {
-//        try {
-//            //清楚用户数据
-//            AppData.App.removeToken();
-//            AppData.App.removeUser();
-//            //关闭所有页面，打开登录页
-//            MyActivityCollector.finishAll();
-//            Intent intent = new Intent(ApplicationHelp.getApplicationContext(), LoginActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            if (!StrUtils.isEmpty(msg)) intent.putExtra("msg", msg);
-//            ApplicationHelp.getApplicationContext().startActivity(intent);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    public static void AttachKeybordWithPswView(VirtualKeyboardView keybord, final PswView pswView){
-        keybord.setOnKeyBordClickListener(new VirtualKeyboardView.OnKeyBordClickListener() {
-            @Override
-            public void onNumClick(int num) {
-                pswView.addNum(num);
-            }
-
-            @Override
-            public void onDotClick() {
-            }
-
-            @Override
-            public void onDelClick() {
-                pswView.back();
-            }
-        });
     }
 }

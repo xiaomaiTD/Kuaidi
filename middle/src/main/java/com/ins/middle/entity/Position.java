@@ -11,10 +11,20 @@ import java.io.Serializable;
 
 public class Position implements Serializable{
 
-    private String key;
+    //城市
     private String city;
+    //地址
+    private String key;
+    //详细地址
     private String district;
+    //坐标
     private LatLng latLng;
+
+    public Position(LatLng latLng, String key, String city) {
+        this.latLng = latLng;
+        this.key = key;
+        this.city = city;
+    }
 
     public Position() {
     }

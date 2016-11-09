@@ -141,7 +141,8 @@
 
             </RelativeLayout>
 
-            <include layout="@layout/layout_home_driver" />
+            <include layout="@layout/layout_home_driver"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,10 +162,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_margin="10dp"
-                    android:background="@drawable/shape_rect_corner_yellow"
+                    android:background="@drawable/hot_rect_coner_yellow"
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
-                    android:text="支付定金"
+                    android:text="呼叫快车"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_big" />
 

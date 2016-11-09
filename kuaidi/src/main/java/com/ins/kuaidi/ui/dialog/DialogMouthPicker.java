@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.ins.kuaidi.R;
+import com.ins.kuaidi.utils.AppHelper;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.TimeUtil;
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
@@ -151,8 +152,8 @@ public class DialogMouthPicker extends Dialog implements View.OnClickListener {
         wheel_hour.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
             @Override
             public void onItemSelected(int position, Object o) {
-                Log.e("liao","wheel_hour");
-                if (position == 0 ) {
+                Log.e("liao", "wheel_hour");
+                if (position == 0) {
                     if ("现在".equals(dataHours.get(0))) {
                         if (!"现在".equals(dataMins.get(0))) {
                             dataMins.clear();
@@ -209,33 +210,20 @@ public class DialogMouthPicker extends Dialog implements View.OnClickListener {
                 break;
             case R.id.dialog_ok:
                 if (onOKlistener != null) {
-//                    String selectDay = getNumStr(dataDays.get(wheel_day.getCurrentPosition()));
-//                    String selectHour = getNumStr(dataHours.get(wheel_hour.getCurrentPosition()));
-//                    String selectMins = getNumStr(dataMins.get(wheel_mins.getCurrentPosition()));
                     String s1 = dataDays.get(wheel_day.getCurrentPosition());
                     String s2 = dataHours.get(wheel_hour.getCurrentPosition());
                     String s3 = dataMins.get(wheel_mins.getCurrentPosition());
-                    Toast.makeText(context, s1 + " " + s2 + " " + s3, Toast.LENGTH_SHORT);
-//                    onOKlistener.onOkClick(selectDay + "," + selectHour + "," + selectMins);
+                    if (!"现在".endsWith(s2)) {
+                        int day = AppHelper.getdayBystr(s1);
+                        s2 = StrUtils.subLastChart(s2, "点");
+                        s3 = StrUtils.subLastChart(s3, "分");
+                        onOKlistener.onOkClick(day, s2 + ":" + s3);
+                    } else {
+                        onOKlistener.onOkClick(4, "");
+                    }
                 }
-                String s1 = dataDays.get(wheel_day.getCurrentPosition());
-                String s2 = dataHours.get(wheel_hour.getCurrentPosition());
-                String s3 = dataMins.get(wheel_mins.getCurrentPosition());
-                Toast.makeText(context, s1 + " " + s2 + " " + s3, Toast.LENGTH_SHORT).show();
-                //dismiss();
+                dismiss();
                 break;
-        }
-    }
-
-    private String getNumStr(String str) {
-        if (str.contains("天")) {
-            return StrUtils.subLastChart(str, "天");
-        } else if (str.contains("小时")) {
-            return StrUtils.subLastChart(str, "小时");
-        } else if (str.contains("分")) {
-            return StrUtils.subLastChart(str, "分");
-        } else {
-            return "";
         }
     }
 
@@ -246,15 +234,6 @@ public class DialogMouthPicker extends Dialog implements View.OnClickListener {
     }
 
     public interface OnOkListener {
-        void onOkClick(String time);
-    }
-
-    public static String formatTimeStr(String time) {
-        String[] splits = time.split(",");
-        if (splits == null || splits.length != 3) {
-            return "";
-        } else {
-            return splits[0] + "天" + splits[1] + "小时" + splits[2] + "分";
-        }
+        void onOkClick(int day, String time);
     }
 }
