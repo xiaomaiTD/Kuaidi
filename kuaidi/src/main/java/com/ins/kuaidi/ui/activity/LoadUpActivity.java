@@ -12,8 +12,12 @@ import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.User;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.sobey.common.utils.ApplicationHelp;
+import com.sobey.common.utils.StrUtils;
 
 import org.xutils.http.RequestParams;
+
+import cn.jpush.android.api.JPushInterface;
 
 
 public class LoadUpActivity extends BaseAppCompatActivity {
@@ -29,6 +33,8 @@ public class LoadUpActivity extends BaseAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loadup);
+
+        initBase();
 
         lasttime = System.currentTimeMillis();
 
@@ -54,6 +60,13 @@ public class LoadUpActivity extends BaseAppCompatActivity {
         } else {
             //有token 执行登录
             login();
+        }
+    }
+
+    private void initBase() {
+        String registrationID = JPushInterface.getRegistrationID(ApplicationHelp.getApplicationContext());
+        if (!StrUtils.isEmpty(registrationID)) {
+            AppData.App.saveJpushId(registrationID);
         }
     }
 
@@ -107,10 +120,10 @@ public class LoadUpActivity extends BaseAppCompatActivity {
     private void goLoginActivity() {
         //又不需要轮播页了，我操你妈
 //        if (startup) {
-            //软登录，还是去home页
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
-            finish();
+        //软登录，还是去home页
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
 //        } else {
 //            Intent intent = new Intent(this, StartUpActivity.class);
 //            startActivity(intent);
@@ -121,9 +134,9 @@ public class LoadUpActivity extends BaseAppCompatActivity {
     private void goHomeActivity() {
         //又不需要轮播页了，我操你妈
 //        if (startup) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
-            finish();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
 //        } else {
 //            Intent intent = new Intent(this, StartUpActivity.class);
 //            startActivity(intent);

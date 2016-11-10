@@ -102,6 +102,7 @@
                     android:layout_centerVertical="true" />
 
                 <LinearLayout
+                    android:id="@+id/lay_map_center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@id/view_center"
@@ -141,8 +142,11 @@
 
             </RelativeLayout>
 
-            <include layout="@layout/layout_home_driver"
-                android:visibility="gone"/>
+
+            <com.ins.kuaidi.view.DriverView
+                android:id="@+id/driverView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

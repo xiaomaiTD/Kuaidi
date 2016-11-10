@@ -194,6 +194,10 @@ public class HoldcarView extends FrameLayout implements View.OnClickListener {
         adapter.setLineConfig(lineConfig);
     }
 
+    public void clear(){
+
+    }
+
     /////////////////////////
     /////////get方法
     /////////////////////////

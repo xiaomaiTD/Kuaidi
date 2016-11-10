@@ -26,7 +26,9 @@ import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.ins.middle.ui.activity.LoginActivity;
 import com.ins.middle.ui.activity.MeDetailActivity;
+import com.ins.middle.ui.activity.ServerActivity;
 import com.ins.middle.ui.activity.SettingActivity;
+import com.ins.middle.ui.activity.TripActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
@@ -187,12 +189,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         Intent intent = new Intent();
         switch (item.getItemId()) {
             case R.id.nav_trip:
+                intent.setClass(this, TripActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_wallet:
                 break;
             case R.id.nav_server:
-                break;
-            case R.id.nav_sale:
+                intent.setClass(this, ServerActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_setting:
                 intent.setClass(this, SettingActivity.class);

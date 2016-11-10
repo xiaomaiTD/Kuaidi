@@ -100,28 +100,6 @@ public class AppHelper {
         void callback();
     }
 
-
-
-    public static void toLogin() {
-        toLogin(null);
-    }
-
-    public static void toLogin(String msg) {
-//        try {
-//            //清楚用户数据
-//            AppData.App.removeToken();
-//            AppData.App.removeUser();
-//            //关闭所有页面，打开登录页
-//            MyActivityCollector.finishAll();
-//            Intent intent = new Intent(ApplicationHelp.getApplicationContext(), LoginActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            if (!StrUtils.isEmpty(msg)) intent.putExtra("msg", msg);
-//            ApplicationHelp.getApplicationContext().startActivity(intent);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
-
     public static void AttachKeybordWithPswView(VirtualKeyboardView keybord, final PswView pswView){
         keybord.setOnKeyBordClickListener(new VirtualKeyboardView.OnKeyBordClickListener() {
             @Override
@@ -150,5 +128,25 @@ public class AppHelper {
         }
         ret = StrUtils.subLastChart(ret, ",");
         return ret;
+    }
+
+    public static String getOrderType(int orderType){
+        switch (orderType){
+            case 2001:
+                return "正在派单";
+            case 2002:
+                return "等待司机确认";
+            case 2003:
+                return "等待乘客支付预付款";
+            case 2004:
+                return "正在接乘客";
+            case 2005:
+                return "正在前往目的地";
+            case 2006:
+                return "已完成";
+            case 2007:
+                return "已取消";
+        }
+        return "";
     }
 }

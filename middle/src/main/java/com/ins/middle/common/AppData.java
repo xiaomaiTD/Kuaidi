@@ -19,6 +19,7 @@ public class AppData {
         private static final String KEY_STRARUP = "startup";
         private static final String KEY_VERSIONCODE = "versioncode";
         private static final String KEY_TOKEN = "token";
+        private static final String KEY_JPUSHID = "jpushid";
         private static final String KEY_LASTUSERNAME = "lastusername";
         private static final String KEY_DOMAIN = "domain";
         private static final String KEY_USER = "user";
@@ -76,6 +77,19 @@ public class AppData {
 
         public static void removeUser() {
             PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_USER);
+        }
+
+        public static String getJpushId() {
+            String token = PreferenceUtil.getString(ApplicationHelp.getApplicationContext(), KEY_JPUSHID);
+            return token;
+        }
+
+        public static void saveJpushId(String token) {
+            PreferenceUtil.saveString(ApplicationHelp.getApplicationContext(), KEY_JPUSHID, token);
+        }
+
+        public static void removeJpushId() {
+            PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_JPUSHID);
         }
 
         //////////////
@@ -139,6 +153,7 @@ public class AppData {
         public static String getArea   		    	= domain + "mobile/order/getLatByCityName";								    //乘客获取地理围栏（乘客）
         public static String getLineConfig	    	= domain + "mobile/order/getLineConfig";								        //乘客线路配置（乘客）
         public static String orderadd       	    	= domain + "mobile/order/add";								                    //乘客下单（乘客）
+        public static String getOrders       	    	= domain + "mobile/order/getOrders";								            //获取行程列表（订单）（乘客）
 
     }
 }

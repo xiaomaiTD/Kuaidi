@@ -3,9 +3,11 @@ package com.ins.kuaidi.utils;
 import android.os.Handler;
 
 import com.dd.CircularProgressButton;
+import com.ins.kuaidi.ui.activity.HomeActivity;
 import com.ins.kuaidi.view.HoldcarView;
 import com.ins.middle.common.AppData;
 import com.ins.middle.entity.Position;
+import com.ins.middle.entity.Trip;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.StrUtils;

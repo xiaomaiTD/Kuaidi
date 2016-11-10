@@ -110,7 +110,7 @@ public class AppVali {
     }
 
     public static String orderadd(int day, String time, int count, Position startPosition, Position endPersition) {
-        if (StrUtils.isEmpty(time)) {
+        if (StrUtils.isEmpty(time) && day != 4) {
             return "请选择上车时间";
         } else if (StrUtils.isEmpty(startPosition)) {
             return "请选择上车地点";

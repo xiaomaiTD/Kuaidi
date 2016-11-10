@@ -43,7 +43,7 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="MyDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+    <style name="MyAppDialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

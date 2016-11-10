@@ -25,6 +25,7 @@ import com.sobey.common.utils.ApplicationHelp;
 import org.xutils.x;
 
 //import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.JPushInterface;
 import im.fir.sdk.FIR;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -43,7 +44,7 @@ public class DriverApplication extends Application {
         ApplicationHelp.getApplicationContext(this);
 
         initFonts();
-//        initJpush();
+        initJpush();
         initXutils();
         initbugHd();
         initBaiduMap();
@@ -55,10 +56,10 @@ public class DriverApplication extends Application {
         MultiDex.install(this);
     }
 
-//    private void initJpush() {
-//        JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
-//        JPushInterface.init(this);            // 初始化 JPush
-//    }
+    private void initJpush() {
+        JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);            // 初始化 JPush
+    }
 
     private void initXutils() {
         x.Ext.init(this);

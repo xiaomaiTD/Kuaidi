@@ -1,11 +1,11 @@
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ins.kuaidi.R;
+import com.ins.middle.R;
 import com.ins.middle.utils.GlideUtil;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.ins.middle.ui.activity.BaseBackActivity;
@@ -67,9 +67,8 @@ public class ServerActivity extends BaseBackActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_right:
-                break;
+        int i = v.getId();
+        if (i == R.id.btn_right) {
         }
     }
 }

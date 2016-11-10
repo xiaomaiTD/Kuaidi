@@ -25,13 +25,13 @@ import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.SpatialRelationUtil;
 import com.ins.kuaidi.R;
-import com.ins.middle.entity.Car;
+import com.ins.middle.entity.CarMap;
 import com.sobey.common.utils.PermissionsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
-import com.ins.middle.ui.activity.BaseBackActivity;
+
 public class TestMapActivity extends BaseAppCompatActivity {
 
     TextView text_latlng;
@@ -42,7 +42,7 @@ public class TestMapActivity extends BaseAppCompatActivity {
     LocationClient locationClient;
     public MyLocationListenner locationListenner = new MyLocationListenner();
 
-    private List<Car> cars = new ArrayList<>();
+    private List<CarMap> cars = new ArrayList<>();
 
 
     //平滑行驶
@@ -121,11 +121,11 @@ public class TestMapActivity extends BaseAppCompatActivity {
         mapView = (MapView) findViewById(R.id.mapView);
         text_latlng = (TextView) findViewById(R.id.text_latlng);
         baiduMap = mapView.getMap();
-        cars.add(new Car());
-        cars.add(new Car());
-        cars.add(new Car());
-        cars.add(new Car());
-        cars.add(new Car());
+        cars.add(new CarMap());
+        cars.add(new CarMap());
+        cars.add(new CarMap());
+        cars.add(new CarMap());
+        cars.add(new CarMap());
     }
 
     private void initData() {

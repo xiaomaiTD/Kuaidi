@@ -151,7 +151,7 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
         params.addBodyParameter("password", MD5Util.md5(password));
         params.addBodyParameter("flag", PackageUtil.isClient() ? "0" : "1");
         params.addBodyParameter("deviceType", 0 + "");
-        params.addBodyParameter("deviceToken", "texttoken");
+        params.addBodyParameter("deviceToken", AppData.App.getJpushId());
         CommonNet.samplepost(params, User.class, new CommonNet.SampleNetHander() {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {

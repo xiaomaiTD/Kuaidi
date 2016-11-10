@@ -15,7 +15,7 @@ public class Position implements Serializable{
     private String city;
     //地址
     private String key;
-    //详细地址
+    //区级名称
     private String district;
     //坐标
     private LatLng latLng;

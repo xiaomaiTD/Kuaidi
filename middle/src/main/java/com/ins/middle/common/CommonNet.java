@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.ins.middle.ui.activity.LoginActivity;
 import com.ins.middle.utils.PackageUtil;
+import com.sobey.common.utils.ActivityUtil;
 import com.sobey.common.utils.ApplicationHelp;
 
 import org.json.JSONException;
@@ -133,9 +134,11 @@ public class CommonNet {
                     case 1005:
                     case 1007:
                         hander.netSetError(status, msg);
-                        Intent intent = new Intent(ApplicationHelp.getApplicationContext(), LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        ApplicationHelp.getApplicationContext().startActivity(intent);
+                        if (!ActivityUtil.isForeground(ApplicationHelp.getApplicationContext(), "com.ins.middle.ui.activity.LoginActivity")) {
+                            Intent intent = new Intent(ApplicationHelp.getApplicationContext(), LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            ApplicationHelp.getApplicationContext().startActivity(intent);
+                        }
                         break;
                     default:
                         hander.netSetFalse(status, msg);

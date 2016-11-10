@@ -11,6 +11,18 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ///////////////////////jpush配置 start
+        ndk {
+            //选择要添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "748e17bfade282dd2f62fbba", //JPush上注册的包名对应的appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
+        ///////////////////////jpush配置 end
     }
     //配置keystore签名 start
     signingConfigs {
@@ -50,5 +62,7 @@ dependencies {
     compile 'com.jungly:gridPasswordView:0.3'
     //wheelview
     compile 'com.wx.wheelview:wheelview:1.3.3'
+    //jpush
+    compile 'cn.jiguang:jpush:2.1.8'
     compile project(':middle')
 }

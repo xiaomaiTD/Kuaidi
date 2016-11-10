@@ -41,6 +41,24 @@ public class User implements Serializable {
 
     //司机特色字段 1 在线0 不在线
     private int isOnline;
+    private int orderCount;
+    private Car car;
+
+    public int getOrderCount() {
+        return orderCount;
+    }
+
+    public void setOrderCount(int orderCount) {
+        this.orderCount = orderCount;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
 
     public int getIsOnline() {
         return isOnline;

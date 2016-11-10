@@ -1,92 +1,80 @@
 package com.ins.middle.entity;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
-import android.util.Log;
-
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.model.LatLng;
-import com.ins.middle.R;
-import com.ins.middle.utils.MapUtil;
+import java.io.Serializable;
 
 /**
- * Created by Administrator on 2016/10/24.
+ *  汽车实体
+ * @author QimouXie
+ *
  */
+public class Car implements Serializable {
 
-public class Car {
+	/**主键ID*/
+	private int id;
+	
+	/**汽车品牌*/
+	private String carBrand;
+	
+	/**汽车车牌*/
+	private String carCard;
+	
+	/**汽车颜色*/
+	private String carColor;
+	
+	/**司机ID*/
+	private int driverId;
+	
+	/**汽车所有人*/
+	private String carOwner;
 
-    private LatLng start;
-    private LatLng end;
+	public int getId() {
+		return id;
+	}
 
-    private Marker mMoveMarker;
-    private ValueAnimator animator;
-    private int lastvalue;
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private void addToMap(BaiduMap baiduMap, LatLng latLng) {
-        MarkerOptions markerOptions = new MarkerOptions().flat(true).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_map_car)).position(latLng);
-        mMoveMarker = (Marker) baiduMap.addOverlay(markerOptions);
-        start = latLng;
-    }
+	public String getCarBrand() {
+		return carBrand;
+	}
 
-    private void moveTo(final LatLng latLng) {
-        if (animator != null && animator.isRunning()) {
-            animator.cancel();
-        }
-        //设置角度
-        mMoveMarker.setRotate((float) MapUtil.getAngle(start, latLng));
-        final double latdis = latLng.latitude - start.latitude;
-        final double londis = latLng.longitude - start.longitude;
-        //设置平滑移动
-        animator = ValueAnimator.ofInt(1, 30);
-        animator.setDuration(3000);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int value = (Integer) animation.getAnimatedValue();
-                if (lastvalue == value) {
-                    return;
-                }
-                lastvalue = value;
-                double latper = latdis / 30 * value;
-                double lonper = londis / 30 * value;
-                end = new LatLng(start.latitude + latper, start.longitude + lonper);
-                mMoveMarker.setPosition(end);
-            }
-        });
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                Log.e("liao", "onAnimationStart");
-            }
+	public void setCarBrand(String carBrand) {
+		this.carBrand = carBrand;
+	}
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                start = end;
-                Log.e("liao", "onAnimationEnd");
-            }
+	public String getCarCard() {
+		return carCard;
+	}
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                Log.e("liao", "onAnimationCancel");
+	public void setCarCard(String carCard) {
+		this.carCard = carCard;
+	}
 
-            }
+	public String getCarColor() {
+		return carColor;
+	}
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
+	public void setCarColor(String carColor) {
+		this.carColor = carColor;
+	}
 
-            }
-        });
-        animator.start();
-    }
+	public int getDriverId() {
+		return driverId;
+	}
 
-    public void addMove(BaiduMap baiduMap, LatLng latLng) {
-        if (mMoveMarker == null) {
-            addToMap(baiduMap, latLng);
-        } else {
-            moveTo(latLng);
-        }
-    }
+	public void setDriverId(int driverId) {
+		this.driverId = driverId;
+	}
+
+	public String getCarOwner() {
+		return carOwner;
+	}
+
+	public void setCarOwner(String carOwner) {
+		this.carOwner = carOwner;
+	}
+	
+	
+
 }

@@ -15,7 +15,7 @@
             android:name="com.ins.middle.ui.activity.LoginActivity"
             android:label="@string/title_activity_Login"
             android:screenOrientation="portrait"
-            android:theme="@style/MyDialogStyle"></activity>
+            android:theme="@style/MyAppDialogStyle"></activity>
         <activity
             android:name="com.ins.middle.ui.activity.MeDetailActivity"
             android:label="@string/title_activity_medetail"
@@ -63,6 +63,16 @@
         <activity
             android:name="com.ins.middle.ui.activity.ModifyPswPayActivity"
             android:label="@string/title_activity_modifypswpay"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.TripActivity"
+            android:label="@string/title_activity_trip"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.ServerActivity"
+            android:label="@string/title_activity_server"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
     </application>
