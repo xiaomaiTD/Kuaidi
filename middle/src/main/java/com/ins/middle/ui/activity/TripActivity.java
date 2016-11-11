@@ -15,6 +15,7 @@ import com.ins.middle.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.Trip;
+import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.entity.TestEntity;
 import com.ins.middle.ui.adapter.RecycleAdapterTrip;
@@ -29,6 +30,7 @@ import java.util.List;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.sobey.common.utils.StrUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
@@ -96,6 +98,12 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
 //        Intent intent = new Intent(this, TripDetailActivity.class);
 //        startActivity(intent);
+        Trip trip = adapter.getResults().get(viewHolder.getLayoutPosition());
+        //客户端点击进行中的行程会回到主页
+        if (PackageUtil.isClient()) {
+            //if (trip.getStatus()!=2001) //这里要验证:未支付尾款的订单才能进入行程主页 ，暂时没有这个字段
+            EventBus.getDefault().post(trip);
+        }
     }
 
 

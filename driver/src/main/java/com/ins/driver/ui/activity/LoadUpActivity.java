@@ -7,13 +7,17 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ins.driver.R;
-import com.ins.driver.utils.AppHelper;
+import com.ins.middle.utils.AppHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.sobey.common.utils.ApplicationHelp;
+import com.sobey.common.utils.StrUtils;
 
 import org.xutils.http.RequestParams;
+
+import cn.jpush.android.api.JPushInterface;
 
 
 public class LoadUpActivity extends BaseAppCompatActivity {
@@ -29,6 +33,8 @@ public class LoadUpActivity extends BaseAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loadup);
+
+        initBase();
 
         lasttime = System.currentTimeMillis();
 
@@ -54,6 +60,13 @@ public class LoadUpActivity extends BaseAppCompatActivity {
         } else {
             //有token 执行登录
             login();
+        }
+    }
+
+    private void initBase() {
+        String registrationID = JPushInterface.getRegistrationID(ApplicationHelp.getApplicationContext());
+        if (!StrUtils.isEmpty(registrationID)) {
+            AppData.App.saveJpushId(registrationID);
         }
     }
 

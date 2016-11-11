@@ -3,24 +3,14 @@ package com.ins.driver.view;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ins.driver.R;
-import com.ins.middle.entity.Position;
-import com.ins.middle.entity.Seat;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 2016/11/1.
@@ -97,44 +87,59 @@ public class ProgView extends FrameLayout implements View.OnClickListener {
             case R.id.lay_prog_one:
             case R.id.lay_prog_two:
             case R.id.lay_prog_three:
-                step++;
-                if (step > 5) {
-                    step = 1;
+                if (onProgListener!=null){
+                    if (step==1){
+                        onProgListener.onRequestFirstMoney();
+                    }else if (step==4){
+                        onProgListener.onGetPassenger();
+                    }else if (step==5){
+                        onProgListener.onArrive();
+                    }
                 }
-                setStep(step);
+//                step++;
+//                if (step > 5) {
+//                    step = 1;
+//                }
+//                setStep(step);
                 break;
         }
     }
 
     int step = 1;
 
-    private void setStep(int step) {
+    public void setStep(int step) {
+        this.step = step;
         switch (step) {
             case 1:
+                //2002
                 //司机发送支付定金状态（初始状态）
                 setBtnStatus(0, 1, false);
                 setBtnStatus(1, 2, false);
                 setBtnStatus(2, 2, false);
                 break;
             case 2:
+                //2003
                 //司机等待乘客支付定金状态
                 setBtnStatus(0, 0, false);
                 setBtnStatus(1, 2, false);
                 setBtnStatus(2, 2, false);
                 break;
             case 3:
+                //2004
                 //已支付定金开始接客状态
                 setBtnStatus(0, 0, true);
                 setBtnStatus(1, 1, false);
                 setBtnStatus(2, 2, false);
                 break;
             case 4:
+                //2005
                 //已接客开始送去目的地状态
                 setBtnStatus(0, 0, true);
                 setBtnStatus(1, 0, true);
                 setBtnStatus(2, 1, false);
                 break;
             case 5:
+                //2006
                 //已送达状态（终止状态）
                 setBtnStatus(0, 0, true);
                 setBtnStatus(1, 0, true);
@@ -198,7 +203,16 @@ public class ProgView extends FrameLayout implements View.OnClickListener {
         }
     }
 
+
+    private OnProgListener onProgListener;
+
+    public void setOnProgListener(OnProgListener onProgListener) {
+        this.onProgListener = onProgListener;
+    }
+
     public interface OnProgListener{
-//        void
+        void onRequestFirstMoney();
+        void onGetPassenger();
+        void onArrive();
     }
 }

@@ -42,7 +42,16 @@ public class User implements Serializable {
     //司机特色字段 1 在线0 不在线
     private int isOnline;
     private int orderCount;
+    private int lineId; //线路id
     private Car car;
+
+    public int getLineId() {
+        return lineId;
+    }
+
+    public void setLineId(int lineId) {
+        this.lineId = lineId;
+    }
 
     public int getOrderCount() {
         return orderCount;

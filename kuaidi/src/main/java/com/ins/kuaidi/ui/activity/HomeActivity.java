@@ -29,7 +29,8 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
-import com.ins.kuaidi.utils.MapHelper;
+import com.ins.middle.entity.CarMap;
+import com.ins.middle.utils.MapHelper;
 import com.ins.kuaidi.view.DriverView;
 import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
@@ -70,7 +71,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public DriverView driverView;
     public HoldcarView holdcarView;
     public MapView mapView;
-    private BaiduMap baiduMap;
+    public BaiduMap baiduMap;
 
     private ImageView img_user;
     private TextView text_username;
@@ -90,6 +91,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //地理围栏
     public List<List<LatLng>> ptsArray;
     public Trip trip;
+    public CarMap carMap;
 
     @Override
     public void onBackPressed() {
@@ -100,32 +102,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else {
             super.finish();
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        setToolbar(null, false);
-        EventBus.getDefault().register(this);
-        PermissionsUtil.checkAndRequestPermissions(this);
-
-        initBase();
-        initView();
-        initCtrl();
-        initData();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        locationer.stopLocation();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        locationer.startlocation();
     }
 
     @Subscribe
@@ -170,8 +146,41 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 //乘客端： 订单已经匹配 已经分配给司机
                 Log.e("liao", "aboutOrder:" + aboutOrder);
                 HomeHelper.setMatched(this);
+                //获取行程信息
+                netHelper.netGetTrip();
             }
         }
+    }
+
+    @Subscribe
+    public void onEventMainThread(Trip trip) {
+        setTrip(trip);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        setToolbar(null, false);
+        EventBus.getDefault().register(this);
+        PermissionsUtil.checkAndRequestPermissions(this);
+
+        initBase();
+        initView();
+        initCtrl();
+        initData();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        locationer.stopLocation();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        locationer.startlocation();
     }
 
     @Override
@@ -192,6 +201,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private long exitTime;
 
     private void initBase() {
+        carMap = new CarMap();
         netHelper = new NetHelper(this);
         dialogLoading = new DialogLoading(this, "正在处理");
         dialogPopupMsg = new DialogPopupMsg(this);
@@ -307,6 +317,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         if (trip != null && trip.getDriver() != null) {
             driverView.setDriver(trip.getDriver());
         }
+    }
+
+    //设置司机位置
+    public void setCarData(LatLng latLng) {
+        carMap.addMove(baiduMap, latLng);
     }
 
     ////////////////////////////////////
@@ -473,6 +488,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             netHelper.netGetArea(city);
         }
         this.city = city;
+        //当前有行程状态的时候（不是初始状态,并且已经匹配到司机），则要不断拉取司机位置信息
+        if (trip != null && trip.getDriver() != null) {
+            netHelper.netLatDriver(trip.getDriver().getLineId(), trip.getDriverId());
+        }
     }
 
     //检索回调

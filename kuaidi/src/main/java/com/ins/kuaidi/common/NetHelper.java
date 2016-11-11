@@ -1,16 +1,17 @@
 package com.ins.kuaidi.common;
 
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
+import com.baidu.mapapi.model.LatLng;
 import com.google.gson.reflect.TypeToken;
 import com.ins.kuaidi.entity.LineConfig;
 import com.ins.kuaidi.ui.activity.HomeActivity;
-import com.ins.kuaidi.utils.MapHelper;
+import com.ins.middle.entity.CommonEntity;
+import com.ins.middle.utils.MapHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.Trip;
+import com.ins.middle.utils.MapUtil;
 import com.sobey.common.utils.StrUtils;
 
 import org.xutils.http.RequestParams;
@@ -131,7 +132,7 @@ public class NetHelper {
                 if (!StrUtils.isEmpty(trips)) {
                     Trip trip = trips.get(0);
                     activity.setTrip(trip);
-                }else {
+                } else {
                     activity.setTrip(null);
                 }
             }
@@ -149,6 +150,27 @@ public class NetHelper {
             @Override
             public void netStart(int status) {
                 activity.dialogLoading.show();
+            }
+        });
+    }
+
+    public void netLatDriver(int lineId, int driverId) {
+        RequestParams params = new RequestParams(AppData.Url.getLatDriver);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("lineId", lineId + "");
+        params.addBodyParameter("driverId", driverId + "");
+        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                CommonEntity com = (CommonEntity) pojo;
+                LatLng latLng = MapHelper.str2LatLng(com.getLocation());
+                activity.setCarData(latLng);
+
+                String.class.isAssignableFrom(String.class);
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
             }
         });
     }

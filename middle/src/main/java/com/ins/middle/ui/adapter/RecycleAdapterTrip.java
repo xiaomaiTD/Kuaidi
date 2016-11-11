@@ -52,7 +52,7 @@ public class RecycleAdapterTrip extends RecyclerView.Adapter<RecycleAdapterTrip.
         holder.text_trip_start.setText(trip.getFromAdd());
         holder.text_trip_end.setText(trip.getToAdd());
         holder.text_trip_cartype.setText(trip.getOrderType() == 0 ? "包车" : "拼车");
-        holder.text_trip_status.setText(AppHelper.getOrderType(trip.getOrderType()));
+        holder.text_trip_status.setText(AppHelper.getOrderType(trip.getStatus()));
     }
 
     @Override

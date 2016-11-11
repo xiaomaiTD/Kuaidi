@@ -38,6 +38,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/text_passenger_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
@@ -46,6 +47,7 @@
                     android:textSize="@dimen/text_big_nomal" />
 
                 <TextView
+                    android:id="@+id/text_passenger_typecount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -61,6 +63,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/text_passenger_start"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -72,6 +75,7 @@
                 android:textSize="@dimen/text_nomal" />
 
             <TextView
+                android:id="@+id/text_passenger_end"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -99,6 +103,7 @@
         android:background="@color/com_line" />
 
     <com.ins.driver.view.ProgView
+        android:id="@+id/progView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

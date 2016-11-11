@@ -3,6 +3,7 @@ package com.ins.middle.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -159,6 +160,7 @@ public class MeEditActivity extends BaseBackActivity implements View.OnClickList
     @Override
     public void cropResult(String path) {
         if (!StrUtils.isEmpty(path)) {
+            Log.e("liao", "path:" + path);
             netUploadImg(path);
         }
     }

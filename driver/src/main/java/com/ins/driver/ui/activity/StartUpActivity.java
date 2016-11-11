@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.ins.driver.R;
 import com.ins.driver.ui.fragment.StartUpFragment;
-import com.ins.driver.utils.AppHelper;
+import com.ins.middle.utils.AppHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
