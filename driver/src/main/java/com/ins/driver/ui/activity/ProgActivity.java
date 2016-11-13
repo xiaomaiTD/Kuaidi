@@ -28,13 +28,14 @@ import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.StrUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProgActivity extends BaseBackActivity {
+public class ProgActivity extends BaseBackActivity implements OnRecycleItemClickListener{
 
     private RecyclerView recyclerView;
     private SpringView springView;
@@ -83,6 +84,7 @@ public class ProgActivity extends BaseBackActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
         adapter.setOnRecycleProgListener(onRecycleProgListener);
+        adapter.setOnItemClickListener(this);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(this));
         springView.setHeader(new AliHeader(this, false));
         springView.setFooter(new AliFooter(this, false));
@@ -209,5 +211,12 @@ public class ProgActivity extends BaseBackActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+        Trip trip = adapter.getResults().get(viewHolder.getLayoutPosition());
+        EventBus.getDefault().post(trip);
+        finish();
     }
 }

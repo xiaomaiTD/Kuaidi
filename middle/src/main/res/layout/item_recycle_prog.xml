@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
     android:foreground="?attr/selectableItemBackground"
     android:background="@color/white"
     android:orientation="vertical">
@@ -102,7 +101,7 @@
         android:layout_height="1px"
         android:background="@color/com_line" />
 
-    <com.ins.driver.view.ProgView
+    <com.ins.middle.view.ProgView
         android:id="@+id/progView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

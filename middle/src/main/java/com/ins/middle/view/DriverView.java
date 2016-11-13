@@ -1,9 +1,6 @@
-package com.ins.kuaidi.view;
+package com.ins.middle.view;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +9,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ins.kuaidi.R;
-import com.ins.kuaidi.entity.LineConfig;
-import com.ins.kuaidi.ui.adapter.RecycleAdapterSeat;
-import com.ins.kuaidi.utils.AppHelper;
+import com.ins.middle.R;
 import com.ins.middle.entity.Car;
-import com.ins.middle.entity.Position;
+import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
+import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.utils.StrUtils;
 
@@ -34,14 +29,24 @@ public class DriverView extends FrameLayout {
     private Context context;
     private LayoutInflater inflater;
 
+    //dirver
+    private View lay_driver;
     private ImageView img_driver_header;
     private TextView text_driver_name;
     private TextView text_driver_carinfo;
     private TextView text_driver_star;
     private TextView text_driver_ordercount;
-    private ProperRatingBar rating_driver_star;
+    private ProperRatingBar rating_driver;
+    //passenger
+    private View lay_passenger;
+    private ImageView img_passenger_header;
+    private TextView text_passenger_name;
+    private TextView text_passenger_typecount;
+    private TextView text_passenger_start;
+    private TextView text_passenger_end;
+    private ProgView prog_passenger;
 
-    private User driver;
+    private User user;
 
     public DriverView(Context context) {
         super(context);
@@ -68,7 +73,7 @@ public class DriverView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        root = (ViewGroup) inflater.inflate(R.layout.layout_home_driver, this, true);
+        root = (ViewGroup) inflater.inflate(R.layout.driverpassengerview, this, true);
         initBase();
         initView();
         initCtrl();
@@ -78,30 +83,58 @@ public class DriverView extends FrameLayout {
     }
 
     private void initView() {
+        //driver
+        lay_driver = root.findViewById(R.id.lay_driver);
         img_driver_header = (ImageView) root.findViewById(R.id.img_driver_header);
         text_driver_name = (TextView) root.findViewById(R.id.text_driver_name);
         text_driver_carinfo = (TextView) root.findViewById(R.id.text_driver_carinfo);
         text_driver_star = (TextView) root.findViewById(R.id.text_driver_star);
         text_driver_ordercount = (TextView) root.findViewById(R.id.text_driver_ordercount);
-        rating_driver_star = (ProperRatingBar) root.findViewById(R.id.rating_driver_star);
+        rating_driver = (ProperRatingBar) root.findViewById(R.id.rating_driver_star);
+
+        //passenger
+        lay_passenger = root.findViewById(R.id.lay_passenger);
+        img_passenger_header = (ImageView) root.findViewById(R.id.img_passenger_header);
+        text_passenger_name = (TextView) root.findViewById(R.id.text_passenger_name);
+        text_passenger_typecount = (TextView) root.findViewById(R.id.text_passenger_typecount);
+        text_passenger_start = (TextView) root.findViewById(R.id.text_passenger_start);
+        text_passenger_end = (TextView) root.findViewById(R.id.text_passenger_end);
+        prog_passenger = (ProgView) root.findViewById(R.id.progView);
     }
 
     private void initCtrl() {
     }
 
     public void setDriver(User user) {
-        driver = user;
-        if (driver != null) {
-            GlideUtil.loadCircleImg(context, img_driver_header, R.drawable.default_header, driver.getAvatar());
+        lay_driver.setVisibility(VISIBLE);
+        lay_passenger.setVisibility(GONE);
+        this.user = user;
+        if (user != null) {
+            GlideUtil.loadCircleImg(context, img_driver_header, R.drawable.default_header, user.getAvatar());
             text_driver_name.setText(user.getRealName());
-            text_driver_ordercount.setText(driver.getOrderCount() + "单");
-            Car car = driver.getCar();
+            text_driver_ordercount.setText(user.getOrderCount() + "单");
+            Car car = user.getCar();
             if (!StrUtils.isEmpty(car)) {
                 text_driver_carinfo.setText(car.getCarBrand() + " " + car.getCarColor() + " " + car.getCarCard());
                 //暂时没有评分
 //                text_driver_star.setText("");
 //                rating_driver_star.setRating(1);
             }
+        }
+    }
+
+    public void setPassenger(User user, Trip trip) {
+        lay_driver.setVisibility(GONE);
+        lay_passenger.setVisibility(VISIBLE);
+        this.user = user;
+        if (user != null) {
+            GlideUtil.loadCircleImg(context, img_passenger_header, R.drawable.default_header, AppHelper.getRealImgPath(user.getAvatar()));
+            text_passenger_name.setText(user.getNickName());
+        }
+        if (trip != null) {
+            text_passenger_start.setText(trip.getFromAdd());
+            text_passenger_end.setText(trip.getToAdd());
+            text_passenger_typecount.setText(trip.getOrderType() == 0 ? "包车" : "拼车" + "-" + trip.getPeoples() + "人");
         }
     }
 }

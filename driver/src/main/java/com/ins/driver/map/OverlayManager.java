@@ -1,4 +1,4 @@
-package com.ins.driver.common;
+package com.ins.driver.map;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BaiduMap.OnPolylineClickListener;

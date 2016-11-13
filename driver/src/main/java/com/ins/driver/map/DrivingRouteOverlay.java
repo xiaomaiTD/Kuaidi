@@ -1,4 +1,4 @@
-package com.ins.driver.common;
+package com.ins.driver.map;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -52,27 +52,29 @@ public class DrivingRouteOverlay extends OverlayManager {
             for (DrivingRouteLine.DrivingStep step : mRouteLine.getAllStep()) {
                 Bundle b = new Bundle();
                 b.putInt("index", mRouteLine.getAllStep().indexOf(step));
-                if (step.getEntrance() != null) {
-                    overlayOptionses.add((new MarkerOptions())
-                            .position(step.getEntrance().getLocation())
-                                    .anchor(0.5f, 0.5f)
-                                            .zIndex(10)
-                                                    .rotate((360 - step.getDirection()))
-                                                            .extraInfo(b)
-                                                                    .icon(BitmapDescriptorFactory
-                                                                            .fromAssetWithDpi("Icon_line_node.png")));
-                }
-                // 最后路段绘制出口点
-                if (mRouteLine.getAllStep().indexOf(step) == (mRouteLine
-                        .getAllStep().size() - 1) && step.getExit() != null) {
-                    overlayOptionses.add((new MarkerOptions())
-                            .position(step.getExit().getLocation())
-                                    .anchor(0.5f, 0.5f)
-                                            .zIndex(10)
-                                                    .icon(BitmapDescriptorFactory
-                                                            .fromAssetWithDpi("Icon_line_node.png")));
 
-                }
+                //不需要绘制路径节点
+//                if (step.getEntrance() != null) {
+//                    overlayOptionses.add((new MarkerOptions())
+//                            .position(step.getEntrance().getLocation())
+//                                    .anchor(0.5f, 0.5f)
+//                                            .zIndex(10)
+//                                                    .rotate((360 - step.getDirection()))
+//                                                            .extraInfo(b)
+//                                                                    .icon(BitmapDescriptorFactory
+//                                                                            .fromAssetWithDpi("Icon_line_node.png")));
+//                }
+                // 最后路段绘制出口点
+//                if (mRouteLine.getAllStep().indexOf(step) == (mRouteLine
+//                        .getAllStep().size() - 1) && step.getExit() != null) {
+//                    overlayOptionses.add((new MarkerOptions())
+//                            .position(step.getExit().getLocation())
+//                                    .anchor(0.5f, 0.5f)
+//                                            .zIndex(10)
+//                                                    .icon(BitmapDescriptorFactory
+//                                                            .fromAssetWithDpi("Icon_line_node.png")));
+//
+//                }
             }
         }
 
@@ -134,7 +136,7 @@ public class DrivingRouteOverlay extends OverlayManager {
                 isDotLine = true;
             }
             PolylineOptions option = new PolylineOptions().points(points).textureIndex(traffics)
-                    .width(7).dottedLine(isDotLine).focus(true)
+                    .width(12).dottedLine(isDotLine).focus(true)
                         .color(getLineColor() != 0 ? getLineColor() : Color.argb(178, 0, 78, 255)).zIndex(0);
             if (isDotLine) {
                 option.customTextureList(getCustomTextureList());

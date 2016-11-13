@@ -11,7 +11,6 @@ import com.ins.middle.utils.MapHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.Trip;
-import com.ins.middle.utils.MapUtil;
 import com.sobey.common.utils.StrUtils;
 
 import org.xutils.http.RequestParams;
@@ -155,7 +154,7 @@ public class NetHelper {
     }
 
     public void netLatDriver(int lineId, int driverId) {
-        RequestParams params = new RequestParams(AppData.Url.getLatDriver);
+        RequestParams params = new RequestParams(AppData.Url.getPasLatDriver);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("lineId", lineId + "");
         params.addBodyParameter("driverId", driverId + "");

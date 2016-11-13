@@ -154,7 +154,8 @@ public class AppData {
         public static String getLineConfig	    	= domain + "mobile/order/getLineConfig";								        //乘客线路配置（乘客）
         public static String orderadd       	    	= domain + "mobile/order/add";								                    //乘客下单（乘客）
         public static String getOrders       	    	= domain + "mobile/order/getOrders";								            //获取行程列表（订单）（乘客）
-        public static String getLatDriver     	    = domain + "mobile/order/getDriverLatByPassenger";							//乘客获取司机位置（乘客）
+        public static String getPasLatDriver          = domain + "mobile/order/getDriverLatByPassenger";							//乘客获取司机位置（乘客）
+        public static String getDriLatDriver          = domain + "mobile/order/getDriversLat";							            //司机获取前后司机位置（司机）
 
     }
 }

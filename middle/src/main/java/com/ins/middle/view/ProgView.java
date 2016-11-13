@@ -1,4 +1,4 @@
-package com.ins.driver.view;
+package com.ins.middle.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.ins.driver.R;
+import com.ins.middle.R;
 
 /**
  * Created by Administrator on 2016/11/1.
@@ -83,25 +83,23 @@ public class ProgView extends FrameLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
-        switch (v.getId()) {
-            case R.id.lay_prog_one:
-            case R.id.lay_prog_two:
-            case R.id.lay_prog_three:
-                if (onProgListener!=null){
-                    if (step==1){
-                        onProgListener.onRequestFirstMoney();
-                    }else if (step==4){
-                        onProgListener.onGetPassenger();
-                    }else if (step==5){
-                        onProgListener.onArrive();
-                    }
+        int i = v.getId();
+        if (i == R.id.lay_prog_one || i == R.id.lay_prog_two || i == R.id.lay_prog_three) {
+            if (onProgListener != null) {
+                if (step == 1) {
+                    onProgListener.onRequestFirstMoney();
+                } else if (step == 4) {
+                    onProgListener.onGetPassenger();
+                } else if (step == 5) {
+                    onProgListener.onArrive();
                 }
+            }
 //                step++;
 //                if (step > 5) {
 //                    step = 1;
 //                }
 //                setStep(step);
-                break;
+
         }
     }
 

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.driver.R;
-import com.ins.driver.view.ProgView;
+import com.ins.middle.view.ProgView;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.ins.middle.utils.AppHelper;
@@ -41,6 +41,12 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
     @Override
     public void onBindViewHolder(final RecycleAdapterProg.Holder holder, final int position) {
         final Trip trip = results.get(holder.getLayoutPosition());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) onItemClickListener.onItemClick(holder);
+            }
+        });
         holder.progView.setOnProgListener(new ProgView.OnProgListener() {
             @Override
             public void onRequestFirstMoney() {
@@ -119,6 +125,11 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
     }
 
     private OnRecycleProgListener onRecycleProgListener;
+    private OnRecycleItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnRecycleItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
 
     public void setOnRecycleProgListener(OnRecycleProgListener onRecycleProgListener) {
         this.onRecycleProgListener = onRecycleProgListener;
@@ -129,4 +140,5 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
         void onGetPassenger(Trip trip);
         void onArrive(Trip trip);
     }
+
 }

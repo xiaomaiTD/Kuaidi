@@ -94,8 +94,8 @@ public class NetHelper {
         }.getType(), new CommonNet.SampleNetHander() {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
-                List<Trip> trips = (ArrayList<Trip>) pojo;
-                activity.setPassengerPosition(trips);
+                activity.trips = (ArrayList<Trip>) pojo;
+                activity.setTrip(activity.trips);
             }
 
             @Override
@@ -109,6 +109,22 @@ public class NetHelper {
 
             @Override
             public void netStart(int status) {
+            }
+        });
+    }
+
+    public void netDriverLat() {
+        RequestParams params = new RequestParams(AppData.Url.getDriLatDriver);
+        params.addHeader("token", AppData.App.getToken());
+        CommonNet.samplepost(params, new TypeToken<List<Trip>>() {
+        }.getType(), new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                activity.trips = (ArrayList<Trip>) pojo;
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
             }
         });
     }

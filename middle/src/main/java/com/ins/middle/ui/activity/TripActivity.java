@@ -103,7 +103,11 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
         if (PackageUtil.isClient()) {
             //if (trip.getStatus()!=2001) //这里要验证:未支付尾款的订单才能进入行程主页 ，暂时没有这个字段
             EventBus.getDefault().post(trip);
+        }else {
+            //if (trip.getStatus()!=2001) //这里要验证:未支付尾款的订单才能进入行程主页 ，暂时没有这个字段
+            EventBus.getDefault().post(trip);
         }
+        finish();
     }
 
 

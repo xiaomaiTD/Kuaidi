@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include layout="@layout/layout_home_driver"
+        android:visibility="gone"
+        android:id="@+id/lay_driver"/>
+
+    <include layout="@layout/item_recycle_prog"
+        android:visibility="visible"
+        android:id="@+id/lay_passenger"/>
+
+</FrameLayout>

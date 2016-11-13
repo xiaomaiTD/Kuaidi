@@ -94,24 +94,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <TextView
-                android:id="@+id/btn_new"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="top"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rect_corner_white"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:text="您有一个新的订单"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.ins.middle.view.DriverView
+                    android:id="@+id/driverView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/btn_new"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_gravity="top"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/shape_rect_corner_white"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:text="您有一个新的订单"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/check_map_lu"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:text="路况图" />
 
                 <ImageView
                     android:id="@+id/btn_map_relocate"

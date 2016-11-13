@@ -31,7 +31,7 @@ import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
 import com.ins.middle.entity.CarMap;
 import com.ins.middle.utils.MapHelper;
-import com.ins.kuaidi.view.DriverView;
+import com.ins.middle.view.DriverView;
 import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.AppVali;
@@ -112,9 +112,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else {
             //选择了目的地
             if (com.ins.kuaidi.utils.AppHelper.needNetConfigEnd(holdcarView, position.getCity())) {
+                holdcarView.setEndPosition(position);
                 netHelper.netGetLineConfig(holdcarView.getStartPosition().getCity(), position.getCity());
+            }else {
+                holdcarView.setEndPosition(position);
             }
-            holdcarView.setEndPosition(position);
         }
     }
 
@@ -508,9 +510,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             String newCity = result.getAddressDetail().city;
             Position position = new Position(result.getLocation(), result.getAddress(), newCity);
             if (com.ins.kuaidi.utils.AppHelper.needNetConfigStart(holdcarView, newCity)) {
+                holdcarView.setStartPosition(position);
                 netHelper.netGetLineConfig(holdcarView.getStartPosition().getCity(), newCity);
+            }else {
+                holdcarView.setStartPosition(position);
             }
-            holdcarView.setStartPosition(position);
         }
     }
 }
