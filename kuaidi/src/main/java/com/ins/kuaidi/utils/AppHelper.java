@@ -1,8 +1,18 @@
 package com.ins.kuaidi.utils;
 
+import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.Overlay;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.dd.CircularProgressButton;
+import com.ins.kuaidi.R;
 import com.ins.kuaidi.ui.activity.HomeActivity;
 import com.ins.kuaidi.view.HoldcarView;
 import com.ins.middle.common.AppData;
@@ -83,5 +93,14 @@ public class AppHelper {
         } else {
             return false;
         }
+    }
+
+    public static Overlay addMarkStartEnd(BaiduMap baiduMap, LatLng latLng) {
+        if (baiduMap == null || latLng == null) {
+            return null;
+        }
+        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_map_pick);
+        OverlayOptions startpop = new MarkerOptions().position(latLng).icon(bitmap).zIndex(101);
+        return baiduMap.addOverlay(startpop);
     }
 }

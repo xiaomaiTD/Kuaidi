@@ -5,6 +5,7 @@ import android.widget.Toast;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.reflect.TypeToken;
 import com.ins.driver.ui.activity.HomeActivity;
+import com.ins.driver.utils.AppHelper;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.User;
 import com.ins.middle.utils.MapHelper;
@@ -65,7 +66,7 @@ public class NetHelper {
     }
 
     public void netUpdateLat(LatLng latLng) {
-        String lat = latLng.longitude + "," + latLng.latitude;
+        String lat = latLng.latitude + "," + latLng.longitude;
         RequestParams params = new RequestParams(AppData.Url.updateLat);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("lat", lat);
@@ -94,13 +95,14 @@ public class NetHelper {
         }.getType(), new CommonNet.SampleNetHander() {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
-                activity.trips = (ArrayList<Trip>) pojo;
-                activity.setTrip(activity.trips);
+                ArrayList<Trip> trips = (ArrayList<Trip>) pojo;
+                List<Trip> remTrips = AppHelper.removeGetPassenger(trips);
+                activity.setTrip(remTrips);
             }
 
             @Override
             public void netSetError(int code, String text) {
-                Toast.makeText(activity, "获取行程信息失败：" + text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "获取行程信息失败1：" + text, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -116,11 +118,14 @@ public class NetHelper {
     public void netDriverLat() {
         RequestParams params = new RequestParams(AppData.Url.getDriLatDriver);
         params.addHeader("token", AppData.App.getToken());
-        CommonNet.samplepost(params, new TypeToken<List<Trip>>() {
+        CommonNet.samplepost(params, new TypeToken<List<User>>() {
         }.getType(), new CommonNet.SampleNetHander() {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
-                activity.trips = (ArrayList<Trip>) pojo;
+                List<User> drivers = (ArrayList<User>) pojo;
+                if (!StrUtils.isEmpty(drivers)) {
+                    activity.setDriversPosiotin(drivers);
+                }
             }
 
             @Override

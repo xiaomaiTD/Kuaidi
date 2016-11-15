@@ -15,6 +15,8 @@ import com.ins.middle.entity.User;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
+import com.sobey.common.utils.PhoneUtils;
+import com.sobey.common.utils.StrUtils;
 
 import java.util.List;
 
@@ -50,21 +52,24 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
         holder.progView.setOnProgListener(new ProgView.OnProgListener() {
             @Override
             public void onRequestFirstMoney() {
-                if (onRecycleProgListener!=null) onRecycleProgListener.onRequestFirstMoney(trip);
+                if (onRecycleProgListener != null)
+                    onRecycleProgListener.onRequestFirstMoney(holder.progView, trip);
             }
 
             @Override
             public void onGetPassenger() {
-                if (onRecycleProgListener!=null) onRecycleProgListener.onGetPassenger(trip);
+                if (onRecycleProgListener != null)
+                    onRecycleProgListener.onGetPassenger(holder.progView, trip);
             }
 
             @Override
             public void onArrive() {
-                if (onRecycleProgListener!=null) onRecycleProgListener.onArrive(trip);
+                if (onRecycleProgListener != null)
+                    onRecycleProgListener.onArrive(holder.progView, trip);
             }
         });
 
-        User passenger = trip.getPassenger();
+        final User passenger = trip.getPassenger();
 
         if (passenger != null) {
             GlideUtil.loadCircleImg(context, holder.img_header, R.drawable.default_header, AppHelper.getRealImgPath(passenger.getAvatar()));
@@ -72,6 +77,12 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
             holder.text_start.setText(trip.getFromAdd());
             holder.text_end.setText(trip.getToAdd());
             holder.text_typecount.setText(trip.getOrderType() == 0 ? "包车" : "拼车" + "-" + trip.getPeoples() + "人");
+            holder.img_call.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PhoneUtils.call(context, passenger.getMobile());
+                }
+            });
 
             switch (trip.getStatus()) {
                 case 2001:
@@ -111,6 +122,7 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
         private TextView text_typecount;
         private TextView text_start;
         private TextView text_end;
+        private ImageView img_call;
         private ProgView progView;
 
         public Holder(View itemView) {
@@ -120,6 +132,7 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
             text_typecount = (TextView) itemView.findViewById(R.id.text_passenger_typecount);
             text_start = (TextView) itemView.findViewById(R.id.text_passenger_start);
             text_end = (TextView) itemView.findViewById(R.id.text_passenger_end);
+            img_call = (ImageView) itemView.findViewById(R.id.img_passenger_call);
             progView = (ProgView) itemView.findViewById(R.id.progView);
         }
     }
@@ -135,10 +148,12 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
         this.onRecycleProgListener = onRecycleProgListener;
     }
 
-    public interface OnRecycleProgListener{
-        void onRequestFirstMoney(Trip trip);
-        void onGetPassenger(Trip trip);
-        void onArrive(Trip trip);
+    public interface OnRecycleProgListener {
+        void onRequestFirstMoney(ProgView progView, Trip trip);
+
+        void onGetPassenger(ProgView progView, Trip trip);
+
+        void onArrive(ProgView progView, Trip trip);
     }
 
 }

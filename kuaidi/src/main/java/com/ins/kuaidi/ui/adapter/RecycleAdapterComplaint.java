@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ins.kuaidi.R;
 import com.ins.middle.entity.Complaint;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
+import com.sobey.common.utils.StrUtils;
 
 import java.util.List;
 
@@ -57,6 +58,17 @@ public class RecycleAdapterComplaint extends RecyclerView.Adapter<RecycleAdapter
     @Override
     public int getItemCount() {
         return results.size();
+    }
+
+    public String getSelectIds() {
+        String ret = "";
+        for (Complaint complaint : results) {
+            if (complaint.isCheck()) {
+                ret += complaint.getId() + ",";
+            }
+        }
+        ret = StrUtils.subLastChart(ret, ",");
+        return ret;
     }
 
     public class Holder extends RecyclerView.ViewHolder {

@@ -27,6 +27,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.dd.CircularProgressButton;
 import com.ins.driver.R;
 import com.ins.middle.common.AppData;
+import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.shelwee.update.utils.VersionUtil;
@@ -38,6 +39,9 @@ import com.sobey.common.view.PswView;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/8/9.
@@ -46,6 +50,10 @@ public class AppHelper {
 
     public static void addPassengerMark(MapView mapView, final Trip trip, final LatLng latlng) {
         if (trip == null || trip.getPassenger() == null || mapView == null || latlng == null) {
+            return;
+        }
+        //已经有添加了标注，不再添加
+        if (trip.getMark() != null) {
             return;
         }
         final User passenger = trip.getPassenger();
@@ -75,11 +83,69 @@ public class AppHelper {
         });
     }
 
-    private static Overlay addMark(BaiduMap baiduMap, View view, LatLng latLng, Trip trip) {
+    private static void addMark(BaiduMap baiduMap, View view, LatLng latLng, Trip trip) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("trip", trip);
         BitmapDescriptor startbitsp = BitmapDescriptorFactory.fromView(view);
         OverlayOptions startpop = new MarkerOptions().position(latLng).icon(startbitsp).zIndex(101).extraInfo(bundle);
-        return baiduMap.addOverlay(startpop);
+        Overlay overlay = baiduMap.addOverlay(startpop);
+        trip.setMark(overlay);
+    }
+
+    //从车辆列表中查询已知id的车辆实体
+    public static CarMap findCarByDriver(List<CarMap> cars, int driverId) {
+        for (CarMap car : cars) {
+            if (car.getDriver() != null && car.getDriver().getId() == driverId) {
+                return car;
+            }
+        }
+        return null;
+    }
+
+    //从车辆列表中查询已存在的司机车辆集合
+    public static List<CarMap> findCarByDriver(List<CarMap> cars, List<User> dirvers) {
+        ArrayList<CarMap> carMaps = new ArrayList<>();
+        for (CarMap car : cars) {
+            for (User driver : dirvers) {
+                if (car.getDriver() != null && car.getDriver().getId() == driver.getId()) {
+                    carMaps.add(car);
+                    break;
+                }
+            }
+        }
+        return carMaps;
+    }
+
+    //检查车辆标注是否过期并移除
+    public static void reMoveCar(List<CarMap> cars, List<User> dirvers) {
+        //查询过期的车辆标注
+        List<CarMap> carRemoves = findCarByDriver(cars, dirvers);
+        //把这些标注从地图上移除
+        for (CarMap carRemove : carRemoves) {
+            carRemove.removeFromMap();
+        }
+        //把这些标注从车辆集合中移除
+        cars.removeAll(carRemoves);
+    }
+
+    public static List<Trip> removeGetPassenger(List<Trip> trips) {
+        Iterator<Trip> iter = trips.iterator();
+        while (iter.hasNext()) {
+            Trip trip = iter.next();
+            //订单状态为上车以后（>=2005），则移除该行程
+            if (trip.getStatus() >= 2005) {
+                iter.remove();
+            }
+        }
+        return trips;
+    }
+
+    public static Trip getTripById(List<Trip> trips, int orderId) {
+        for (Trip trip : trips) {
+            if (trip.getId() == orderId) {
+                return trip;
+            }
+        }
+        return null;
     }
 }

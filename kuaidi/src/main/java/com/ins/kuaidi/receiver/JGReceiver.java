@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.ins.middle.common.AppConstant;
+import com.ins.middle.entity.EventOrder;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -113,21 +114,16 @@ public class JGReceiver extends BroadcastReceiver {
         if (!StrUtils.isEmpty(extras)) {
             try {
                 JSONObject datajson = new JSONObject(extras);
+                EventOrder eventOrder = new EventOrder();
                 if (datajson.has("aboutOrder")) {
                     String aboutOrder = datajson.getString("aboutOrder");
-                    EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_JPUSH_ORDER, aboutOrder));
-                    if ("3".equals(aboutOrder)) {
-                        //请求支付定金
-                    } else if ("4".equals(aboutOrder)){
-                        //接到乘客
-                    }else if ("5".equals(aboutOrder)){
-                        //已经到达目的地
-                    }else if ("6".equals(aboutOrder)){
-                        //司机端 ： 匹配到有新的订单
-                    }else if ("7".equals(aboutOrder)){
-                        //乘客端： 订单已经匹配 已经分配给司机
-                    }
+                    eventOrder.setAboutOrder(aboutOrder);
                 }
+                if (datajson.has("advance_order_id")) {
+                    int orderId = Integer.parseInt(datajson.getString("advance_order_id"));
+                    eventOrder.setOrderId(orderId);
+                }
+                EventBus.getDefault().post(eventOrder);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("startapp", "启动消息页面失败");

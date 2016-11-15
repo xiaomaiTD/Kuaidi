@@ -156,6 +156,13 @@ public class AppData {
         public static String getOrders       	    	= domain + "mobile/order/getOrders";								            //获取行程列表（订单）（乘客）
         public static String getPasLatDriver          = domain + "mobile/order/getDriverLatByPassenger";							//乘客获取司机位置（乘客）
         public static String getDriLatDriver          = domain + "mobile/order/getDriversLat";							            //司机获取前后司机位置（司机）
+        public static String orderStatus              = domain + "mobile/order/orderStatus";    							            //司机请求乘客支付定金（司机）
+        public static String arrive                   = domain + "mobile/order/arrive";    							                //司机抵达目的地（司机）
+        public static String requestBalance           = domain + "mobile/order/requestBalance";    							        //乘客请求定金金额（乘客）
+        public static String pay                      = domain + "mobile/order/payMoney";             							        //乘客模拟支付定金（乘客）
+        public static String addeva                   = domain + "mobile/comment/add";             							        //乘客评价（乘客）
+        public static String iseva                    = domain + "mobile/comment/isComment";             							    //查看订单是否评论过（乘客）
+        public static String complain                 = domain + "mobile/complain/add";             							        //乘客投诉（乘客）
 
     }
 }

@@ -80,72 +80,6 @@ public class ProgView extends FrameLayout implements View.OnClickListener {
         setStep(1);
     }
 
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent();
-        int i = v.getId();
-        if (i == R.id.lay_prog_one || i == R.id.lay_prog_two || i == R.id.lay_prog_three) {
-            if (onProgListener != null) {
-                if (step == 1) {
-                    onProgListener.onRequestFirstMoney();
-                } else if (step == 4) {
-                    onProgListener.onGetPassenger();
-                } else if (step == 5) {
-                    onProgListener.onArrive();
-                }
-            }
-//                step++;
-//                if (step > 5) {
-//                    step = 1;
-//                }
-//                setStep(step);
-
-        }
-    }
-
-    int step = 1;
-
-    public void setStep(int step) {
-        this.step = step;
-        switch (step) {
-            case 1:
-                //2002
-                //司机发送支付定金状态（初始状态）
-                setBtnStatus(0, 1, false);
-                setBtnStatus(1, 2, false);
-                setBtnStatus(2, 2, false);
-                break;
-            case 2:
-                //2003
-                //司机等待乘客支付定金状态
-                setBtnStatus(0, 0, false);
-                setBtnStatus(1, 2, false);
-                setBtnStatus(2, 2, false);
-                break;
-            case 3:
-                //2004
-                //已支付定金开始接客状态
-                setBtnStatus(0, 0, true);
-                setBtnStatus(1, 1, false);
-                setBtnStatus(2, 2, false);
-                break;
-            case 4:
-                //2005
-                //已接客开始送去目的地状态
-                setBtnStatus(0, 0, true);
-                setBtnStatus(1, 0, true);
-                setBtnStatus(2, 1, false);
-                break;
-            case 5:
-                //2006
-                //已送达状态（终止状态）
-                setBtnStatus(0, 0, true);
-                setBtnStatus(1, 0, true);
-                setBtnStatus(2, 0, true);
-                break;
-        }
-    }
-
     private void setBtnStatus(int position, int status, boolean needicon) {
         TextView textView;
         View groupView;
@@ -201,6 +135,106 @@ public class ProgView extends FrameLayout implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent();
+        int i = v.getId();
+        if (i == R.id.lay_prog_one || i == R.id.lay_prog_two || i == R.id.lay_prog_three) {
+            if (onProgListener != null) {
+                if (step == 1) {
+                    onProgListener.onRequestFirstMoney();
+                } else if (step == 3) {
+                    onProgListener.onGetPassenger();
+                } else if (step == 4) {
+                    onProgListener.onArrive();
+                }
+            }
+//                step++;
+//                if (step > 5) {
+//                    step = 1;
+//                }
+//                setStep(step);
+
+        }
+    }
+
+    int step = 1;
+
+    public void setStep(int step) {
+        this.step = step;
+        switch (step) {
+            case 1:
+                //2002
+                //司机发送支付定金状态（初始状态）
+                setRequestFirstMoney();
+                break;
+            case 2:
+                //2003
+                //司机等待乘客支付定金状态
+                setWateFirstMoney();
+                break;
+            case 3:
+                //2004
+                //已支付定金开始接客状态
+                setGetPassenger();
+                break;
+            case 4:
+                //2005
+                //已接客开始送去目的地状态
+                setStart();
+                break;
+            case 5:
+                //2006
+                //已送达状态（终止状态）
+                setArrive();
+                break;
+        }
+    }
+
+    public void setRequestFirstMoney() {
+        step = 1;
+        //2002
+        //司机发送支付定金状态（初始状态）
+        setBtnStatus(0, 1, false);
+        setBtnStatus(1, 2, false);
+        setBtnStatus(2, 2, false);
+    }
+
+    public void setWateFirstMoney() {
+        step = 2;
+        //2003
+        //司机等待乘客支付定金状态
+        setBtnStatus(0, 0, false);
+        setBtnStatus(1, 2, false);
+        setBtnStatus(2, 2, false);
+    }
+
+    public void setGetPassenger() {
+        step = 3;
+        //2004
+        //已支付定金开始接客状态
+        setBtnStatus(0, 0, true);
+        setBtnStatus(1, 1, false);
+        setBtnStatus(2, 2, false);
+    }
+
+    public void setStart() {
+        step = 4;
+        //2005
+        //已接客开始送去目的地状态
+        setBtnStatus(0, 0, true);
+        setBtnStatus(1, 0, true);
+        setBtnStatus(2, 1, false);
+    }
+
+    public void setArrive() {
+        step = 5;
+        //2006
+        //已送达状态（终止状态）
+        setBtnStatus(0, 0, true);
+        setBtnStatus(1, 0, true);
+        setBtnStatus(2, 0, true);
+    }
 
     private OnProgListener onProgListener;
 
@@ -208,9 +242,11 @@ public class ProgView extends FrameLayout implements View.OnClickListener {
         this.onProgListener = onProgListener;
     }
 
-    public interface OnProgListener{
+    public interface OnProgListener {
         void onRequestFirstMoney();
+
         void onGetPassenger();
+
         void onArrive();
     }
 }

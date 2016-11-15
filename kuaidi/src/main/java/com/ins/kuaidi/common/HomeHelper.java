@@ -27,12 +27,21 @@ public class HomeHelper {
                 break;
             case 2004:
                 setPayLast(activity);
+                if (trip.getIsPay() == 1) {
+                    setHasPayLast(activity);
+                }
                 break;
             case 2005:
                 setPayLast(activity);
+                if (trip.getIsPay() == 1) {
+                    setHasPayLast(activity);
+                }
                 break;
             case 2006:
                 setPayLast(activity);
+                if (trip.getIsPay() == 1) {
+                    setHasPayLast(activity);
+                }
                 break;
             case 2007:
                 setInit(activity);
@@ -52,6 +61,7 @@ public class HomeHelper {
     }
 
     //2002
+    //司机发送支付定金状态
     public static void setMatched(HomeActivity activity) {
         activity.driverView.setVisibility(View.VISIBLE);
         activity.holdcarView.setVisibility(View.GONE);
@@ -62,6 +72,7 @@ public class HomeHelper {
     }
 
     //2003
+    //司机等待乘客支付定金状态
     public static void setPayFirst(HomeActivity activity) {
         activity.driverView.setVisibility(View.VISIBLE);
         activity.lay_map_center.setVisibility(View.GONE);
@@ -72,7 +83,6 @@ public class HomeHelper {
     }
 
     //2004 乘客已支付预付款
-    //2005 司机接到乘客
     //2006 乘客已抵达
     public static void setPayLast(HomeActivity activity) {
         activity.driverView.setVisibility(View.VISIBLE);
@@ -81,6 +91,13 @@ public class HomeHelper {
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.btn_go.setEnabled(true);
         activity.btn_go.setText("支付尾款");
+    }
+
+    //2005 司机接到乘客
+    public static void setGetPassenger(HomeActivity activity) {
+        activity.driverView.setVisibility(View.VISIBLE);
+        activity.lay_map_center.setVisibility(View.GONE);
+        activity.holdcarView.setVisibility(View.GONE);
     }
 
     //2007
@@ -94,5 +111,10 @@ public class HomeHelper {
         activity.btn_go.setText("呼叫快车");
 
         activity.holdcarView.clear();
+    }
+
+    //乘客已经支付尾款（特殊状态）
+    public static void setHasPayLast(HomeActivity activity) {
+        activity.btn_go.setVisibility(View.GONE);
     }
 }

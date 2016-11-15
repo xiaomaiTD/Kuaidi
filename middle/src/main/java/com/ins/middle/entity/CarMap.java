@@ -2,6 +2,7 @@ package com.ins.middle.entity;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.baidu.mapapi.map.BaiduMap;
@@ -59,34 +60,51 @@ public class CarMap {
         animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                Log.e("liao", "onAnimationStart");
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
                 start = end;
-                Log.e("liao", "onAnimationEnd");
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                Log.e("liao", "onAnimationCancel");
-
             }
 
             @Override
             public void onAnimationRepeat(Animator animation) {
-
             }
         });
         animator.start();
     }
 
     public void addMove(BaiduMap baiduMap, LatLng latLng) {
+        if (baiduMap == null || latLng == null) {
+            return;
+        }
         if (mMoveMarker == null) {
             addToMap(baiduMap, latLng);
         } else {
             moveTo(latLng);
+        }
+    }
+
+    private User driver;
+
+    public void setDriver(User driver) {
+        this.driver = driver;
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("driver", driver);
+        mMoveMarker.setExtraInfo(bundle);
+    }
+
+    public User getDriver() {
+        return driver;
+    }
+
+    public void removeFromMap() {
+        if (mMoveMarker != null) {
+            mMoveMarker.remove();
         }
     }
 }

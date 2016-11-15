@@ -30,6 +30,7 @@ import com.ins.kuaidi.R;
 import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
 import com.ins.middle.entity.CarMap;
+import com.ins.middle.entity.EventOrder;
 import com.ins.middle.utils.MapHelper;
 import com.ins.middle.view.DriverView;
 import com.ins.middle.common.AppConstant;
@@ -114,7 +115,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             if (com.ins.kuaidi.utils.AppHelper.needNetConfigEnd(holdcarView, position.getCity())) {
                 holdcarView.setEndPosition(position);
                 netHelper.netGetLineConfig(holdcarView.getStartPosition().getCity(), position.getCity());
-            }else {
+            } else {
                 holdcarView.setEndPosition(position);
             }
         }
@@ -123,34 +124,52 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     @Subscribe
     public void onEventMainThread(Integer flag) {
         if (flag == AppConstant.EVENT_UPDATE_LOGIN) {
+            //切换用户后清楚地图所有标注
+            if (baiduMap != null) baiduMap.clear();
+            //登录后设置为初次登录状态
             locationer.isFirstLoc = true;
+            //设置用户信息
             setUserData();
             //获取行程信息
-            netHelper.netGetTrip();
+            if (AppData.App.getUser() != null) {
+                netHelper.netGetTrip();
+            } else {
+                HomeHelper.setInit(this);
+            }
         } else if (flag == AppConstant.EVENT_UPDATE_ME) {
             setUserData();
         }
     }
 
     @Subscribe
-    public void onEventMainThread(String flagSpc) {
-        if (AppConstant.EVENT_JPUSH_ORDER.equals(AppConstant.getFlag(flagSpc))) {
-            String aboutOrder = AppConstant.getStr(flagSpc);
-            if ("3".equals(aboutOrder)) {
-                //请求支付定金
-            } else if ("4".equals(aboutOrder)) {
-                //接到乘客
-            } else if ("5".equals(aboutOrder)) {
-                //已经到达目的地
-            } else if ("6".equals(aboutOrder)) {
-                //司机端 ： 匹配到有新的订单
-            } else if ("7".equals(aboutOrder)) {
-                //乘客端： 订单已经匹配 已经分配给司机
-                Log.e("liao", "aboutOrder:" + aboutOrder);
-                HomeHelper.setMatched(this);
-                //获取行程信息
-                netHelper.netGetTrip();
-            }
+    public void onEventMainThread(EventOrder eventOrder) {
+        String aboutOrder = eventOrder.getAboutOrder();
+        Log.e("liao", "aboutOrder:" + aboutOrder);
+        if ("3".equals(aboutOrder)) {
+            //请求支付定金
+            HomeHelper.setPayFirst(this);
+        } else if ("4".equals(aboutOrder)) {
+            //接到乘客
+            HomeHelper.setGetPassenger(this);
+        } else if ("5".equals(aboutOrder)) {
+            //已经到达目的地
+            HomeHelper.setPayLast(this);
+        } else if ("6".equals(aboutOrder)) {
+            //司机端 ： 匹配到有新的订单
+        } else if ("7".equals(aboutOrder)) {
+            //乘客端： 订单已经匹配 已经分配给司机
+            HomeHelper.setMatched(this);
+            //获取行程信息
+            netHelper.netGetTrip();
+        } else if ("8".equals(aboutOrder)) {
+            //定金支付成功(乘客端本地的推送)
+            //2004 乘客已支付预付款
+            HomeHelper.setPayLast(this);
+        } else if ("9".equals(aboutOrder)) {
+            //司机出发
+        } else if ("101".equals(aboutOrder)) {
+            //乘客已经支付尾款
+            HomeHelper.setHasPayLast(this);
         }
     }
 
@@ -316,6 +335,12 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public void setTrip(Trip trip) {
         this.trip = trip;
         HomeHelper.setTrip(this, trip);
+        //设置上车地点位置
+        if (trip != null && trip.getStatus() != 2001 && trip.getStatus() != 2007) {
+            com.ins.kuaidi.utils.AppHelper.addMarkStartEnd(baiduMap,MapHelper.str2LatLng(trip.getFromLat()));
+            com.ins.kuaidi.utils.AppHelper.addMarkStartEnd(baiduMap,MapHelper.str2LatLng(trip.getToLat()));
+        }
+        //设置司机位置
         if (trip != null && trip.getDriver() != null) {
             driverView.setDriver(trip.getDriver());
         }
@@ -356,6 +381,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 startActivity(intent);
                 break;
         }
+//        drawer.closeDrawer(Gravity.LEFT);
         return false;
     }
 
@@ -397,17 +423,29 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                         .playOn(holdcarView);
                 break;
             case R.id.btn_go:
-                Position startPosition = holdcarView.getStartPosition();
-                Position endPosition = holdcarView.getEndPosition();
-                String msg = AppVali.orderadd(holdcarView.getDay(), holdcarView.getTime(), holdcarView.getSelectCount(), startPosition, endPosition);
-                if (msg != null) {
-                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-                } else {
-                    netHelper.netOrderAdd(holdcarView.getDay(), holdcarView.getTime(), holdcarView.getSelectCount(),
-                            MapHelper.LatLng2Str(startPosition.getLatLng()), MapHelper.LatLng2Str(endPosition.getLatLng()),
-                            startPosition.getKey(), endPosition.getKey(),
-                            startPosition.getCity(), endPosition.getCity(),
-                            holdcarView.getMsg());
+                if ("呼叫快车".equals(btn_go.getText())) {
+                    Position startPosition = holdcarView.getStartPosition();
+                    Position endPosition = holdcarView.getEndPosition();
+                    String msg = AppVali.orderadd(holdcarView.getDay(), holdcarView.getTime(), holdcarView.getSelectCount(), startPosition, endPosition);
+                    if (msg != null) {
+                        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                    } else {
+                        netHelper.netOrderAdd(holdcarView.getDay(), holdcarView.getTime(), holdcarView.getSelectCount(),
+                                MapHelper.LatLng2Str(startPosition.getLatLng()), MapHelper.LatLng2Str(endPosition.getLatLng()),
+                                startPosition.getKey(), endPosition.getKey(),
+                                startPosition.getCity(), endPosition.getCity(),
+                                holdcarView.getMsg());
+                    }
+                } else if ("支付定金".equals(btn_go.getText())) {
+                    intent.setClass(this, PayActivity.class);
+                    intent.putExtra("type", 0);
+                    intent.putExtra("orderId", trip.getId());
+                    startActivity(intent);
+                } else if ("支付尾款".equals(btn_go.getText())) {
+                    intent.setClass(this, PayActivity.class);
+                    intent.putExtra("type", 2);
+                    intent.putExtra("orderId", trip.getId());
+                    startActivity(intent);
                 }
                 break;
         }
@@ -512,7 +550,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             if (com.ins.kuaidi.utils.AppHelper.needNetConfigStart(holdcarView, newCity)) {
                 holdcarView.setStartPosition(position);
                 netHelper.netGetLineConfig(holdcarView.getStartPosition().getCity(), newCity);
-            }else {
+            } else {
                 holdcarView.setStartPosition(position);
             }
         }

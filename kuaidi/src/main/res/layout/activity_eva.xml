@@ -82,15 +82,27 @@
                     android:textColor="@color/com_text_blank"
                     android:textSize="@dimen/text_nomal" />
 
-                <io.techery.properratingbar.ProperRatingBar
+                <!--<io.techery.properratingbar.ProperRatingBar-->
+                    <!--android:id="@+id/rating_eva"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="35dp"-->
+                    <!--app:prb_clickable="true"-->
+                    <!--app:prb_defaultRating="0"-->
+                    <!--app:prb_tickNormalDrawable="@drawable/icon_eva_star"-->
+                    <!--app:prb_tickSelectedDrawable="@drawable/icon_eva_star_hot"-->
+                    <!--app:prb_tickSpacing="7dp"-->
+                    <!--app:prb_totalTicks="5" />-->
+
+                <RatingBar
+                    android:id="@+id/rating_eva"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    app:prb_clickable="true"
-                    app:prb_defaultRating="0"
-                    app:prb_tickNormalDrawable="@drawable/icon_eva_star"
-                    app:prb_tickSelectedDrawable="@drawable/icon_eva_star_hot"
-                    app:prb_tickSpacing="7dp"
-                    app:prb_totalTicks="5" />
+                    android:layout_height="wrap_content"
+                    android:minHeight="30px"
+                    android:layout_marginRight="16dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:progressDrawable="@drawable/rating_bar"
+                    android:stepSize="1" />
 
             </LinearLayout>
 
@@ -126,7 +138,7 @@
                         android:textSize="@dimen/text_nomal" />
 
                     <com.sobey.common.view.EmojiEditText
-                        android:id="@+id/edit_feedback_describe"
+                        android:id="@+id/edit_eva_describe"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
@@ -151,7 +163,7 @@
                 android:layout_height="50dp"
                 android:layout_gravity="bottom"
                 android:layout_margin="10dp"
-                android:background="@drawable/shape_rect_corner_yellow"
+                android:background="@drawable/hot_rect_coner_yellow"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:text="确认评价"

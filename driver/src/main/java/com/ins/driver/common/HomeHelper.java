@@ -5,6 +5,7 @@ import android.view.View;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.ins.driver.ui.activity.HomeActivity;
+import com.ins.middle.common.AppData;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.sobey.common.utils.StrUtils;
@@ -18,10 +19,17 @@ import java.util.List;
 public class HomeHelper {
 
     public static void setTrip(HomeActivity activity, List<Trip> trips) {
-        if (StrUtils.isEmpty(trips)) {
-            setInit(activity);
+        User driver = AppData.App.getUser();
+        if (driver.getIsStart()==1){
+            //已出发
+            setStart(activity);
         }else {
-            setInProg(activity);
+            //未出发
+            if (StrUtils.isEmpty(trips)) {
+                setInit(activity);
+            } else {
+                setInProg(activity);
+            }
         }
     }
 
@@ -31,6 +39,12 @@ public class HomeHelper {
         activity.driverView.setVisibility(View.GONE);
 
         activity.check_lu.setChecked(false);
+    }
+
+    public static void setStart(HomeActivity activity) {
+        activity.btn_go.setVisibility(View.GONE);
+        activity.check_lu.setVisibility(View.VISIBLE);
+        activity.driverView.setVisibility(View.GONE);
     }
 
 

@@ -51,15 +51,26 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <io.techery.properratingbar.ProperRatingBar
+            <!--<io.techery.properratingbar.ProperRatingBar-->
+                <!--android:id="@+id/rating_driver_star"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="15dp"-->
+                <!--app:prb_defaultRating="4"-->
+                <!--app:prb_tickNormalDrawable="@drawable/icon_eva_star"-->
+                <!--app:prb_tickSelectedDrawable="@drawable/icon_eva_star_hot"-->
+                <!--app:prb_tickSpacing="0dp"-->
+                <!--app:prb_totalTicks="5" />-->
+
+            <RatingBar
                 android:id="@+id/rating_driver_star"
                 android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                app:prb_defaultRating="4"
-                app:prb_tickNormalDrawable="@drawable/icon_eva_star"
-                app:prb_tickSelectedDrawable="@drawable/icon_eva_star_hot"
-                app:prb_tickSpacing="0dp"
-                app:prb_totalTicks="5" />
+                android:layout_height="wrap_content"
+                android:minHeight="15px"
+                android:layout_marginRight="16dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:progressDrawable="@drawable/rating_bar_small"
+                android:stepSize="0.5" />
 
             <TextView
                 android:id="@+id/text_driver_star"
@@ -69,7 +80,7 @@
                 android:gravity="center"
                 android:paddingLeft="3dp"
                 android:paddingRight="3dp"
-                android:text="4.5"
+                android:text="0.0"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_nomal" />
 
@@ -78,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:text="5241单"
+                android:text="0单"
                 android:textColor="@color/com_text_light"
                 android:textSize="@dimen/text_nomal_small" />
 

@@ -68,7 +68,7 @@
                 android:paddingBottom="0dp" />
 
             <com.sobey.common.view.EmojiEditText
-                android:id="@+id/edit_feedback_describe"
+                android:id="@+id/edit_complain_describe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

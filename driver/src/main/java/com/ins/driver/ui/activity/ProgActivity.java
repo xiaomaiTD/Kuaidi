@@ -11,16 +11,20 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
+import com.ins.driver.common.HomeHelper;
+import com.ins.driver.common.ProgNetHelper;
 import com.ins.driver.ui.adapter.RecycleAdapterProg;
 import com.ins.driver.R;
 import com.ins.driver.ui.dialog.DialogPayStatus;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.EventOrder;
 import com.ins.middle.entity.TestEntity;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.ins.middle.ui.activity.TripActivity;
+import com.ins.middle.view.ProgView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
@@ -29,13 +33,14 @@ import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProgActivity extends BaseBackActivity implements OnRecycleItemClickListener{
+public class ProgActivity extends BaseBackActivity implements OnRecycleItemClickListener {
 
     private RecyclerView recyclerView;
     private SpringView springView;
@@ -47,11 +52,25 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
 
     private DialogPayStatus dialogPayStatus;
 
+    @Subscribe
+    public void onEventMainThread(EventOrder eventOrder) {
+        String aboutOrder = eventOrder.getAboutOrder();
+        Log.e("liao", "aboutOrderProg" + aboutOrder);
+        if ("8".equals(aboutOrder)) {
+            //定金支付成功
+            int orderId = eventOrder.getOrderId();
+            if (orderId != 0) {
+                netGetTrips(1);
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prog);
         setToolbar();
+        EventBus.getDefault().register(this);
 
         initBase();
         initView();
@@ -62,6 +81,7 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         if (dialogPayStatus != null) dialogPayStatus.dismiss();
     }
 
@@ -114,18 +134,18 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
     //行程进度控件事件回调
     private RecycleAdapterProg.OnRecycleProgListener onRecycleProgListener = new RecycleAdapterProg.OnRecycleProgListener() {
         @Override
-        public void onRequestFirstMoney(Trip trip) {
-            Log.e("liao", "onRequestFirstMoney");
+        public void onRequestFirstMoney(ProgView progView, Trip trip) {
+            ProgNetHelper.netReqFirstMoney(progView, trip.getId());
         }
 
         @Override
-        public void onGetPassenger(Trip trip) {
-            Log.e("liao", "onGetPassenger");
+        public void onGetPassenger(ProgView progView, Trip trip) {
+            ProgNetHelper.netReqGetPassenger(progView, trip.getId());
         }
 
         @Override
-        public void onArrive(Trip trip) {
-            Log.e("liao", "onArrive");
+        public void onArrive(ProgView progView, Trip trip) {
+            ProgNetHelper.netArrive(progView, trip.getId());
         }
     };
 
@@ -216,7 +236,11 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
         Trip trip = adapter.getResults().get(viewHolder.getLayoutPosition());
-        EventBus.getDefault().post(trip);
-        finish();
+        if (trip.getStatus() >= 2005) {
+            Toast.makeText(this, "改乘客已上车", Toast.LENGTH_SHORT).show();
+        } else {
+            EventBus.getDefault().post(trip);
+            finish();
+        }
     }
 }

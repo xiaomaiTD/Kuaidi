@@ -44,6 +44,34 @@ public class User implements Serializable {
     private int orderCount;
     private int lineId; //线路id
     private Car car;
+    private String latAndLongit;
+    private int isStart;    //是否出发 0：否，1：出发
+    private float evaFen;    //司机评分
+
+
+    public float getEvaFen() {
+        return evaFen;
+    }
+
+    public void setEvaFen(float evaFen) {
+        this.evaFen = evaFen;
+    }
+
+    public int getIsStart() {
+        return isStart;
+    }
+
+    public void setIsStart(int isStart) {
+        this.isStart = isStart;
+    }
+
+    public String getLatAndLongit() {
+        return latAndLongit;
+    }
+
+    public void setLatAndLongit(String latAndLongit) {
+        this.latAndLongit = latAndLongit;
+    }
 
     public int getLineId() {
         return lineId;

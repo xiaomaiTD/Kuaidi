@@ -1,5 +1,8 @@
 package com.ins.middle.entity;
 
+import com.baidu.mapapi.map.Overlay;
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 
 /**
@@ -89,6 +92,18 @@ public class Trip implements Serializable{
     private User passenger;
     /**司机*/
     private User driver;
+
+    //本地字段
+//    @Expose
+    private transient  Overlay mark;
+
+    public Overlay getMark() {
+        return mark;
+    }
+
+    public void setMark(Overlay mark) {
+        this.mark = mark;
+    }
 
     public Trip() {
     }

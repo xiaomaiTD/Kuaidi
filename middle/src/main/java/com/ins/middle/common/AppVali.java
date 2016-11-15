@@ -123,6 +123,24 @@ public class AppVali {
         }
     }
 
+    public static String evaadd(int start, String detail) {
+        if (start == 0) {
+            return "请还没有打分";
+        } else {
+            return null;
+        }
+    }
+
+    public static String complainadd(String ids, String detail) {
+        if (StrUtils.isEmpty(ids)) {
+            return "请选择投诉项目";
+        } else if (StrUtils.isEmpty(detail)) {
+            return "请填写投诉内容";
+        } else {
+            return null;
+        }
+    }
+
     public static String regist_phone(String phone_edit, String phone, String vali, String valicode) {
         if (isEmpty(phone_edit)) {
             return "请输入手机号";

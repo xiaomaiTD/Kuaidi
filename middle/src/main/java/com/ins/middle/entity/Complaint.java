@@ -17,6 +17,11 @@ public class Complaint implements Serializable{
         this.countent = countent;
     }
 
+    public Complaint(int id, String countent) {
+        this.id = id;
+        this.countent = countent;
+    }
+
     public int getId() {
         return id;
     }

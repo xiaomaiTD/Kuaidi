@@ -3,7 +3,9 @@ package com.ins.middle.utils;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
+import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.OverlayOptions;
@@ -74,7 +76,7 @@ public class MapHelper {
 
     public static String LatLng2Str(LatLng latLng) {
         if (latLng != null) {
-            return latLng.longitude + "," + latLng.latitude;
+            return latLng.latitude + "," + latLng.longitude;
         } else {
             return null;
         }
@@ -91,5 +93,11 @@ public class MapHelper {
             }
         }
         return false;
+    }
+
+    public static void zoomByPoint(BaiduMap baiduMap, LatLng center) {
+        MapStatus ms = new MapStatus.Builder(baiduMap.getMapStatus()).overlook(0).target(center).build();
+        MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(ms);
+        if (baiduMap != null) baiduMap.animateMapStatus(u);
     }
 }

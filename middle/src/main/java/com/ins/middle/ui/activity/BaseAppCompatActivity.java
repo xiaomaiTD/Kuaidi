@@ -62,6 +62,10 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         setToolbar(null, true);
     }
 
+    public void setToolbar(String title){
+        setToolbar(title, true);
+    }
+
     /**
      * 把toolbar设置为""，把自定义居中文字设置为title，设置是否需要返回键
      */

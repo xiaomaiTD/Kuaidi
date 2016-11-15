@@ -5,11 +5,11 @@
     android:layout_height="wrap_content">
 
     <include layout="@layout/layout_home_driver"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/lay_driver"/>
 
     <include layout="@layout/item_recycle_prog"
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/lay_passenger"/>
 
 </FrameLayout>

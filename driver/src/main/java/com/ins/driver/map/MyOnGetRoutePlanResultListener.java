@@ -20,7 +20,7 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 public class MyOnGetRoutePlanResultListener implements OnGetRoutePlanResultListener {
 
     private MapView mapView;
-    private DrivingRouteOverlay overlay;
+    public static DrivingRouteOverlay overlay;
     public static boolean needzoom = true;
 
     public MyOnGetRoutePlanResultListener(MapView mapView) {
@@ -41,6 +41,7 @@ public class MyOnGetRoutePlanResultListener implements OnGetRoutePlanResultListe
 
     @Override
     public void onGetDrivingRouteResult(DrivingRouteResult result) {
+        if (overlay != null) overlay.removeFromMap();
         if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
             Toast.makeText(mapView.getContext(), "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
         }
@@ -51,7 +52,6 @@ public class MyOnGetRoutePlanResultListener implements OnGetRoutePlanResultListe
         }
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
             if (result.getRouteLines().size() > 0) {
-                if (overlay != null) overlay.removeFromMap();
                 overlay = new MyDrivingRouteOverlay(mapView.getMap());
                 mapView.getMap().setOnMarkerClickListener(overlay);
                 overlay.setData(result.getRouteLines().get(0));

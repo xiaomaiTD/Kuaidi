@@ -63,133 +63,199 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:id="@+id/showingroup"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <include layout="@layout/layout_home_driver"/>
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:id="@+id/showingroup"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1px"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/com_line" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="成功支付"
-                    android:textColor="@color/com_text_light"
-                    android:textSize="@dimen/text_nomal" />
+                    <com.ins.middle.view.DriverView
+                        android:id="@+id/driverView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1px"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@color/com_line" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1px"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:background="@color/com_line" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="成功支付"
+                            android:textColor="@color/com_text_light"
+                            android:textSize="@dimen/text_nomal" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1px"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:background="@color/com_line" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/text_tripdetail_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:text="27.00"
+                            android:textColor="@color/com_text_blank"
+                            android:textSize="46sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="3dp"
+                            android:gravity="center_vertical"
+                            android:text="元"
+                            android:textColor="@color/com_text_blank"
+                            android:textSize="@dimen/text_big" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/text_tripdetail_totaydetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="3dp"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@drawable/icon_item_next"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="查看明细"
+                        android:textColor="@color/com_text_light"
+                        android:textSize="@dimen/text_nomal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:text="匿名评价"
+                        android:textColor="@color/com_text_light"
+                        android:textSize="@dimen/text_nomal" />
+
+                    <!--<io.techery.properratingbar.ProperRatingBar-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="15dp"-->
+                    <!--app:prb_defaultRating="4"-->
+                    <!--app:prb_tickNormalDrawable="@drawable/icon_eva_star"-->
+                    <!--app:prb_tickSelectedDrawable="@drawable/icon_eva_star_hot"-->
+                    <!--app:prb_tickSpacing="10dp"-->
+                    <!--app:prb_totalTicks="5" />-->
+
+                    <RatingBar
+                        android:id="@+id/rating_tripdetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:isIndicator="true"
+                        android:minHeight="40px"
+                        android:numStars="5"
+                        android:rating="5"
+                        android:progressDrawable="@drawable/rating_bar"
+                        android:stepSize="1" />
+
+                    <TextView
+                        android:id="@+id/text_tripdetail_describe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="您还未做出评价"
+                        android:textColor="@color/kd_yellow"
+                        android:textSize="@dimen/text_nomal" />
+
+                    <LinearLayout
+                        android:id="@+id/lay_tripdetail_eva"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/com_text_blank"
+                            android:layout_marginLeft="20dp"
+                            android:text="留言评价："
+                            android:textSize="@dimen/text_subig"/>
+
+                        <com.sobey.common.view.EmojiEditText
+                            android:id="@+id/edit_tripdetail_describe"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/shape_rect_dark_line"
+                            android:gravity="left|top"
+                            android:hint=""
+                            android:inputType="textMultiLine"
+                            android:minLines="7"
+                            android:padding="8dp"
+                            android:textColor="@color/cc_text_blank"
+                            android:textColorHint="@color/sb_text_dark"
+                            android:textSize="@dimen/text_nomal" />
+
+                        <TextView
+                            android:id="@+id/btn_go"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="bottom"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/hot_rect_coner_yellow"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:gravity="center"
+                            android:text="确认评价"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_big" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="27.00"
-                    android:textColor="@color/com_text_blank"
-                    android:textSize="46sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:gravity="center_vertical"
-                    android:text="元"
-                    android:textColor="@color/com_text_blank"
-                    android:textSize="@dimen/text_big" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/text_tripdetail_totaydetail"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginTop="3dp"
-                android:drawablePadding="5dp"
-                android:drawableRight="@drawable/icon_item_next"
-                android:gravity="center"
-                android:paddingLeft="5dp"
-                android:text="查看明细"
-                android:textColor="@color/com_text_light"
-                android:textSize="@dimen/text_nomal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="匿名评价"
-                android:textColor="@color/com_text_light"
-                android:textSize="@dimen/text_nomal" />
-
-            <!--<RatingBar-->
-            <!--android:id="@+id/rating_eva_server_attitude"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="25dp"-->
-            <!--android:layout_marginTop="15dp"-->
-            <!--android:isIndicator="true"-->
-            <!--android:numStars="5"-->
-            <!--android:rating="4"-->
-            <!--android:progressDrawable="@drawable/rating_bar"-->
-            <!--android:stepSize="1" />-->
-
-            <io.techery.properratingbar.ProperRatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:prb_defaultRating="4"
-                app:prb_tickNormalDrawable="@drawable/icon_eva_star"
-                app:prb_tickSelectedDrawable="@drawable/icon_eva_star_hot"
-                app:prb_tickSpacing="10dp"
-                app:prb_totalTicks="5" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:gravity="center"
-                android:text="您的评价，让我们做得更好"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
-
-        </LinearLayout>
+        </ScrollView>
 
         <View
-            android:visibility="gone"
             android:id="@+id/lay_shadow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#33000000"/>
+            android:background="#33000000"
+            android:visibility="gone" />
 
     </FrameLayout>
 

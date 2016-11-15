@@ -45,4 +45,6 @@ dependencies {
     compile 'com.kyleduo.switchbutton:library:1.4.4'
     //星星评价
     compile 'com.github.techery:properratingbar:0.0.5'
+    //星星评价
+    compile 'com.hedgehog.ratingbar:app:1.1.2'
 }

@@ -329,7 +329,6 @@ public class SwipeBackLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        Log.e("liao",""+isNeedMyMove+" dx:"+dx+"dy:"+dy);
         boolean handled = false;
         ensureTarget();
         if (isEnabled()) {

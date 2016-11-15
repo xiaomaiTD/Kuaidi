@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.ins.middle.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.Eva;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
@@ -96,18 +97,30 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
 
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-//        Intent intent = new Intent(this, TripDetailActivity.class);
-//        startActivity(intent);
         Trip trip = adapter.getResults().get(viewHolder.getLayoutPosition());
         //客户端点击进行中的行程会回到主页
         if (PackageUtil.isClient()) {
-            //if (trip.getStatus()!=2001) //这里要验证:未支付尾款的订单才能进入行程主页 ，暂时没有这个字段
-            EventBus.getDefault().post(trip);
-        }else {
-            //if (trip.getStatus()!=2001) //这里要验证:未支付尾款的订单才能进入行程主页 ，暂时没有这个字段
-            EventBus.getDefault().post(trip);
+            //已送达的订单进入详情页，否则退回主页
+            if (trip.getStatus() == 2006) {
+                Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
+                intent.putExtra("orderId", trip.getId());
+                intent.putExtra("trip", trip);
+                startActivity(intent);
+            } else {
+                EventBus.getDefault().post(trip);
+                finish();
+            }
+        } else {
+            if (trip.getStatus() == 2006) {
+                Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
+                intent.putExtra("orderId", trip.getId());
+                intent.putExtra("trip", trip);
+                startActivity(intent);
+            } else {
+                EventBus.getDefault().post(trip);
+                finish();
+            }
         }
-        finish();
     }
 
 
@@ -194,4 +207,6 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
             }
         });
     }
+
+
 }
