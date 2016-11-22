@@ -10,6 +10,7 @@ public class AppConstant {
 
     public static final String EVENT_DIALOGLOGON_VALI = "EVENT_DIALOGLOGON_VALI";
     public static final String EVENT_DIALOGLOGON_PHONE = "EVENT_DIALOGLOGON_PHONE";
+    public static final String EVENT_DIALOGLOGON_BANK = "EVENT_DIALOGLOGON_BANK";
 
     private static final String FLAGMODE = "LOVE&INS";
 

@@ -1,15 +1,18 @@
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.ins.kuaidi.R;
+import com.ins.middle.R;
+import com.ins.middle.common.AppData;
+import com.ins.middle.entity.User;
+import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
-import com.ins.middle.ui.activity.BaseAppCompatActivity;
-import com.ins.middle.ui.activity.BaseBackActivity;
+
 public class WalletActivity extends BaseBackActivity implements View.OnClickListener {
 
     private ViewGroup showingroup;
@@ -69,23 +72,27 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
-        switch (v.getId()) {
-            case R.id.lay_wallet_payway:
-                intent.setClass(this, PaywayActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.lay_wallet_money:
-                intent.setClass(this, MoneyActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.lay_wallet_coupon:
-                intent.setClass(this, CouponActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.lay_wallet_bankcard:
+        int i = v.getId();
+        if (i == R.id.lay_wallet_payway) {
+//            intent.setClass(this, PaywayActivity.class);
+//            startActivity(intent);
+
+        } else if (i == R.id.lay_wallet_money) {
+//            intent.setClass(this, MoneyActivity.class);
+//            startActivity(intent);
+
+        } else if (i == R.id.lay_wallet_coupon) {
+//            intent.setClass(this, CouponActivity.class);
+//            startActivity(intent);
+        } else if (i == R.id.lay_wallet_bankcard) {
+            if (AppData.App.getUser().getStatus() == User.AUTHENTICATED) {
+                //已认证，调整银行卡页面
                 intent.setClass(this, BankCardActivity.class);
                 startActivity(intent);
-                break;
+            } else {
+                Toast.makeText(this, "请先进行实名认证", Toast.LENGTH_SHORT).show();
+                startActivity(PackageUtil.getSmIntent("IdentifyActivity"));
+            }
         }
     }
 }

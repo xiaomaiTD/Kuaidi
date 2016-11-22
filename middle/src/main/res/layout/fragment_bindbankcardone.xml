@@ -26,18 +26,20 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="银行绑定手机"
+                android:text="真实姓名"
                 android:textColor="@color/sb_text_dark"
                 android:textSize="@dimen/text_nomal" />
 
             <com.sobey.common.view.EmojiEditText
+                android:id="@+id/edit_bindbankcard_realname"
                 style="@style/edit_none"
+                android:enabled="false"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="请填写"
-                android:inputType="number"
-                android:maxLength="16"
+                android:inputType="textPersonName"
+                android:maxLength="11"
                 android:singleLine="true"
                 android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_nomal" />
@@ -54,29 +56,21 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="验证码"
+                android:text="银行卡号"
                 android:textColor="@color/sb_text_dark"
                 android:textSize="@dimen/text_nomal" />
 
             <com.sobey.common.view.EmojiEditText
+                android:id="@+id/edit_bindbankcard_num"
                 style="@style/edit_none"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="请填写"
                 android:inputType="number"
-                android:maxLength="4"
+                android:maxLength="21"
                 android:singleLine="true"
                 android:textColor="@color/sb_text_blank"
-                android:textSize="@dimen/text_nomal" />
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="35dp"
-                android:background="@drawable/shape_rect_corner_none_line_yellow"
-                android:gravity="center"
-                android:text="获取验证码"
-                android:textColor="@color/kd_yellow"
                 android:textSize="@dimen/text_nomal" />
         </LinearLayout>
 
@@ -87,10 +81,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:background="@drawable/shape_rect_corner_yellow"
+        android:background="@drawable/hot_rect_coner_yellow"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
-        android:text="绑定"
+        android:text="下一步"
         android:textColor="@color/white"
         android:textSize="@dimen/text_big" />
 

@@ -31,6 +31,7 @@ import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
 import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.EventOrder;
+import com.ins.middle.ui.activity.WalletActivity;
 import com.ins.middle.utils.MapHelper;
 import com.ins.middle.view.DriverView;
 import com.ins.middle.common.AppConstant;

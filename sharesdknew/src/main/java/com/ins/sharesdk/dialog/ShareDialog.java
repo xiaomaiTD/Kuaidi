@@ -11,6 +11,7 @@ import com.ins.sharesdk.R;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
@@ -27,7 +28,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener{
     private TextView text_wechat;
     private TextView text_wechatmoments;
     private TextView text_qq;
-    private TextView text_qzone;
+    private TextView text_xinlangweibo;
     private Context context;
 
     public ShareDialog(Context context){
@@ -41,11 +42,11 @@ public class ShareDialog extends Dialog implements View.OnClickListener{
         text_wechat = (TextView) mView.findViewById(R.id.text_share_wechat);
         text_wechatmoments = (TextView) mView.findViewById(R.id.text_share_wechatmoments);
         text_qq = (TextView) mView.findViewById(R.id.text_share_qq);
-        text_qzone = (TextView) mView.findViewById(R.id.text_share_qzone);
+        text_xinlangweibo = (TextView) mView.findViewById(R.id.text_share_xinlangweibo);
         text_wechat.setOnClickListener(this);
         text_wechatmoments.setOnClickListener(this);
         text_qq.setOnClickListener(this);
-        text_qzone.setOnClickListener(this);
+        text_xinlangweibo.setOnClickListener(this);
 
         this.setCanceledOnTouchOutside(false);	//点击外部关闭
         
@@ -75,8 +76,8 @@ public class ShareDialog extends Dialog implements View.OnClickListener{
             showShare(ShareSDK.getPlatform (WechatMoments.NAME).getName());
         } else if (i == R.id.text_share_qq) {
             showShare(ShareSDK.getPlatform (QQ.NAME).getName());
-        } else if (i == R.id.text_share_qzone) {
-            showShare(ShareSDK.getPlatform (QZone.NAME).getName());
+        } else if (i == R.id.text_share_xinlangweibo) {
+            showShare(ShareSDK.getPlatform (SinaWeibo.NAME).getName());
         }
         dismiss();
     }

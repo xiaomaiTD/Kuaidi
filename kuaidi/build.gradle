@@ -68,4 +68,6 @@ dependencies {
     //jpush
     compile 'cn.jiguang:jpush:2.1.8'
     compile project(':middle')
+    compile project(':library_alipay')
+    compile project(':sharesdknew')
 }

@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,9 +9,9 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.ins.kuaidi.R;
-import com.ins.kuaidi.ui.fragment.BankCardOneFragment;
-import com.ins.kuaidi.ui.fragment.BankCardTwoFragment;
+import com.ins.middle.R;
+import com.ins.middle.ui.fragment.BankCardOneFragment;
+import com.ins.middle.ui.fragment.BankCardTwoFragment;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 
 

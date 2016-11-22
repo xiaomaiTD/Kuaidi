@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity{
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            last();
+            //last();
             return true;
         }
         return super.onKeyDown(keyCode, event);

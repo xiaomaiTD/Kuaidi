@@ -1,11 +1,11 @@
 package com.ins.middle.ui.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dd.CircularProgressButton;
 import com.ins.middle.R;
 import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.AppVali;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
-import com.ins.middle.ui.activity.LoginActivity;
-import com.ins.middle.utils.AppHelper;
+import com.ins.middle.ui.activity.BindBankCardActivity;
 import com.sobey.common.helper.ValiHelper;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,7 +29,7 @@ import org.xutils.http.RequestParams;
 /**
  * Created by Administrator on 2016/6/2 0002.
  */
-public class LoginValiFragment extends BaseFragment implements View.OnClickListener {
+public class BankCardTwoFragment extends BaseFragment implements View.OnClickListener {
 
     private ValiHelper valiHelper;
 
@@ -40,18 +38,35 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
     private ViewGroup showingroup;
     private View showin;
 
-    private LoginActivity activity;
-    private CircularProgressButton btn_go;
+    private BindBankCardActivity activity;
+
+    private EditText edit_bindbankcard_phone;
+    private EditText edit_bindbankcard_vali;
+    private EditText edit_bindbankcard_bankname;
     private TextView btn_go_vali;
-    private TextView text_login_phone;
-    private EditText edit_login_vali;
+    private View btn_go;
+
+    private String bankNum;
+    private String bankName;
 
     public static Fragment newInstance(int position) {
-        LoginValiFragment f = new LoginValiFragment();
+        BankCardTwoFragment f = new BankCardTwoFragment();
         Bundle b = new Bundle();
         b.putInt("position", position);
         f.setArguments(b);
         return f;
+    }
+
+    @Subscribe
+    public void onEventMainThread(String flagSpc) {
+        if (AppConstant.EVENT_DIALOGLOGON_BANK.equals(AppConstant.getFlag(flagSpc))) {
+            String value = AppConstant.getStr(flagSpc);
+            String[] split = value.split("\\|");
+            bankNum = split[0];
+            bankName = split[1];
+
+            edit_bindbankcard_bankname.setText(bankName);
+        }
     }
 
     @Override
@@ -59,18 +74,6 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         this.position = getArguments().getInt("position");
-    }
-
-    @Subscribe
-    public void onEventMainThread(String flagSpc) {
-        if (AppConstant.EVENT_DIALOGLOGON_VALI.equals(AppConstant.getFlag(flagSpc))) {
-            String phone_vali = AppConstant.getStr(flagSpc);
-            String[] split = phone_vali.split("\\|");
-            valiHelper.phone = split[0];
-            valiHelper.valicode = split[1];
-            text_login_phone.setText(valiHelper.phone + "");
-            valiHelper.start();
-        }
     }
 
     @Override
@@ -82,7 +85,7 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_loginvali, container, false);
+        rootView = inflater.inflate(R.layout.fragment_bindbankcardtwo, container, false);
         return rootView;
     }
 
@@ -96,18 +99,17 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void initBase() {
-        activity = (LoginActivity) getActivity();
+        activity = (BindBankCardActivity) getActivity();
     }
 
     private void initView() {
         showingroup = (ViewGroup) getView().findViewById(R.id.showingroup);
-        btn_go = (CircularProgressButton) getView().findViewById(R.id.btn_go);
+        btn_go = getView().findViewById(R.id.btn_go);
         btn_go_vali = (TextView) getView().findViewById(R.id.btn_go_vali);
-        text_login_phone = (TextView) getView().findViewById(R.id.text_login_phone);
-        edit_login_vali = (EditText) getView().findViewById(R.id.edit_login_vali);
-        btn_go.setIndeterminateProgressMode(true);
-
-        getView().findViewById(R.id.btn_left).setOnClickListener(this);
+        edit_bindbankcard_bankname = (EditText) getView().findViewById(R.id.edit_bindbankcard_bankname);
+        edit_bindbankcard_phone = (EditText) getView().findViewById(R.id.edit_bindbankcard_phone);
+        edit_bindbankcard_vali = (EditText) getView().findViewById(R.id.edit_bindbankcard_vali);
+        btn_go_vali.setOnClickListener(this);
 
         valiHelper = new ValiHelper(btn_go_vali);
     }
@@ -117,7 +119,6 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
 
     private void initCtrl() {
         btn_go.setOnClickListener(this);
-        btn_go_vali.setOnClickListener(this);
     }
 
     private void freshCtrl() {
@@ -127,34 +128,27 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.btn_go) {
-            btn_go.setClickable(false);
-
-            String vali = edit_login_vali.getText().toString();
-            String msg = AppVali.valicode(valiHelper.valicode, vali);
+            String phone = edit_bindbankcard_phone.getText().toString();
+            String vali = edit_bindbankcard_vali.getText().toString();
+            String msg = AppVali.addBankCard(phone, valiHelper.phone, vali, valiHelper.valicode, bankNum, bankName);
             if (msg != null) {
                 Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                btn_go.setClickable(true);
             } else {
-                btn_go.setProgress(50);
-                AppHelper.progOk2dle(btn_go, new AppHelper.ProgressCallback() {
-                    @Override
-                    public void callback() {
-                        String phone_flag = valiHelper.phone + "|" + "1";
-                        EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_DIALOGLOGON_PHONE, phone_flag));
-                        activity.next();
-                        btn_go.setClickable(true);
-                    }
-                });
+                netAddBankCard(bankNum, bankName, valiHelper.phone);
             }
         } else if (i == R.id.btn_go_vali) {
-            netGetValicode(valiHelper.phone);
-        } else if (i == R.id.btn_left) {
-            activity.last();
+            String phone = edit_bindbankcard_phone.getText().toString();
+            String msg = AppVali.phone(phone);
+            if (msg != null) {
+                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+            } else {
+                netGetValicode(phone);
+            }
         }
     }
 
-
     private void netGetValicode(String phone) {
+        valiHelper.phone = phone;
         RequestParams params = new RequestParams(AppData.Url.sendCode);
         params.addBodyParameter("mobile", phone);
         CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
@@ -167,6 +161,7 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
                     //保持验证码和手机号
                     CommonEntity com = (CommonEntity) pojo;
                     valiHelper.valicode = com.getValicode();
+
                     //开始计时
                     valiHelper.start();
                 }
@@ -185,40 +180,34 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
         });
     }
 
-//    ////////////////////////////
-//    //保持验证码
-//    private String valicode;
-//    //保持已验证手机号
-//    private String phone;
-//
-//    ////////////////////////////
-//    //获取验证码计时
-//
-//    private final static int MAXTIME = 60;
-//    private int time = MAXTIME;
-//    private final static int WHAT_TIME = 0;
-//
-//    private void sendTimeMessage() {
-//        if (mHandler != null) {
-//            mHandler.removeMessages(WHAT_TIME);
-//            mHandler.sendEmptyMessageDelayed(WHAT_TIME, 1000);
-//        }
-//    }
-//
-//    private Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            if (msg.what == WHAT_TIME) {
-//                if (time > 0) {
-//                    btn_go_vali.setText("" + time);
-//                    time--;
-//                    LoginValiFragment.this.sendTimeMessage();
-//                } else {
-//                    btn_go_vali.setEnabled(true);
-//                    btn_go_vali.setText("获取验证码");
-//                    time = MAXTIME;
-//                }
-//            }
-//        }
-//    };
+    public void netAddBankCard(final String bankNum, final String bankName, final String phone) {
+        RequestParams params = new RequestParams(AppData.Url.addBankCard);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("bankNum", bankNum);
+        params.addBodyParameter("bankName", bankName);
+        params.addBodyParameter("mobile", phone);
+        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+                activity.setResult(Activity.RESULT_OK);
+                activity.finish();
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void netStart(int status) {
+                btn_go.setEnabled(false);
+            }
+
+            @Override
+            public void netEnd(int status) {
+                btn_go.setEnabled(true);
+            }
+        });
+    }
 }

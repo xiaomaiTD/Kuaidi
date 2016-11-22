@@ -48,9 +48,20 @@ public class User implements Serializable {
     private int isStart;    //是否出发 0：否，1：出发
     private float evaFen;    //司机评分
 
+    //乘客特有字段
+    //分享码
+    private String distributionCode;
 
     public float getEvaFen() {
         return evaFen;
+    }
+
+    public String getDistributionCode() {
+        return distributionCode;
+    }
+
+    public void setDistributionCode(String distributionCode) {
+        this.distributionCode = distributionCode;
     }
 
     public void setEvaFen(float evaFen) {

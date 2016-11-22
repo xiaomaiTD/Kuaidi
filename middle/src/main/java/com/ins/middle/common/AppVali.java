@@ -155,6 +155,44 @@ public class AppVali {
         }
     }
 
+    public static String addBankCard(String phone_edit, String phone, String vali, String valicode, String bankNum, String bankName) {
+        if (isEmpty(phone_edit)) {
+            return "请输入手机号";
+        } else if (!phone_edit.equals(phone)) {
+            return "你输入的号码没有验证过";
+        } else if (!ValidateUtil.Mobile(phone)) {
+            return "请输入正确的手机号";
+        } else if (!vali.equals(valicode)) {
+            return "验证码不正确";
+        }  else if (!length(bankNum, 6, 21)) {
+            return "银行卡号不正确";
+        }  else if (isEmpty(bankName)) {
+            return "银行名称不正确";
+        } else {
+            return null;
+        }
+    }
+
+    public static String phone(String phone) {
+        if (isEmpty(phone)) {
+            return "请输入手机号";
+        } else if (!ValidateUtil.Mobile(phone)) {
+            return "请输入正确的手机号";
+        } else {
+            return null;
+        }
+    }
+
+    public static String bank(String bank) {
+        if (isEmpty(bank)) {
+            return "请输入银行卡号";
+        } else if (!length(bank, 6, 21)) {
+            return "请输入正确的银行卡号";
+        } else {
+            return null;
+        }
+    }
+
     public static String find_psw(String phone_edit, String phone, String vali, String valicode, String psw, String newpsw) {
         if (isEmpty(phone_edit)) {
             return "请输入手机号";

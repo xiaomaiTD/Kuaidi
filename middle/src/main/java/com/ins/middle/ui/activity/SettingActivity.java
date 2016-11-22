@@ -99,13 +99,13 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
             startActivity(intent);
         } else if (i == R.id.item_setting_caulse) {
             intent.setClass(this, WebActivity.class);
-            intent.putExtra("url", "http://cn.bing.com");
+            intent.putExtra("url", AppData.Url.clause);
             intent.putExtra("title", "使用协议与隐私政策");
             startActivity(intent);
 
         } else if (i == R.id.item_setting_about) {
             intent.setClass(this, WebActivity.class);
-            intent.putExtra("url", "http://cn.bing.com");
+            intent.putExtra("url", AppData.Url.aboutUs);
             intent.putExtra("title", "关于我们");
             startActivity(intent);
 

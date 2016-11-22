@@ -27,7 +27,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.xutils.http.RequestParams;
 
 /**
- * type 0:登陆 1:注册 3:设置密码
+ * type 0:登陆 1:注册 2:设置密码
  */
 public class LoginPswFragment extends BaseFragment implements View.OnClickListener {
 
@@ -59,6 +59,8 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
         this.position = getArguments().getInt("position");
     }
 
+    private boolean back2first = false;
+
     @Subscribe
     public void onEventMainThread(String flagSpc) {
         if (AppConstant.EVENT_DIALOGLOGON_PHONE.equals(AppConstant.getFlag(flagSpc))) {
@@ -68,11 +70,20 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
             type = Integer.parseInt(split[1]);
 
             if (type == 0) {
+                //登录
                 text_login_title.setText("输入密码");
                 edit_login_psw.setHint("输入手机密码");
-            } else {
+                back2first = true;
+            } else if (type == 1) {
+                //注册
                 text_login_title.setText("设置密码");
                 edit_login_psw.setHint("设置手机密码");
+                back2first = false;
+            } else if (type == 2) {
+                //设置密码
+                text_login_title.setText("设置密码");
+                edit_login_psw.setHint("设置手机密码");
+                back2first = true;
             }
         }
     }
@@ -109,6 +120,8 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
         text_login_title = (TextView) getView().findViewById(R.id.text_login_title);
         btn_go = (CircularProgressButton) getView().findViewById(R.id.btn_go);
         btn_go.setIndeterminateProgressMode(true);
+
+        getView().findViewById(R.id.btn_left).setOnClickListener(this);
     }
 
     private void initData() {
@@ -134,6 +147,12 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
                 btn_go.setClickable(true);
             } else {
                 netLogin(phone, psw);
+            }
+        } else if (i == R.id.btn_left) {
+            if (back2first) {
+                activity.goPosition(0);
+            } else {
+                activity.last();
             }
         }
     }

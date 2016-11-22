@@ -18,8 +18,10 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/btn_left"
             android:layout_width="50dp"
             android:layout_height="match_parent"
+            android:foreground="?attr/selectableItemBackground"
             android:scaleType="center"
             android:src="@drawable/icon_back" />
 
@@ -64,33 +66,33 @@
         android:layout_weight="1" />
 
     <!--<TextView-->
-        <!--android:id="@+id/btn_go"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_marginBottom="30dp"-->
-        <!--android:background="@drawable/shape_rect_corner_yellow"-->
-        <!--android:foreground="?attr/selectableItemBackground"-->
-        <!--android:gravity="center"-->
-        <!--android:text="下一步"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="@dimen/text_big" />-->
+    <!--android:id="@+id/btn_go"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_marginBottom="30dp"-->
+    <!--android:background="@drawable/shape_rect_corner_yellow"-->
+    <!--android:foreground="?attr/selectableItemBackground"-->
+    <!--android:gravity="center"-->
+    <!--android:text="下一步"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="@dimen/text_big" />-->
 
     <com.dd.CircularProgressButton
         android:id="@+id/btn_go"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginBottom="30dp"
         android:background="#00000000"
         android:textColor="@color/white"
-        android:layout_marginBottom="30dp"
         android:textSize="@dimen/text_big"
-        app:cpb_cornerRadius="4dp"
         app:cpb_colorIndicator="@color/kd_yellow"
         app:cpb_colorIndicatorBackground="@color/kd_yellow_hint_trans"
         app:cpb_colorProgress="#00000000"
+        app:cpb_cornerRadius="4dp"
         app:cpb_iconComplete="@drawable/ic_action_accept"
         app:cpb_iconError="@drawable/ic_action_cancel"
         app:cpb_selectorIdle="@drawable/idle_state_selector"
-        style="?android:attr/borderlessButtonStyle"
         app:cpb_textIdle="下一步" />
 
 </LinearLayout>

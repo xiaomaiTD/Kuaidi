@@ -7,6 +7,7 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="20dp"
+    android:id="@+id/card_bankcard"
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@color/kd_zhifubao_blue"
     app:cardCornerRadius="7dp">
@@ -23,6 +24,7 @@
         android:paddingLeft="20dp">
 
         <ImageView
+            android:id="@+id/img_bankcard_logo"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/icon_payway_zhifubao" />
@@ -38,6 +40,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/text_bankcard_bankname"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -47,6 +50,7 @@
                 android:textSize="@dimen/text_big" />
 
             <TextView
+                android:id="@+id/text_bankcard_banknum"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -58,6 +62,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/text_bankcard_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已绑定"

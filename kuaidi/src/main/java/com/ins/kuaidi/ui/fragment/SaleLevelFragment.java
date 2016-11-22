@@ -1,6 +1,5 @@
 package com.ins.kuaidi.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.ui.activity.BindBankCardActivity;
 import com.ins.kuaidi.ui.activity.SaleActivity;
 import com.ins.middle.ui.fragment.BaseFragment;
 

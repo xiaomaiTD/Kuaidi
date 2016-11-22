@@ -13,11 +13,13 @@ import android.widget.TextView;
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.ui.fragment.SaleLevelFragment;
 import com.ins.kuaidi.ui.fragment.SalePeopleFragment;
+import com.ins.middle.common.AppData;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.ins.middle.ui.activity.BaseBackActivity;
+import com.ins.sharesdk.dialog.ShareDialog;
 //import com.sobey.share.sharesdk.dialog.ShareDialog;
 
-public class SaleActivity extends BaseBackActivity implements View.OnClickListener{
+public class SaleActivity extends BaseBackActivity implements View.OnClickListener {
 
     private ViewPager viewPager;
     private SaleActivity.MyPagerAdapter pagerAdapter;
@@ -89,11 +91,12 @@ public class SaleActivity extends BaseBackActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_right:
-//                ShareDialog shareDialog = new ShareDialog(this);
-//                shareDialog.setShareData("titletest", "contenttest", "http://wiki.mob.com/Android_%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90%E6%8C%87%E5%8D%97/", "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
-//                shareDialog.show();
+                String url = AppData.Url.shareUrl + "?distributionCode=" + AppData.App.getUser().getDistributionCode();
+                ShareDialog shareDialog = new ShareDialog(this);
+                shareDialog.setShareData("陛下", "您有一封新的奏折~", url, "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
+                shareDialog.show();
                 break;
         }
     }

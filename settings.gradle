@@ -1,1 +1,1 @@
-include ':kuaidi', ':common', ':baidumapsdk', ':library_swipback', ':library_version', ':library_camera', ':middle', ':driver', ':sharesdknew'
+include ':kuaidi', ':common', ':baidumapsdk', ':library_swipback', ':library_version', ':library_camera', ':middle', ':driver', ':sharesdknew', ':library_alipay'

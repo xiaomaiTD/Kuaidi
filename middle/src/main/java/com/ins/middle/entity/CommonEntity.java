@@ -19,6 +19,17 @@ public class CommonEntity {
     @SerializedName("location")
     private String location;
 
+    @SerializedName("bankName")
+    private String bankName;
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
     public String getLocation() {
         return location;
     }

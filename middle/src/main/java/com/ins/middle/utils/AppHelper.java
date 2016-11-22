@@ -100,7 +100,7 @@ public class AppHelper {
         void callback();
     }
 
-    public static void AttachKeybordWithPswView(VirtualKeyboardView keybord, final PswView pswView){
+    public static void AttachKeybordWithPswView(VirtualKeyboardView keybord, final PswView pswView) {
         keybord.setOnKeyBordClickListener(new VirtualKeyboardView.OnKeyBordClickListener() {
             @Override
             public void onNumClick(int num) {
@@ -130,8 +130,8 @@ public class AppHelper {
         return ret;
     }
 
-    public static String getOrderType(int orderType){
-        switch (orderType){
+    public static String getOrderType(int orderType) {
+        switch (orderType) {
             case 2001:
                 return "正在派单";
             case 2002:
@@ -148,5 +148,16 @@ public class AppHelper {
                 return "已取消";
         }
         return "";
+    }
+
+    public static String getUnSeeBankNum(String banknum) {
+        if (StrUtils.isEmpty(banknum)) {
+            return "";
+        }
+        if (banknum.length() <= 4) {
+            return "";
+        }
+        String last = banknum.substring(banknum.length() - 4);
+        return "**** **** **** " + last;
     }
 }

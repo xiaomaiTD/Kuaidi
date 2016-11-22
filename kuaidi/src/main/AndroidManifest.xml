@@ -92,11 +92,7 @@
             android:label="@string/title_activity_complaint"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
-        <activity
-            android:name=".ui.activity.WalletActivity"
-            android:label="@string/title_activity_wallet"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
+
         <activity
             android:name=".ui.activity.PaywayActivity"
             android:label="@string/title_activity_payway"
@@ -112,11 +108,7 @@
             android:label="@string/title_activity_coupon"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
-        <activity
-            android:name=".ui.activity.BankCardActivity"
-            android:label="@string/title_activity_bankcard"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
+
         <activity
             android:name=".ui.activity.MoneyActivity"
             android:label="@string/title_activity_money"
@@ -127,11 +119,7 @@
             android:label="@string/title_activity_cash"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
-        <activity
-            android:name=".ui.activity.BindBankCardActivity"
-            android:label="@string/title_activity_bindbankcard"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
+
         <activity
             android:name=".ui.activity.SaleActivity"
             android:label="@string/title_activity_sale"
@@ -151,7 +139,14 @@
             android:name=".ui.activity.PayActivity"
             android:label="@string/title_activity_pay"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
+            android:theme="@style/AppTheme.Back">
+        </activity>
+        <activity
+            android:name=".ui.activity.PayTestActivity"
+            android:label="@string/title_activity_pay"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back">
+        </activity>
         <activity
             android:name=".ui.activity.EvaActivity"
             android:label="@string/title_activity_eva"
