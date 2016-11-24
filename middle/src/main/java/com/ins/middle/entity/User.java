@@ -38,6 +38,7 @@ public class User implements Serializable {
     private int adminUserId;
     private long updatetime;
     private String email;
+    private int hasPayPassword;
 
     //司机特色字段 1 在线0 不在线
     private int isOnline;
@@ -51,9 +52,26 @@ public class User implements Serializable {
     //乘客特有字段
     //分享码
     private String distributionCode;
+    private int money;
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
 
     public float getEvaFen() {
         return evaFen;
+    }
+
+    public int getHasPayPassword() {
+        return hasPayPassword;
+    }
+
+    public void setHasPayPassword(int hasPayPassword) {
+        this.hasPayPassword = hasPayPassword;
     }
 
     public String getDistributionCode() {

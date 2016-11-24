@@ -16,6 +16,9 @@ import com.ins.middle.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.BankCard;
+import com.ins.middle.entity.User;
+import com.ins.middle.ui.dialog.DialogSure;
+import com.ins.middle.utils.AppHelper;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.ui.adapter.RecycleAdapterBankCard;
 import com.liaoinstan.springview.container.AliFooter;
@@ -40,6 +43,8 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
     private ViewGroup showingroup;
     private View showin;
 
+    DialogSure dialogSure;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +57,31 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
         initData();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialogSure != null) dialogSure.dismiss();
+    }
+
     private void initBase() {
+        dialogSure = new DialogSure(this);
+        dialogSure.setOnOkListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //有提现密码则提现 1，没有则设置提现密码 0
+                if (AppData.App.getUser().getHasPayPassword()==1) {
+                    Intent intent = new Intent(BankCardActivity.this, BindUnBankCardActivity.class);
+                    intent.putExtra("id", cardId);
+                    startActivityForResult(intent, RESULT_BINDUNBANKCARD);
+                    dialogSure.dismiss();
+                }else {
+                    //去设置提现密码
+                    Toast.makeText(BankCardActivity.this, "您还没有设置提现密码，请先设置", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(BankCardActivity.this, ModifyPswPayActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     private void initView() {
@@ -102,7 +131,6 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
         adapter.notifyDataSetChanged();
     }
 
-    private static final int RESULT_BINDBANKCARD = 0xf101;
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -112,9 +140,19 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
         }
     }
 
+    private int cardId;
+
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+        BankCard card = adapter.getResults().get(viewHolder.getLayoutPosition());
+        cardId = card.getId();
+        dialogSure.setTitle("解绑" + card.getBankName());
+        dialogSure.setMsg(AppHelper.getUnSeeBankNum(card.getBankNum()));
+        dialogSure.show();
     }
+
+    private static final int RESULT_BINDBANKCARD = 0xf101;
+    private static final int RESULT_BINDUNBANKCARD = 0xf102;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -122,7 +160,13 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
         switch (requestCode) {
             case RESULT_BINDBANKCARD:
                 if (resultCode == RESULT_OK) {
-                    Log.e("liao","RESULT_OK");
+                    Log.e("liao", "RESULT_OK");
+                    netGetTrips(1);
+                }
+                break;
+            case RESULT_BINDUNBANKCARD:
+                if (resultCode == RESULT_OK) {
+                    Log.e("liao", "RESULT_OK");
                     netGetTrips(1);
                 }
                 break;

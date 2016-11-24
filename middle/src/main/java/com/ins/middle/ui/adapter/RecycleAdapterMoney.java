@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.adapter;
+package com.ins.middle.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.ins.kuaidi.R;
+import com.ins.middle.R;
 import com.ins.middle.entity.TestEntity;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 

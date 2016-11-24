@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.ins.middle.R;
+import com.sobey.common.utils.StrUtils;
 
 
 /**
@@ -22,23 +23,31 @@ public class DialogSure extends Dialog {
 
     private Context context;
     private TextView text_dialog_sure;
+    private TextView text_dialog_title;
     private TextView text_cancle;
     private TextView text_ok;
+
     private String msg;
+    private String title;
     private String cancelStr;
     private String sureStr;
 
     public DialogSure(Context context) {
-        this(context, "确定？", "取消", "确定");
+        this(context, "", "确定？", "取消", "确定");
     }
 
     public DialogSure(Context context, String msg) {
-        this(context, msg, "取消", "确定");
+        this(context, "", msg, "取消", "确定");
     }
 
-    public DialogSure(Context context, String msg, String cancelStr, String sureStr) {
+    public DialogSure(Context context, String title, String msg) {
+        this(context, title, msg, "取消", "确定");
+    }
+
+    public DialogSure(Context context, String title, String msg, String cancelStr, String sureStr) {
         super(context, R.style.MyDialog);
         this.context = context;
+        this.title = title;
         this.msg = msg;
         this.cancelStr = cancelStr;
         this.sureStr = sureStr;
@@ -50,20 +59,41 @@ public class DialogSure extends Dialog {
         View v = inflater.inflate(R.layout.dialog_sure, null);// 得到加载view
 
         text_dialog_sure = (TextView) v.findViewById(R.id.text_dialog_sure);
+        text_dialog_title = (TextView) v.findViewById(R.id.text_dialog_title);
         text_cancle = (TextView) v.findViewById(R.id.dialog_cancel);
         text_ok = (TextView) v.findViewById(R.id.dialog_ok);
 
-        text_dialog_sure.setText(msg);
-        text_cancle.setText(cancelStr);
-        text_ok.setText(sureStr);
+
         text_cancle.setOnClickListener(listener);
         text_ok.setOnClickListener(listener);
 
+        setData();
+
         this.setCanceledOnTouchOutside(true);
         super.setContentView(v);
-
     }
 
+    public void setTitle(String title){
+        this.title = title;
+        setData();
+    }
+
+    public void setMsg(String msg){
+        this.msg = msg;
+        setData();
+    }
+
+    private void setData(){
+        text_dialog_title.setText(title);
+        text_dialog_sure.setText(msg);
+        text_cancle.setText(cancelStr);
+        text_ok.setText(sureStr);
+        if (StrUtils.isEmpty(title)){
+            text_dialog_title.setVisibility(View.GONE);
+        }else {
+            text_dialog_title.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     public void show() {
@@ -80,10 +110,6 @@ public class DialogSure extends Dialog {
         lp.width = (int) (screenWidth * 0.85); // 宽度
 //        lp.height = (int) (lp.width*0.65); // 高度
         dialogWindow.setAttributes(lp);
-    }
-
-    public void setMsg(String msg) {
-        text_dialog_sure.setText(msg);
     }
 
     public void setOnCancleListener(View.OnClickListener listener) {

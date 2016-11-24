@@ -13,6 +13,7 @@ import com.ins.middle.R;
 import com.ins.middle.entity.BankCard;
 import com.ins.middle.entity.TestEntity;
 import com.ins.middle.utils.AppHelper;
+import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 
 import java.util.List;
@@ -49,9 +50,13 @@ public class RecycleAdapterBankCard extends RecyclerView.Adapter<RecycleAdapterB
 
         holder.text_bankcard_bankname.setText(card.getBankName());
         holder.text_bankcard_banknum.setText(AppHelper.getUnSeeBankNum(card.getBankNum()));
-//        holder.text_bankcard_status.setText("已绑定");
-//        holder.card_bankcard.setCardBackgroundColor();
-//        holder.img_bankcard_logo.setImageResource();
+        if (card.getBankName().equals("中国银行")){
+            holder.card_bankcard.setBackgroundResource(R.drawable.shape_bank_red);
+            GlideUtil.loadImg(context,holder.img_bankcard_logo,R.drawable.default_bk,"http://7xnfyf.com1.z0.glb.clouddn.com/zhongguo.png");
+        }else {
+            holder.card_bankcard.setBackgroundResource(R.drawable.shape_bank_blue);
+            GlideUtil.loadImg(context,holder.img_bankcard_logo,R.drawable.default_bk,"http://7xnfyf.com1.z0.glb.clouddn.com/jianse.png");
+        }
     }
 
     @Override
@@ -65,7 +70,7 @@ public class RecycleAdapterBankCard extends RecyclerView.Adapter<RecycleAdapterB
         private TextView text_bankcard_bankname;
         private TextView text_bankcard_banknum;
         private TextView text_bankcard_status;
-        private CardView card_bankcard;
+        private View card_bankcard;
 
         public Holder(View itemView) {
             super(itemView);
@@ -73,7 +78,7 @@ public class RecycleAdapterBankCard extends RecyclerView.Adapter<RecycleAdapterB
             text_bankcard_bankname = (TextView) itemView.findViewById(R.id.text_bankcard_bankname);
             text_bankcard_banknum = (TextView) itemView.findViewById(R.id.text_bankcard_banknum);
             text_bankcard_status = (TextView) itemView.findViewById(R.id.text_bankcard_status);
-            card_bankcard = (CardView) itemView.findViewById(R.id.card_bankcard);
+            card_bankcard = itemView.findViewById(R.id.card_bankcard);
         }
     }
 

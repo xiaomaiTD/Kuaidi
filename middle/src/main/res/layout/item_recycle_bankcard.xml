@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/card_noelevation"
     android:layout_width="match_parent"
     android:layout_height="90dp"
     android:layout_marginLeft="10dp"
@@ -9,8 +8,7 @@
     android:layout_marginTop="20dp"
     android:id="@+id/card_bankcard"
     android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/kd_zhifubao_blue"
-    app:cardCornerRadius="7dp">
+    android:background="@drawable/shape_bank_blue">
 
     <LinearLayout
         android:id="@+id/card_payway_zhifubao"
@@ -27,7 +25,8 @@
             android:id="@+id/img_bankcard_logo"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/icon_payway_zhifubao" />
+            android:padding="3dp"
+            android:background="@drawable/shape_oval_white_trans"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -72,4 +71,4 @@
     </LinearLayout>
 
 
-</android.support.v7.widget.CardView>
+</FrameLayout>

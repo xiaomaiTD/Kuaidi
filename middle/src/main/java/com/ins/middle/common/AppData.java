@@ -147,6 +147,7 @@ public class AppData {
         public static String getInfo			    	= domain + "mobile/user/getInfo";												//token登陆
         public static String upload			    	= domain + "res/upload";												            //上传资源
         public static String updateUser		    	= domain + "mobile/user/update";												    //修改个人信息
+        public static String resetPassword		    = domain + "mobile/user/resetPassword"; 										//忘记密码
         public static String identify   		    	= domain + "mobile/user/submitAuth";										    //车主认证
         public static String feedback   		    	= domain + "mobile/suggest/add";										            //意见反馈
         public static String onOffLine   		    	= domain + "mobile/order/onOffLine";										    //司机上下线（司机）
@@ -171,6 +172,9 @@ public class AppData {
         public static String findBankCard             = domain + "mobile/bank/findBankCard";             							    //获取已绑定银行卡
         public static String getBank                  = domain + "mobile/bank/getBank";             							        //获取银行卡所属银行
         public static String addBankCard              = domain + "mobile/bank/addBankCard";             							    //绑定银行卡
+        public static String delBankCard              = domain + "mobile/bank/delBankCard";             							    //解绑银行卡
+        public static String salelevel                = domain + "mobile/user/findDistribution";             						//分销等级（乘客）
+        public static String salepeople               = domain + "mobile/user/findDistributionPer";             						//分销列表（乘客）
 
 
     }

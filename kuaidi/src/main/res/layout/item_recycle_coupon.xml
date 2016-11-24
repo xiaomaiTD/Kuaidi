@@ -6,7 +6,7 @@
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_marginTop="20dp"
-    android:background="@color/white"
+    android:background="@drawable/bk_coupon"
     android:foreground="?attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
@@ -23,11 +23,6 @@
         android:text="5￥"
         android:textColor="@color/kd_yellow"
         android:textSize="30sp" />
-
-    <View
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="@color/com_line" />
 
     <LinearLayout
         android:layout_marginTop="20dp"

@@ -90,6 +90,21 @@
             android:label="@string/title_activity_bindbankcard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.BindUnBankCardActivity"
+            android:label="@string/title_activity_bindunbankcard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.MoneyActivity"
+            android:label="@string/title_activity_money"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.CashActivity"
+            android:label="@string/title_activity_cash"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
     </application>
 
 </manifest>

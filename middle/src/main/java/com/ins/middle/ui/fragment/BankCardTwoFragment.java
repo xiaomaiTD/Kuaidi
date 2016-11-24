@@ -2,8 +2,6 @@ package com.ins.middle.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -59,7 +57,7 @@ public class BankCardTwoFragment extends BaseFragment implements View.OnClickLis
 
     @Subscribe
     public void onEventMainThread(String flagSpc) {
-        if (AppConstant.EVENT_DIALOGLOGON_BANK.equals(AppConstant.getFlag(flagSpc))) {
+        if (AppConstant.EVENT_BIND_BANK.equals(AppConstant.getFlag(flagSpc))) {
             String value = AppConstant.getStr(flagSpc);
             String[] split = value.split("\\|");
             bankNum = split[0];

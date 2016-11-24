@@ -1,5 +1,6 @@
 package com.ins.middle.ui.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,12 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ins.middle.R;
+import com.ins.middle.common.AppConstant;
+import com.ins.middle.common.AppData;
+import com.ins.middle.common.AppVali;
+import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.CommonEntity;
+import com.ins.middle.entity.User;
+import com.ins.middle.ui.activity.BindUnBankCardActivity;
 import com.ins.middle.ui.activity.ModifyPswPayActivity;
 import com.ins.middle.utils.AppHelper;
+import com.sobey.common.utils.MD5Util;
 import com.sobey.common.view.PswView;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.xutils.http.RequestParams;
 
 /**
  * type:0 第一次输入密码 1: 确认密码
@@ -20,7 +33,6 @@ import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
 public class ModifyPswPayTwoFragment extends BaseFragment implements View.OnClickListener {
 
     private int position;
-    private int type;
     private View rootView;
     private ViewGroup showingroup;
     private View showin;
@@ -33,11 +45,10 @@ public class ModifyPswPayTwoFragment extends BaseFragment implements View.OnClic
     private VirtualKeyboardView keybord;
 
 
-    public static Fragment newInstance(int position, int type) {
+    public static Fragment newInstance(int position) {
         ModifyPswPayTwoFragment f = new ModifyPswPayTwoFragment();
         Bundle b = new Bundle();
         b.putInt("position", position);
-        b.putInt("type", type);
         f.setArguments(b);
         return f;
     }
@@ -46,7 +57,6 @@ public class ModifyPswPayTwoFragment extends BaseFragment implements View.OnClic
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.position = getArguments().getInt("position");
-        this.type = getArguments().getInt("type");
     }
 
     @Nullable
@@ -76,13 +86,8 @@ public class ModifyPswPayTwoFragment extends BaseFragment implements View.OnClic
         keybord = (VirtualKeyboardView) getView().findViewById(R.id.keybord);
         text_name = (TextView) getView().findViewById(R.id.text_modifypswpay_name);
 
-        if (type==0) {
-            btn_go.setText("下一步");
-            text_name.setText("支付密码");
-        }else {
-            btn_go.setText("完成修改");
-            text_name.setText("确认支付密码");
-        }
+        btn_go.setText("下一步");
+        text_name.setText("提现密码");
     }
 
     private void initData() {
@@ -95,6 +100,7 @@ public class ModifyPswPayTwoFragment extends BaseFragment implements View.OnClic
 //        KeyBoardUtil.EnableSysKeyBoard(getActivity(), pswView);
 //        pswView.setEnabled(false);
         //设置点击弹出自定义虚拟键盘
+        keybord.setVisibility(View.GONE);
         keybord.setClickShowKeybord(pswView);
         //设置虚拟键盘点击事件
         AppHelper.AttachKeybordWithPswView(keybord, pswView);
@@ -107,8 +113,44 @@ public class ModifyPswPayTwoFragment extends BaseFragment implements View.OnClic
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.btn_go) {
-            activity.next();
-
+            String psw = pswView.getPsw();
+            String msg = AppVali.payPsw(psw);
+            if (msg != null) {
+                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+            } else {
+                EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_MODIFYPAYPSW, psw));
+                activity.next();
+            }
         }
+    }
+
+    public void netCommit(String psw) {
+        RequestParams params = new RequestParams(AppData.Url.updateUser);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("payPassword", MD5Util.md5(psw));
+        CommonNet.samplepost(params, User.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+                User user = (User) pojo;
+                AppData.App.saveUser(user);
+                activity.finish();
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void netStart(int status) {
+                btn_go.setEnabled(false);
+            }
+
+            @Override
+            public void netEnd(int status) {
+                btn_go.setEnabled(true);
+            }
+        });
     }
 }

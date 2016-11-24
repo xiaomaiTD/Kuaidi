@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,8 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ins.kuaidi.R;
+import com.ins.middle.R;
+import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.ui.activity.BaseBackActivity;
 
@@ -65,11 +66,9 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         Intent intent = new Intent();
-        switch (v.getId()) {
-            case R.id.lay_wallet_payway:
-                intent.setClass(this, PaywayActivity.class);
-                startActivity(intent);
-                break;
+        int i = v.getId();
+        if (i == R.id.lay_wallet_payway) {
+
         }
     }
 }

@@ -10,7 +10,9 @@ public class AppConstant {
 
     public static final String EVENT_DIALOGLOGON_VALI = "EVENT_DIALOGLOGON_VALI";
     public static final String EVENT_DIALOGLOGON_PHONE = "EVENT_DIALOGLOGON_PHONE";
-    public static final String EVENT_DIALOGLOGON_BANK = "EVENT_DIALOGLOGON_BANK";
+    public static final String EVENT_BIND_BANK = "EVENT_BIND_BANK";       //绑定银行卡fragment页面传参
+    public static final String EVENT_MODIFYPAYPSW = "EVENT_MODIFYPAYPSW";       //修改提现密码fragment页面传参
+    public static final String EVENT_SALE = "EVENT_SALE";       //分享列表fragment页面传参
 
     private static final String FLAGMODE = "LOVE&INS";
 

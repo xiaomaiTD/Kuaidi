@@ -86,7 +86,7 @@ public class PswView extends LinearLayout {
     }
 
     public void addNum(int num) {
-        if (currentIndex >= 0 && currentIndex <= tvList.length-1) {
+        if (currentIndex >= 0 && currentIndex <= tvList.length - 1) {
             tvList[currentIndex].setText("" + num);
             imgList[currentIndex].setVisibility(VISIBLE);
             currentIndex++;
@@ -99,5 +99,13 @@ public class PswView extends LinearLayout {
             imgList[currentIndex - 1].setVisibility(INVISIBLE);
             currentIndex--;
         }
+    }
+
+    public String getPsw() {
+        String psw = "";
+        for (TextView tv : tvList) {
+            psw += tv.getText();
+        }
+        return psw;
     }
 }

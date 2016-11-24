@@ -155,6 +155,66 @@ public class AppVali {
         }
     }
 
+    public static String delBankCard(int cardId, String psw) {
+        if (isEmpty(psw)) {
+            return "请输入提现密码";
+        } else if (psw.length() != 6) {
+            return "请输入完整的提现密码";
+        } else if (cardId == 0) {
+            return "银行卡不存在 id:0";
+        } else {
+            return null;
+        }
+    }
+
+    public static String payPsw(String psw) {
+        if (isEmpty(psw)) {
+            return "请输入提现密码";
+        } else if (psw.length() != 6) {
+            return "请输入完整的提现密码";
+        } else {
+            return null;
+        }
+    }
+
+    public static String payPsw(String psw, String repetpsw) {
+        if (isEmpty(repetpsw)) {
+            return "请输入提现密码";
+        } else if (repetpsw.length() != 6) {
+            return "请输入完整的提现密码";
+        } else if (!repetpsw.equals(psw)) {
+            return "两次输入密码不一致";
+        } else {
+            return null;
+        }
+    }
+
+    public static String vali(String vali, String valicode) {
+        if (isEmpty(vali)) {
+            return "请输入验证码";
+        } else if (!vali.equals(valicode)) {
+            return "验证码不正确";
+        } else {
+            return null;
+        }
+    }
+
+    public static String modifypswuser(String vali, String valicode, String psw, String repetpsw) {
+        if (isEmpty(psw)) {
+            return "请输入新密码";
+        } else if (isEmpty(repetpsw)) {
+            return "请再次输入新密码";
+        } else if (!psw.equals(repetpsw)) {
+            return "两次输入密码不一致";
+        } else if (isEmpty(vali)) {
+            return "请输入验证码";
+        } else if (!vali.equals(valicode)) {
+            return "验证码不正确";
+        } else {
+            return null;
+        }
+    }
+
     public static String addBankCard(String phone_edit, String phone, String vali, String valicode, String bankNum, String bankName) {
         if (isEmpty(phone_edit)) {
             return "请输入手机号";
@@ -164,9 +224,9 @@ public class AppVali {
             return "请输入正确的手机号";
         } else if (!vali.equals(valicode)) {
             return "验证码不正确";
-        }  else if (!length(bankNum, 6, 21)) {
+        } else if (!length(bankNum, 6, 21)) {
             return "银行卡号不正确";
-        }  else if (isEmpty(bankName)) {
+        } else if (isEmpty(bankName)) {
             return "银行名称不正确";
         } else {
             return null;

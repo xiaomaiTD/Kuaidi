@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="修改支付密码"
+                android:text="修改提现密码"
                 android:textColor="@color/sb_text_blank_deep"
                 android:textSize="@dimen/text_subig" />
         </android.support.v7.widget.Toolbar>

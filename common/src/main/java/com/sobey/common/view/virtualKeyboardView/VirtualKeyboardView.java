@@ -138,7 +138,11 @@ public class VirtualKeyboardView extends RelativeLayout {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                show();
+                if (getVisibility()!=VISIBLE) {
+                    show();
+                }else {
+                    hide();
+                }
             }
         });
     }

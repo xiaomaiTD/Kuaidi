@@ -1,5 +1,6 @@
 package com.ins.kuaidi.common;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
@@ -154,8 +155,13 @@ public class NetHelper {
     }
 
     public void netLatDriver(int lineId, int driverId) {
+        String token = AppData.App.getToken();
+        if(StrUtils.isEmpty(token)){
+            Log.e("liao","token=null 不请求司机位置");
+            return;
+        }
         RequestParams params = new RequestParams(AppData.Url.getPasLatDriver);
-        params.addHeader("token", AppData.App.getToken());
+        params.addHeader("token", token);
         params.addBodyParameter("lineId", lineId + "");
         params.addBodyParameter("driverId", driverId + "");
         CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {

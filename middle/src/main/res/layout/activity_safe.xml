@@ -94,7 +94,7 @@
                 android:drawableLeft="@drawable/icon_money_cash"
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
-                android:text="修改支付密码"
+                android:text="修改提现密码"
                 android:textColor="@color/com_text_blank"
                 android:textSize="@dimen/text_nomal" />
 

@@ -108,6 +108,7 @@
             android:paddingRight="30dp">
 
             <LinearLayout
+                android:id="@+id/lay_pay_total"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center_vertical"
@@ -123,17 +124,19 @@
 
 
                 <TextView
+                    android:id="@+id/text_pay_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="60.0元"
+                    android:text="-元"
                     android:textColor="@color/com_text_blank"
                     android:textSize="@dimen/text_big_nomal" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lay_pay_this"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center_vertical"
@@ -149,17 +152,19 @@
 
 
                 <TextView
+                    android:id="@+id/text_pay_this"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="25.0元"
+                    android:text="-元"
                     android:textColor="@color/com_text_blank"
                     android:textSize="@dimen/text_big_nomal" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lay_pay_coupon"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center_vertical"
@@ -175,15 +180,46 @@
 
 
                 <TextView
+                    android:id="@+id/text_pay_coupon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="-5.0元"
+                    android:text="-元"
                     android:textColor="@color/com_text_blank"
                     android:textSize="@dimen/text_big_nomal" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_pay_balance"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="余额支付"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_big_nomal" />
+
+
+                <TextView
+                    android:id="@+id/text_pay_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:text="-元"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_big_nomal" />
+
+            </LinearLayout>
+
+
 
             <View
                 android:layout_width="match_parent"

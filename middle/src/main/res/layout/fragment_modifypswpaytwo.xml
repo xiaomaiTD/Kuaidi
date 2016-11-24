@@ -20,26 +20,9 @@
             android:id="@+id/text_modifypswpay_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="支付密码"
+            android:text="提现密码"
             android:textColor="@color/com_text_blank"
             android:textSize="@dimen/text_nomal" />
-
-        <!--<com.jungly.gridpasswordview.GridPasswordView-->
-        <!--android:id="@+id/pswView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="40dp"-->
-        <!--android:layout_marginLeft="50dp"-->
-        <!--android:layout_marginRight="50dp"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:gravity="center"-->
-        <!--app:gpvGridColor="#ffffff"-->
-        <!--app:gpvLineColor="@color/com_line"-->
-        <!--app:gpvLineWidth="1dp"-->
-        <!--app:gpvPasswordLength="6"-->
-        <!--app:gpvPasswordTransformation="*"-->
-        <!--app:gpvPasswordType="numberPassword"-->
-        <!--app:gpvTextColor="@color/com_text_blank"-->
-        <!--app:gpvTextSize="25sp" />-->
 
         <com.sobey.common.view.PswView
             android:id="@+id/pswView"

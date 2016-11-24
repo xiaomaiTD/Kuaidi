@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.reflect.TypeToken;
 import com.ins.kuaidi.R;
+import com.ins.kuaidi.entity.PayData;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
@@ -23,15 +24,18 @@ import com.ins.middle.entity.EventOrder;
 import com.ins.middle.ui.dialog.DialogLoading;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.ui.activity.BaseBackActivity;
+import com.sobey.common.utils.NumUtil;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.http.RequestParams;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import paytest.ins.com.library_alipay.PayResult;
+import paytest.ins.com.library_alipay.SignUtils;
 
 //type:0 支付定金 1：支付定金成功 2：支付尾款 3：支付尾款成功
 public class PayActivity extends BaseBackActivity implements View.OnClickListener {
@@ -43,6 +47,15 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
     private TextView text_pay_title;
     private TextView text_pay_money;
     private TextView btn_go;
+
+    private TextView text_pay_total;
+    private TextView text_pay_this;
+    private TextView text_pay_coupon;
+    private TextView text_pay_balance;
+    private View lay_pay_total;
+    private View lay_pay_this;
+    private View lay_pay_coupon;
+    private View lay_pay_balance;
 
     private int type;
     private int orderId;
@@ -84,11 +97,20 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         text_pay_title = (TextView) findViewById(R.id.text_pay_title);
         text_pay_money = (TextView) findViewById(R.id.text_pay_money);
 
+        text_pay_total = (TextView) findViewById(R.id.text_pay_total);
+        text_pay_this = (TextView) findViewById(R.id.text_pay_this);
+        text_pay_coupon = (TextView) findViewById(R.id.text_pay_coupon);
+        text_pay_balance = (TextView) findViewById(R.id.text_pay_balance);
+        lay_pay_total = findViewById(R.id.lay_pay_total);
+        lay_pay_this = findViewById(R.id.lay_pay_this);
+        lay_pay_coupon = findViewById(R.id.lay_pay_coupon);
+        lay_pay_balance = findViewById(R.id.lay_pay_balance);
+
         btn_go.setOnClickListener(this);
     }
 
     private void initData() {
-//        netGetPayData();
+        netGetPayData();
     }
 
     private void initCtrl() {
@@ -102,7 +124,7 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
             case R.id.btn_go:
                 if (type == 0) {
 //                    netPayFirst(orderId, 0);
-                    netPay();
+                    netPay(orderId, 0);
                 } else if (type == 2) {
                     netPayFirst(orderId, 1);
                 }
@@ -147,8 +169,12 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         }
     }
 
-    private void setPayData(float money) {
-        text_pay_money.setText(money + "");
+    private void setPayData(PayData paydata) {
+        text_pay_money.setText(NumUtil.NumberFormat(paydata.getActualPay(), 1));
+        text_pay_total.setText(NumUtil.NumberFormat(paydata.getTotal(), 1) + "元");
+        text_pay_this.setText(NumUtil.NumberFormat(paydata.getThisTotalPay(), 1) + "元");
+        text_pay_coupon.setText("-" + NumUtil.NumberFormat(paydata.getCoupon(), 1) + "元");
+        text_pay_balance.setText(NumUtil.NumberFormat(paydata.getBalance(), 1) + "元");
     }
 
 
@@ -157,12 +183,12 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("flag", "0");
         params.addBodyParameter("orderId", orderId + "");
-        CommonNet.samplepost(params, Float.class, new CommonNet.SampleNetHander() {
+        CommonNet.samplepost(params, PayData.class, new CommonNet.SampleNetHander() {
             @Override
             public void netGo(int code, Object pojo, String text, Object obj) {
                 if (pojo != null) {
-                    Float money = (Float) pojo;
-                    setPayData(money);
+                    PayData payData = (PayData) pojo;
+                    setPayData(payData);
                     LoadingViewUtil.showout(showingroup, showin);
                 } else {
                     showin = LoadingViewUtil.showin(showingroup, R.layout.layout_lack, showin, new View.OnClickListener() {
@@ -235,24 +261,19 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
     }
 
     ////////////////////////
-    public void netPay() {
+    public void netPay(int orderId, final int flag) {
         RequestParams params = new RequestParams(AppData.Url.sign);
         params.addHeader("token", AppData.App.getToken());
-        CommonNet.samplepost(params, new TypeToken<Map<String, String>>() {
+        params.addBodyParameter("orderId", orderId + "");
+        params.addBodyParameter("flag", flag + "");
+        CommonNet.samplepost(params, new TypeToken<LinkedHashMap<String, String>>() {
         }.getType(), new CommonNet.SampleNetHander() {
             @Override
             public void netGo(int code, Object pojo, String text, Object obj) {
-                Toast.makeText(PayActivity.this, text, Toast.LENGTH_SHORT).show();
-                Map<String,String> map = (Map<String,String>)pojo;
+                Map<String, String> map = (LinkedHashMap<String, String>) pojo;
 
-                String ret = "";
-                for (String key : map.keySet()) {
-                    ret += key + "=" + map.get(key) + "&";
-                }
-                ret = StrUtils.subLastChart(ret,"&");
-                Log.e("liao", "orderInfo:" + ret);
-                final String orderInfo = ret;
-
+                final String orderInfo = SignUtils.getOrderInfo(map);
+                Log.e("liao", "orderInfo:" + orderInfo);
 
                 Runnable payRunnable = new Runnable() {
 
@@ -277,14 +298,7 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
 
             @Override
             public void netSetError(int code, String text) {
-            }
-
-            @Override
-            public void netEnd(int status) {
-            }
-
-            @Override
-            public void netStart(int status) {
+                Toast.makeText(PayActivity.this, text, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -325,6 +339,8 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
                 default:
                     break;
             }
-        };
+        }
+
+        ;
     };
 }

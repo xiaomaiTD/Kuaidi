@@ -97,7 +97,12 @@
             android:name=".ui.activity.PaywayActivity"
             android:label="@string/title_activity_payway"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
+            android:theme="@style/AppTheme.Back">
+            <intent-filter>
+                <action android:name="kuaidi.PaywayActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.PaywaySetActivity"
             android:label="@string/title_activity_paywayset"
@@ -107,18 +112,12 @@
             android:name=".ui.activity.CouponActivity"
             android:label="@string/title_activity_coupon"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
-
-        <activity
-            android:name=".ui.activity.MoneyActivity"
-            android:label="@string/title_activity_money"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
-        <activity
-            android:name=".ui.activity.CashActivity"
-            android:label="@string/title_activity_cash"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
+            android:theme="@style/AppTheme.Back">
+            <intent-filter>
+                <action android:name="kuaidi.CouponActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.activity.SaleActivity"
@@ -184,6 +183,13 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.TestActivity"
+            android:label="test"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
     </application>
 

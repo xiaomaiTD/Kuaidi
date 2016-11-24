@@ -16,7 +16,6 @@ import com.ins.middle.common.AppVali;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.ui.activity.BindBankCardActivity;
-import com.ins.middle.ui.dialog.DialogLoading;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.http.RequestParams;
@@ -119,7 +118,7 @@ public class BankCardOneFragment extends BaseFragment implements View.OnClickLis
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 CommonEntity com = (CommonEntity) pojo;
                 String bankName = com.getBankName();
-                EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_DIALOGLOGON_BANK, bankNum + "|" + bankName));
+                EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_BIND_BANK, bankNum + "|" + bankName));
                 activity.next();
             }
 

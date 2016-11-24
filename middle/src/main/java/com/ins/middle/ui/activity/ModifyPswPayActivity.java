@@ -10,20 +10,23 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.ins.middle.R;
+import com.ins.middle.common.AppData;
+import com.ins.middle.entity.User;
 import com.ins.middle.ui.fragment.ModifyPswPayOneFragment;
+import com.ins.middle.ui.fragment.ModifyPswPayThreeFragment;
 import com.ins.middle.ui.fragment.ModifyPswPayTwoFragment;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.ins.middle.ui.activity.BaseBackActivity;
 
 
 /**
- * type:0 急修项目 1:保养项目
+ * type:0 设置提现密码 1:修改提现密码
  */
 public class ModifyPswPayActivity extends BaseAppCompatActivity {
 
     private ViewPager viewPager;
     private MyPagerAdapter pagerAdapter;
-    private String[] title = new String[]{"修改支付密码", "修改支付密码", "修改支付密码"};
+    private String[] title = new String[]{"修改提现密码", "修改提现密码", "修改提现密码"};
 
     private TextView text_toolbar_title;
 
@@ -63,8 +66,12 @@ public class ModifyPswPayActivity extends BaseAppCompatActivity {
     }
 
     private void initBase() {
-        if (getIntent().hasExtra("type")) {
-            type = getIntent().getIntExtra("type", 0);
+        type = AppData.App.getUser().getHasPayPassword();
+        //type:0 设置提现密码 1:修改提现密码
+        if (type == 0) {
+            title = new String[]{"设置提现密码", "设置提现密码"};
+        } else {
+            title = new String[]{"修改提现密码", "修改提现密码", "修改提现密码"};
         }
     }
 
@@ -106,12 +113,21 @@ public class ModifyPswPayActivity extends BaseAppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) {
-                return ModifyPswPayOneFragment.newInstance(position);
-            } else if (position == 1) {
-                return ModifyPswPayTwoFragment.newInstance(position, 0);
-            } else if (position == 2) {
-                return ModifyPswPayTwoFragment.newInstance(position, 1);
+            //type:0 设置提现密码 1:修改提现密码
+            if (type == 0) {
+                if (position == 0) {
+                    return ModifyPswPayTwoFragment.newInstance(position);
+                } else if (position == 1) {
+                    return ModifyPswPayThreeFragment.newInstance(position);
+                }
+            } else {
+                if (position == 0) {
+                    return ModifyPswPayOneFragment.newInstance(position);
+                } else if (position == 1) {
+                    return ModifyPswPayTwoFragment.newInstance(position);
+                } else if (position == 2) {
+                    return ModifyPswPayThreeFragment.newInstance(position);
+                }
             }
             return null;
         }

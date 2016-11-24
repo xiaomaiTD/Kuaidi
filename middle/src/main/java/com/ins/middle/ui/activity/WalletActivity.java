@@ -78,14 +78,13 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
 //            startActivity(intent);
 
         } else if (i == R.id.lay_wallet_money) {
-//            intent.setClass(this, MoneyActivity.class);
-//            startActivity(intent);
+            startActivity(PackageUtil.getSmIntent("PaywayActivity"));
 
         } else if (i == R.id.lay_wallet_coupon) {
-//            intent.setClass(this, CouponActivity.class);
-//            startActivity(intent);
+            startActivity(PackageUtil.getSmIntent("CouponActivity"));
         } else if (i == R.id.lay_wallet_bankcard) {
-            if (AppData.App.getUser().getStatus() == User.AUTHENTICATED) {
+            User user = AppData.App.getUser();
+            if (user != null && user.getStatus() == User.AUTHENTICATED) {
                 //已认证，调整银行卡页面
                 intent.setClass(this, BankCardActivity.class);
                 startActivity(intent);

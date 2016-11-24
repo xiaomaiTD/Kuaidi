@@ -30,18 +30,20 @@
                 android:textSize="@dimen/text_nomal" />
 
             <com.sobey.common.view.EmojiEditText
+                android:id="@+id/edit_modifypswpay_vali"
                 style="@style/edit_none"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:hint="请填写"
                 android:inputType="number"
-                android:maxLength="4"
+                android:maxLength="6"
                 android:singleLine="true"
                 android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_nomal" />
 
             <TextView
+                android:id="@+id/btn_go_vali"
                 android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:background="@drawable/shape_rect_corner_none_line_yellow"

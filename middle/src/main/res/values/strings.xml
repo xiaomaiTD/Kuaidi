@@ -23,12 +23,13 @@
     <string name="title_activity_money">我的余额</string>
     <string name="title_activity_cash">余额提现</string>
     <string name="title_activity_bindbankcard">绑定银行卡</string>
+    <string name="title_activity_bindunbankcard">解绑银行卡</string>
     <string name="title_activity_server">客服中心</string>
     <string name="title_activity_sale">分销</string>
 
     <string name="title_activity_safe">账户安全</string>
     <string name="title_activity_modifypswuser">修改密码</string>
-    <string name="title_activity_modifypswpay">修改支付密码</string>
+    <string name="title_activity_modifypswpay">修改提现密码</string>
     <string name="title_activity_identify">实名认证</string>
     <string name="title_activity_pay">支付</string>
     <string name="title_activity_eva">评价订单</string>

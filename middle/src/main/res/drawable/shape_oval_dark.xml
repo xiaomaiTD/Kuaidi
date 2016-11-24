@@ -1,0 +1,11 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval" >
+
+    <!-- 填充 -->
+    <solid android:color="#aaaaaa" />
+
+    <size
+        android:width="20dp"
+        android:height="20dp" />
+
+</shape>

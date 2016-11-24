@@ -1,5 +1,6 @@
 package com.ins.middle.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import com.ins.middle.common.AppVali;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.LoginActivity;
+import com.ins.middle.ui.activity.ModifyPswUserActivity;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.utils.MD5Util;
@@ -118,6 +120,7 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
         showingroup = (ViewGroup) getView().findViewById(R.id.showingroup);
         edit_login_psw = (EditText) getView().findViewById(R.id.edit_login_psw);
         text_login_title = (TextView) getView().findViewById(R.id.text_login_title);
+        getView().findViewById(R.id.btn_go_findpsw).setOnClickListener(this);
         btn_go = (CircularProgressButton) getView().findViewById(R.id.btn_go);
         btn_go.setIndeterminateProgressMode(true);
 
@@ -154,6 +157,10 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
             } else {
                 activity.last();
             }
+        } else if (i == R.id.btn_go_findpsw) {
+            Intent intent = new Intent(getActivity(), ModifyPswUserActivity.class);
+            intent.putExtra("phone", phone);
+            startActivity(intent);
         }
     }
 

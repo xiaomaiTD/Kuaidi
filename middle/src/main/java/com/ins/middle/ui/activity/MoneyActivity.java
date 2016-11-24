@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ins.kuaidi.R;
+import com.ins.middle.R;
 import com.sobey.common.common.DividerItemDecoration;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.entity.TestEntity;
-import com.ins.kuaidi.ui.adapter.RecycleAdapterMoney;
+import com.ins.middle.ui.adapter.RecycleAdapterMoney;
 import com.sobey.common.helper.SwipeHelper;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.NumAnim;
@@ -22,7 +22,6 @@ import com.sobey.common.utils.NumAnim;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ins.middle.ui.activity.BaseBackActivity;
 public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClickListener,View.OnClickListener {
 
     private RecyclerView recyclerView;
@@ -131,17 +130,17 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
 
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-        Intent intent = new Intent(this, TripDetailActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, TripDetailActivity.class);
+//        startActivity(intent);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_go_cash:
-                Intent intent = new Intent(this, CashActivity.class);
-                startActivity(intent);
-                break;
+        int i = v.getId();
+        if (i == R.id.btn_go_cash) {
+            Intent intent = new Intent(this, CashActivity.class);
+            startActivity(intent);
+
         }
     }
 }

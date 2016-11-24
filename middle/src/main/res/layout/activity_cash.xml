@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/wj_bk"
     android:fitsSystemWindows="true"
-    tools:context="com.ins.kuaidi.ui.activity.CashActivity">
+    tools:context="com.ins.kuaidi.com.ins.middle.ui.activity.CashActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

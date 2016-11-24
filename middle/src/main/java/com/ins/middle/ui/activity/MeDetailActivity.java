@@ -33,6 +33,9 @@ public class MeDetailActivity extends BaseBackActivity implements View.OnClickLi
     private TextView text_me_fen;
     private TextView text_me_fenstatus;
     private View lay_me_fen;
+    private View btn_go_right;
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,7 @@ public class MeDetailActivity extends BaseBackActivity implements View.OnClickLi
     @Subscribe
     public void onEventMainThread(Integer flag) {
         if (flag == AppConstant.EVENT_UPDATE_ME) {
-            setUserData();
+            setUserData(AppData.App.getUser());
         }
     }
 
@@ -61,6 +64,9 @@ public class MeDetailActivity extends BaseBackActivity implements View.OnClickLi
     }
 
     private void initBase() {
+        if (getIntent().hasExtra("user")) {
+            user = (User) getIntent().getSerializableExtra("user");
+        }
     }
 
     private void initView() {
@@ -75,31 +81,25 @@ public class MeDetailActivity extends BaseBackActivity implements View.OnClickLi
         text_me_fenstatus = (TextView) findViewById(R.id.text_me_fenstatus);
         lay_me_fen = findViewById(R.id.lay_me_fen);
 
-        findViewById(R.id.btn_right).setOnClickListener(this);
+        btn_go_right = findViewById(R.id.btn_right);
+        btn_go_right.setOnClickListener(this);
     }
 
     private void initData() {
-//        showin = LoadingViewUtil.showin(showingroup, R.layout.layout_loading, showin);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                //加载成功
-//                initCtrl();
-//                LoadingViewUtil.showout(showingroup, showin);
-//
-//                //加载失败
-////                LoadingViewUtil.showin(showingroup,R.layout.layout_lack,showin,new View.OnClickListener(){
-////                    @Override
-////                    public void onClick(View v) {
-////                        initData();
-////                    }
-////                });
-//            }
-//        }, 500);
     }
 
     private void initCtrl() {
-        setUserData();
+        //有user参数，代表是查看别人的信息,没有则是自己的
+        if (user != null) {
+            btn_go_right.setVisibility(View.GONE);
+            lay_me_fen.setVisibility(View.VISIBLE);
+            text_me_fenstatus.setText(user.getMoney() + "元");
+            setUserData(user);
+        } else {
+            btn_go_right.setVisibility(View.VISIBLE);
+            lay_me_fen.setVisibility(View.GONE);
+            setUserData(AppData.App.getUser());
+        }
     }
 
     @Override
@@ -112,8 +112,7 @@ public class MeDetailActivity extends BaseBackActivity implements View.OnClickLi
         }
     }
 
-    private void setUserData() {
-        User user = AppData.App.getUser();
+    private void setUserData(User user) {
         if (user != null) {
             GlideUtil.loadCircleImg(this, img_me_header, R.drawable.default_header, AppHelper.getRealImgPath(user.getAvatar()));
             text_me_name.setText(user.getNickName());
@@ -125,21 +124,21 @@ public class MeDetailActivity extends BaseBackActivity implements View.OnClickLi
             if (PackageUtil.isClient()) {
                 text_me_identify.setText("实名认证");
                 text_me_identify.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.icon_safe_idcard), null, null, null);
-            }else {
+            } else {
                 text_me_identify.setText("车主认证");
                 text_me_identify.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.icon_sale_drivercard), null, null, null);
             }
 
             //设置认证状态
-            if (user.getStatus()==User.UNAUTHORIZED) {
+            if (user.getStatus() == User.UNAUTHORIZED) {
                 text_me_identifystatus.setText("未认证");
-                text_me_identifystatus.setTextColor(ContextCompat.getColor(this,R.color.com_text_dark));
-            }else if (user.getStatus()==User.CERTIFICATIONING){
+                text_me_identifystatus.setTextColor(ContextCompat.getColor(this, R.color.com_text_dark));
+            } else if (user.getStatus() == User.CERTIFICATIONING) {
                 text_me_identifystatus.setText("认证中");
-                text_me_identifystatus.setTextColor(ContextCompat.getColor(this,R.color.com_text_dark));
-            }else if (user.getStatus()==User.AUTHENTICATED){
+                text_me_identifystatus.setTextColor(ContextCompat.getColor(this, R.color.com_text_dark));
+            } else if (user.getStatus() == User.AUTHENTICATED) {
                 text_me_identifystatus.setText("已认证");
-                text_me_identifystatus.setTextColor(ContextCompat.getColor(this,R.color.com_text_blank));
+                text_me_identifystatus.setTextColor(ContextCompat.getColor(this, R.color.com_text_blank));
             }
         }
     }

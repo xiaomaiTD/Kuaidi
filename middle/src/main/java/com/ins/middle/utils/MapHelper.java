@@ -68,7 +68,7 @@ public class MapHelper {
     public static LatLng str2LatLng(String str) {
         String[] split = str.split(",");
         if (split.length == 2) {
-            return new LatLng(Double.parseDouble(split[1]), Double.parseDouble(split[0]));
+            return new LatLng(Double.parseDouble(split[0]), Double.parseDouble(split[1]));
         } else {
             return null;
         }
