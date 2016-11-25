@@ -6,6 +6,7 @@ package com.ins.middle.common;
 public class AppConstant {
     public static final Integer EVENT_UPDATE_ME = 0xfe01;
     public static final Integer EVENT_UPDATE_LOGIN = 0xfe05;
+    public static final Integer EVENT_UPDATE_PAYWAY = 0xfe06;
 
 
     public static final String EVENT_DIALOGLOGON_VALI = "EVENT_DIALOGLOGON_VALI";

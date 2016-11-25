@@ -1,29 +1,34 @@
 package com.ins.middle.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ins.middle.R;
+import com.ins.middle.entity.MoneyDetail;
 import com.ins.middle.entity.TestEntity;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
+import com.sobey.common.utils.TimeUtil;
 
+import java.util.Date;
 import java.util.List;
 
 
 public class RecycleAdapterMoney extends RecyclerView.Adapter<RecycleAdapterMoney.Holder> {
 
     private Context context;
-    private List<TestEntity> results;
+    private List<MoneyDetail> results;
 
-    public List<TestEntity> getResults() {
+    public List<MoneyDetail> getResults() {
         return results;
     }
 
-    public RecycleAdapterMoney(Context context, List<TestEntity> results) {
+    public RecycleAdapterMoney(Context context, List<MoneyDetail> results) {
         this.context = context;
         this.results = results;
     }
@@ -41,7 +46,17 @@ public class RecycleAdapterMoney extends RecyclerView.Adapter<RecycleAdapterMone
                 if (listener != null) listener.onItemClick(holder);
             }
         });
-        TestEntity show = results.get(holder.getLayoutPosition());
+        MoneyDetail moneyDetail = results.get(holder.getLayoutPosition());
+
+        holder.text_moneydetail_name.setText(moneyDetail.getReason());
+        holder.text_moneydetail_time.setText(TimeUtil.getTimeFor("yyyy-MM-dd HH:mm", new Date(moneyDetail.getCreateDate())));
+        if (moneyDetail.getType() == 0) {
+            holder.text_moneydetail_money.setTextColor(ContextCompat.getColor(context, R.color.kd_yellow));
+            holder.text_moneydetail_money.setText("+" + moneyDetail.getMoney() + "元");
+        } else {
+            holder.text_moneydetail_money.setTextColor(ContextCompat.getColor(context, R.color.kd_weixin_green));
+            holder.text_moneydetail_money.setText("-" + moneyDetail.getMoney() + "元");
+        }
     }
 
     @Override
@@ -51,11 +66,15 @@ public class RecycleAdapterMoney extends RecyclerView.Adapter<RecycleAdapterMone
 
     public class Holder extends RecyclerView.ViewHolder {
 
-        private ImageView img_item_show_pic;
+        private TextView text_moneydetail_name;
+        private TextView text_moneydetail_time;
+        private TextView text_moneydetail_money;
 
         public Holder(View itemView) {
             super(itemView);
-//            img_item_show_pic = (ImageView) itemView.findViewById(R.id.img_item_show_pic);
+            text_moneydetail_name = (TextView) itemView.findViewById(R.id.text_moneydetail_name);
+            text_moneydetail_time = (TextView) itemView.findViewById(R.id.text_moneydetail_time);
+            text_moneydetail_money = (TextView) itemView.findViewById(R.id.text_moneydetail_money);
         }
     }
 

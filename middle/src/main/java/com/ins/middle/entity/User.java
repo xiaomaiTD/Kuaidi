@@ -39,6 +39,7 @@ public class User implements Serializable {
     private long updatetime;
     private String email;
     private int hasPayPassword;
+    private int fristPayMethod;
 
     //司机特色字段 1 在线0 不在线
     private int isOnline;
@@ -53,6 +54,14 @@ public class User implements Serializable {
     //分享码
     private String distributionCode;
     private int money;
+
+    public int getFristPayMethod() {
+        return fristPayMethod;
+    }
+
+    public void setFristPayMethod(int fristPayMethod) {
+        this.fristPayMethod = fristPayMethod;
+    }
 
     public int getMoney() {
         return money;

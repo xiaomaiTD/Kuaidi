@@ -175,6 +175,9 @@ public class AppData {
         public static String delBankCard              = domain + "mobile/bank/delBankCard";             							    //解绑银行卡
         public static String salelevel                = domain + "mobile/user/findDistribution";             						//分销等级（乘客）
         public static String salepeople               = domain + "mobile/user/findDistributionPer";             						//分销列表（乘客）
+        public static String coupon                   = domain + "mobile/wallet/findWalletVoucher";             					    //分销列表（乘客）
+        public static String findWalletDetail         = domain + "mobile/wallet/findWalletDetail";             				        //查询余额明细
+        public static String wallet                   = domain + "mobile/wallet/queryWallet";             				            //我的钱包
 
 
     }

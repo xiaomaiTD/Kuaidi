@@ -3,26 +3,49 @@ package com.ins.middle.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ins.middle.R;
+import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
+import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.User;
+import com.ins.middle.entity.Wallet;
 import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
+import com.sobey.common.utils.NumUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.xutils.http.RequestParams;
 
 public class WalletActivity extends BaseBackActivity implements View.OnClickListener {
 
     private ViewGroup showingroup;
     private View showin;
 
+    private TextView text_wallet_payway;
+    private TextView text_wallet_money;
+    private TextView text_wallet_couponcount;
+
+    @Subscribe
+    public void onEventMainThread(Integer flag) {
+        if (flag == AppConstant.EVENT_UPDATE_PAYWAY) {
+            setPayWayData();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallet);
         setToolbar();
+        EventBus.getDefault().register(this);
 
         initBase();
         initView();
@@ -33,6 +56,7 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initBase() {
@@ -44,26 +68,15 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
         findViewById(R.id.lay_wallet_money).setOnClickListener(this);
         findViewById(R.id.lay_wallet_coupon).setOnClickListener(this);
         findViewById(R.id.lay_wallet_bankcard).setOnClickListener(this);
+
+        text_wallet_payway = (TextView) findViewById(R.id.text_wallet_payway);
+        text_wallet_money = (TextView) findViewById(R.id.text_wallet_money);
+        text_wallet_couponcount = (TextView) findViewById(R.id.text_wallet_couponcount);
     }
 
     private void initData() {
-        showin = LoadingViewUtil.showin(showingroup, R.layout.layout_loading, showin);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //加载成功
-                initCtrl();
-                LoadingViewUtil.showout(showingroup, showin);
-
-                //加载失败
-//                LoadingViewUtil.showin(showingroup,R.layout.layout_lack,showin,new View.OnClickListener(){
-//                    @Override
-//                    public void onClick(View v) {
-//                        initData();
-//                    }
-//                });
-            }
-        }, 500);
+        netGetWallet();
+        setPayWayData();
     }
 
     private void initCtrl() {
@@ -74,12 +87,11 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
         Intent intent = new Intent();
         int i = v.getId();
         if (i == R.id.lay_wallet_payway) {
-//            intent.setClass(this, PaywayActivity.class);
-//            startActivity(intent);
-
-        } else if (i == R.id.lay_wallet_money) {
             startActivity(PackageUtil.getSmIntent("PaywayActivity"));
-
+        } else if (i == R.id.lay_wallet_money) {
+            intent.setClass(this, MoneyActivity.class);
+            intent.putExtra("money", 1424.56);
+            startActivity(intent);
         } else if (i == R.id.lay_wallet_coupon) {
             startActivity(PackageUtil.getSmIntent("CouponActivity"));
         } else if (i == R.id.lay_wallet_bankcard) {
@@ -93,5 +105,63 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
                 startActivity(PackageUtil.getSmIntent("IdentifyActivity"));
             }
         }
+    }
+
+    private void setWalletData(Wallet payData) {
+        if (payData != null) {
+            text_wallet_money.setText(NumUtil.NumberFormat(payData.getBalance(), 2) + "元");
+            text_wallet_couponcount.setText(payData.getCoupon() + "张");
+        }
+    }
+    private void setPayWayData(){
+        User user = AppData.App.getUser();
+        if (user != null) {
+            if (user.getFristPayMethod() == 0) {
+                text_wallet_payway.setText("支付宝支付");
+                text_wallet_payway.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.icon_zhifubao), null, null, null);
+            } else {
+                text_wallet_payway.setText("微信支付");
+                text_wallet_payway.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(this, R.drawable.icon_weixin), null, null, null);
+            }
+        }
+    }
+
+    public void netGetWallet() {
+        RequestParams params = new RequestParams(AppData.Url.wallet);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("flag", "0");
+        CommonNet.samplepost(params, Wallet.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(int code, Object pojo, String text, Object obj) {
+                if (pojo != null) {
+                    Wallet wallet = (Wallet) pojo;
+                    setWalletData(wallet);
+                    LoadingViewUtil.showout(showingroup, showin);
+                } else {
+                    showin = LoadingViewUtil.showin(showingroup, R.layout.layout_lack, showin, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initData();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(WalletActivity.this, text, Toast.LENGTH_SHORT).show();
+                showin = LoadingViewUtil.showin(showingroup, R.layout.layout_fail, showin, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        initData();
+                    }
+                });
+            }
+
+            @Override
+            public void netStart(int status) {
+                showin = LoadingViewUtil.showin(showingroup, R.layout.layout_loading, showin);
+            }
+        });
     }
 }

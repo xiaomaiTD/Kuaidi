@@ -3,14 +3,20 @@ package com.ins.middle.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.reflect.TypeToken;
 import com.ins.middle.R;
+import com.ins.middle.common.AppData;
+import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.MoneyDetail;
 import com.sobey.common.common.DividerItemDecoration;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.entity.TestEntity;
@@ -18,21 +24,27 @@ import com.ins.middle.ui.adapter.RecycleAdapterMoney;
 import com.sobey.common.helper.SwipeHelper;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.NumAnim;
+import com.sobey.common.utils.StrUtils;
+
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClickListener,View.OnClickListener {
+public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClickListener, View.OnClickListener {
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipe;
-    private List<TestEntity> results = new ArrayList<>();
+    private List<MoneyDetail> results = new ArrayList<>();
     private RecycleAdapterMoney adapter;
 
     private ViewGroup showingroup;
     private View showin;
 
     private TextView text_money;
+
+    private float money;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +59,9 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
     }
 
     private void initBase() {
+        if (getIntent().hasExtra("money")) {
+            money = getIntent().getFloatExtra("money", 0);
+        }
     }
 
     private void initView() {
@@ -58,44 +73,7 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
     }
 
     private void initData() {
-        showin = LoadingViewUtil.showin(showingroup, R.layout.layout_loading, showin);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //加载成功
-                List<TestEntity> results = adapter.getResults();
-                results.clear();
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                results.add(new TestEntity());
-                freshCtrl();
-                LoadingViewUtil.showout(showingroup, showin);
-
-                //加载失败
-//                LoadingViewUtil.showin(showingroup,R.layout.layout_lack,showin,new View.OnClickListener(){
-//                    @Override
-//                    public void onClick(View v) {
-//                        initData();
-//                    }
-//                });
-            }
-        }, 1000);
+        netGetMoenyDetail(0);
     }
 
     private void initCtrl() {
@@ -108,20 +86,16 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
         SwipeHelper.setSwipeListener(swipe, recyclerView, new SwipeHelper.OnSwiperFreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipe.setRefreshing(false);
-                    }
-                }, 2000);
+                netGetMoenyDetail(1);
             }
 
             @Override
             public void onLoadmore() {
+                netGetMoenyDetail(2);
             }
         });
 
-        NumAnim.startAnim(text_money, 1253.47f);   //第二个参数是textView要显示的价格
+        NumAnim.startAnim(text_money, money);   //第二个参数是textView要显示的价格
     }
 
     private void freshCtrl() {
@@ -142,5 +116,95 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
             startActivity(intent);
 
         }
+    }
+
+    ///////////////////////////////////
+    //////////////分页查询
+    ///////////////////////////////////
+
+    private Callback.Cancelable cancelable;
+    private int page;
+    private final int PAGE_COUNT = 10;
+    private boolean needloadmore = true;
+
+    /**
+     * type:0 首次加载 1:下拉刷新 2:上拉加载
+     *
+     * @param type
+     */
+    private void netGetMoenyDetail(final int type) {
+        //上拉加载的时候如果标志为false则不请求
+        if (type == 2 && needloadmore == false) {
+            return;
+        }
+        if (cancelable != null) cancelable.cancel();
+        final RequestParams params = new RequestParams(AppData.Url.findWalletDetail);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("pageNO", type == 0 || type == 1 ? "1" : page + 1 + "");
+        params.addBodyParameter("pageSize", PAGE_COUNT + "");
+        cancelable = CommonNet.samplepost(params, new TypeToken<List<MoneyDetail>>() {
+        }.getType(), new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(int code, Object pojo, String text, Object obj) {
+                if (pojo == null) netSetError(code, "错误：返回数据为空");
+                else {
+                    List<MoneyDetail> coupons = (ArrayList<MoneyDetail>) pojo;
+                    //有数据才添加，否则显示lack信息
+                    if (!StrUtils.isEmpty(coupons)) {
+                        List<MoneyDetail> results = adapter.getResults();
+                        if (type == 0 || type == 1) {
+                            results.clear();
+                            page = 1;
+                        } else {
+                            page++;
+                        }
+                        results.addAll(coupons);
+                        freshCtrl();
+                        needloadmore = true;
+
+                        if (type == 0) {
+                            LoadingViewUtil.showout(showingroup, showin);
+                        } else {
+                            swipe.setRefreshing(false);
+                        }
+                    } else {
+                        if (type == 0 || type == 1) {
+                            showin = LoadingViewUtil.showin(showingroup, com.ins.middle.R.layout.layout_lack, showin, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    initData();
+                                }
+                            });
+                        } else {
+                            swipe.setRefreshing(false);
+                            Snackbar.make(showingroup, "没有更多的数据了", Snackbar.LENGTH_SHORT).show();
+                            needloadmore = false;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(MoneyActivity.this, text, Toast.LENGTH_SHORT).show();
+                if (type == 0) {
+                    showin = LoadingViewUtil.showin(showingroup, com.ins.middle.R.layout.layout_fail, showin, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initData();
+                        }
+                    });
+                } else {
+                    swipe.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void netStart(int code) {
+                if (type == 0) {
+                    showin = LoadingViewUtil.showin(showingroup, com.ins.middle.R.layout.layout_loading, showin);
+                }
+            }
+        });
     }
 }
