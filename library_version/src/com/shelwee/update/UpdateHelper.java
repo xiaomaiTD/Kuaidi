@@ -633,7 +633,9 @@ public class UpdateHelper {
 
     private void installApk(Uri data) {
         if (mContext != null) {
-            UpdateHelper.this.updateListener.onInstallApk();
+            if (UpdateHelper.this.updateListener != null) {
+                UpdateHelper.this.updateListener.onInstallApk();
+            }
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setDataAndType(data, "application/vnd.android.package-archive");
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

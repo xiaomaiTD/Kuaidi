@@ -99,6 +99,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activity.TripDetailActivity"
+            android:label="@string/title_activity_tripdetail"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back">
+            <intent-filter>
+                <action android:name="driver.TripDetailActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

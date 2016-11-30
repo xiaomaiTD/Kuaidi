@@ -26,21 +26,23 @@ public class HomeHelper {
                 setPayFirst(activity);
                 break;
             case 2004:
-                setPayLast(activity);
-                if (trip.getIsPay() == 1) {
-                    setHasPayLast(activity);
-                }
+                //2004 乘客已支付预付款
+                setPayLastFalse(activity);
                 break;
             case 2005:
-                setPayLast(activity);
+                //2005 司机接到乘客
                 if (trip.getIsPay() == 1) {
                     setHasPayLast(activity);
+                }else {
+                    setPayLast(activity);
                 }
                 break;
             case 2006:
-                setPayLast(activity);
+                //2006 乘客已抵达
                 if (trip.getIsPay() == 1) {
                     setHasPayLast(activity);
+                }else {
+                    setPayLast(activity);
                 }
                 break;
             case 2007:
@@ -93,6 +95,17 @@ public class HomeHelper {
         activity.btn_go.setText("支付尾款");
     }
 
+    public static void setPayLastFalse(HomeActivity activity) {
+        setPayLast(activity);
+        activity.btn_go.setEnabled(false);
+    }
+
+    //乘客已经支付尾款（特殊状态）
+    public static void setHasPayLast(HomeActivity activity) {
+        setPayLast(activity);
+        activity.btn_go.setVisibility(View.GONE);
+    }
+
     //2005 司机接到乘客
     public static void setGetPassenger(HomeActivity activity) {
         activity.driverView.setVisibility(View.VISIBLE);
@@ -113,8 +126,11 @@ public class HomeHelper {
         activity.holdcarView.clear();
     }
 
-    //乘客已经支付尾款（特殊状态）
-    public static void setHasPayLast(HomeActivity activity) {
-        activity.btn_go.setVisibility(View.GONE);
+    public static void setFresh(HomeActivity activity){
+        activity.setUserData();
+        activity.baiduMap.clear();
+        activity.ptsArray.clear();
+        activity.netHelper.netGetTrip();
+        activity.locationer.isFirstLoc = true;
     }
 }

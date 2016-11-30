@@ -97,7 +97,7 @@ public class LoginPhoneFragment extends BaseFragment implements View.OnClickList
             btn_go.setClickable(false);
 
             String phone = edit_login_phone.getText().toString();
-            String msg = AppVali.novali();
+            String msg = AppVali.phone(phone);
             if (msg != null) {
                 Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                 btn_go.setClickable(true);

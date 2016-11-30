@@ -18,6 +18,7 @@ import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.Eva;
 import com.ins.middle.entity.Trip;
+import com.ins.middle.ui.activity.PayDetailActivity;
 import com.ins.middle.view.DriverView;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.utils.GlideUtil;
@@ -159,6 +160,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
                 break;
             case R.id.text_tripdetail_totaydetail:
                 Intent intent = new Intent(this, PayDetailActivity.class);
+                intent.putExtra("trip", trip);
                 startActivity(intent);
                 break;
         }

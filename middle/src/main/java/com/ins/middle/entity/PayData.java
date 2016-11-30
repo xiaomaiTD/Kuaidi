@@ -1,4 +1,4 @@
-package com.ins.kuaidi.entity;
+package com.ins.middle.entity;
 
 import java.io.Serializable;
 
@@ -23,7 +23,17 @@ public class PayData implements Serializable {
 	
 	/**需要用支付宝 微信 实际支付*/
 	private double actualPay;
-	
+
+	private int payMethed;
+
+	public int getPayMethed() {
+		return payMethed;
+	}
+
+	public void setPayMethed(int payMethed) {
+		this.payMethed = payMethed;
+	}
+
 	public double getTotal() {
 		return total;
 	}

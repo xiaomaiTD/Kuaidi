@@ -137,7 +137,8 @@ public class AppData {
         /**
          * 接口请求地址
          */
-        public static String version			    	= domain + "updateAPK/version.json";	     								    //检查更新
+        public static String version_passenger        = domain + "updateAPK/version_passenger.json";	     						    //检查更新
+        public static String version_driver           = domain + "updateAPK/version_driver.json";	     						    //检查更新
         public static String checkMobile			    = domain + "mobile/user/checkMobile";											//检测用户是否注册
         public static String sendCode			    	= domain + "mobile/user/sendCode";												//发送验证码
         public static String login			    	= domain + "mobile/user/login";													//登录
@@ -178,6 +179,9 @@ public class AppData {
         public static String coupon                   = domain + "mobile/wallet/findWalletVoucher";             					    //分销列表（乘客）
         public static String findWalletDetail         = domain + "mobile/wallet/findWalletDetail";             				        //查询余额明细
         public static String wallet                   = domain + "mobile/wallet/queryWallet";             				            //我的钱包
+        public static String msgList                  = domain + "mobile/si/findSystemInfo";             				                //消息列表
+        public static String msgDetail                = domain + "web/si/systemInfoDetail";             				                //消息详情
+        public static String getcities                = domain + "mobile/mapCityMarker/findMapCityMarkerList";             		//城市列表
 
 
     }

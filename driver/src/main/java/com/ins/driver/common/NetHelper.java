@@ -31,11 +31,12 @@ public class NetHelper {
         this.activity = activity;
     }
 
-    public void netOnOff(final boolean onoff, String city) {
+    public void netOnOff(final boolean onoff, String city,String latlng) {
         RequestParams params = new RequestParams(AppData.Url.onOffLine);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("flag", onoff ? "1" : "0");
         params.addBodyParameter("cityName", city);
+        params.addBodyParameter("lat", latlng);
         CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {

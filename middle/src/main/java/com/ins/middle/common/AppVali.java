@@ -16,7 +16,7 @@ import java.util.List;
 public class AppVali {
 
     private static boolean isEmpty(String str) {
-        return str == null || "".equals(str);
+        return str == null || "".equals(str.trim());
     }
 
     private static boolean length(String str, int min, int max) {
@@ -94,16 +94,6 @@ public class AppVali {
             return "请输入车辆所有人";
         } else if (isEmpty(path)) {
             return "拍摄行驶证正面照";
-        } else {
-            return null;
-        }
-    }
-
-    public static String regist_vali(String phone) {
-        if (isEmpty(phone)) {
-            return "请输入手机号";
-        } else if (!ValidateUtil.Mobile(phone)) {
-            return "请输入正确的手机号";
         } else {
             return null;
         }
@@ -330,8 +320,8 @@ public class AppVali {
 
     public static String feedback(String describe) {
         if (isEmpty(describe)) {
-            return "请填写描述";
-        } else {
+            return "描述不能为空";
+        }else {
             return null;
         }
     }

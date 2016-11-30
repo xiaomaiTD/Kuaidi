@@ -47,154 +47,161 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:id="@+id/lay_wallet_payway"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/icon_wallet_payway"
-                android:drawablePadding="10dp"
+            <LinearLayout
+                android:id="@+id/lay_wallet_payway"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
-                android:text="支付方式"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
-            <TextView
-                android:id="@+id/text_wallet_payway"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/icon_zhifubao"
-                android:drawablePadding="8dp"
-                android:drawableRight="@drawable/icon_item_next"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/icon_wallet_payway"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="支付方式"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
+
+                <TextView
+                    android:id="@+id/text_wallet_payway"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/icon_zhifubao"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@drawable/icon_item_next"
+                    android:gravity="center_vertical"
+                    android:text="支付宝免密支付"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_wallet_money"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
-                android:text="支付宝免密支付"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/icon_wallet_money"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="余额"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
+
+                <TextView
+                    android:id="@+id/text_wallet_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@drawable/icon_item_next"
+                    android:gravity="center_vertical"
+                    android:text="0.00元"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
 
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/lay_wallet_money"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/com_line" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/icon_wallet_money"
-                android:drawablePadding="10dp"
+            <LinearLayout
+                android:id="@+id/lay_wallet_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
-                android:text="余额"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
 
-            <TextView
-                android:id="@+id/text_wallet_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                android:drawableRight="@drawable/icon_item_next"
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/icon_wallet_coupon"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="代金券"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
+
+                <TextView
+                    android:id="@+id/text_wallet_couponcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@drawable/icon_item_next"
+                    android:gravity="center_vertical"
+                    android:text="3张"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_wallet_bankcard"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
-                android:text="0.00元"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/icon_wallet_bankcard"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="绑定银行卡"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    android:drawableRight="@drawable/icon_item_next"
+                    android:gravity="center_vertical"
+                    android:text="绑定银行卡"
+                    android:textColor="@color/com_text_blank"
+                    android:textSize="@dimen/text_nomal" />
 
 
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/com_line"/>
-
-        <LinearLayout
-            android:id="@+id/lay_wallet_coupon"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/white"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/icon_wallet_coupon"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:text="代金券"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
-
-            <TextView
-                android:id="@+id/text_wallet_couponcount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                android:drawableRight="@drawable/icon_item_next"
-                android:gravity="center_vertical"
-                android:text="3张"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lay_wallet_bankcard"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/white"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableLeft="@drawable/icon_wallet_bankcard"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:text="绑定银行卡"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                android:drawableRight="@drawable/icon_item_next"
-                android:gravity="center_vertical"
-                android:text="绑定银行卡"
-                android:textColor="@color/com_text_blank"
-                android:textSize="@dimen/text_nomal" />
-
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -17,12 +17,14 @@
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/img_msg_pic"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/test" />
+            android:src="@drawable/default_bk" />
 
         <TextView
+            android:id="@+id/text_msg_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -33,6 +35,7 @@
             android:textSize="@dimen/text_big" />
 
         <TextView
+            android:id="@+id/text_msg_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"

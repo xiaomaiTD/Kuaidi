@@ -18,12 +18,14 @@ import com.ins.driver.R;
 import com.ins.driver.ui.dialog.DialogPayStatus;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.EventOrder;
 import com.ins.middle.entity.TestEntity;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.ins.middle.ui.activity.TripActivity;
+import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.view.ProgView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
@@ -51,6 +53,7 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
     private View showin;
 
     private DialogPayStatus dialogPayStatus;
+    private DialogSure dialogSure;
 
     @Subscribe
     public void onEventMainThread(EventOrder eventOrder) {
@@ -82,11 +85,41 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (dialogSure != null) dialogSure.dismiss();
         if (dialogPayStatus != null) dialogPayStatus.dismiss();
     }
 
     private void initBase() {
         dialogPayStatus = new DialogPayStatus(this, "27.5");
+        dialogSure = new DialogSure(this, "您已将乘客全部送达，是否继续接单？");
+        dialogSure.setOnOkListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //把司机状态更新成在线状态
+//                User user = AppData.App.getUser();
+//                user.setIsOnline(1);
+//                AppData.App.saveUser(user);
+
+                EventOrder eventOrder = new EventOrder();
+                eventOrder.setAboutOrder("102");
+                EventBus.getDefault().post(eventOrder);
+                finish();
+            }
+        });
+        dialogSure.setOnCancleListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //把司机状态更新成离线状态
+//                User user = AppData.App.getUser();
+//                user.setIsOnline(0);
+//                AppData.App.saveUser(user);
+
+                EventOrder eventOrder = new EventOrder();
+                eventOrder.setAboutOrder("103");
+                EventBus.getDefault().post(eventOrder);
+                finish();
+            }
+        });
     }
 
     private void initView() {
@@ -145,7 +178,7 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
 
         @Override
         public void onArrive(ProgView progView, Trip trip) {
-            ProgNetHelper.netArrive(progView, trip.getId());
+            netArrive(progView, trip.getId());
         }
     };
 
@@ -166,7 +199,7 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
         if (cancelable != null) cancelable.cancel();
         final RequestParams params = new RequestParams(AppData.Url.getOrders);
         params.addHeader("token", AppData.App.getToken());
-        params.addBodyParameter("flag", "1");//1:所有行程
+        params.addBodyParameter("flag", "0");//1:所有行程 0 当前行程
         params.addBodyParameter("pageNO", type == 0 || type == 1 ? "1" : page + 1 + "");
         params.addBodyParameter("pageSize", PAGE_COUNT + "");
         cancelable = CommonNet.samplepost(params, new TypeToken<List<Trip>>() {
@@ -233,11 +266,42 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
         });
     }
 
+    public void netArrive(final ProgView progView, final int orderId) {
+        RequestParams params = new RequestParams(AppData.Url.arrive);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("orderId", orderId + "");
+        CommonNet.samplepost(params, new TypeToken<Integer>() {
+        }.getType(), new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                Toast.makeText(progView.getContext(), text, Toast.LENGTH_SHORT).show();
+                Integer isArrive = (Integer) pojo;
+                if (isArrive==1){
+                    //如果乘客已经全部下车
+                    dialogSure.show();
+                }else {
+                    //还没有全部下车
+                }
+                progView.setArrive();
+
+//                EventOrder eventOrder = new EventOrder();
+//                eventOrder.setAboutOrder("5");
+//                eventOrder.setOrderId(orderId);
+//                EventBus.getDefault().post(eventOrder);
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(progView.getContext(), text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
         Trip trip = adapter.getResults().get(viewHolder.getLayoutPosition());
         if (trip.getStatus() >= 2005) {
-            Toast.makeText(this, "改乘客已上车", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "该乘客已上车", Toast.LENGTH_SHORT).show();
         } else {
             EventBus.getDefault().post(trip);
             finish();

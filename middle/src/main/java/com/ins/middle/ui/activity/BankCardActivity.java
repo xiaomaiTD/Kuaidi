@@ -218,7 +218,7 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
                         }
                     } else {
                         if (type == 0 || type == 1) {
-                            showin = LoadingViewUtil.showin(showingroup, R.layout.layout_lack, showin, new View.OnClickListener() {
+                            showin = LoadingViewUtil.showin(showingroup, R.layout.layout_lack_bank, showin, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     initData();

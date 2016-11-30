@@ -22,6 +22,17 @@ public class CommonEntity {
     @SerializedName("bankName")
     private String bankName;
 
+    @SerializedName("isArrive")
+    private int isArrive;
+
+    public int getIsArrive() {
+        return isArrive;
+    }
+
+    public void setIsArrive(int isArrive) {
+        this.isArrive = isArrive;
+    }
+
     public String getBankName() {
         return bankName;
     }

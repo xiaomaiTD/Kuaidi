@@ -63,8 +63,10 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <include layout="@layout/layout_home_driver" />
-
+            <com.ins.middle.view.DriverView
+                android:id="@+id/driverView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="30px"
                     android:layout_marginRight="16dp"
-                    android:isIndicator="true"
+                    android:isIndicator="false"
                     android:numStars="5"
                     android:progressDrawable="@drawable/rating_bar"
                     android:stepSize="1" />

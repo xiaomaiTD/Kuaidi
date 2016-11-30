@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ins.middle.ui.activity.LoginActivity;
-import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.utils.ActivityUtil;
 import com.sobey.common.utils.ApplicationHelp;
 
@@ -15,7 +14,6 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.xutils.common.Callback;
 import org.xutils.common.util.KeyValue;
-import org.xutils.common.util.LogUtil;
 import org.xutils.ex.HttpException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -80,24 +78,22 @@ public class CommonNet {
 
         @Override
         public void onWaiting() {
-            LogUtil.d("onWaiting");
         }
 
         @Override
         public void onStarted() {
-            LogUtil.d("onStarted");
             hander.netStart(code);
         }
 
         @Override
         public void onLoading(long total, long current, boolean isDownloading) {
-            LogUtil.d(isDownloading ? "upload: " : "reply: " + current + "/" + total);
+            Log.d("netHander:",isDownloading ? "upload: " : "reply: " + current + "/" + total);
         }
 
         @Override
         public void onSuccess(String result) {
-            LogUtil.d("onSuccess");
-            LogUtil.d(result);
+            Log.d("netHander:","onSuccess");
+            Log.e("netHander:", result);
 //            System.out.println(result);
             try {
                 JSONTokener jsonParser = new JSONTokener(result);
@@ -156,7 +152,7 @@ public class CommonNet {
 
         @Override
         public void onError(Throwable ex, boolean isOnCallback) {
-            LogUtil.d("onError");
+            Log.d("netHander:","onError");
             try {
                 if (ex instanceof HttpException) { // 网络错误
                     ex.printStackTrace();
@@ -170,9 +166,9 @@ public class CommonNet {
                 } else if (ex instanceof ConnectException) {
                     hander.netSetError(code, "请检查网络连接");
                 } else if (ex instanceof SocketTimeoutException) {
-                    hander.netSetError(code, "请检查网络连接");
+                    hander.netSetError(code, "网络连接超时");
                 } else {
-                    hander.netSetError(code, "请检查网络连接");
+                    hander.netSetError(code, "服务器开小差了~");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -183,12 +179,12 @@ public class CommonNet {
 
         @Override
         public void onCancelled(CancelledException cex) {
-            LogUtil.d("onCancelled");
+            Log.d("netHander:","onCancelled");
         }
 
         @Override
         public void onFinished() {
-            LogUtil.d("onFinished");
+            Log.d("netHander:","onFinished");
             hander.netEnd(code);
         }
     }

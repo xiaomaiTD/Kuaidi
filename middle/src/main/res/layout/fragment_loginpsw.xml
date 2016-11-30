@@ -72,7 +72,7 @@
         app:cpb_iconComplete="@drawable/ic_action_accept"
         app:cpb_iconError="@drawable/ic_action_cancel"
         app:cpb_selectorIdle="@drawable/idle_state_selector"
-        app:cpb_textIdle="登陆" />
+        app:cpb_textIdle="登录" />
 
     <TextView
         android:id="@+id/btn_go_findpsw"

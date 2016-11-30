@@ -11,15 +11,11 @@ import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.entity.PayData;
 import com.ins.kuaidi.entity.SaleLevel;
-import com.ins.kuaidi.ui.activity.PayActivity;
 import com.ins.kuaidi.ui.activity.SaleActivity;
 import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
-import com.ins.middle.entity.CommonEntity;
-import com.ins.middle.entity.Trip;
 import com.ins.middle.ui.fragment.BaseFragment;
 import com.sobey.common.common.LoadingViewUtil;
 

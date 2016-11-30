@@ -33,6 +33,14 @@ public class HomeHelper {
         }
     }
 
+    public static void setUnLogin(HomeActivity activity) {
+        activity.btn_go.setVisibility(View.GONE);
+        activity.check_lu.setVisibility(View.GONE);
+        activity.driverView.setVisibility(View.GONE);
+
+        activity.check_lu.setChecked(false);
+    }
+
     public static void setInit(HomeActivity activity) {
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.check_lu.setVisibility(View.GONE);
@@ -82,5 +90,12 @@ public class HomeHelper {
         YoYo.with(Techniques.Landing)
                 .duration(200)
                 .playOn(activity.btn_new);
+    }
+
+    public static void setFresh(HomeActivity activity){
+        activity.baiduMap.clear();
+        activity.netHelper.netGetTrip();
+        activity.locationer.isFirstLoc = true;
+        activity.setUserData();
     }
 }

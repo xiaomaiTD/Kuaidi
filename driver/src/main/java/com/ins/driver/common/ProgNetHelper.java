@@ -8,6 +8,7 @@ import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.EventOrder;
 import com.ins.middle.entity.User;
+import com.ins.middle.utils.EventBusHelper;
 import com.ins.middle.view.ProgView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 
 public class ProgNetHelper {
-    public static void netReqFirstMoney(final ProgView progView, int orderId) {
+    public static void netReqFirstMoney(final ProgView progView, final int orderId) {
         RequestParams params = new RequestParams(AppData.Url.orderStatus);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("flag", "0");
@@ -30,6 +31,8 @@ public class ProgNetHelper {
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 Toast.makeText(progView.getContext(), text, Toast.LENGTH_SHORT).show();
                 progView.setWateFirstMoney();
+
+                EventBusHelper.sendEventOrder("3", orderId);
             }
 
             @Override
@@ -62,25 +65,5 @@ public class ProgNetHelper {
         });
     }
 
-    public static void netArrive(final ProgView progView, final int orderId) {
-        RequestParams params = new RequestParams(AppData.Url.arrive);
-        params.addHeader("token", AppData.App.getToken());
-        params.addBodyParameter("orderId", orderId + "");
-        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
-            @Override
-            public void netGo(final int code, Object pojo, String text, Object obj) {
-                Toast.makeText(progView.getContext(), text, Toast.LENGTH_SHORT).show();
-                progView.setArrive();
-                EventOrder eventOrder = new EventOrder();
-                eventOrder.setAboutOrder("5");
-                eventOrder.setOrderId(orderId);
-                EventBus.getDefault().post(eventOrder);
-            }
 
-            @Override
-            public void netSetError(int code, String text) {
-                Toast.makeText(progView.getContext(), text, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 }

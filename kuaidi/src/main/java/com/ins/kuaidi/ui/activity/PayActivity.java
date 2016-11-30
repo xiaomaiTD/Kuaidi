@@ -16,21 +16,20 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.google.gson.reflect.TypeToken;
 import com.ins.kuaidi.R;
-import com.ins.kuaidi.entity.PayData;
+import com.ins.middle.entity.PayData;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
-import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.EventOrder;
+import com.ins.middle.entity.Trip;
+import com.ins.middle.entity.User;
 import com.ins.middle.ui.dialog.DialogLoading;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.sobey.common.utils.NumUtil;
-import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.http.RequestParams;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -49,9 +48,11 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
     private TextView btn_go;
 
     private TextView text_pay_total;
+    private TextView text_pay_this_name;
     private TextView text_pay_this;
     private TextView text_pay_coupon;
     private TextView text_pay_balance;
+    private TextView text_pay_payway;
     private View lay_pay_total;
     private View lay_pay_this;
     private View lay_pay_coupon;
@@ -59,6 +60,8 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
 
     private int type;
     private int orderId;
+    private Trip trip;
+    private PayData payData;
 
     private DialogLoading dialogLoading;
 
@@ -85,8 +88,9 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         if (getIntent().hasExtra("type")) {
             type = getIntent().getIntExtra("type", 0);
         }
-        if (getIntent().hasExtra("orderId")) {
-            orderId = getIntent().getIntExtra("orderId", 0);
+        if (getIntent().hasExtra("trip")) {
+            trip = (Trip) getIntent().getSerializableExtra("trip");
+            orderId = trip.getId();
         }
     }
 
@@ -98,15 +102,18 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         text_pay_money = (TextView) findViewById(R.id.text_pay_money);
 
         text_pay_total = (TextView) findViewById(R.id.text_pay_total);
+        text_pay_this_name = (TextView) findViewById(R.id.text_pay_this_name);
         text_pay_this = (TextView) findViewById(R.id.text_pay_this);
         text_pay_coupon = (TextView) findViewById(R.id.text_pay_coupon);
         text_pay_balance = (TextView) findViewById(R.id.text_pay_balance);
+        text_pay_payway = (TextView) findViewById(R.id.text_pay_payway);
         lay_pay_total = findViewById(R.id.lay_pay_total);
         lay_pay_this = findViewById(R.id.lay_pay_this);
         lay_pay_coupon = findViewById(R.id.lay_pay_coupon);
         lay_pay_balance = findViewById(R.id.lay_pay_balance);
 
         btn_go.setOnClickListener(this);
+        text_pay_payway.setOnClickListener(this);
     }
 
     private void initData() {
@@ -115,6 +122,7 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
 
     private void initCtrl() {
         setTypeData(type);
+        setPayType(-1);
     }
 
     @Override
@@ -122,11 +130,41 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.btn_go:
+                if (payData == null) {
+                    return;
+                }
                 if (type == 0) {
-//                    netPayFirst(orderId, 0);
-                    netPay(orderId, 0);
+                    //实际支付金额不是0才进行三方支付，否则使用品台内部支付
+                    if (payData.getActualPay() != 0) {
+                        netPayFirstZhifubao(orderId, 0);
+                    } else {
+                        netPayFirstTest(orderId, 0);
+                    }
                 } else if (type == 2) {
-                    netPayFirst(orderId, 1);
+                    if (payData.getActualPay() != 0) {
+                        netPayFirstZhifubao(orderId, 1);
+                    } else {
+                        netPayFirstTest(orderId, 1);
+                    }
+                }
+                break;
+            case R.id.text_pay_payway:
+                intent.setClass(this, PaywayActivity.class);
+                intent.putExtra("type", 1);
+                startActivityForResult(intent, RESULT_PAYWAY);
+                break;
+        }
+    }
+
+    private static final int RESULT_PAYWAY = 0xf101;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case RESULT_PAYWAY:
+                if (resultCode == RESULT_OK) {
+                    int payType = data.getIntExtra("type", 0);
+                    setPayType(payType);
                 }
                 break;
         }
@@ -140,7 +178,7 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         if (toEVA) {
             Intent intent = new Intent();
             intent.setClass(this, EvaActivity.class);
-            intent.putExtra("orderId", orderId);
+            intent.putExtra("trip", trip);
             startActivity(intent);
         }
     }
@@ -148,21 +186,25 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
     private void setTypeData(int type) {
         if (type == 0) {
             setToolbar("定金支付");
+            text_pay_this_name.setText("定金费用");
             text_pay_title.setText("定金费用");
             img_pay_status.setVisibility(View.GONE);
             btn_go.setVisibility(View.VISIBLE);
         } else if (type == 1) {
             setToolbar("定金支付");
+            text_pay_this_name.setText("定金费用");
             text_pay_title.setText("支付成功");
             img_pay_status.setVisibility(View.VISIBLE);
             btn_go.setVisibility(View.GONE);
         } else if (type == 2) {
             setToolbar("结算");
+            text_pay_this_name.setText("尾款费用");
             text_pay_title.setText("尾款支付");
             img_pay_status.setVisibility(View.GONE);
             btn_go.setVisibility(View.VISIBLE);
         } else if (type == 3) {
             setToolbar("结算");
+            text_pay_this_name.setText("尾款费用");
             text_pay_title.setText("支付成功");
             img_pay_status.setVisibility(View.VISIBLE);
             btn_go.setVisibility(View.GONE);
@@ -170,24 +212,50 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
     }
 
     private void setPayData(PayData paydata) {
-        text_pay_money.setText(NumUtil.NumberFormat(paydata.getActualPay(), 1));
-        text_pay_total.setText(NumUtil.NumberFormat(paydata.getTotal(), 1) + "元");
-        text_pay_this.setText(NumUtil.NumberFormat(paydata.getThisTotalPay(), 1) + "元");
-        text_pay_coupon.setText("-" + NumUtil.NumberFormat(paydata.getCoupon(), 1) + "元");
-        text_pay_balance.setText(NumUtil.NumberFormat(paydata.getBalance(), 1) + "元");
+        text_pay_money.setText(NumUtil.NumberFormat(paydata.getActualPay(), 2));
+        text_pay_total.setText(NumUtil.NumberFormat(paydata.getTotal(), 2) + "元");
+        text_pay_this.setText(NumUtil.NumberFormat(paydata.getThisTotalPay(), 2) + "元");
+        text_pay_coupon.setText("-" + NumUtil.NumberFormat(paydata.getCoupon(), 2) + "元");
+        text_pay_balance.setText(NumUtil.NumberFormat(paydata.getBalance(), 2) + "元");
+        lay_pay_coupon.setVisibility(paydata.getCoupon() == 0 ? View.GONE : View.VISIBLE);
+        lay_pay_balance.setVisibility(paydata.getBalance() == 0 ? View.GONE : View.VISIBLE);
+    }
+
+    /**
+     * type 0:支付宝 1:微信 -1 获取用户默认
+     */
+    private void setPayType(int type) {
+        if (type == -1) {
+            User user = AppData.App.getUser();
+            if (user == null) return;
+            type = user.getFristPayMethod();
+        }
+        if (type == 0) {
+            text_pay_payway.setText("支付宝支付");
+            text_pay_payway.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_zhifubao, 0, R.drawable.icon_item_next, 0);
+        } else {
+            text_pay_payway.setText("微信支付");
+            text_pay_payway.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_weixin, 0, R.drawable.icon_item_next, 0);
+        }
     }
 
 
     public void netGetPayData() {
+        int flag = 0;
+        if (type == 0 || type == 1) {
+            flag = 0;
+        } else if (type == 2 || type == 3) {
+            flag = 1;
+        }
         RequestParams params = new RequestParams(AppData.Url.requestBalance);
         params.addHeader("token", AppData.App.getToken());
-        params.addBodyParameter("flag", "0");
+        params.addBodyParameter("flag", flag + "");
         params.addBodyParameter("orderId", orderId + "");
         CommonNet.samplepost(params, PayData.class, new CommonNet.SampleNetHander() {
             @Override
             public void netGo(int code, Object pojo, String text, Object obj) {
                 if (pojo != null) {
-                    PayData payData = (PayData) pojo;
+                    payData = (PayData) pojo;
                     setPayData(payData);
                     LoadingViewUtil.showout(showingroup, showin);
                 } else {
@@ -218,7 +286,7 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         });
     }
 
-    public void netPayFirst(int orderId, final int flag) {
+    public void netPayFirstTest(int orderId, final int flag) {
         RequestParams params = new RequestParams(AppData.Url.pay);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("orderId", orderId + "");
@@ -226,21 +294,8 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         CommonNet.samplepost(params, Float.class, new CommonNet.SampleNetHander() {
             @Override
             public void netGo(int code, Object pojo, String text, Object obj) {
-                Toast.makeText(PayActivity.this, text, Toast.LENGTH_SHORT).show();
-                if (flag == 0) {
-                    //定金支付成功
-                    setTypeData(1);
-                    EventOrder eventOrder = new EventOrder();
-                    eventOrder.setAboutOrder("8");
-                    EventBus.getDefault().post(eventOrder);
-                } else {
-                    //尾款支付成功
-                    toEVA = true;
-                    setTypeData(3);
-                    EventOrder eventOrder = new EventOrder();
-                    eventOrder.setAboutOrder("101");
-                    EventBus.getDefault().post(eventOrder);
-                }
+                Toast.makeText(PayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                paySuccess();
             }
 
             @Override
@@ -261,7 +316,7 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
     }
 
     ////////////////////////
-    public void netPay(int orderId, final int flag) {
+    public void netPayFirstZhifubao(int orderId, final int flag) {
         RequestParams params = new RequestParams(AppData.Url.sign);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("orderId", orderId + "");
@@ -303,6 +358,25 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         });
     }
 
+    /**
+     * 支付成功后的业务逻辑
+     */
+    private void paySuccess() {
+        if (type == 0 || type == 1) {
+            //定金支付成功
+            setTypeData(1);
+            EventOrder eventOrder = new EventOrder();
+            eventOrder.setAboutOrder("8");
+            EventBus.getDefault().post(eventOrder);
+        } else if (type == 2 || type == 3) {
+            //尾款支付成功
+            toEVA = true;
+            setTypeData(3);
+            EventOrder eventOrder = new EventOrder();
+            eventOrder.setAboutOrder("101");
+            EventBus.getDefault().post(eventOrder);
+        }
+    }
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -322,6 +396,7 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
                         Toast.makeText(PayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                        paySuccess();
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败
                         // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -331,7 +406,6 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                             Toast.makeText(PayActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
-
                         }
                     }
                     break;

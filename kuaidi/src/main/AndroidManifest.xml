@@ -28,7 +28,7 @@
         <!-- 百度地图 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="pbEw6GendVldYzT80cCBEFSoqSUgykkG" />
+            android:value="YkjPku4cyoeSFodRxHVZdehX9NfX7Oem" />
 
         <!-- bugHD -->
         <meta-data
@@ -82,11 +82,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.activity.PayDetailActivity"
-            android:label="@string/title_activity_paydetail"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
         <activity
             android:name=".ui.activity.ComplaintActivity"
             android:label="@string/title_activity_complaint"
@@ -151,16 +146,7 @@
             android:label="@string/title_activity_eva"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
-        <activity
-            android:name=".ui.activity.MsgClassActivity"
-            android:label="@string/title_activity_msgclass"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
-        <activity
-            android:name=".ui.activity.MsgActivity"
-            android:label="@string/title_activity_msg"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Back"></activity>
+
         <activity
             android:name=".ui.activity.StartUpActivity"
             android:label="@string/title_activity_startup"

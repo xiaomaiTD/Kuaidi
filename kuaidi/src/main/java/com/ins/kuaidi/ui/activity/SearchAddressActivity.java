@@ -1,15 +1,27 @@
 package com.ins.kuaidi.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.baidu.mapapi.search.core.PoiInfo;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeOption;
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiCitySearchOption;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiIndoorResult;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
@@ -17,6 +29,8 @@ import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.ins.kuaidi.R;
 import com.ins.middle.entity.Position;
 import com.ins.kuaidi.ui.adapter.RecycleAdapterSearchAddress;
+import com.ins.middle.ui.activity.CityActivity;
+import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,7 +39,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ins.middle.ui.activity.BaseBackActivity;
-public class SearchAddressActivity extends BaseBackActivity implements OnRecycleItemClickListener, OnGetSuggestionResultListener,View.OnClickListener {
+import com.sobey.common.utils.StrUtils;
+
+public class SearchAddressActivity extends BaseBackActivity implements OnRecycleItemClickListener, OnGetSuggestionResultListener, OnGetPoiSearchResultListener, View.OnClickListener {
 
     private RecyclerView recyclerView;
     private List<Position> results = new ArrayList<>();
@@ -33,14 +49,17 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
 
     private EditText edit_search;
     private TextView btn_cancel;
+    private TextView btn_go_left;
 
     private ViewGroup showingroup;
     private View showin;
 
     //搜索建议
     private SuggestionSearch mSuggestionSearch = null;
+    private PoiSearch mPoiSearch = null;
 
-    private String city = "成都";
+    //默认成都市
+    private String city = "成都市";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +76,19 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
     @Override
     protected void onDestroy() {
         mSuggestionSearch.destroy();
+        mPoiSearch.destroy();
         super.onDestroy();
     }
 
     private void initBase() {
+        if (getIntent().hasExtra("city")) {
+            city = getIntent().getStringExtra("city");
+        }
         // 初始化建议搜索模块，注册建议搜索事件监听
         mSuggestionSearch = SuggestionSearch.newInstance();
         mSuggestionSearch.setOnGetSuggestionResultListener(this);
+        mPoiSearch = PoiSearch.newInstance();
+        mPoiSearch.setOnGetPoiSearchResultListener(this);
     }
 
     private void initView() {
@@ -71,6 +96,10 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         recyclerView = (RecyclerView) findViewById(R.id.recycle);
         edit_search = (EditText) findViewById(R.id.edit_search);
         btn_cancel = (TextView) findViewById(R.id.btn_cancel);
+        btn_go_left = (TextView) findViewById(R.id.btn_go_left);
+
+        btn_cancel.setOnClickListener(this);
+        btn_go_left.setOnClickListener(this);
     }
 
     private void initData() {
@@ -82,7 +111,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
 
-        btn_cancel.setOnClickListener(this);
+        btn_go_left.setText(city);
         /**
          * 当输入关键字变化时，动态更新建议列表
          */
@@ -101,7 +130,12 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
                 /**
                  * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
                  */
-                mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
+
+                if (showin == null) {
+                    showin = LoadingViewUtil.showin(showingroup, com.ins.middle.R.layout.layout_loading, showin);
+                }
+                //mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
+                mPoiSearch.searchInCity((new PoiCitySearchOption()).city(city).keyword(s.toString()).pageCapacity(15).pageNum(0));
             }
         });
     }
@@ -112,12 +146,15 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        Intent intent = new Intent();
+        switch (v.getId()) {
             case R.id.btn_cancel:
-//                edit_search.setText("");
-//                adapter.getResults().clear();
-//                freshCtrl();
                 finish();
+                break;
+            case R.id.btn_go_left:
+                intent.setClass(this, CityActivity.class);
+                intent.putExtra("city", city);
+                startActivityForResult(intent, RESULT_CITY);
                 break;
         }
     }
@@ -129,19 +166,76 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         finish();
     }
 
+    private static final int RESULT_CITY = 0xf101;
+
+    //页面返回回调
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case RESULT_CITY:
+                if (resultCode == RESULT_OK) {
+                    String city = data.getStringExtra("city");
+                    if (!StrUtils.isEmpty(city)) {
+                        this.city = city;
+                        btn_go_left.setText(city);
+                    }
+                }
+                break;
+        }
+    }
+
     @Override
     public void onGetSuggestionResult(SuggestionResult res) {
+        LoadingViewUtil.showout(showingroup, showin);
         if (res == null || res.getAllSuggestions() == null) {
+            adapter.getResults().clear();
+            freshCtrl();
             return;
         }
         List<Position> positions = new ArrayList<>();
         for (SuggestionResult.SuggestionInfo suggest : res.getAllSuggestions()) {
             if (suggest.key != null) {
-                positions.add(new Position(suggest));
+                if (suggest.city.equals(city)) {
+                    positions.add(new Position(suggest));
+                }
             }
         }
         adapter.getResults().clear();
         adapter.getResults().addAll(positions);
         freshCtrl();
+    }
+
+    @Override
+    public void onGetPoiResult(PoiResult result) {
+        LoadingViewUtil.showout(showingroup, showin);
+        showin = null;
+        if (result == null || result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
+            Toast.makeText(SearchAddressActivity.this, "未找到结果", Toast.LENGTH_LONG).show();
+            adapter.getResults().clear();
+            freshCtrl();
+            return;
+        }
+        if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+            List<Position> positions = new ArrayList<>();
+            for (PoiInfo poi : result.getAllPoi()) {
+                if (poi.city.equals(city)) {
+                    positions.add(new Position(poi));
+                }
+            }
+            adapter.getResults().clear();
+            adapter.getResults().addAll(positions);
+            freshCtrl();
+        }
+    }
+
+    @Override
+    public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+
+    }
+
+    @Override
+    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
+
     }
 }

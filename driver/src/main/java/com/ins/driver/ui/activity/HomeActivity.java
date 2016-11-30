@@ -17,13 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeOption;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
@@ -39,35 +41,39 @@ import com.ins.middle.entity.EventOrder;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.CityActivity;
 import com.ins.middle.ui.activity.LoginActivity;
 import com.ins.middle.ui.activity.MeDetailActivity;
+import com.ins.middle.ui.activity.MsgClassActivity;
 import com.ins.middle.ui.activity.ServerActivity;
 import com.ins.middle.ui.activity.SettingActivity;
 import com.ins.middle.ui.activity.TripActivity;
+import com.ins.middle.ui.activity.WalletActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.ins.middle.utils.MapHelper;
-import com.ins.middle.utils.MapUtil;
 import com.ins.middle.view.DriverView;
+import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends BaseAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, Locationer.LocationCallback {
+public class HomeActivity extends BaseAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, Locationer.LocationCallback, OnGetGeoCoderResultListener {
 
+    private UpdateHelper updateHelper;
     //网络请求辅助
-    private NetHelper netHelper;
+    public NetHelper netHelper;
     //定位器
-    private Locationer locationer;
+    public Locationer locationer;
     //路径检索器
     private RoutePlanSearch mSearch = null;
+    private GeoCoder geoSearch = null; // 搜索模块，也可去掉地图模块独立使用
 
     private DrawerLayout drawer;
     private ImageView img_navi_header;
@@ -78,7 +84,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private TextView text_username;
     private TextView text_title;
     private MapView mapView;
-    private BaiduMap baiduMap;
+    public BaiduMap baiduMap;
     public TextView btn_go;
     public TextView btn_new;
     public CheckBox check_lu;
@@ -123,7 +129,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //设置用户信息
             setUserData();
             //获取行程信息
-            netHelper.netGetTrip();
+            if (AppData.App.getUser() != null) {
+                //登录
+                netHelper.netGetTrip();
+            } else {
+                //注销
+                trips.clear();
+            }
         } else if (flag == AppConstant.EVENT_UPDATE_ME) {
             setUserData();
         }
@@ -135,6 +147,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         Log.e("liao", "aboutOrder:" + aboutOrder);
         if ("3".equals(aboutOrder)) {
             //请求支付定金
+            Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
+            if (trip!=null) trip.setStatus(Trip.STA_2003);
         } else if ("4".equals(aboutOrder)) {
             //接到乘客,乘客已经上车
             if (eventOrder.getOrderId() != 0) {
@@ -157,10 +171,26 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //司机端 ： 定金支付成功
             if (eventOrder.getOrderId() != 0) {
                 Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
-                trip.setStatus(2004);
+                if (trip.getStatus() == Trip.STA_2003) {
+                    trip.setStatus(2004);
+                }else {
+                    Log.e("liao","推送被拦截8");
+                }
             }
         } else if ("9".equals(aboutOrder)) {
             //司机出发
+        } else if ("102".equals(aboutOrder)) {
+            //乘客已经全部下车，司机选择继续接单，回滚初始状态
+            baiduMap.clear();
+            trips.clear();
+            setTrip(trips);
+            netHelper.netOnOff(true, city, MapHelper.LatLng2Str(nowLatLng));
+        } else if ("103".equals(aboutOrder)) {
+            //乘客已经全部下车，回滚初始状态
+            baiduMap.clear();
+            trips.clear();
+            setTrip(trips);
+            netHelper.netOnOff(false, city, MapHelper.LatLng2Str(nowLatLng));
         }
     }
 
@@ -203,10 +233,16 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         mapView = null;
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (updateHelper != null) updateHelper.onDestory();
         if (dialogLoading != null) dialogLoading.dismiss();
     }
 
     private void initBase() {
+        updateHelper = new UpdateHelper.Builder(this)
+                .checkUrl(AppData.Url.version_driver)
+                .isHintNewVersion(false)
+                .build();
+        updateHelper.check();
         netHelper = new NetHelper(this);
         dialogLoading = new DialogLoading(this, "正在处理");
     }
@@ -225,6 +261,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         btn_relocate = findViewById(R.id.btn_map_relocate);
         check_lu = (CheckBox) findViewById(R.id.check_map_lu);
 
+        findViewById(R.id.btn_fresh).setOnClickListener(this);
         findViewById(R.id.img_home_msg).setOnClickListener(this);
         findViewById(R.id.img_home_order).setOnClickListener(this);
         img_navi_header = (ImageView) navi.getHeaderView(0).findViewById(R.id.img_navi_header);
@@ -268,7 +305,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         //搜索相关，初始化搜索模块，注册事件监听
         mSearch = RoutePlanSearch.newInstance();
         mSearch.setOnGetRoutePlanResultListener(new MyOnGetRoutePlanResultListener(mapView));
-
+        // 初始化搜索模块，注册事件监听
+        geoSearch = GeoCoder.newInstance();
+        geoSearch.setOnGetGeoCodeResultListener(this);
 
         baiduMap.setOnMarkerClickListener(onMarkerClickListener);
     }
@@ -294,27 +333,34 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //////////设置数据的方法
     /////////////////////////////////
 
-    private void setUserData() {
+    public void setUserData() {
         User user = AppData.App.getUser();
         if (user != null) {
             text_username.setText(user.getNickName());
             GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header, AppHelper.getRealImgPath(user.getAvatar()));
             btn_go.setVisibility(View.VISIBLE);
             setOnLineData(user);
+            HomeHelper.setInit(this);
         } else {
-            text_username.setText("未登陆");
+            text_username.setText("未登录");
             GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header);
             btn_go.setVisibility(View.GONE);
+            setOnLineData(null);
+            HomeHelper.setUnLogin(this);
         }
     }
 
     public void setOnLineData(User user) {
-        if (user.getIsOnline() == 1) {
-            HomeHelper.setOnline(this);
-            isOnline = true;
-        } else {
-            HomeHelper.setOffline(this);
+        if (user == null) {
             isOnline = false;
+        } else {
+            if (user.getIsOnline() == 1) {
+                HomeHelper.setOnline(this);
+                isOnline = true;
+            } else {
+                HomeHelper.setOffline(this);
+                isOnline = false;
+            }
         }
     }
 
@@ -332,6 +378,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         }
         //如果行程为空，则从UI上移除路径点
         if (StrUtils.isEmpty(trips)) {
+            Log.e("liao", "trips == null 移除所有路径点");
             if (MyOnGetRoutePlanResultListener.overlay != null)
                 MyOnGetRoutePlanResultListener.overlay.removeFromMap();
         }
@@ -389,9 +436,33 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         }
     }
 
+    private void setCity(String city) {
+        text_title.setText(city);
+    }
+
     ////////////////////////////////////
     /////////监听回调
     ////////////////////////////////////
+
+    private static final int RESULT_CITY = 0xf101;
+
+    //页面返回回调
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case RESULT_CITY:
+                if (resultCode == RESULT_OK) {
+                    String city = data.getStringExtra("city");
+                    if (!StrUtils.isEmpty(city)) {
+                        this.city = city;
+                        setCity(city);
+                        geoSearch.geocode(new GeoCodeOption().city(city).address(city));
+                    }
+                }
+                break;
+        }
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -402,6 +473,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 startActivity(intent);
                 break;
             case R.id.nav_wallet:
+                intent.setClass(this, WalletActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_server:
                 intent.setClass(this, ServerActivity.class);
@@ -410,8 +483,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             case R.id.nav_setting:
                 intent.setClass(this, SettingActivity.class);
                 startActivity(intent);
-//                intent.setClass(this, IdentifyActivity.class);
-//                startActivity(intent);
                 break;
         }
         drawer.closeDrawer(Gravity.LEFT);
@@ -423,8 +494,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.img_home_msg:
-//                intent.setClass(this, MsgClassActivity.class);
-//                startActivity(intent);
+                intent.setClass(this, MsgClassActivity.class);
+                startActivity(intent);
                 break;
             case R.id.img_home_order:
                 intent.setClass(this, ProgActivity.class);
@@ -443,22 +514,31 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 drawer.openDrawer(Gravity.LEFT);
                 break;
             case R.id.text_home_title:
-//                intent.setClass(this, SearchAddressActivity.class);
-//                startActi
+                if (!StrUtils.isEmpty(city)) {
+                    intent.setClass(this, CityActivity.class);
+                    intent.putExtra("city", city);
+                    startActivityForResult(intent, RESULT_CITY);
+                } else {
+                    Toast.makeText(this, "正在定位中...", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.btn_go:
                 if (!StrUtils.isEmpty(city)) {
-                    netHelper.netOnOff(!btn_go.isSelected(), city);
+                    netHelper.netOnOff(!btn_go.isSelected(), city, MapHelper.LatLng2Str(nowLatLng));
                 } else {
                     Toast.makeText(this, "定位中，稍后再试", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_new:
+                btn_new.setVisibility(View.GONE);
                 intent.setClass(HomeActivity.this, ProgActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btn_map_relocate:
-                locationer.isFirstLoc = true;
+                MapHelper.zoomByPoint(baiduMap, nowLatLng);
+                break;
+            case R.id.btn_fresh:
+                HomeHelper.setFresh(this);
                 break;
         }
     }
@@ -492,16 +572,32 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     @Override
     public void onLocation(LatLng latLng, String city, boolean isFirst) {
         //定位成功后保存定位坐标
-        nowLatLng = latLng;
+        this.nowLatLng = latLng;
         //定位成功后保存定位城市
         this.city = city;
         //第一次定位成功后设置Title
-        if (isFirst) text_title.setText(StrUtils.subLastChart(city, "市"));
+        if (isFirst) setCity(city);
         //每次定位成功后检查司机是否在线，在线则不断上传自己位置
         if (isOnline) netHelper.netUpdateLat(latLng);
         //每次定位成功后检查司机是否在线，在线则不断获取前后司机的位置
         if (isOnline) netHelper.netDriverLat();
         //每次定位成功后检查查询路线标准位，如果允许则进行路线查询
         if (needSearchRout) setPassengerRoute(latLng, trips, true);
+    }
+
+    //检索回调
+    @Override
+    public void onGetGeoCodeResult(GeoCodeResult result) {
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG).show();
+            return;
+        }
+        LatLng location = result.getLocation();
+        MapHelper.zoomToPosition(mapView, location);
+    }
+
+    //反检索回调
+    @Override
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
     }
 }

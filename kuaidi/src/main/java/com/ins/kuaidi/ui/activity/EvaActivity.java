@@ -15,9 +15,12 @@ import com.ins.middle.common.AppData;
 import com.ins.middle.common.AppVali;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
+import com.ins.middle.entity.Trip;
 import com.ins.middle.utils.GlideUtil;
+import com.ins.middle.view.DriverView;
 import com.ins.middle.view.ProgView;
 import com.sobey.common.common.LoadingViewUtil;
+import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.singlepopview.MySinglePopupWindow;
 
 import java.util.ArrayList;
@@ -37,12 +40,13 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
 
     private View lay_eva_detail;
     private View btn_show;
+    private DriverView driverView;
 
     private TextView btn_go;
     private EditText edit_eva_describe;
     private RatingBar rating_eva;
 
-    private int orderId;
+    private Trip trip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +67,8 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
     }
 
     private void initBase() {
-        if (getIntent().hasExtra("orderId")) {
-            orderId = getIntent().getIntExtra("orderId", 0);
+        if (getIntent().hasExtra("trip")) {
+            trip = (Trip) getIntent().getSerializableExtra("trip");
         }
         popupSingle = new MySinglePopupWindow(this);
         popupSingle.setResults(new ArrayList<String>() {{
@@ -82,6 +86,7 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
     }
 
     private void initView() {
+        driverView = (DriverView) findViewById(R.id.driverView);
         showingroup = (ViewGroup) findViewById(R.id.showingroup);
         lay_eva_detail = findViewById(R.id.lay_eva_detail);
         btn_show = findViewById(R.id.btn_show);
@@ -95,27 +100,29 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
     }
 
     private void initData() {
-        showin = LoadingViewUtil.showin(showingroup, R.layout.layout_loading, showin);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //加载成功
-                initCtrl();
-                LoadingViewUtil.showout(showingroup, showin);
-
-                //加载失败
-//                LoadingViewUtil.showin(showingroup,R.layout.layout_lack,showin,new View.OnClickListener(){
-//                    @Override
-//                    public void onClick(View v) {
-//                        initData();
-//                    }
-//                });
-            }
-        }, 1000);
+//        showin = LoadingViewUtil.showin(showingroup, R.layout.layout_loading, showin);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //加载成功
+//                initCtrl();
+//                LoadingViewUtil.showout(showingroup, showin);
+//
+//                //加载失败
+////                LoadingViewUtil.showin(showingroup,R.layout.layout_lack,showin,new View.OnClickListener(){
+////                    @Override
+////                    public void onClick(View v) {
+////                        initData();
+////                    }
+////                });
+//            }
+//        }, 1000);
     }
 
     private void initCtrl() {
-        GlideUtil.LoadCircleImgTest(this, findViewById(R.id.img_driver_header));
+        if (trip != null) {
+            driverView.setDriver(trip.getDriver());
+        }
     }
 
     @Override
@@ -135,7 +142,7 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
                 if (msg != null) {
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                 } else {
-                    netAddeva(orderId, rating, detail);
+                    netAddeva(trip.getId(), rating, detail);
                 }
                 break;
         }
@@ -151,6 +158,7 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 Toast.makeText(EvaActivity.this, text, Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override

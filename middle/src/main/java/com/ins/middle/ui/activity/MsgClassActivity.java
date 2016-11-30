@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.activity;
+package com.ins.middle.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,11 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ins.kuaidi.R;
-import com.ins.middle.ui.activity.WebActivity;
+import com.ins.middle.R;
+import com.ins.middle.entity.MsgClass;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.entity.TestEntity;
-import com.ins.kuaidi.ui.adapter.RecycleAdapterMsg;
+import com.ins.middle.ui.adapter.RecycleAdapterMsgclass;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
@@ -22,13 +22,12 @@ import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ins.middle.ui.activity.BaseBackActivity;
-public class MsgActivity extends BaseBackActivity implements OnRecycleItemClickListener {
+public class MsgClassActivity extends BaseBackActivity implements OnRecycleItemClickListener {
 
     private RecyclerView recyclerView;
     private SpringView springView;
-    private List<TestEntity> results = new ArrayList<>();
-    private RecycleAdapterMsg adapter;
+    private List<MsgClass> results = new ArrayList<>();
+    private RecycleAdapterMsgclass adapter;
 
     private ViewGroup showingroup;
     private View showin;
@@ -36,7 +35,7 @@ public class MsgActivity extends BaseBackActivity implements OnRecycleItemClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_msg);
+        setContentView(R.layout.activity_msgclass);
         setToolbar();
 
         initBase();
@@ -60,9 +59,10 @@ public class MsgActivity extends BaseBackActivity implements OnRecycleItemClickL
             @Override
             public void run() {
                 //加载成功
-                List<TestEntity> results = adapter.getResults();
+                List<MsgClass> results = adapter.getResults();
                 results.clear();
-                results.add(new TestEntity());
+                results.add(new MsgClass(1, "线路消息", "内容摘要"));
+                results.add(new MsgClass(2, "系统消息", "内容摘要"));
                 freshCtrl();
                 LoadingViewUtil.showout(showingroup, showin);
 
@@ -74,11 +74,11 @@ public class MsgActivity extends BaseBackActivity implements OnRecycleItemClickL
 //                    }
 //                });
             }
-        }, 1000);
+        }, 800);
     }
 
     private void initCtrl() {
-        adapter = new RecycleAdapterMsg(this, results);
+        adapter = new RecycleAdapterMsgclass(this, results);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(this));
@@ -115,9 +115,9 @@ public class MsgActivity extends BaseBackActivity implements OnRecycleItemClickL
 
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-        Intent intent = new Intent(this, WebActivity.class);
-        intent.putExtra("url", "http://cn.bing.com");
-        intent.putExtra("title", "消息详情");
+        MsgClass msgClass = adapter.getResults().get(viewHolder.getLayoutPosition());
+        Intent intent = new Intent(this, MsgActivity.class);
+        intent.putExtra("type", msgClass.getType());
         startActivity(intent);
     }
 }

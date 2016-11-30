@@ -1,6 +1,7 @@
 package com.ins.middle.entity;
 
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 
 import java.io.Serializable;
@@ -38,6 +39,12 @@ public class Position implements Serializable{
         city = suggest.city;
         district = suggest.district;
         latLng = suggest.pt;
+    }
+    public Position(PoiInfo poi) {
+        key = poi.name;
+        city = poi.city;
+        district = poi.address;
+        latLng = poi.location;
     }
 
     public String getKey() {

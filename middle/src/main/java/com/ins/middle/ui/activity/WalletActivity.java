@@ -33,6 +33,13 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
     private TextView text_wallet_money;
     private TextView text_wallet_couponcount;
 
+    private View lay_wallet_payway;
+    private View lay_wallet_money;
+    private View lay_wallet_coupon;
+    private View lay_wallet_bankcard;
+
+    private Wallet wallet;
+
     @Subscribe
     public void onEventMainThread(Integer flag) {
         if (flag == AppConstant.EVENT_UPDATE_PAYWAY) {
@@ -64,14 +71,19 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
 
     private void initView() {
         showingroup = (ViewGroup) findViewById(R.id.showingroup);
-        findViewById(R.id.lay_wallet_payway).setOnClickListener(this);
-        findViewById(R.id.lay_wallet_money).setOnClickListener(this);
-        findViewById(R.id.lay_wallet_coupon).setOnClickListener(this);
-        findViewById(R.id.lay_wallet_bankcard).setOnClickListener(this);
+        lay_wallet_payway = findViewById(R.id.lay_wallet_payway);
+        lay_wallet_money = findViewById(R.id.lay_wallet_money);
+        lay_wallet_coupon = findViewById(R.id.lay_wallet_coupon);
+        lay_wallet_bankcard = findViewById(R.id.lay_wallet_bankcard);
 
         text_wallet_payway = (TextView) findViewById(R.id.text_wallet_payway);
         text_wallet_money = (TextView) findViewById(R.id.text_wallet_money);
         text_wallet_couponcount = (TextView) findViewById(R.id.text_wallet_couponcount);
+
+        lay_wallet_payway.setOnClickListener(this);
+        lay_wallet_money.setOnClickListener(this);
+        lay_wallet_coupon.setOnClickListener(this);
+        lay_wallet_bankcard.setOnClickListener(this);
     }
 
     private void initData() {
@@ -80,6 +92,13 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
     }
 
     private void initCtrl() {
+        if (PackageUtil.isClient()) {
+            lay_wallet_payway.setVisibility(View.VISIBLE);
+            lay_wallet_coupon.setVisibility(View.VISIBLE);
+        } else {
+            lay_wallet_payway.setVisibility(View.GONE);
+            lay_wallet_coupon.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -90,7 +109,7 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
             startActivity(PackageUtil.getSmIntent("PaywayActivity"));
         } else if (i == R.id.lay_wallet_money) {
             intent.setClass(this, MoneyActivity.class);
-            intent.putExtra("money", 1424.56);
+            intent.putExtra("money", wallet.getBalance());
             startActivity(intent);
         } else if (i == R.id.lay_wallet_coupon) {
             startActivity(PackageUtil.getSmIntent("CouponActivity"));
@@ -107,13 +126,14 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
         }
     }
 
-    private void setWalletData(Wallet payData) {
-        if (payData != null) {
-            text_wallet_money.setText(NumUtil.NumberFormat(payData.getBalance(), 2) + "元");
-            text_wallet_couponcount.setText(payData.getCoupon() + "张");
+    private void setWalletData(Wallet wallet) {
+        if (wallet != null) {
+            text_wallet_money.setText(NumUtil.NumberFormat(wallet.getBalance(), 2) + "元");
+            text_wallet_couponcount.setText(wallet.getCoupon() + "张");
         }
     }
-    private void setPayWayData(){
+
+    private void setPayWayData() {
         User user = AppData.App.getUser();
         if (user != null) {
             if (user.getFristPayMethod() == 0) {
@@ -134,7 +154,7 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
             @Override
             public void netGo(int code, Object pojo, String text, Object obj) {
                 if (pojo != null) {
-                    Wallet wallet = (Wallet) pojo;
+                    wallet = (Wallet) pojo;
                     setWalletData(wallet);
                     LoadingViewUtil.showout(showingroup, showin);
                 } else {

@@ -3,6 +3,7 @@ package com.ins.kuaidi.common;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.reflect.TypeToken;
 import com.ins.kuaidi.entity.LineConfig;
@@ -26,6 +27,7 @@ import java.util.List;
 public class NetHelper {
 
     private HomeActivity activity;
+    private ArrayList<Overlay> areasLay;
 
     public NetHelper(HomeActivity activity) {
         this.activity = activity;
@@ -40,8 +42,10 @@ public class NetHelper {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 List<List<String>> areas = (ArrayList<List<String>>) pojo;
+                //如果区域图层不是空，那么先清除掉
+                MapHelper.removeAreas(areasLay);
                 activity.ptsArray = MapHelper.str2LatLngsArray(areas);
-                MapHelper.drawAreas(activity.mapView, activity.ptsArray);
+                areasLay = MapHelper.drawAreas(activity.mapView, activity.ptsArray);
                 //dialogLoading.hide();
             }
 
@@ -75,11 +79,13 @@ public class NetHelper {
             public void netSetError(int code, String text) {
                 Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
                 //线路不可用，设置叫车按钮不可点击
+                activity.holdcarView.setLineConfig(null);
                 activity.btn_go.setEnabled(false);
             }
 
             @Override
             public void netStart(int code) {
+                activity.btn_go.setEnabled(false);
             }
         });
     }
@@ -156,8 +162,8 @@ public class NetHelper {
 
     public void netLatDriver(int lineId, int driverId) {
         String token = AppData.App.getToken();
-        if(StrUtils.isEmpty(token)){
-            Log.e("liao","token=null 不请求司机位置");
+        if (StrUtils.isEmpty(token)) {
+            Log.e("liao", "token=null 不请求司机位置");
             return;
         }
         RequestParams params = new RequestParams(AppData.Url.getPasLatDriver);

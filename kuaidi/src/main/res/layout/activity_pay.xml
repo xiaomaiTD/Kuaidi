@@ -143,6 +143,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/text_pay_this_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -245,12 +246,14 @@
 
 
                 <TextView
+                    android:id="@+id/text_pay_payway"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:drawableLeft="@drawable/icon_weixin"
                     android:drawablePadding="5dp"
                     android:drawableRight="@drawable/icon_item_next"
                     android:gravity="center_vertical"
+                    android:foreground="?attr/selectableItemBackground"
                     android:text="微信支付"
                     android:textColor="@color/com_text_blank"
                     android:textSize="@dimen/text_big_nomal" />

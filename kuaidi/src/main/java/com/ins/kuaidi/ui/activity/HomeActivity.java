@@ -19,6 +19,7 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeOption;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
@@ -31,6 +32,8 @@ import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
 import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.EventOrder;
+import com.ins.middle.ui.activity.CityActivity;
+import com.ins.middle.ui.activity.MsgClassActivity;
 import com.ins.middle.ui.activity.WalletActivity;
 import com.ins.middle.utils.MapHelper;
 import com.ins.middle.view.DriverView;
@@ -53,7 +56,9 @@ import com.ins.kuaidi.ui.dialog.DialogPopupMsg;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.ins.kuaidi.view.HoldcarView;
+import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.PermissionsUtil;
+import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -62,8 +67,9 @@ import java.util.List;
 
 public class HomeActivity extends BaseAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, Locationer.LocationCallback, OnGetGeoCoderResultListener {
 
-    private NetHelper netHelper;
-    private Locationer locationer;
+    private UpdateHelper updateHelper;
+    public NetHelper netHelper;
+    public Locationer locationer;
     private GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
 
     private DrawerLayout drawer;
@@ -81,6 +87,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private View lay_map_bubble;
     public View lay_map_center;
     public TextView btn_go;
+    private View btn_relocate;
 
     public DialogLoading dialogLoading;
     private DialogMouthPicker dialogTime;
@@ -89,6 +96,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //    private static final int RESULT_SEARCHADDRESS = 0xf101;
     private int type = 0;   //0:点击出发地点 1:点击目的地
     private String city;
+    private String nowcity;
+    //当前定位位置
+    private LatLng nowLatLng;
     boolean isIn;
     //地理围栏
     public List<List<LatLng>> ptsArray;
@@ -136,6 +146,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 netHelper.netGetTrip();
             } else {
                 HomeHelper.setInit(this);
+                trip = null;
             }
         } else if (flag == AppConstant.EVENT_UPDATE_ME) {
             setUserData();
@@ -147,30 +158,46 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         String aboutOrder = eventOrder.getAboutOrder();
         Log.e("liao", "aboutOrder:" + aboutOrder);
         if ("3".equals(aboutOrder)) {
-            //请求支付定金
-            HomeHelper.setPayFirst(this);
+            if (trip.getStatus() == Trip.STA_2002) {
+                //请求支付定金
+                HomeHelper.setPayFirst(this);
+                trip.setStatus(Trip.STA_2003);
+            } else {
+                Log.e("liao", "推送被拦截3:" + trip.getStatus());
+            }
         } else if ("4".equals(aboutOrder)) {
             //接到乘客
-            HomeHelper.setGetPassenger(this);
+            if (trip.getStatus() == Trip.STA_2004) {
+                HomeHelper.setPayLast(this);
+                trip.setStatus(Trip.STA_2005);
+            } else {
+                Log.e("liao", "推送被拦截4");
+            }
         } else if ("5".equals(aboutOrder)) {
             //已经到达目的地
-            HomeHelper.setPayLast(this);
+            HomeHelper.setFresh(this);
         } else if ("6".equals(aboutOrder)) {
             //司机端 ： 匹配到有新的订单
         } else if ("7".equals(aboutOrder)) {
-            //乘客端： 订单已经匹配 已经分配给司机
-            HomeHelper.setMatched(this);
-            //获取行程信息
-            netHelper.netGetTrip();
+            if (trip == null) {
+                //乘客端： 订单已经匹配 已经分配给司机
+                HomeHelper.setMatched(this);
+                //获取行程信息
+                netHelper.netGetTrip();
+            } else {
+                Log.e("liao", "推送被拦截7");
+            }
         } else if ("8".equals(aboutOrder)) {
             //定金支付成功(乘客端本地的推送)
             //2004 乘客已支付预付款
-            HomeHelper.setPayLast(this);
+            HomeHelper.setPayLastFalse(this);
+            trip.setStatus(Trip.STA_2004);
         } else if ("9".equals(aboutOrder)) {
             //司机出发
         } else if ("101".equals(aboutOrder)) {
-            //乘客已经支付尾款
+            //乘客已经支付尾款(乘客端本地的推送)
             HomeHelper.setHasPayLast(this);
+            trip.setIsPay(1);
         }
     }
 
@@ -215,6 +242,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         mapView = null;
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (updateHelper != null) updateHelper.onDestory();
         if (dialogLoading != null) dialogLoading.dismiss();
         if (dialogTime != null) dialogTime.dismiss();
         if (dialogPopupMsg != null) dialogPopupMsg.dismiss();
@@ -223,6 +251,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private long exitTime;
 
     private void initBase() {
+        updateHelper = new UpdateHelper.Builder(this)
+                .checkUrl(AppData.Url.version_passenger)
+                .isHintNewVersion(false)
+                .build();
+        updateHelper.check();
         carMap = new CarMap();
         netHelper = new NetHelper(this);
         dialogLoading = new DialogLoading(this, "正在处理");
@@ -255,13 +288,17 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         lay_map_bubble = findViewById(R.id.lay_map_bubble);
         lay_map_center = findViewById(R.id.lay_map_center);
         btn_go = (TextView) findViewById(R.id.btn_go);
+        btn_relocate = findViewById(R.id.btn_map_relocate);
 
         img_navi_header = (ImageView) navi.getHeaderView(0).findViewById(R.id.img_navi_header);
         text_username = (TextView) navi.getHeaderView(0).findViewById(R.id.text_navi_username);
         img_navi_header.setOnClickListener(this);
         btn_go.setOnClickListener(this);
+
+        findViewById(R.id.btn_fresh).setOnClickListener(this);
         findViewById(R.id.img_home_msg).setOnClickListener(this);
         findViewById(R.id.img_home_order).setOnClickListener(this);
+        btn_relocate.setOnClickListener(this);
 
         lay_map_bubble.setVisibility(View.GONE);
         btn_go.setVisibility(View.GONE);
@@ -322,13 +359,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //////////设置数据的方法
     /////////////////////////////////
 
-    private void setUserData() {
+    public void setUserData() {
         User user = AppData.App.getUser();
         if (user != null) {
             text_username.setText(user.getNickName());
             GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header, AppHelper.getRealImgPath(user.getAvatar()));
         } else {
-            text_username.setText("未登陆");
+            text_username.setText("未登录");
             GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header);
         }
     }
@@ -338,8 +375,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         HomeHelper.setTrip(this, trip);
         //设置上车地点位置
         if (trip != null && trip.getStatus() != 2001 && trip.getStatus() != 2007) {
-            com.ins.kuaidi.utils.AppHelper.addMarkStartEnd(baiduMap,MapHelper.str2LatLng(trip.getFromLat()));
-            com.ins.kuaidi.utils.AppHelper.addMarkStartEnd(baiduMap,MapHelper.str2LatLng(trip.getToLat()));
+            com.ins.kuaidi.utils.AppHelper.addMarkStartEnd(baiduMap, MapHelper.str2LatLng(trip.getFromLat()));
+            com.ins.kuaidi.utils.AppHelper.addMarkStartEnd(baiduMap, MapHelper.str2LatLng(trip.getToLat()));
         }
         //设置司机位置
         if (trip != null && trip.getDriver() != null) {
@@ -352,9 +389,35 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         carMap.addMove(baiduMap, latLng);
     }
 
+    private void setCity(String city) {
+        this.city = city;
+        text_title.setText(city);
+        netHelper.netGetArea(city);
+    }
+
     ////////////////////////////////////
     /////////监听回调
     ////////////////////////////////////
+
+    private static final int RESULT_CITY = 0xf101;
+
+    //页面返回回调
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case RESULT_CITY:
+                if (resultCode == RESULT_OK) {
+                    String city = data.getStringExtra("city");
+                    if (!StrUtils.isEmpty(city)) {
+                        this.city = city;
+                        setCity(city);
+                        mSearch.geocode(new GeoCodeOption().city(city).address(city));
+                    }
+                }
+                break;
+        }
+    }
 
     //导航菜单选择回调
     @Override
@@ -412,16 +475,26 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 drawer.openDrawer(Gravity.LEFT);
                 break;
             case R.id.text_home_title:
-                intent.setClass(this, SearchAddressActivity.class);
-                startActivity(intent);
+                if (!StrUtils.isEmpty(city)) {
+                    intent.setClass(this, CityActivity.class);
+                    intent.putExtra("city", city);
+                    startActivityForResult(intent, RESULT_CITY);
+                } else {
+                    Toast.makeText(this, "正在定位中...", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.lay_map_bubble:
-                btn_go.setVisibility(View.VISIBLE);
-                lay_map_bubble.setVisibility(View.GONE);
-                holdcarView.setVisibility(View.VISIBLE);
-                YoYo.with(Techniques.Landing)
-                        .duration(200)
-                        .playOn(holdcarView);
+                if (AppData.App.getUser() != null) {
+                    btn_go.setVisibility(View.VISIBLE);
+                    lay_map_bubble.setVisibility(View.GONE);
+                    holdcarView.setVisibility(View.VISIBLE);
+                    YoYo.with(Techniques.Landing)
+                            .duration(200)
+                            .playOn(holdcarView);
+                } else {
+                    intent.setClass(this, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.btn_go:
                 if ("呼叫快车".equals(btn_go.getText())) {
@@ -440,14 +513,20 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 } else if ("支付定金".equals(btn_go.getText())) {
                     intent.setClass(this, PayActivity.class);
                     intent.putExtra("type", 0);
-                    intent.putExtra("orderId", trip.getId());
+                    intent.putExtra("trip", trip);
                     startActivity(intent);
                 } else if ("支付尾款".equals(btn_go.getText())) {
                     intent.setClass(this, PayActivity.class);
                     intent.putExtra("type", 2);
-                    intent.putExtra("orderId", trip.getId());
+                    intent.putExtra("trip", trip);
                     startActivity(intent);
                 }
+                break;
+            case R.id.btn_map_relocate:
+                MapHelper.zoomByPoint(baiduMap, nowLatLng);
+                break;
+            case R.id.btn_fresh:
+                HomeHelper.setFresh(this);
                 break;
         }
     }
@@ -477,8 +556,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             holdcarView.setAlpha(1f);
             isIn = MapHelper.isInAreas(ptsArray, mapStatus.target);
             if (isIn) {
-                //只有没有行程并且行程为初始状态才显示摇杆
-                if (trip == null || trip.getStatus() == Trip.STA_2001) {
+                //只有没有行程才显示摇杆
+                if (trip == null) {
                     //打车面板不可见并且中心面板可见的时候才显示打车气泡
                     if (holdcarView.getVisibility() != View.VISIBLE && lay_map_center.getVisibility() == View.VISIBLE) {
                         lay_map_bubble.setVisibility(View.VISIBLE);
@@ -510,6 +589,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         public void onStartClick(View v) {
             type = 0;
             Intent intent = new Intent(HomeActivity.this, SearchAddressActivity.class);
+            intent.putExtra("city", city);
             startActivity(intent);
         }
 
@@ -517,6 +597,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         public void onEndClick(View v) {
             type = 1;
             Intent intent = new Intent(HomeActivity.this, SearchAddressActivity.class);
+            intent.putExtra("city", city);
             startActivity(intent);
         }
     };
@@ -524,11 +605,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //定位回调
     @Override
     public void onLocation(LatLng latLng, String city, boolean isFirst) {
+        //定位成功后保存定位坐标
+        this.nowLatLng = latLng;
+        //定位成功后保存定位城市
+        this.nowcity = city;
         if (isFirst) {
-            text_title.setText(city);
-            netHelper.netGetArea(city);
+            setCity(city);
         }
-        this.city = city;
         //当前有行程状态的时候（不是初始状态,并且已经匹配到司机），则要不断拉取司机位置信息
         if (trip != null && trip.getDriver() != null) {
             netHelper.netLatDriver(trip.getDriver().getLineId(), trip.getDriverId());
@@ -537,7 +620,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     //检索回调
     @Override
-    public void onGetGeoCodeResult(GeoCodeResult geoCodeResult) {
+    public void onGetGeoCodeResult(GeoCodeResult result) {
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG).show();
+            return;
+        }
+        LatLng location = result.getLocation();
+        MapHelper.zoomToPosition(mapView, location);
     }
 
     //反检索回调
@@ -547,10 +636,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG).show();
         } else {
             String newCity = result.getAddressDetail().city;
+            //移动标杆，重新设置出发地
             Position position = new Position(result.getLocation(), result.getAddress(), newCity);
             if (com.ins.kuaidi.utils.AppHelper.needNetConfigStart(holdcarView, newCity)) {
                 holdcarView.setStartPosition(position);
-                netHelper.netGetLineConfig(holdcarView.getStartPosition().getCity(), newCity);
+                netHelper.netGetLineConfig(position.getCity(), holdcarView.getEndPosition().getCity());
             } else {
                 holdcarView.setStartPosition(position);
             }

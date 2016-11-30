@@ -110,6 +110,12 @@ public class DriverView extends FrameLayout {
     }
 
     private void initCtrl() {
+        //设置一个空的监听器以屏蔽手势
+        this.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
     }
 
     public void setDriver(User user) {

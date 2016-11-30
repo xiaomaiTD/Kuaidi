@@ -9,12 +9,12 @@ import android.widget.TextView;
 
 import com.ins.middle.R;
 import com.ins.middle.common.AppData;
+import com.ins.middle.utils.PackageUtil;
 import com.shelwee.update.UpdateHelper;
 import com.shelwee.update.listener.OnUpdateListener;
 import com.shelwee.update.pojo.UpdateInfo;
 import com.shelwee.update.utils.VersionUtil;
-import com.ins.middle.ui.activity.BaseAppCompatActivity;
-import com.ins.middle.ui.activity.BaseBackActivity;
+
 public class VersionActivity extends BaseBackActivity {
 
     UpdateHelper updateHelper;
@@ -43,11 +43,15 @@ public class VersionActivity extends BaseBackActivity {
     }
 
     private void initBase() {
-        updateHelper = new UpdateHelper.Builder(this)
-                .checkUrl(AppData.Url.version)
-//                .isAutoInstall(false) //设置为false需在下载完手动点击安装;默认值为true，下载后自动安装。
-//                        .isHintNewVersion(false)
-                .build();
+        if (PackageUtil.isClient()){
+            updateHelper = new UpdateHelper.Builder(this)
+                    .checkUrl(AppData.Url.version_passenger)
+                    .build();
+        }else {
+            updateHelper = new UpdateHelper.Builder(this)
+                    .checkUrl(AppData.Url.version_driver)
+                    .build();
+        }
     }
 
     private void initView() {

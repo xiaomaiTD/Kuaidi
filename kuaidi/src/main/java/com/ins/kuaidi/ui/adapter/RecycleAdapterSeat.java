@@ -33,15 +33,19 @@ public class RecycleAdapterSeat extends RecyclerView.Adapter<RecycleAdapterSeat.
     public void setLineConfig(LineConfig lineConfig) {
         this.lineConfig = lineConfig;
 
-        //设置车容量和默认选中位置
-        maxseat = lineConfig.getCarCapacity();
-        selectPosition = maxseat - 1;
-        results.clear();
-        results.addAll(getInitSeats(maxseat));
-        notifyDataSetChanged();
-        setNotice(new Seat(maxseat));
-        setCount(new Seat(maxseat));
-        setPrice(new Seat(maxseat));
+        if (lineConfig != null) {
+            //设置车容量和默认选中位置
+            maxseat = lineConfig.getCarCapacity();
+            selectPosition = maxseat - 1;
+            results.clear();
+            results.addAll(getInitSeats(maxseat));
+            notifyDataSetChanged();
+            setNotice(new Seat(maxseat));
+            setCount(new Seat(maxseat));
+            setPrice(new Seat(maxseat));
+        } else {
+            setPrice(new Seat(maxseat));
+        }
     }
 
     public void setPriceView(TextView textView) {
@@ -137,7 +141,7 @@ public class RecycleAdapterSeat extends RecyclerView.Adapter<RecycleAdapterSeat.
         }
     }
 
-    public int getSelectCount(){
+    public int getSelectCount() {
         return results.get(selectPosition).getCount();
     }
 

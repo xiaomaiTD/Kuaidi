@@ -37,7 +37,7 @@
                 android:drawablePadding="5dp"
                 android:drawableRight="@drawable/icon_home_show"
                 android:gravity="center"
-                android:text="成都"
+                android:text="定位中"
                 android:textColor="@color/sb_text_dark"
                 android:textSize="@dimen/text_big" />
 
@@ -125,6 +125,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_fresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="fresh"/>
 
                 <CheckBox
                     android:id="@+id/check_map_lu"

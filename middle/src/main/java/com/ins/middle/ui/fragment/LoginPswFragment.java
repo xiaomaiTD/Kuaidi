@@ -61,7 +61,7 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
         this.position = getArguments().getInt("position");
     }
 
-    private boolean back2first = false;
+//    private boolean back2first = false;
 
     @Subscribe
     public void onEventMainThread(String flagSpc) {
@@ -75,17 +75,17 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
                 //登录
                 text_login_title.setText("输入密码");
                 edit_login_psw.setHint("输入手机密码");
-                back2first = true;
+                activity.back2first = true;
             } else if (type == 1) {
                 //注册
                 text_login_title.setText("设置密码");
                 edit_login_psw.setHint("设置手机密码");
-                back2first = false;
+                activity.back2first = false;
             } else if (type == 2) {
                 //设置密码
                 text_login_title.setText("设置密码");
                 edit_login_psw.setHint("设置手机密码");
-                back2first = true;
+                activity.back2first = true;
             }
         }
     }
@@ -152,7 +152,7 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
                 netLogin(phone, psw);
             }
         } else if (i == R.id.btn_left) {
-            if (back2first) {
+            if (activity.back2first) {
                 activity.goPosition(0);
             } else {
                 activity.last();

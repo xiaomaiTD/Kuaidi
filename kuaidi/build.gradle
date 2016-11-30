@@ -7,8 +7,8 @@ android {
         applicationId "com.ins.kuaidi"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 8
+        versionName "1.0.0.6"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ///////////////////////jpush配置 start
@@ -19,7 +19,7 @@ android {
         }
         manifestPlaceholders = [
                 JPUSH_PKGNAME : applicationId,
-                JPUSH_APPKEY : "43229edd042e79d297588d7a", //JPush上注册的包名对应的appkey.
+                JPUSH_APPKEY : "7ca5583d3774a0dc97cf9049", //JPush上注册的包名对应的appkey.
                 JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
         ]
         ///////////////////////jpush配置 end

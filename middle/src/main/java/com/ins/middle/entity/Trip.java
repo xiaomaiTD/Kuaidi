@@ -10,13 +10,13 @@ import java.io.Serializable;
  */
 public class Trip implements Serializable{
 
-    public static final int STA_2001 = 2001;
-    public static final int STA_2002 = 2002;
-    public static final int STA_2003 = 2003;
-    public static final int STA_2004 = 2004;
-    public static final int STA_2005 = 2005;
-    public static final int STA_2006 = 2006;
-    public static final int STA_2007 = 2007;
+    public static final int STA_2001 = 2001;//匹配成功
+    public static final int STA_2002 = 2002;//司机发送支付定金状态
+    public static final int STA_2003 = 2003;//司机等待乘客支付定金状态
+    public static final int STA_2004 = 2004;//2004 乘客已支付预付款
+    public static final int STA_2005 = 2005;//2005 司机接到乘客
+    public static final int STA_2006 = 2006;//2006 乘客已抵达
+    public static final int STA_2007 = 2007;//订单已取消
 
 
     /**主键ID*/
@@ -49,8 +49,12 @@ public class Trip implements Serializable{
     /**支付详细 JSON数据*/
     private String payDetail;
 
+    private String bossesPayDetail;
+
     /**总支付金额*/
     private String payMoney;
+    /**司机总支付金额*/
+    private String driverDetail;
 
     /**预付金额*/
     private String payAdvance;
@@ -93,6 +97,8 @@ public class Trip implements Serializable{
     /**司机*/
     private User driver;
 
+
+
     //本地字段
 //    @Expose
     private transient  Overlay mark;
@@ -106,6 +112,22 @@ public class Trip implements Serializable{
     }
 
     public Trip() {
+    }
+
+    public String getDriverDetail() {
+        return driverDetail;
+    }
+
+    public void setDriverDetail(String driverDetail) {
+        this.driverDetail = driverDetail;
+    }
+
+    public String getBossesPayDetail() {
+        return bossesPayDetail;
+    }
+
+    public void setBossesPayDetail(String bossesPayDetail) {
+        this.bossesPayDetail = bossesPayDetail;
     }
 
     public int getId() {

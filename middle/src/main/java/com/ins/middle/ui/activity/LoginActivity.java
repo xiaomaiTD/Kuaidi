@@ -122,9 +122,14 @@ public class LoginActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    public boolean back2first = false;
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            //last();
+            if (back2first) {
+                goPosition(0);
+            } else {
+                last();
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);
