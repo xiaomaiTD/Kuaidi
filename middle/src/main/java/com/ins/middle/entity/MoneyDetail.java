@@ -14,7 +14,7 @@ public class MoneyDetail implements Serializable {
     private int walletId;
     private long createDate;
     private float money;
-    private int totalMoney;
+    private float totalMoney;
     private int adminUserId;
 
     public int getId() {
@@ -73,11 +73,11 @@ public class MoneyDetail implements Serializable {
         this.money = money;
     }
 
-    public int getTotalMoney() {
+    public float getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(int totalMoney) {
+    public void setTotalMoney(float totalMoney) {
         this.totalMoney = totalMoney;
     }
 

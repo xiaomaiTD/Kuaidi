@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.ins.middle.R;
 import com.ins.middle.entity.PayData;
+import com.ins.middle.entity.PayDataDriver;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.Wallet;
 import com.ins.middle.utils.PackageUtil;
@@ -41,7 +42,7 @@ public class PayDetailActivity extends BaseBackActivity implements View.OnClickL
         setContentView(R.layout.activity_paydetail);
         if (PackageUtil.isClient()) {
             setToolbar("支付明细");
-        }else {
+        } else {
             setToolbar("收款明细");
         }
         initBase();
@@ -118,31 +119,38 @@ public class PayDetailActivity extends BaseBackActivity implements View.OnClickL
     }
 
     private void setTripDetail(Trip trip) {
+        String driverDetail = trip.getDriverDetail();
         String payDetail = trip.getPayDetail();
         String bossesPayDetail = trip.getBossesPayDetail();
         Gson gson = new Gson();
 
+        PayDataDriver payDataDriver = gson.fromJson(driverDetail, PayDataDriver.class);
         PayData first = gson.fromJson(payDetail, PayData.class);
         PayData last = gson.fromJson(bossesPayDetail, PayData.class);
-        if (first != null && last != null) {
-            //设置实际支付
-            text_paydetail_money.setText(first.getActualPay() + last.getActualPay() + "");
-            //设置总金额
-            if (PackageUtil.isClient()) {
+
+        if (PackageUtil.isClient()) {
+            if (first != null && last != null) {
+                //设置实际支付
+                text_paydetail_money.setText(first.getActualPay() + last.getActualPay() + "");
+                //设置总金额
                 text_paydetail_total.setText(trip.getPayMoney() + "元");
-            } else {
-                text_paydetail_total.setText(trip.getDriverDetail() + "元");
+                //预付款
+                text_paydetail_first.setText(first.getActualPay() + "元");
+                setPayWay(text_paydetail_first, first.getPayMethed());
+                //尾款
+                text_paydetail_last.setText(last.getActualPay() + "元");
+                setPayWay(text_paydetail_last, last.getPayMethed());
+                //设置优惠券
+                text_paydetail_coupon.setText("-" + (first.getCoupon() + last.getCoupon()) + "元");
+                //设置余额
+                text_paydetail_balance.setText((first.getBalance() + last.getBalance()) + "元");
             }
-            //预付款
-            text_paydetail_first.setText(first.getActualPay() + "元");
-            setPayWay(text_paydetail_first, first.getPayMethed());
-            //尾款
-            text_paydetail_last.setText(last.getActualPay() + "元");
-            setPayWay(text_paydetail_last, last.getPayMethed());
-            //设置优惠券
-            text_paydetail_coupon.setText("-" + (first.getCoupon() + last.getCoupon()) + "元");
-            //设置余额
-            text_paydetail_balance.setText((first.getBalance() + last.getBalance()) + "元");
+        } else {
+            if (payDataDriver != null) {
+                text_paydetail_money.setText(payDataDriver.getActualCheques() + "");
+                text_paydetail_first.setText(payDataDriver.getDepositPay() + "元");
+                text_paydetail_last.setText(payDataDriver.getBosses() + "元");
+            }
         }
     }
 

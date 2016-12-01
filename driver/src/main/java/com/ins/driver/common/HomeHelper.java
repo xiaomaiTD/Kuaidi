@@ -1,6 +1,7 @@
 package com.ins.driver.common;
 
 import android.view.View;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -20,13 +21,15 @@ public class HomeHelper {
 
     public static void setTrip(HomeActivity activity, List<Trip> trips) {
         User driver = AppData.App.getUser();
-        if (driver.getIsStart()==1){
+        if (driver.getIsStart() == 1) {
             //已出发
             setStart(activity);
-        }else {
+        } else {
             //未出发
-            if (StrUtils.isEmpty(trips)) {
+            if (trips == null) {
                 setInit(activity);
+            } else if (trips.size() == 0) {
+                setInProgAfter(activity);
             } else {
                 setInProg(activity);
             }
@@ -63,6 +66,11 @@ public class HomeHelper {
         activity.check_lu.setChecked(true);
     }
 
+    public static void setInProgAfter(HomeActivity activity) {
+        activity.btn_go.setVisibility(View.GONE);
+        activity.check_lu.setVisibility(View.VISIBLE);
+    }
+
     public static void setDisable(HomeActivity activity) {
         activity.btn_go.setVisibility(View.GONE);
         activity.check_lu.setVisibility(View.GONE);
@@ -92,7 +100,7 @@ public class HomeHelper {
                 .playOn(activity.btn_new);
     }
 
-    public static void setFresh(HomeActivity activity){
+    public static void setFresh(HomeActivity activity) {
         activity.baiduMap.clear();
         activity.netHelper.netGetTrip();
         activity.locationer.isFirstLoc = true;

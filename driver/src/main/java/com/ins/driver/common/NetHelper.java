@@ -98,6 +98,14 @@ public class NetHelper {
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 ArrayList<Trip> trips = (ArrayList<Trip>) pojo;
                 List<Trip> remTrips = AppHelper.removeGetPassenger(trips);
+                //设置新的trips前，先把老的trip的用户头像信息移除
+                if (!StrUtils.isEmpty(activity.trips)) {
+                    for (Trip trip : activity.trips) {
+                        if (trip.getMark() != null) {
+                            trip.getMark().remove();
+                        }
+                    }
+                }
                 activity.setTrip(remTrips);
             }
 

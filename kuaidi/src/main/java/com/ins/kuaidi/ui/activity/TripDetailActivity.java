@@ -11,14 +11,18 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.ins.kuaidi.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.AppVali;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.Eva;
+import com.ins.middle.entity.PayData;
+import com.ins.middle.entity.PayDataDriver;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.ui.activity.PayDetailActivity;
+import com.ins.middle.utils.PackageUtil;
 import com.ins.middle.view.DriverView;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.utils.GlideUtil;
@@ -117,8 +121,14 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
 
     private void initCtrl() {
         if (trip != null) {
+            String payDetail = trip.getPayDetail();
+            String bossesPayDetail = trip.getBossesPayDetail();
+            Gson gson = new Gson();
+            PayData first = gson.fromJson(payDetail, PayData.class);
+            PayData last = gson.fromJson(bossesPayDetail, PayData.class);
+
             driverView.setDriver(trip.getDriver());
-            text_tripdetail_money.setText(!StrUtils.isEmpty(trip.getPayMoney()) ? trip.getPayMoney() : "0.00");
+            text_tripdetail_money.setText(first.getActualPay() + last.getActualPay() + "");
         }
         lay_tripdetail_eva.setVisibility(View.GONE);
         setEvaData(null);

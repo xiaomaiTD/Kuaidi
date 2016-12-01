@@ -10,12 +10,15 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.ins.driver.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.AppVali;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.Eva;
+import com.ins.middle.entity.PayData;
+import com.ins.middle.entity.PayDataDriver;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.ins.middle.ui.activity.PayDetailActivity;
@@ -80,7 +83,11 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
 
     private void initCtrl() {
         if (trip != null) {
-            text_tripdetail_money.setText(!StrUtils.isEmpty(trip.getPayMoney()) ? trip.getPayMoney() : "0.00");
+            String driverDetail = trip.getDriverDetail();
+            Gson gson = new Gson();
+            PayDataDriver payDataDriver = gson.fromJson(driverDetail, PayDataDriver.class);
+
+            text_tripdetail_money.setText(payDataDriver.getActualCheques() + "");
         }
         setEvaData(null);
     }

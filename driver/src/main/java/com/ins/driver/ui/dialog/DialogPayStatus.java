@@ -52,6 +52,10 @@ public class DialogPayStatus extends Dialog {
         super.setContentView(v);
     }
 
+    public void setPrice(String priceStr){
+        this.priceStr = priceStr;
+        text_price.setText(priceStr);
+    }
 
     @Override
     public void show() {

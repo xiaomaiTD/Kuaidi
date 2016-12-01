@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class EventOrder implements Serializable{
     private String aboutOrder;
     private int orderId;
+    private float money;
 
     public EventOrder() {
     }
@@ -16,6 +17,14 @@ public class EventOrder implements Serializable{
     public EventOrder(String aboutOrder, int orderId) {
         this.aboutOrder = aboutOrder;
         this.orderId = orderId;
+    }
+
+    public float getMoney() {
+        return money;
+    }
+
+    public void setMoney(float money) {
+        this.money = money;
     }
 
     public String getAboutOrder() {

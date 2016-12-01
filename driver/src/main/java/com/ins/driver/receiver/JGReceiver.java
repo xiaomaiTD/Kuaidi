@@ -125,6 +125,10 @@ public class JGReceiver extends BroadcastReceiver {
                     int orderId = Integer.parseInt(datajson.getString("advance_order_id"));
                     eventOrder.setOrderId(orderId);
                 }
+                if (datajson.has("money")) {
+                    float money = Float.parseFloat(datajson.getString("money"));
+                    eventOrder.setMoney(money);
+                }
                 EventBus.getDefault().post(eventOrder);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -26,11 +26,12 @@ import java.util.List;
 
 public class MapHelper {
 
-    public static void removeAreas(List<Overlay> overlays) {
+    public static void removeOverlays(List<Overlay> overlays) {
         if (!StrUtils.isEmpty(overlays)) {
             for (Overlay overlay : overlays) {
                 overlay.remove();
             }
+            overlays.clear();
         }
     }
 

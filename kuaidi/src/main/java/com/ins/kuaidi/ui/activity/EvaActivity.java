@@ -56,7 +56,7 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
 
         initBase();
         initView();
-//        initCtrl();
+        initCtrl();
         initData();
     }
 
@@ -100,23 +100,6 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
     }
 
     private void initData() {
-//        showin = LoadingViewUtil.showin(showingroup, R.layout.layout_loading, showin);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                //加载成功
-//                initCtrl();
-//                LoadingViewUtil.showout(showingroup, showin);
-//
-//                //加载失败
-////                LoadingViewUtil.showin(showingroup,R.layout.layout_lack,showin,new View.OnClickListener(){
-////                    @Override
-////                    public void onClick(View v) {
-////                        initData();
-////                    }
-////                });
-//            }
-//        }, 1000);
     }
 
     private void initCtrl() {

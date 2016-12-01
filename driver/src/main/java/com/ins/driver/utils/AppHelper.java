@@ -83,13 +83,14 @@ public class AppHelper {
         });
     }
 
-    private static void addMark(BaiduMap baiduMap, View view, LatLng latLng, Trip trip) {
+    private static Overlay addMark(BaiduMap baiduMap, View view, LatLng latLng, Trip trip) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("trip", trip);
         BitmapDescriptor startbitsp = BitmapDescriptorFactory.fromView(view);
         OverlayOptions startpop = new MarkerOptions().position(latLng).icon(startbitsp).zIndex(101).extraInfo(bundle);
         Overlay overlay = baiduMap.addOverlay(startpop);
         trip.setMark(overlay);
+        return overlay;
     }
 
     //从车辆列表中查询已知id的车辆实体
@@ -128,7 +129,15 @@ public class AppHelper {
         cars.removeAll(carRemoves);
     }
 
+    /**
+     * 如果获取的行程为null ,那么返回null 标示没有行程，获取行程不为null，过滤后size为0那么返回size为0的集合标示还在行程中，但是size为0
+     * @param trips
+     * @return
+     */
     public static List<Trip> removeGetPassenger(List<Trip> trips) {
+        if (StrUtils.isEmpty(trips)){
+            return null;
+        }
         Iterator<Trip> iter = trips.iterator();
         while (iter.hasNext()) {
             Trip trip = iter.next();

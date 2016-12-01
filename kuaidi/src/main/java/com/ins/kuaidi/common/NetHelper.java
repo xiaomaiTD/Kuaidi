@@ -43,21 +43,24 @@ public class NetHelper {
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 List<List<String>> areas = (ArrayList<List<String>>) pojo;
                 //如果区域图层不是空，那么先清除掉
-                MapHelper.removeAreas(areasLay);
+                MapHelper.removeOverlays(areasLay);
                 activity.ptsArray = MapHelper.str2LatLngsArray(areas);
                 areasLay = MapHelper.drawAreas(activity.mapView, activity.ptsArray);
-                //dialogLoading.hide();
             }
 
             @Override
             public void netSetError(int code, String text) {
                 Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-                //dialogLoading.hide();
             }
 
             @Override
-            public void netStart(int code) {
-                //dialogLoading.show();
+            public void netEnd(int status) {
+                activity.dialogLoading.hide();
+            }
+
+            @Override
+            public void netStart(int status) {
+                activity.dialogLoading.show();
             }
         });
     }
@@ -150,12 +153,12 @@ public class NetHelper {
 
             @Override
             public void netEnd(int status) {
-                activity.dialogLoading.hide();
+                //activity.dialogLoading.hide();
             }
 
             @Override
             public void netStart(int status) {
-                activity.dialogLoading.show();
+                //activity.dialogLoading.show();
             }
         });
     }

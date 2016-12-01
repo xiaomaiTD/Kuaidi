@@ -26,6 +26,7 @@ import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.ins.middle.ui.activity.TripActivity;
 import com.ins.middle.ui.dialog.DialogSure;
+import com.ins.middle.utils.EventBusHelper;
 import com.ins.middle.view.ProgView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
@@ -65,6 +66,9 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
             if (orderId != 0) {
                 netGetTrips(1);
             }
+            float money = eventOrder.getMoney();
+            dialogPayStatus.setPrice(money + "");
+            dialogPayStatus.show();
         }
     }
 
@@ -90,7 +94,7 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
     }
 
     private void initBase() {
-        dialogPayStatus = new DialogPayStatus(this, "27.5");
+        dialogPayStatus = new DialogPayStatus(this, "0.0");
         dialogSure = new DialogSure(this, "您已将乘客全部送达，是否继续接单？");
         dialogSure.setOnOkListener(new View.OnClickListener() {
             @Override
@@ -152,8 +156,6 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
                 netGetTrips(2);
             }
         });
-
-        dialogPayStatus.show();
     }
 
     private void freshCtrl() {
@@ -276,11 +278,12 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 Toast.makeText(progView.getContext(), text, Toast.LENGTH_SHORT).show();
                 Integer isArrive = (Integer) pojo;
-                if (isArrive==1){
+                if (isArrive == 1) {
                     //如果乘客已经全部下车
                     dialogSure.show();
-                }else {
+                } else {
                     //还没有全部下车
+                    netGetTrips(1);
                 }
                 progView.setArrive();
 

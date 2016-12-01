@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeOption;
@@ -63,6 +64,7 @@ import com.sobey.common.utils.StrUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends BaseAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, Locationer.LocationCallback, OnGetGeoCoderResultListener {
@@ -104,6 +106,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public List<List<LatLng>> ptsArray;
     public Trip trip;
     public CarMap carMap;
+
+    //保存屏幕设置的点信息
+    private List<Overlay> overlays = new ArrayList<>();
 
     @Override
     public void onBackPressed() {
@@ -158,35 +163,41 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         String aboutOrder = eventOrder.getAboutOrder();
         Log.e("liao", "aboutOrder:" + aboutOrder);
         if ("3".equals(aboutOrder)) {
-            if (trip.getStatus() == Trip.STA_2002) {
-                //请求支付定金
-                HomeHelper.setPayFirst(this);
-                trip.setStatus(Trip.STA_2003);
-            } else {
-                Log.e("liao", "推送被拦截3:" + trip.getStatus());
-            }
+            netHelper.netGetTrip();
+//            if (trip.getStatus() == Trip.STA_2002) {
+//                //请求支付定金
+//                HomeHelper.setPayFirst(this);
+//                trip.setStatus(Trip.STA_2003);
+//            } else {
+//                Toast.makeText(this,"推送拦截代码3:请求支付定金",Toast.LENGTH_SHORT).show();
+//                Log.e("liao", "推送被拦截3:" + trip.getStatus());
+//            }
         } else if ("4".equals(aboutOrder)) {
             //接到乘客
-            if (trip.getStatus() == Trip.STA_2004) {
-                HomeHelper.setPayLast(this);
-                trip.setStatus(Trip.STA_2005);
-            } else {
-                Log.e("liao", "推送被拦截4");
-            }
+            netHelper.netGetTrip();
+//            if (trip.getStatus() == Trip.STA_2004) {
+//                HomeHelper.setPayLast(this);
+//                trip.setStatus(Trip.STA_2005);
+//            } else {
+//                Toast.makeText(this,"推送拦截代码4:接到乘客",Toast.LENGTH_SHORT).show();
+//                Log.e("liao", "推送被拦截4");
+//            }
         } else if ("5".equals(aboutOrder)) {
             //已经到达目的地
             HomeHelper.setFresh(this);
         } else if ("6".equals(aboutOrder)) {
             //司机端 ： 匹配到有新的订单
         } else if ("7".equals(aboutOrder)) {
-            if (trip == null) {
-                //乘客端： 订单已经匹配 已经分配给司机
-                HomeHelper.setMatched(this);
-                //获取行程信息
-                netHelper.netGetTrip();
-            } else {
-                Log.e("liao", "推送被拦截7");
-            }
+            //乘客端： 订单已经匹配 已经分配给司机
+            netHelper.netGetTrip();
+//            if (trip == null) {
+//                HomeHelper.setMatched(this);
+//                //获取行程信息
+//                netHelper.netGetTrip();
+//            } else {
+//                Log.e("liao", "推送被拦截7");
+//                Toast.makeText(this,"推送拦截代码7:匹配成功",Toast.LENGTH_SHORT).show();
+//            }
         } else if ("8".equals(aboutOrder)) {
             //定金支付成功(乘客端本地的推送)
             //2004 乘客已支付预付款
@@ -196,8 +207,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //司机出发
         } else if ("101".equals(aboutOrder)) {
             //乘客已经支付尾款(乘客端本地的推送)
-            HomeHelper.setHasPayLast(this);
-            trip.setIsPay(1);
+            netHelper.netGetTrip();
+//            HomeHelper.setHasPayLast(this);
+//            trip.setIsPay(1);
         }
     }
 
@@ -373,10 +385,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public void setTrip(Trip trip) {
         this.trip = trip;
         HomeHelper.setTrip(this, trip);
-        //设置上车地点位置
-        if (trip != null && trip.getStatus() != 2001 && trip.getStatus() != 2007) {
-            com.ins.kuaidi.utils.AppHelper.addMarkStartEnd(baiduMap, MapHelper.str2LatLng(trip.getFromLat()));
-            com.ins.kuaidi.utils.AppHelper.addMarkStartEnd(baiduMap, MapHelper.str2LatLng(trip.getToLat()));
+        //设置上车地点位置(不是刚匹配成功状态，不是取消状态，并且是未支付状态)
+        MapHelper.removeOverlays(overlays);
+        if (trip != null && trip.getStatus() != 2001 && trip.getStatus() != 2007 && trip.getIsPay() == 0) {
+            Overlay overlayStart = com.ins.kuaidi.utils.AppHelper.addMarkStartEnd(baiduMap, MapHelper.str2LatLng(trip.getFromLat()));
+            Overlay overlayEnd = com.ins.kuaidi.utils.AppHelper.addMarkStartEnd(baiduMap, MapHelper.str2LatLng(trip.getToLat()));
+            overlays.add(overlayStart);
+            overlays.add(overlayEnd);
         }
         //设置司机位置
         if (trip != null && trip.getDriver() != null) {

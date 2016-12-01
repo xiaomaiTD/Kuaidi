@@ -134,7 +134,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 netHelper.netGetTrip();
             } else {
                 //注销
-                trips.clear();
+                if (trips != null) trips.clear();
             }
         } else if (flag == AppConstant.EVENT_UPDATE_ME) {
             setUserData();
@@ -147,17 +147,18 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         Log.e("liao", "aboutOrder:" + aboutOrder);
         if ("3".equals(aboutOrder)) {
             //请求支付定金
-            Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
-            if (trip!=null) trip.setStatus(Trip.STA_2003);
+//            Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
+//            if (trip != null) trip.setStatus(Trip.STA_2003);
         } else if ("4".equals(aboutOrder)) {
-            //接到乘客,乘客已经上车
-            if (eventOrder.getOrderId() != 0) {
-                Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
-                //把已经上车的乘客从地图上移除
-                if (trip.getMark() != null) trip.getMark().remove();
-                trips.remove(trip);
-                setTrip(trips);
-            }
+            //接到乘客,乘客已经上车（本地推送）
+            netHelper.netGetTrip();
+//            if (eventOrder.getOrderId() != 0) {
+//                Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
+//                //把已经上车的乘客从地图上移除
+//                if (trip.getMark() != null) trip.getMark().remove();
+//                trips.remove(trip);
+//                setTrip(trips);
+//            }
         } else if ("5".equals(aboutOrder)) {
             //已经到达目的地
         } else if ("6".equals(aboutOrder)) {
@@ -169,27 +170,29 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //乘客端： 订单已经匹配 已经分配给司机
         } else if ("8".equals(aboutOrder)) {
             //司机端 ： 定金支付成功
-            if (eventOrder.getOrderId() != 0) {
-                Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
-                if (trip.getStatus() == Trip.STA_2003) {
-                    trip.setStatus(2004);
-                }else {
-                    Log.e("liao","推送被拦截8");
-                }
-            }
+            netHelper.netGetTrip();
+//            if (eventOrder.getOrderId() != 0) {
+//                Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
+//                if (trip.getStatus() == Trip.STA_2003) {
+//                    trip.setStatus(2004);
+//                } else {
+//                    Toast.makeText(this, "推送拦截代码8:定金支付成功", Toast.LENGTH_SHORT).show();
+//                    Log.e("liao", "推送被拦截8");
+//                }
+//            }
         } else if ("9".equals(aboutOrder)) {
             //司机出发
         } else if ("102".equals(aboutOrder)) {
-            //乘客已经全部下车，司机选择继续接单，回滚初始状态
+            //乘客已经全部下车，司机选择继续接单，回滚初始状态(本地推送)
             baiduMap.clear();
             trips.clear();
-            setTrip(trips);
+            setTrip(null);
             netHelper.netOnOff(true, city, MapHelper.LatLng2Str(nowLatLng));
         } else if ("103".equals(aboutOrder)) {
-            //乘客已经全部下车，回滚初始状态
+            //乘客已经全部下车，回滚初始状态(本地推送)
             baiduMap.clear();
             trips.clear();
-            setTrip(trips);
+            setTrip(null);
             netHelper.netOnOff(false, city, MapHelper.LatLng2Str(nowLatLng));
         }
     }
@@ -340,7 +343,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header, AppHelper.getRealImgPath(user.getAvatar()));
             btn_go.setVisibility(View.VISIBLE);
             setOnLineData(user);
-            HomeHelper.setInit(this);
+            //HomeHelper.setInit(this);
         } else {
             text_username.setText("未登录");
             GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header);
@@ -385,12 +388,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     public void setPassengerPosition(List<Trip> trips) {
-        for (Trip trip : trips) {
-            //起始地坐标和目的地坐标不能为空，保险起见的验证
-            if (!StrUtils.isEmpty(trip.getFromLat()) && !StrUtils.isEmpty(trip.getToLat())) {
-                final LatLng formLat = MapHelper.str2LatLng(trip.getFromLat());
-                LatLng toLat = MapHelper.str2LatLng(trip.getToLat());
-                com.ins.driver.utils.AppHelper.addPassengerMark(mapView, trip, formLat);
+        if (!StrUtils.isEmpty(trips)) {
+            for (Trip trip : trips) {
+                //起始地坐标和目的地坐标不能为空，保险起见的验证
+                if (!StrUtils.isEmpty(trip.getFromLat()) && !StrUtils.isEmpty(trip.getToLat())) {
+                    final LatLng formLat = MapHelper.str2LatLng(trip.getFromLat());
+                    LatLng toLat = MapHelper.str2LatLng(trip.getToLat());
+                    com.ins.driver.utils.AppHelper.addPassengerMark(mapView, trip, formLat);
+                }
             }
         }
         //设置乘客信息的同时，进行路线规划
