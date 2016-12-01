@@ -17,6 +17,7 @@ import com.ins.middle.entity.User;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.utils.NumUtil;
+import com.sobey.common.utils.PhoneUtils;
 import com.sobey.common.utils.StrUtils;
 
 import io.techery.properratingbar.ProperRatingBar;
@@ -48,6 +49,7 @@ public class DriverView extends FrameLayout {
     private TextView text_passenger_typecount;
     private TextView text_passenger_start;
     private TextView text_passenger_end;
+    private View img_passenger_call;
     private ProgView prog_passenger;
 
     private User user;
@@ -103,6 +105,7 @@ public class DriverView extends FrameLayout {
         text_passenger_typecount = (TextView) root.findViewById(R.id.text_passenger_typecount);
         text_passenger_start = (TextView) root.findViewById(R.id.text_passenger_start);
         text_passenger_end = (TextView) root.findViewById(R.id.text_passenger_end);
+        img_passenger_call = root.findViewById(R.id.img_passenger_call);
         prog_passenger = (ProgView) root.findViewById(R.id.progView);
 
         //可能没有这个功能
@@ -114,6 +117,14 @@ public class DriverView extends FrameLayout {
         this.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+            }
+        });
+        img_passenger_call.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user != null) {
+                    PhoneUtils.call(context, user.getMobile());
+                }
             }
         });
     }

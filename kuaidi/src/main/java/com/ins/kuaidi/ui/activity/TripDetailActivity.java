@@ -128,7 +128,9 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
             PayData last = gson.fromJson(bossesPayDetail, PayData.class);
 
             driverView.setDriver(trip.getDriver());
-            text_tripdetail_money.setText(first.getActualPay() + last.getActualPay() + "");
+            if (first != null && last != null) {
+                text_tripdetail_money.setText(first.getActualPay() + last.getActualPay() + "");
+            }
         }
         lay_tripdetail_eva.setVisibility(View.GONE);
         setEvaData(null);

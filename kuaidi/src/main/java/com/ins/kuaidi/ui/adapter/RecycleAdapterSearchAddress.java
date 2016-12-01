@@ -44,6 +44,7 @@ public class RecycleAdapterSearchAddress extends RecyclerView.Adapter<RecycleAda
         Position pstion = results.get(holder.getLayoutPosition());
 
         holder.text_address.setText(pstion.getKey());
+        holder.text_detail.setText(pstion.getDistrict());
     }
 
     @Override
@@ -54,10 +55,12 @@ public class RecycleAdapterSearchAddress extends RecyclerView.Adapter<RecycleAda
     public class Holder extends RecyclerView.ViewHolder {
 
         private TextView text_address;
+        private TextView text_detail;
 
         public Holder(View itemView) {
             super(itemView);
             text_address = (TextView) itemView.findViewById(R.id.text_item_search_address);
+            text_detail = (TextView) itemView.findViewById(R.id.text_item_search_detail);
         }
     }
 

@@ -185,15 +185,20 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else if ("102".equals(aboutOrder)) {
             //乘客已经全部下车，司机选择继续接单，回滚初始状态(本地推送)
             baiduMap.clear();
-            trips.clear();
+            if (trips != null) trips.clear();
             setTrip(null);
             netHelper.netOnOff(true, city, MapHelper.LatLng2Str(nowLatLng));
         } else if ("103".equals(aboutOrder)) {
-            //乘客已经全部下车，回滚初始状态(本地推送)
+            //乘客已经全部下车(本地推送)
             baiduMap.clear();
-            trips.clear();
+            if (trips != null) trips.clear();
             setTrip(null);
-            netHelper.netOnOff(false, city, MapHelper.LatLng2Str(nowLatLng));
+
+            //更新本地状态为下线状态
+            User user = AppData.App.getUser();
+            user.setIsOnline(0);
+            AppData.App.saveUser(user);
+            setOnLineData(user);
         }
     }
 
@@ -341,8 +346,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         if (user != null) {
             text_username.setText(user.getNickName());
             GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header, AppHelper.getRealImgPath(user.getAvatar()));
-            btn_go.setVisibility(View.VISIBLE);
             setOnLineData(user);
+            //btn_go.setVisibility(View.VISIBLE);
             //HomeHelper.setInit(this);
         } else {
             text_username.setText("未登录");

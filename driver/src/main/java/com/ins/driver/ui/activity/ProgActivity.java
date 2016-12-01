@@ -96,31 +96,17 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
     private void initBase() {
         dialogPayStatus = new DialogPayStatus(this, "0.0");
         dialogSure = new DialogSure(this, "您已将乘客全部送达，是否继续接单？");
+        dialogSure.setCanceledOnTouchOutside(false);
         dialogSure.setOnOkListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //把司机状态更新成在线状态
-//                User user = AppData.App.getUser();
-//                user.setIsOnline(1);
-//                AppData.App.saveUser(user);
-
-                EventOrder eventOrder = new EventOrder();
-                eventOrder.setAboutOrder("102");
-                EventBus.getDefault().post(eventOrder);
+                EventBusHelper.sendEventOrder("102");
                 finish();
             }
         });
         dialogSure.setOnCancleListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //把司机状态更新成离线状态
-//                User user = AppData.App.getUser();
-//                user.setIsOnline(0);
-//                AppData.App.saveUser(user);
-
-                EventOrder eventOrder = new EventOrder();
-                eventOrder.setAboutOrder("103");
-                EventBus.getDefault().post(eventOrder);
                 finish();
             }
         });
@@ -280,22 +266,40 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
                 Integer isArrive = (Integer) pojo;
                 if (isArrive == 1) {
                     //如果乘客已经全部下车
-                    dialogSure.show();
+                    netOff();
+                    EventBusHelper.sendEventOrder("103");
                 } else {
                     //还没有全部下车
-                    netGetTrips(1);
+                    //netGetTrips(1);
                 }
                 progView.setArrive();
-
-//                EventOrder eventOrder = new EventOrder();
-//                eventOrder.setAboutOrder("5");
-//                eventOrder.setOrderId(orderId);
-//                EventBus.getDefault().post(eventOrder);
             }
 
             @Override
             public void netSetError(int code, String text) {
                 Toast.makeText(progView.getContext(), text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void netOff() {
+        RequestParams params = new RequestParams(AppData.Url.onOffLine);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("flag", "0");
+        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                Toast.makeText(ProgActivity.this, "已下线", Toast.LENGTH_SHORT).show();
+                dialogSure.show();
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(ProgActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void netStart(int code) {
             }
         });
     }

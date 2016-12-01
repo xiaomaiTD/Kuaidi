@@ -73,24 +73,24 @@ public class DialogSure extends Dialog {
         super.setContentView(v);
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         this.title = title;
         setData();
     }
 
-    public void setMsg(String msg){
+    public void setMsg(String msg) {
         this.msg = msg;
         setData();
     }
 
-    private void setData(){
+    private void setData() {
         text_dialog_title.setText(title);
         text_dialog_sure.setText(msg);
         text_cancle.setText(cancelStr);
         text_ok.setText(sureStr);
-        if (StrUtils.isEmpty(title)){
+        if (StrUtils.isEmpty(title)) {
             text_dialog_title.setVisibility(View.GONE);
-        }else {
+        } else {
             text_dialog_title.setVisibility(View.VISIBLE);
         }
     }
