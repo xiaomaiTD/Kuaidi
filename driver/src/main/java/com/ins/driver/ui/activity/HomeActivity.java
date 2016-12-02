@@ -332,7 +332,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         //消息面板初始不可见
         btn_new.setVisibility(View.GONE);
         //司机面板初始设置为不可用状态
-        HomeHelper.setDisable(this);
+        HomeHelper.setUnLogin(this);
         //详情面板默认不可见
         driverView.setVisibility(View.GONE);
     }
@@ -352,7 +352,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else {
             text_username.setText("未登录");
             GlideUtil.loadCircleImg(this, img_navi_header, R.drawable.default_header);
-            btn_go.setVisibility(View.GONE);
             setOnLineData(null);
             HomeHelper.setUnLogin(this);
         }

@@ -105,6 +105,7 @@ public class CarMap {
     public void removeFromMap() {
         if (mMoveMarker != null) {
             mMoveMarker.remove();
+            mMoveMarker = null;
         }
     }
 }

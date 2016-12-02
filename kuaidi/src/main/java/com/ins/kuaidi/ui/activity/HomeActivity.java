@@ -215,6 +215,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     @Subscribe
     public void onEventMainThread(Trip trip) {
+        carMap.removeFromMap();
         setTrip(trip);
     }
 

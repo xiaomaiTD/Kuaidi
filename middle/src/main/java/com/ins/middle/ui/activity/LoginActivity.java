@@ -125,10 +125,14 @@ public class LoginActivity extends AppCompatActivity{
     public boolean back2first = false;
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (back2first) {
-                goPosition(0);
-            } else {
-                last();
+            if (viewPager.getCurrentItem()!=0) {
+                if (back2first) {
+                    goPosition(0);
+                } else {
+                    last();
+                }
+            }else {
+                finish();
             }
             return true;
         }

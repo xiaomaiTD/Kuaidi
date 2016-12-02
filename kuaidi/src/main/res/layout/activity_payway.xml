@@ -180,7 +180,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:gravity="bottom"
-                            android:text="支付宝支付"
+                            android:text="微信支付"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_big" />
 

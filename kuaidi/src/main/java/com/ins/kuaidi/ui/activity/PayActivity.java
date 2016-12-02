@@ -219,10 +219,14 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         text_pay_balance.setText(NumUtil.NumberFormat(paydata.getBalance(), 2) + "元");
         lay_pay_coupon.setVisibility(paydata.getCoupon() == 0 ? View.GONE : View.VISIBLE);
         lay_pay_balance.setVisibility(paydata.getBalance() == 0 ? View.GONE : View.VISIBLE);
+
+        if (paydata.getActualPay() == 0) {
+            setPayType(2);
+        }
     }
 
     /**
-     * type 0:支付宝 1:微信 -1 获取用户默认
+     * type 0:支付宝 1:微信 2:余额支付 -1 获取用户默认
      */
     private void setPayType(int type) {
         if (type == -1) {
@@ -233,9 +237,12 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
         if (type == 0) {
             text_pay_payway.setText("支付宝支付");
             text_pay_payway.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_zhifubao, 0, R.drawable.icon_item_next, 0);
-        } else {
+        } else if (type == 1) {
             text_pay_payway.setText("微信支付");
             text_pay_payway.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_weixin, 0, R.drawable.icon_item_next, 0);
+        } else if (type == 2) {
+            text_pay_payway.setText("余额支付");
+            text_pay_payway.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_item_next, 0);
         }
     }
 

@@ -117,7 +117,8 @@ public class AppData {
      * 记录了app中所有全局控制常量
      */
     public static class Config {
-        public static boolean showVali = true;            //显示验证码（仅测试）
+        public static boolean showVali = false;                 //显示验证码（仅测试）
+        public static boolean showTestToast = false;            //打印测试信息到窗口（仅测试）
     }
 
     /**
@@ -129,9 +130,9 @@ public class AppData {
          * 服务器域名
          */
 //		public static String domain = "http://192.168.118.110:9528/Carpooling/";								//客服测试服务器
-//		public static String domain = "http://139.129.111.76:8101/Carpooling/";								//外网测试服务器
+		public static String domain = "http://101.201.222.160:8101/Carpooling/";								//外网测试服务器
 //		public static String domain = "http://192.168.118.110:9528/Carpooling/";								//内部测试服务器
-        public static String domain = "http://192.168.118.196:9527/Carpooling/";                                //开发服务器(谢启谋)
+//      public static String domain = "http://192.168.118.196:9527/Carpooling/";                                //开发服务器(谢启谋)
 //		public static String domain = "http://192.168.0.119:8080/Carpooling/";								//开发服务器(李作焕)
 
         /**

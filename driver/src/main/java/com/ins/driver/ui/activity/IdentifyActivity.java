@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.ins.driver.R;
 import com.ins.driver.ui.fragment.IdentifyOneFragment;
+import com.ins.driver.ui.fragment.IdentifyFourFragment;
 import com.ins.driver.ui.fragment.IdentifyThreeFragment;
 import com.ins.driver.ui.fragment.IdentifyTwoFragment;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
@@ -23,7 +24,7 @@ public class IdentifyActivity extends BaseAppCompatActivity {
 
     private ViewPager viewPager;
     private MyPagerAdapter pagerAdapter;
-    private String[] title = new String[]{"实名认证", "实名认证", "实名认证"};
+    private String[] title = new String[]{"实名认证", "实名认证", "实名认证", "实名认证"};
 
     private TextView text_toolbar_title;
 
@@ -108,10 +109,12 @@ public class IdentifyActivity extends BaseAppCompatActivity {
         public Fragment getItem(int position) {
             if (position == 0) {
                 return IdentifyOneFragment.newInstance(position);
-            } else if (position == 1) {
+            }else if (position == 1) {
                 return IdentifyTwoFragment.newInstance(position);
-            } else if (position == 2) {
+            }else if (position == 2) {
                 return IdentifyThreeFragment.newInstance(position);
+            } else if (position == 3) {
+                return IdentifyFourFragment.newInstance(position);
             }
             return null;
         }

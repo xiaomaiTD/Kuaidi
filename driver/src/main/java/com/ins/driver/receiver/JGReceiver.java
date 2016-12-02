@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ins.middle.common.AppConstant;
+import com.ins.middle.common.AppData;
 import com.ins.middle.entity.EventOrder;
 import com.sobey.common.utils.StrUtils;
 
@@ -112,7 +113,9 @@ public class JGReceiver extends BroadcastReceiver {
         String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
         String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
         Log.e("push", "push message:" + message + extras);
-        Toast.makeText(context, "push message:" + message + extras, Toast.LENGTH_SHORT).show();
+        if (AppData.Config.showTestToast) {
+            Toast.makeText(context, "push message:" + message + extras, Toast.LENGTH_SHORT).show();
+        }
         if (!StrUtils.isEmpty(extras)) {
             try {
                 JSONObject datajson = new JSONObject(extras);

@@ -1,4 +1,4 @@
-package com.ins.kuaidi.ui.fragment;
+package com.ins.driver.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,33 +14,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ins.kuaidi.R;
-import com.ins.middle.common.Uploader;
+import com.ins.driver.R;
+import com.ins.driver.ui.activity.IdentifyActivity;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.AppVali;
 import com.ins.middle.common.CommonNet;
+import com.ins.middle.common.Uploader;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.CameraActivity;
-import com.ins.kuaidi.ui.activity.IdentifyActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
-import com.ins.middle.utils.AppHelper;
+import com.ins.middle.ui.fragment.BaseFragment;
 import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.utils.StrUtils;
 
-import static android.app.Activity.RESULT_OK;
-
-import com.ins.middle.ui.fragment.BaseFragment;
-
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.xutils.http.RequestParams;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Administrator on 2016/6/2 0002.
  */
-public class IdentifyTwoFragment extends BaseFragment implements View.OnClickListener {
+public class IdentifyFourFragment extends BaseFragment implements View.OnClickListener {
 
     private Uploader uploader = new Uploader();
 
@@ -50,25 +50,25 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
     private View rootView;
     private ViewGroup showingroup;
     private View showin;
-    private View btn_go;
+    private TextView btn_go;
 
     private IdentifyActivity activity;
 
-    private ImageView img_identify_idcardfront;
-    private ImageView img_identify_idcardback;
-    private TextView text_identify_idcardfront;
-    private TextView text_identify_idcardback;
-    private EditText edit_identify_name;
-    private EditText edit_identify_idcardnum;
+    private ImageView img_identify_travelcard;
+    private TextView text_identify_travelcard;
+    private EditText edit_identify_carnum;
+    private EditText edit_identify_cartype;
+    private EditText edit_identify_carcolor;
+    private EditText edit_identify_carowner;
 
     private static final int RESULT_CAMERA = 0xf104;
 
-    //表示当前点击的位置（正面，反面）
-    private int cardposition;
-    private String[] paths = new String[2];
+    private String path;
+    private IdentifyThreeFragment.IdentifyBus identifyBus;
+
 
     public static Fragment newInstance(int position) {
-        IdentifyTwoFragment f = new IdentifyTwoFragment();
+        IdentifyFourFragment f = new IdentifyFourFragment();
         Bundle b = new Bundle();
         b.putInt("position", position);
         f.setArguments(b);
@@ -78,19 +78,27 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         this.position = getArguments().getInt("position");
+    }
+
+
+    @Subscribe
+    public void onEventMainThread(IdentifyThreeFragment.IdentifyBus identifyBus) {
+        this.identifyBus = identifyBus;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         if (loadingDialog != null) loadingDialog.dismiss();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_identifyidcard, container, false);
+        rootView = inflater.inflate(R.layout.fragment_identifyfour, container, false);
         return rootView;
     }
 
@@ -110,16 +118,15 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
 
     private void initView() {
         showingroup = (ViewGroup) getView().findViewById(R.id.showingroup);
-        img_identify_idcardfront = (ImageView) getView().findViewById(R.id.img_identify_idcardfront);
-        img_identify_idcardback = (ImageView) getView().findViewById(R.id.img_identify_idcardback);
-        text_identify_idcardfront = (TextView) getView().findViewById(R.id.text_identify_idcardfront);
-        text_identify_idcardback = (TextView) getView().findViewById(R.id.text_identify_idcardback);
-        edit_identify_name = (EditText) getView().findViewById(R.id.edit_identify_name);
-        edit_identify_idcardnum = (EditText) getView().findViewById(R.id.edit_identify_idcardnum);
-        btn_go = getView().findViewById(R.id.btn_go);
+        img_identify_travelcard = (ImageView) getView().findViewById(R.id.img_identify_travelcard);
+        text_identify_travelcard = (TextView) getView().findViewById(R.id.text_identify_travelcard);
+        edit_identify_carnum = (EditText) getView().findViewById(R.id.edit_identify_carnum);
+        edit_identify_cartype = (EditText) getView().findViewById(R.id.edit_identify_cartype);
+        edit_identify_carcolor = (EditText) getView().findViewById(R.id.edit_identify_carcolor);
+        edit_identify_carowner = (EditText) getView().findViewById(R.id.edit_identify_carowner);
+        btn_go = (TextView) getView().findViewById(R.id.btn_go);
 
-        img_identify_idcardfront.setOnClickListener(this);
-        img_identify_idcardback.setOnClickListener(this);
+        img_identify_travelcard.setOnClickListener(this);
         btn_go.setOnClickListener(this);
     }
 
@@ -136,30 +143,30 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
     public void onClick(View v) {
         Intent intent = new Intent();
         switch (v.getId()) {
-            case R.id.img_identify_idcardfront:
-                cardposition = 0;   //表示点击正面
-                intent.setClass(getActivity(), CameraActivity.class);
-                startActivityForResult(intent, RESULT_CAMERA);
-                break;
-            case R.id.img_identify_idcardback:
-                cardposition = 1;   //表示点击背面
+            case R.id.img_identify_travelcard:
                 intent.setClass(getActivity(), CameraActivity.class);
                 startActivityForResult(intent, RESULT_CAMERA);
                 break;
             case R.id.btn_go:
                 btn_go.setEnabled(false);
 
-                String realName = edit_identify_name.getText().toString();
-                String idcardnum = edit_identify_idcardnum.getText().toString();
+                String carnum = edit_identify_carnum.getText().toString();
+                String cartype = edit_identify_cartype.getText().toString();
+                String carcolor = edit_identify_carcolor.getText().toString();
+                String carowner = edit_identify_carowner.getText().toString();
 
-                String msg = AppVali.vali_identify_passenger(paths,realName,idcardnum);
+                String msg = AppVali.vali_identify_drivertwo(path, carnum, cartype, carcolor, carowner);
                 if (!StrUtils.isEmpty(msg)) {
                     Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     btn_go.setEnabled(true);
                 } else {
-                    List<String> pathsList = Arrays.asList(paths);
-                    loadingDialog.show();
-                    netUpload_Commit(pathsList);
+                    if (identifyBus != null) {
+                        List<String> pathsList = Arrays.asList(identifyBus.pathDriverCard, path, identifyBus.pathIdcardFirst, identifyBus.pathIdcardLast);
+                        loadingDialog.show();
+                        netUpload_Commit(pathsList);
+                    } else {
+                        Toast.makeText(getActivity(), "数据已丢失,请返回上一页重新上传驾驶证", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
         }
@@ -175,7 +182,7 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
                     String path = data.getStringExtra("path");
                     if (!StrUtils.isEmpty(path)) {
                         //保存当前照片路径
-                        paths[cardposition] = path;
+                        this.path = path;
                         //打印测试
                         testpritpaths();
                         setPicData(path);
@@ -190,24 +197,14 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
     }
 
     private void setPicData(String path) {
-        if (cardposition == 0) {
-            GlideUtil.loadImg(getActivity(), img_identify_idcardfront, R.drawable.default_bk, path);
-            text_identify_idcardfront.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            text_identify_idcardfront.setText("点击图片再次拍摄");
-            text_identify_idcardfront.setTextColor(Color.WHITE);
-        } else {
-            GlideUtil.loadImg(getActivity(), img_identify_idcardback, R.drawable.default_bk, path);
-            text_identify_idcardback.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            text_identify_idcardback.setText("点击图片再次拍摄");
-            text_identify_idcardback.setTextColor(Color.WHITE);
-        }
+        GlideUtil.loadImg(getActivity(), img_identify_travelcard, R.drawable.default_bk, path);
+        text_identify_travelcard.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        text_identify_travelcard.setText("点击图片再次拍摄");
+        text_identify_travelcard.setTextColor(Color.WHITE);
     }
 
     private void testpritpaths() {
-        Log.e("liao", "paths size:" + paths.length);
-        for (String path : paths) {
-            Log.e("liao", "" + path);
-        }
+        Log.e("liao", "" + path);
     }
 
     private void netUpload_Commit(List<String> paths) {
@@ -229,14 +226,23 @@ public class IdentifyTwoFragment extends BaseFragment implements View.OnClickLis
 
     private void netCommit(final List<String> urls) {
 
-        String realName = edit_identify_name.getText().toString();
-        String idcardnum = edit_identify_idcardnum.getText().toString();
+        String carnum = edit_identify_carnum.getText().toString();
+        String cartype = edit_identify_cartype.getText().toString();
+        String carcolor = edit_identify_carcolor.getText().toString();
+        String carowner = edit_identify_carowner.getText().toString();
 
         RequestParams params = new RequestParams(AppData.Url.identify);
         params.addHeader("token", AppData.App.getToken());
-        params.addBodyParameter("realName", realName);
-        params.addBodyParameter("idCardNum", idcardnum);
-        params.addBodyParameter("idCardImgs", AppHelper.getClipStr(urls));
+        params.addBodyParameter("realName", identifyBus.name);
+        params.addBodyParameter("driveLicenseNum", identifyBus.driverCardNum);
+        params.addBodyParameter("carCard", carnum);
+        params.addBodyParameter("carBrand", cartype);
+        params.addBodyParameter("carColor", carcolor);
+        params.addBodyParameter("carOwner", carowner);
+        params.addBodyParameter("driveLicenseImg", urls.get(0));
+        params.addBodyParameter("driveingLicenseImg", urls.get(1));
+        params.addBodyParameter("idCardNum", identifyBus.idcardnum);
+        params.addBodyParameter("idCardImgs", identifyBus.pathIdcardFirst + "," + identifyBus.pathIdcardLast);      //身份证图片(以,隔开)
 
         CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
             @Override

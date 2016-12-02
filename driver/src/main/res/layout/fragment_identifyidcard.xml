@@ -29,19 +29,56 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:text="驾驶证号"
+                android:text="真实姓名"
                 android:textColor="@color/sb_text_dark"
                 android:textSize="@dimen/text_nomal" />
 
             <com.sobey.common.view.EmojiEditText
-                android:id="@+id/edit_identify_drivernum"
+                android:id="@+id/edit_identify_name"
                 style="@style/edit_none"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:hint="请填写"
-                android:inputType="number"
-                android:maxLength="16"
+                android:inputType="textPersonName"
+                android:maxLength="11"
+                android:singleLine="true"
+                android:textColor="@color/sb_text_blank"
+                android:textSize="@dimen/text_nomal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/com_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="身份证号"
+                android:textColor="@color/sb_text_dark"
+                android:textSize="@dimen/text_nomal" />
+
+            <com.sobey.common.view.EmojiEditText
+                android:id="@+id/edit_identify_idcardnum"
+                style="@style/edit_none"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="请填写"
+                android:inputType="textPersonName"
+                android:maxLength="18"
                 android:singleLine="true"
                 android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_nomal" />
@@ -51,10 +88,11 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="10dp"
+        android:layout_weight="1"
         android:background="@drawable/shape_rect_croner_white_dashline_dark"
         android:foreground="?attr/selectableItemBackground">
 
@@ -66,7 +104,7 @@
             app:cardElevation="0dp">
 
             <ImageView
-                android:id="@+id/img_identify_drivercard"
+                android:id="@+id/img_identify_idcardfront"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY" />
@@ -74,22 +112,55 @@
         </android.support.v7.widget.CardView>
 
         <TextView
-            android:id="@+id/text_identify_drivercard"
+            android:id="@+id/text_identify_idcardfront"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:drawableTop="@drawable/icon_camera_add"
             android:drawablePadding="20dp"
-            android:text="拍摄驾驶证"
+            android:text="拍摄身份证正面照"
             android:textColor="@color/com_text_dark"
             android:textSize="@dimen/text_big" />
 
     </FrameLayout>
 
-    <View
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape_rect_croner_white_dashline_dark"
+        android:foreground="?attr/selectableItemBackground">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="5dp"
+            app:cardBackgroundColor="@color/none"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/img_identify_idcardback"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY" />
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:id="@+id/text_identify_idcardback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableTop="@drawable/icon_camera_add"
+            android:drawablePadding="20dp"
+            android:text="拍摄身份证背面照"
+            android:textColor="@color/com_text_dark"
+            android:textSize="@dimen/text_big" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/btn_go"

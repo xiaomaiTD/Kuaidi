@@ -117,16 +117,17 @@ public class ComplaintActivity extends BaseBackActivity implements View.OnClickL
                 if (msg != null) {
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
                 } else {
-                    netAddComplain(orderId, detail);
+                    netAddComplain(orderId, ids, detail);
                 }
                 break;
         }
     }
 
 
-    public void netAddComplain(int orderId, String content) {
+    public void netAddComplain(int orderId, String ids, String content) {
         RequestParams params = new RequestParams(AppData.Url.complain);
         params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("complainLables", ids);
         params.addBodyParameter("content", content);
         params.addBodyParameter("orderId", orderId + "");
         CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {

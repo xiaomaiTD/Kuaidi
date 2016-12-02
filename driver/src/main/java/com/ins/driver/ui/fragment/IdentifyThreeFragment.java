@@ -15,26 +15,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ins.driver.R;
-import com.ins.driver.ui.activity.IdentifyActivity;
-import com.ins.middle.common.AppData;
 import com.ins.middle.common.AppVali;
-import com.ins.middle.common.CommonNet;
-import com.ins.middle.common.Uploader;
-import com.ins.middle.entity.CommonEntity;
-import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.CameraActivity;
-import com.ins.middle.ui.dialog.DialogLoading;
+import com.ins.driver.ui.activity.IdentifyActivity;
 import com.ins.middle.ui.fragment.BaseFragment;
-import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.xutils.http.RequestParams;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.Serializable;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -42,10 +33,6 @@ import static android.app.Activity.RESULT_OK;
  * Created by Administrator on 2016/6/2 0002.
  */
 public class IdentifyThreeFragment extends BaseFragment implements View.OnClickListener {
-
-    private Uploader uploader = new Uploader();
-
-    private DialogLoading loadingDialog;
 
     private int position;
     private View rootView;
@@ -55,18 +42,14 @@ public class IdentifyThreeFragment extends BaseFragment implements View.OnClickL
 
     private IdentifyActivity activity;
 
-    private ImageView img_identify_travelcard;
-    private TextView text_identify_travelcard;
-    private EditText edit_identify_carnum;
-    private EditText edit_identify_cartype;
-    private EditText edit_identify_carcolor;
-    private EditText edit_identify_carowner;
+    private ImageView img_identify_drivercard;
+    private TextView text_identify_drivercard;
+    private EditText edit_identify_drivernum;
 
     private static final int RESULT_CAMERA = 0xf104;
 
+    private IdentifyBus identifyBus;
     private String path;
-    private IdentifyTwoFragment.IdentifyBus identifyBus;
-
 
     public static Fragment newInstance(int position) {
         IdentifyThreeFragment f = new IdentifyThreeFragment();
@@ -76,6 +59,11 @@ public class IdentifyThreeFragment extends BaseFragment implements View.OnClickL
         return f;
     }
 
+    @Subscribe
+    public void onEventMainThread(IdentifyThreeFragment.IdentifyBus identifyBus) {
+        this.identifyBus = identifyBus;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,17 +71,10 @@ public class IdentifyThreeFragment extends BaseFragment implements View.OnClickL
         this.position = getArguments().getInt("position");
     }
 
-
-    @Subscribe
-    public void onEventMainThread(IdentifyTwoFragment.IdentifyBus identifyBus) {
-        this.identifyBus = identifyBus;
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if (loadingDialog != null) loadingDialog.dismiss();
     }
 
     @Nullable
@@ -114,20 +95,16 @@ public class IdentifyThreeFragment extends BaseFragment implements View.OnClickL
 
     private void initBase() {
         activity = (IdentifyActivity) getActivity();
-        loadingDialog = new DialogLoading(getActivity(), "正在上传");
     }
 
     private void initView() {
         showingroup = (ViewGroup) getView().findViewById(R.id.showingroup);
-        img_identify_travelcard = (ImageView) getView().findViewById(R.id.img_identify_travelcard);
-        text_identify_travelcard = (TextView) getView().findViewById(R.id.text_identify_travelcard);
-        edit_identify_carnum = (EditText) getView().findViewById(R.id.edit_identify_carnum);
-        edit_identify_cartype = (EditText) getView().findViewById(R.id.edit_identify_cartype);
-        edit_identify_carcolor = (EditText) getView().findViewById(R.id.edit_identify_carcolor);
-        edit_identify_carowner = (EditText) getView().findViewById(R.id.edit_identify_carowner);
+        img_identify_drivercard = (ImageView) getView().findViewById(R.id.img_identify_drivercard);
+        text_identify_drivercard = (TextView) getView().findViewById(R.id.text_identify_drivercard);
+        edit_identify_drivernum = (EditText) getView().findViewById(R.id.edit_identify_drivernum);
         btn_go = getView().findViewById(R.id.btn_go);
 
-        img_identify_travelcard.setOnClickListener(this);
+        img_identify_drivercard.setOnClickListener(this);
         btn_go.setOnClickListener(this);
     }
 
@@ -144,30 +121,22 @@ public class IdentifyThreeFragment extends BaseFragment implements View.OnClickL
     public void onClick(View v) {
         Intent intent = new Intent();
         switch (v.getId()) {
-            case R.id.img_identify_travelcard:
+            case R.id.img_identify_drivercard:
                 intent.setClass(getActivity(), CameraActivity.class);
                 startActivityForResult(intent, RESULT_CAMERA);
                 break;
             case R.id.btn_go:
-                btn_go.setEnabled(false);
 
-                String carnum = edit_identify_carnum.getText().toString();
-                String cartype = edit_identify_cartype.getText().toString();
-                String carcolor = edit_identify_carcolor.getText().toString();
-                String carowner = edit_identify_carowner.getText().toString();
+                String driverCardNum = edit_identify_drivernum.getText().toString();
 
-                String msg = AppVali.vali_identify_drivertwo(path, carnum, cartype, carcolor, carowner);
+                String msg = AppVali.vali_identify_driverthree(path, driverCardNum);
                 if (!StrUtils.isEmpty(msg)) {
                     Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                    btn_go.setEnabled(true);
                 } else {
-                    if (identifyBus != null) {
-                        List<String> pathsList = Arrays.asList(identifyBus.path, path);
-                        loadingDialog.show();
-                        netUpload_Commit(pathsList);
-                    } else {
-                        Toast.makeText(getActivity(), "数据已丢失,请返回上一页重新上传驾驶证", Toast.LENGTH_SHORT).show();
-                    }
+                    identifyBus.driverCardNum = driverCardNum;
+                    identifyBus.pathDriverCard = path;
+                    EventBus.getDefault().post(identifyBus);
+                    activity.next();
                 }
                 break;
         }
@@ -198,70 +167,30 @@ public class IdentifyThreeFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setPicData(String path) {
-        GlideUtil.loadImg(getActivity(), img_identify_travelcard, R.drawable.default_bk, path);
-        text_identify_travelcard.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        text_identify_travelcard.setText("点击图片再次拍摄");
-        text_identify_travelcard.setTextColor(Color.WHITE);
+        GlideUtil.loadImg(getActivity(), img_identify_drivercard, R.drawable.default_bk, path);
+        text_identify_drivercard.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        text_identify_drivercard.setText("点击图片再次拍摄");
+        text_identify_drivercard.setTextColor(Color.WHITE);
     }
 
     private void testpritpaths() {
         Log.e("liao", "" + path);
     }
 
-    private void netUpload_Commit(List<String> paths) {
-        uploader.startUpload(paths, new Uploader.UploadCallback() {
-            @Override
-            public void uploadfiled(int code, String text) {
-                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
-                loadingDialog.dismiss();
-                btn_go.setEnabled(true);
-            }
+    public static class IdentifyBus implements Serializable {
+        public IdentifyBus(String name, String idcardnum, String pathIdcardFirst, String pathIdcardLast) {
+            this.name = name;
+            this.idcardnum = idcardnum;
+            this.pathIdcardFirst = pathIdcardFirst;
+            this.pathIdcardLast = pathIdcardLast;
+        }
 
-            @Override
-            public void uploadSuccess(List<String> urls) {
-                loadingDialog.hide();
-                netCommit(urls);
-            }
-        });
-    }
+        public String name;
+        public String idcardnum;
+        public String pathIdcardFirst;
+        public String pathIdcardLast;
 
-    private void netCommit(final List<String> urls) {
-
-        String carnum = edit_identify_carnum.getText().toString();
-        String cartype = edit_identify_cartype.getText().toString();
-        String carcolor = edit_identify_carcolor.getText().toString();
-        String carowner = edit_identify_carowner.getText().toString();
-
-        RequestParams params = new RequestParams(AppData.Url.identify);
-        params.addHeader("token", AppData.App.getToken());
-        params.addBodyParameter("realName", identifyBus.name);
-        params.addBodyParameter("driveLicenseNum", identifyBus.driverCardNum);
-        params.addBodyParameter("carCard", carnum);
-        params.addBodyParameter("carBrand", cartype);
-        params.addBodyParameter("carColor", carcolor);
-        params.addBodyParameter("carOwner", carowner);
-        params.addBodyParameter("driveLicenseImg", urls.get(0));
-        params.addBodyParameter("driveingLicenseImg", urls.get(1));
-
-        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
-            @Override
-            public void netGo(int code, Object pojo, String text, Object obj) {
-                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
-                loadingDialog.hide();
-                btn_go.setEnabled(true);
-                //设置用户数据
-                User user = AppData.App.getUser();
-                user.setStatus(User.CERTIFICATIONING);
-                AppData.App.saveUser(user);
-                getActivity().finish();
-            }
-
-            @Override
-            public void netSetError(int code, String text) {
-                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
-                loadingDialog.hide();
-                btn_go.setEnabled(true);
-            }
-        });
+        public String driverCardNum;
+        public String pathDriverCard;
     }
 }

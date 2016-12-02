@@ -6,8 +6,10 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
@@ -35,12 +37,14 @@ import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
-public class TripActivity extends BaseBackActivity implements OnRecycleItemClickListener {
+public class TripActivity extends BaseBackActivity implements OnRecycleItemClickListener, View.OnClickListener {
 
     private RecyclerView recyclerView;
     private SpringView springView;
     private List<Trip> results = new ArrayList<>();
     private RecycleAdapterTrip adapter;
+
+    private TextView btn_right;
 
     private ViewGroup showingroup;
     private View showin;
@@ -64,6 +68,7 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
         showingroup = (ViewGroup) findViewById(R.id.showingroup);
         recyclerView = (RecyclerView) findViewById(R.id.recycle);
         springView = (SpringView) findViewById(R.id.spring);
+        btn_right = (TextView) findViewById(R.id.btn_right);
     }
 
     private void initData() {
@@ -89,10 +94,47 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
                 netGetTrips(2);
             }
         });
+
+        //只有乘客可以删除行程
+        if (PackageUtil.isClient()) {
+            btn_right.setVisibility(View.VISIBLE);
+            btn_right.setOnClickListener(this);
+        } else {
+            btn_right.setVisibility(View.GONE);
+        }
     }
 
     private void freshCtrl() {
         adapter.notifyDataSetChanged();
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (adapter.isTocheck()){
+                adapter.setTocheck(false);
+                setBtnRight();
+            }else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.btn_right) {
+            if (btn_right.getText().equals("编辑")) {
+                adapter.setTocheck(true);
+            } else if (btn_right.getText().equals("取消")) {
+                adapter.setTocheck(false);
+            } else if (btn_right.getText().equals("删除")) {
+                String selectIds = adapter.getSelectIds();
+                Toast.makeText(this, selectIds, Toast.LENGTH_SHORT).show();
+            }
+            setBtnRight();
+        }
     }
 
     @Override
@@ -123,6 +165,17 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
         }
     }
 
+    public void setBtnRight() {
+        if (!adapter.isTocheck()) {
+            btn_right.setText("编辑");
+        } else {
+            if (StrUtils.isEmpty(adapter.getSelectIds())) {
+                btn_right.setText("取消");
+            } else {
+                btn_right.setText("删除");
+            }
+        }
+    }
 
     ///////////////////////////////////
     //////////////分页查询

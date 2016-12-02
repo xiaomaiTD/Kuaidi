@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="139.129.111.76:8101"
+            android:text="101.201.222.160:8101"
             android:textColor="@color/com_text_blank" />
 
         <TextView
@@ -132,6 +132,16 @@
         android:textColor="@color/com_text_blank"
         android:checked="true"
         android:text="是否显示验证码"/>
+
+    <CheckBox
+        android:layout_marginTop="20dp"
+        android:id="@+id/check_domain_toast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:textColor="@color/com_text_blank"
+        android:checked="true"
+        android:text="是否打印测试信息到窗口"/>
 
     <Button
         android:id="@+id/btn_go"

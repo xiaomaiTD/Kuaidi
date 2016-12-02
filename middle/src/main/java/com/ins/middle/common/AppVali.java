@@ -71,10 +71,8 @@ public class AppVali {
         }
     }
 
-    public static String vali_identify_driverone(String path, String realName, String drivernum) {
-        if (isEmpty(realName)) {
-            return "请输入真实姓名";
-        } else if (isEmpty(drivernum)) {
+    public static String vali_identify_driverthree(String path, String drivernum) {
+        if (isEmpty(drivernum)) {
             return "请输入驾驶证证号";
         } else if (isEmpty(path)) {
             return "拍摄驾驶证正面照";

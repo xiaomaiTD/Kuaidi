@@ -37,10 +37,10 @@ public class HomeHelper {
     }
 
     public static void setUnLogin(HomeActivity activity) {
-        activity.btn_go.setVisibility(View.GONE);
+        activity.btn_go.setVisibility(View.VISIBLE);    //未登陆状态也需要显示上下线按钮了
         activity.check_lu.setVisibility(View.GONE);
         activity.driverView.setVisibility(View.GONE);
-
+        setOffline(activity);//未登陆状态显示离线状态
         activity.check_lu.setChecked(false);
     }
 

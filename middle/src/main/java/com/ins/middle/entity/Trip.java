@@ -102,6 +102,15 @@ public class Trip implements Serializable{
     //本地字段
 //    @Expose
     private transient  Overlay mark;
+    private boolean isCheck;
+
+    public boolean isCheck() {
+        return isCheck;
+    }
+
+    public void setCheck(boolean check) {
+        isCheck = check;
+    }
 
     public Overlay getMark() {
         return mark;
