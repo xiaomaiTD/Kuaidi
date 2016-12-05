@@ -127,7 +127,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
             PayData first = gson.fromJson(payDetail, PayData.class);
             PayData last = gson.fromJson(bossesPayDetail, PayData.class);
 
-            driverView.setDriver(trip.getDriver());
+            driverView.setDriver(trip.getDriver(),trip);
             if (first != null && last != null) {
                 text_tripdetail_money.setText(first.getActualPay() + last.getActualPay() + "");
             }
@@ -139,12 +139,13 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
     private void setEvaData(Eva eva) {
         if (eva != null) {
             rating_tripdetail.setIsIndicator(true);
-            rating_tripdetail.setRating(((float) eva.getScoreCount()) / 5);
+            rating_tripdetail.setRating(((float) eva.getScoreCount()));
             text_tripdetail_describe.setText(!StrUtils.isEmpty(eva.getContent()) ? eva.getContent() : "您的评价，让我们做得更好");
             text_tripdetail_describe.setTextColor(ContextCompat.getColor(this, R.color.com_text_blank));
             text_tripdetail_describe.setClickable(false);
         } else {
             rating_tripdetail.setIsIndicator(false);
+            rating_tripdetail.setRating(0);
             text_tripdetail_describe.setText("您还未做出评价");
             text_tripdetail_describe.setTextColor(ContextCompat.getColor(this, R.color.kd_yellow));
             text_tripdetail_describe.setClickable(true);
@@ -156,7 +157,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.btn_go:
                 String detail = edit_tripdetail_describe.getText().toString();
-                int rating = rating_tripdetail.getNumStars();
+                int rating = (int) rating_tripdetail.getRating();
                 String msg = AppVali.evaadd(rating, detail);
                 if (msg != null) {
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

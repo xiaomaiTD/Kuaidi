@@ -45,6 +45,7 @@ public class HomeHelper {
     }
 
     public static void setInit(HomeActivity activity) {
+        activity.btn_new.setVisibility(View.GONE);
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.check_lu.setVisibility(View.GONE);
         activity.driverView.setVisibility(View.GONE);

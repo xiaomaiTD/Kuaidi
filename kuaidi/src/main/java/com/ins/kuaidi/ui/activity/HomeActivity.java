@@ -36,6 +36,7 @@ import com.ins.middle.entity.EventOrder;
 import com.ins.middle.ui.activity.CityActivity;
 import com.ins.middle.ui.activity.MsgClassActivity;
 import com.ins.middle.ui.activity.WalletActivity;
+import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.MapHelper;
 import com.ins.middle.view.DriverView;
 import com.ins.middle.common.AppConstant;
@@ -58,6 +59,7 @@ import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.ins.kuaidi.view.HoldcarView;
 import com.shelwee.update.UpdateHelper;
+import com.sobey.common.utils.ClickUtils;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.StrUtils;
 
@@ -89,11 +91,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private View lay_map_bubble;
     public View lay_map_center;
     public TextView btn_go;
+    public View btn_fresh;
     private View btn_relocate;
 
     public DialogLoading dialogLoading;
     private DialogMouthPicker dialogTime;
     private DialogPopupMsg dialogPopupMsg;
+    private DialogSure dialogSure;
 
     //    private static final int RESULT_SEARCHADDRESS = 0xf101;
     private int type = 0;   //0:点击出发地点 1:点击目的地
@@ -163,25 +167,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         String aboutOrder = eventOrder.getAboutOrder();
         Log.e("liao", "aboutOrder:" + aboutOrder);
         if ("3".equals(aboutOrder)) {
+            //请求支付定金
             netHelper.netGetTrip();
-//            if (trip.getStatus() == Trip.STA_2002) {
-//                //请求支付定金
-//                HomeHelper.setPayFirst(this);
-//                trip.setStatus(Trip.STA_2003);
-//            } else {
-//                Toast.makeText(this,"推送拦截代码3:请求支付定金",Toast.LENGTH_SHORT).show();
-//                Log.e("liao", "推送被拦截3:" + trip.getStatus());
-//            }
         } else if ("4".equals(aboutOrder)) {
             //接到乘客
             netHelper.netGetTrip();
-//            if (trip.getStatus() == Trip.STA_2004) {
-//                HomeHelper.setPayLast(this);
-//                trip.setStatus(Trip.STA_2005);
-//            } else {
-//                Toast.makeText(this,"推送拦截代码4:接到乘客",Toast.LENGTH_SHORT).show();
-//                Log.e("liao", "推送被拦截4");
-//            }
         } else if ("5".equals(aboutOrder)) {
             //已经到达目的地
             HomeHelper.setFresh(this);
@@ -190,14 +180,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else if ("7".equals(aboutOrder)) {
             //乘客端： 订单已经匹配 已经分配给司机
             netHelper.netGetTrip();
-//            if (trip == null) {
-//                HomeHelper.setMatched(this);
-//                //获取行程信息
-//                netHelper.netGetTrip();
-//            } else {
-//                Log.e("liao", "推送被拦截7");
-//                Toast.makeText(this,"推送拦截代码7:匹配成功",Toast.LENGTH_SHORT).show();
-//            }
         } else if ("8".equals(aboutOrder)) {
             //定金支付成功(乘客端本地的推送)
             //2004 乘客已支付预付款
@@ -208,13 +190,12 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else if ("101".equals(aboutOrder)) {
             //乘客已经支付尾款(乘客端本地的推送)
             netHelper.netGetTrip();
-//            HomeHelper.setHasPayLast(this);
-//            trip.setIsPay(1);
         }
     }
 
     @Subscribe
     public void onEventMainThread(Trip trip) {
+        drawer.closeDrawer(Gravity.LEFT);
         carMap.removeFromMap();
         setTrip(trip);
     }
@@ -259,6 +240,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         if (dialogLoading != null) dialogLoading.dismiss();
         if (dialogTime != null) dialogTime.dismiss();
         if (dialogPopupMsg != null) dialogPopupMsg.dismiss();
+        if (dialogSure != null) dialogSure.dismiss();
     }
 
     private long exitTime;
@@ -273,6 +255,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         netHelper = new NetHelper(this);
         dialogLoading = new DialogLoading(this, "正在处理");
         dialogPopupMsg = new DialogPopupMsg(this);
+        dialogSure = new DialogSure(this, "确定取消订单？");
         dialogTime = new DialogMouthPicker(this);
         dialogTime.setOnOKlistener(new DialogMouthPicker.OnOkListener() {
             @Override
@@ -284,6 +267,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             @Override
             public void onSendMsg(String msg) {
                 holdcarView.setMsg(msg);
+            }
+        });
+        dialogSure.setOnOkListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int orderId = (int) dialogSure.getObject();
+                netHelper.netCancleOrder(orderId);
+                dialogSure.hide();
             }
         });
     }
@@ -301,6 +292,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         lay_map_bubble = findViewById(R.id.lay_map_bubble);
         lay_map_center = findViewById(R.id.lay_map_center);
         btn_go = (TextView) findViewById(R.id.btn_go);
+        btn_fresh = findViewById(R.id.btn_fresh);
         btn_relocate = findViewById(R.id.btn_map_relocate);
 
         img_navi_header = (ImageView) navi.getHeaderView(0).findViewById(R.id.img_navi_header);
@@ -308,7 +300,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         img_navi_header.setOnClickListener(this);
         btn_go.setOnClickListener(this);
 
-        findViewById(R.id.btn_fresh).setOnClickListener(this);
+        btn_fresh.setOnClickListener(this);
         findViewById(R.id.img_home_msg).setOnClickListener(this);
         findViewById(R.id.img_home_order).setOnClickListener(this);
         btn_relocate.setOnClickListener(this);
@@ -345,12 +337,24 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         //设置holdcar事件
         holdcarView.setOnHoldcarListener(onHoldcarListener);
 
+        //设置取消订单点击事件
+        driverView.setOnCancleClickListener(new DriverView.OnCancleClickListener() {
+            @Override
+            public void onCancleClick(int orderId) {
+                dialogSure.setObject(orderId);
+                dialogSure.show();
+            }
+        });
+
         //定位回调
         locationer.setCallback(this);
         //搜索模块
         // 初始化搜索模块，注册事件监听
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(this);
+
+        //测试
+        btn_fresh.setVisibility(AppData.Config.showFreshBtn ? View.VISIBLE : View.GONE);
     }
 
     private void initData() {
@@ -396,7 +400,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         }
         //设置司机位置
         if (trip != null && trip.getDriver() != null) {
-            driverView.setDriver(trip.getDriver());
+            driverView.setDriver(trip.getDriver(), trip);
         }
     }
 
@@ -513,6 +517,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 }
                 break;
             case R.id.btn_go:
+                //屏蔽快速双击事件
+                if (ClickUtils.isFastDoubleClick()){
+                    return;
+                }
                 if ("呼叫快车".equals(btn_go.getText())) {
                     Position startPosition = holdcarView.getStartPosition();
                     Position endPosition = holdcarView.getEndPosition();

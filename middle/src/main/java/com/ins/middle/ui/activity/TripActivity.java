@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,11 @@ import com.google.gson.reflect.TypeToken;
 import com.ins.middle.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.Eva;
+import com.ins.middle.entity.EventOrder;
 import com.ins.middle.entity.Trip;
+import com.ins.middle.entity.User;
 import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.entity.TestEntity;
@@ -34,6 +38,7 @@ import com.ins.middle.ui.activity.BaseBackActivity;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
@@ -49,16 +54,31 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
     private ViewGroup showingroup;
     private View showin;
 
+    @Subscribe
+    public void onEventMainThread(EventOrder eventOrder) {
+        String aboutOrder = eventOrder.getAboutOrder();
+        Log.e("liao", "fresh TripList:" + aboutOrder);
+        //收到任何状态变更信息都刷新列表信息
+        netGetTrips(1);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
         setToolbar();
+        EventBus.getDefault().register(this);
 
         initBase();
         initView();
         initCtrl();
         initData();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initBase() {
@@ -110,10 +130,10 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (adapter.isTocheck()){
+            if (adapter.isTocheck()) {
                 adapter.setTocheck(false);
                 setBtnRight();
-            }else {
+            } else {
                 finish();
             }
             return true;
@@ -131,7 +151,7 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
                 adapter.setTocheck(false);
             } else if (btn_right.getText().equals("删除")) {
                 String selectIds = adapter.getSelectIds();
-                Toast.makeText(this, selectIds, Toast.LENGTH_SHORT).show();
+                netDel(selectIds);
             }
             setBtnRight();
         }
@@ -142,8 +162,8 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
         Trip trip = adapter.getResults().get(viewHolder.getLayoutPosition());
         //客户端点击进行中的行程会回到主页
         if (PackageUtil.isClient()) {
-            //已送达的订单进入详情页，否则退回主页
-            if (trip.getStatus() == 2006) {
+            //已送达或者已取消的订单进入详情页，否则退回主页
+            if (trip.getStatus() == Trip.STA_2006 || trip.getStatus() == Trip.STA_2007) {
                 Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
                 intent.putExtra("orderId", trip.getId());
                 intent.putExtra("trip", trip);
@@ -153,7 +173,7 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
                 finish();
             }
         } else {
-            if (trip.getStatus() == 2006) {
+            if (trip.getStatus() == Trip.STA_2006 || trip.getStatus() == Trip.STA_2007) {
                 Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
                 intent.putExtra("orderId", trip.getId());
                 intent.putExtra("trip", trip);
@@ -261,5 +281,33 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
         });
     }
 
+
+    public void netDel(String ids) {
+        RequestParams params = new RequestParams(AppData.Url.delOrder);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("ids", ids);
+        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                Toast.makeText(TripActivity.this, text, Toast.LENGTH_SHORT).show();
+                netGetTrips(1);
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(TripActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void netEnd(int status) {
+                btn_right.setEnabled(true);
+            }
+
+            @Override
+            public void netStart(int code) {
+                btn_right.setEnabled(false);
+            }
+        });
+    }
 
 }

@@ -31,7 +31,7 @@ public class NetHelper {
         this.activity = activity;
     }
 
-    public void netOnOff(final boolean onoff, String city,String latlng) {
+    public void netOnOff(final boolean onoff, String city, String latlng) {
         RequestParams params = new RequestParams(AppData.Url.onOffLine);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("flag", onoff ? "1" : "0");
@@ -135,6 +135,21 @@ public class NetHelper {
                 if (!StrUtils.isEmpty(drivers)) {
                     activity.setDriversPosiotin(drivers);
                 }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+            }
+        });
+    }
+
+    public void netDriverCall(int orderId) {
+        RequestParams params = new RequestParams(AppData.Url.callPassenger);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("orderId", orderId + "");
+        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
             }
 
             @Override

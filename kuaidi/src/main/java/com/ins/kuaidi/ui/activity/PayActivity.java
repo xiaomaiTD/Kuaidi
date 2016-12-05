@@ -212,11 +212,11 @@ public class PayActivity extends BaseBackActivity implements View.OnClickListene
     }
 
     private void setPayData(PayData paydata) {
-        text_pay_money.setText(NumUtil.NumberFormat(paydata.getActualPay(), 2));
-        text_pay_total.setText(NumUtil.NumberFormat(paydata.getTotal(), 2) + "元");
-        text_pay_this.setText(NumUtil.NumberFormat(paydata.getThisTotalPay(), 2) + "元");
-        text_pay_coupon.setText("-" + NumUtil.NumberFormat(paydata.getCoupon(), 2) + "元");
-        text_pay_balance.setText(NumUtil.NumberFormat(paydata.getBalance(), 2) + "元");
+        text_pay_money.setText(NumUtil.num2half(paydata.getActualPay(), 2)+"");
+        text_pay_total.setText(NumUtil.num2half(paydata.getTotal(), 2) + "元");
+        text_pay_this.setText(NumUtil.num2half(paydata.getThisTotalPay(), 2) + "元");
+        text_pay_coupon.setText("-" + NumUtil.num2half(paydata.getCoupon(), 2) + "元");
+        text_pay_balance.setText(NumUtil.num2half(paydata.getBalance(), 2) + "元");
         lay_pay_coupon.setVisibility(paydata.getCoupon() == 0 ? View.GONE : View.VISIBLE);
         lay_pay_balance.setVisibility(paydata.getBalance() == 0 ? View.GONE : View.VISIBLE);
 

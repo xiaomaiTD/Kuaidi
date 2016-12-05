@@ -32,6 +32,17 @@ public class DialogSure extends Dialog {
     private String cancelStr;
     private String sureStr;
 
+    //拓展字段
+    private Object object;
+
+    public void setObject(Object object) {
+        this.object = object;
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
     public DialogSure(Context context) {
         this(context, "", "确定？", "取消", "确定");
     }

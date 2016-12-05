@@ -27,6 +27,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
     private EditText edit_domain;
     private CheckBox check_domain_vali;
     private CheckBox check_domain_toast;
+    private CheckBox check_domain_fresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
         edit_domain = (EditText) findViewById(R.id.edit_domain);
         check_domain_vali = (CheckBox) findViewById(R.id.check_domain_vali);
         check_domain_toast = (CheckBox) findViewById(R.id.check_domain_toast);
+        check_domain_fresh = (CheckBox) findViewById(R.id.check_domain_fresh);
 
         findViewById(R.id.lay_domain_test).setOnClickListener(this);
         findViewById(R.id.lay_domain_deve_xie).setOnClickListener(this);
@@ -63,6 +65,8 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
 
     private void initCtrl() {
         AppData.Config.showVali = true;
+        AppData.Config.showTestToast = true;
+        AppData.Config.showFreshBtn = true;
         check_domain_vali.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -73,6 +77,12 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 AppData.Config.showTestToast = isChecked;
+            }
+        });
+        check_domain_fresh.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AppData.Config.showFreshBtn = isChecked;
             }
         });
         String domain = AppData.App.getDomain();

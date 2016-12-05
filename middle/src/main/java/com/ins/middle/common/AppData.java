@@ -117,8 +117,9 @@ public class AppData {
      * 记录了app中所有全局控制常量
      */
     public static class Config {
-        public static boolean showVali = false;                 //显示验证码（仅测试）
+        public static boolean showVali = true;                 //显示验证码（仅测试）
         public static boolean showTestToast = false;            //打印测试信息到窗口（仅测试）
+        public static boolean showFreshBtn = false;            //首页显示刷新按钮（仅测试）
     }
 
     /**
@@ -183,6 +184,9 @@ public class AppData {
         public static String msgList                  = domain + "mobile/si/findSystemInfo";             				                //消息列表
         public static String msgDetail                = domain + "web/si/systemInfoDetail";             				                //消息详情
         public static String getcities                = domain + "mobile/mapCityMarker/findMapCityMarkerList";             		//城市列表
+        public static String delOrder                 = domain + "mobile/order/delOrder";             		                            //删除订单（乘客）
+        public static String cancleOrder              = domain + "mobile/order/cancleOrder";             		                        //取消订单（乘客）
+        public static String callPassenger            = domain + "mobile/order/callPassenger";             		                    //统计司机给乘客打电话（司机）
 
 
     }

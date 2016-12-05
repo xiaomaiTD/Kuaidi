@@ -32,6 +32,7 @@ import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
+import com.sobey.common.utils.DensityUtil;
 import com.sobey.common.utils.FileUtil;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.utils.others.BitmapUtil;
@@ -56,6 +57,7 @@ public class AppHelper {
         if (trip.getMark() != null) {
             return;
         }
+        final int width = DensityUtil.dp2px(mapView.getContext(), 35);
         final User passenger = trip.getPassenger();
         final Context context = mapView.getContext();
         final BaiduMap baiduMap = mapView.getMap();
@@ -67,7 +69,7 @@ public class AppHelper {
             @Override
             public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> arg1) {
                 //下载成功，生成marker
-                imgview.setImageBitmap(BitmapUtil.zoomImage(BitmapUtil.makeRoundCorner(bitmap), 100, 100));
+                imgview.setImageBitmap(BitmapUtil.zoomImage(BitmapUtil.makeRoundCorner(bitmap), width, width));
                 //在地图上添加marker
                 addMark(baiduMap, root, latlng, trip);
             }
@@ -76,7 +78,7 @@ public class AppHelper {
             public void onLoadFailed(Exception e, Drawable errorDrawable) {
                 //下载失败，设置默认头像
                 Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_header);
-                imgview.setImageBitmap(BitmapUtil.zoomImage(BitmapUtil.makeRoundCorner(bitmap), 100, 100));
+                imgview.setImageBitmap(BitmapUtil.zoomImage(BitmapUtil.makeRoundCorner(bitmap), width, width));
                 //在地图上添加marker
                 addMark(baiduMap, root, latlng, trip);
             }
@@ -117,6 +119,10 @@ public class AppHelper {
         return carMaps;
     }
 
+//    从行程列表中查询已知司机的行程
+//    public static Trip findCarByDriver(User driver, List<Trip> trips) {
+//    }
+
     //检查车辆标注是否过期并移除
     public static void reMoveCar(List<CarMap> cars, List<User> dirvers) {
         //查询过期的车辆标注
@@ -131,11 +137,12 @@ public class AppHelper {
 
     /**
      * 如果获取的行程为null ,那么返回null 标示没有行程，获取行程不为null，过滤后size为0那么返回size为0的集合标示还在行程中，但是size为0
+     *
      * @param trips
      * @return
      */
     public static List<Trip> removeGetPassenger(List<Trip> trips) {
-        if (StrUtils.isEmpty(trips)){
+        if (StrUtils.isEmpty(trips)) {
             return null;
         }
         Iterator<Trip> iter = trips.iterator();

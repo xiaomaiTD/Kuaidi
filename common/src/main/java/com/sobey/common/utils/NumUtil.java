@@ -1,5 +1,7 @@
 package com.sobey.common.utils;
 
+import java.math.BigDecimal;
+
 public class NumUtil {
     public static void main(String[] args) {
 
@@ -104,8 +106,26 @@ public class NumUtil {
         return String.format("%." + m + "f", f);
     }
 
-    public static float NumberFormatFloat(float f,int m){
-        String strfloat = NumberFormat(f,m);
+    public static float NumberFormatFloat(float f, int m) {
+        String strfloat = NumberFormat(f, m);
         return Float.parseFloat(strfloat);
+    }
+
+    /**
+     * 四舍五入保留两位小数
+     */
+    public static float num2half(float f, int m) {
+        BigDecimal b = new BigDecimal(f);
+        return b.setScale(m, BigDecimal.ROUND_HALF_UP).floatValue();
+    }
+    public static double num2half(double f, int m) {
+        BigDecimal b = new BigDecimal(f);
+        return b.setScale(m, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+    public static float num2half(float f) {
+        return num2half(f,2);
+    }
+    public static double num2half(double f) {
+        return num2half(f,2);
     }
 }

@@ -167,7 +167,7 @@
                         android:minHeight="26dp"
                         android:maxHeight="26dp"
                         android:numStars="5"
-                        android:rating="5"
+                        android:rating="0"
                         android:progressDrawable="@drawable/rating_bar"
                         android:stepSize="1" />
 

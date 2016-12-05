@@ -86,6 +86,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private MapView mapView;
     public BaiduMap baiduMap;
     public TextView btn_go;
+    public View btn_fresh;
     public TextView btn_new;
     public CheckBox check_lu;
     private View btn_relocate;
@@ -182,6 +183,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 //            }
         } else if ("9".equals(aboutOrder)) {
             //司机出发
+        } else if ("14".equals(aboutOrder)) {
+            //乘客取消了订单
+            Toast.makeText(this, "乘客已取消订单", Toast.LENGTH_SHORT).show();
+            HomeHelper.setFresh(this);
         } else if ("102".equals(aboutOrder)) {
             //乘客已经全部下车，司机选择继续接单，回滚初始状态(本地推送)
             baiduMap.clear();
@@ -204,6 +209,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     @Subscribe
     public void onEventMainThread(Trip trip) {
+        drawer.closeDrawer(Gravity.LEFT);
         setPassengerRoute(nowLatLng, trip, true);
     }
 
@@ -265,11 +271,12 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         img_user = (ImageView) findViewById(R.id.img_home_user);
         text_title = (TextView) findViewById(R.id.text_home_title);
         btn_go = (TextView) findViewById(R.id.btn_go);
+        btn_fresh = findViewById(R.id.btn_fresh);
         btn_new = (TextView) findViewById(R.id.btn_new);
         btn_relocate = findViewById(R.id.btn_map_relocate);
         check_lu = (CheckBox) findViewById(R.id.check_map_lu);
 
-        findViewById(R.id.btn_fresh).setOnClickListener(this);
+        btn_fresh.setOnClickListener(this);
         findViewById(R.id.img_home_msg).setOnClickListener(this);
         findViewById(R.id.img_home_order).setOnClickListener(this);
         img_navi_header = (ImageView) navi.getHeaderView(0).findViewById(R.id.img_navi_header);
@@ -307,7 +314,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         mapView.showScaleControl(false);                                 //禁止比例尺
         mapView.setPadding(0, 0, 0, 100);      //设置底部内边距
 
-
+        //司机给乘客打电话时发送统计请求
+        driverView.setOnDriverCallListener(new DriverView.OnDriverCallListener() {
+            @Override
+            public void onDriverCall(int orderId) {
+                netHelper.netDriverCall(orderId);
+            }
+        });
         //定位回调
         locationer.setCallback(this);
         //搜索相关，初始化搜索模块，注册事件监听
@@ -318,6 +331,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         geoSearch.setOnGetGeoCodeResultListener(this);
 
         baiduMap.setOnMarkerClickListener(onMarkerClickListener);
+
+        //测试
+        btn_fresh.setVisibility(AppData.Config.showFreshBtn ? View.VISIBLE : View.GONE);
     }
 
     private void initData() {
@@ -331,8 +347,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         locationer.startlocation();
         //消息面板初始不可见
         btn_new.setVisibility(View.GONE);
-        //司机面板初始设置为不可用状态
-        HomeHelper.setUnLogin(this);
+        //不需要
+//        //司机面板初始设置为未登录状态
+//        HomeHelper.setUnLogin(this);
         //详情面板默认不可见
         driverView.setVisibility(View.GONE);
     }
@@ -446,6 +463,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     private void setCity(String city) {
+        this.city = city;
         text_title.setText(city);
     }
 
@@ -494,7 +512,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 startActivity(intent);
                 break;
         }
-        drawer.closeDrawer(Gravity.LEFT);
+        //drawer.closeDrawer(Gravity.LEFT);
         return false;
     }
 
@@ -571,7 +589,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 User driver = (User) bundle.getSerializable("driver");
                 MapHelper.zoomByPoint(baiduMap, marker.getPosition());
                 driverView.setVisibility(View.VISIBLE);
-                driverView.setDriver(driver);
+                //TODO 需要获取到订单的数据（id ,status）
+                driverView.setDriver(driver, null);
             }
             return true;
         }

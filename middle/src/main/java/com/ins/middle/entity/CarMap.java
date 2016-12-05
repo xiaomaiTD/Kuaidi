@@ -54,7 +54,7 @@ public class CarMap {
                 double latper = latdis / 30 * value;
                 double lonper = londis / 30 * value;
                 end = new LatLng(start.latitude + latper, start.longitude + lonper);
-                mMoveMarker.setPosition(end);
+                if (mMoveMarker != null) mMoveMarker.setPosition(end);
             }
         });
         animator.addListener(new Animator.AnimatorListener() {

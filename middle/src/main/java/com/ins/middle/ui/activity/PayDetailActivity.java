@@ -14,6 +14,7 @@ import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.Wallet;
 import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
+import com.sobey.common.utils.NumUtil;
 
 public class PayDetailActivity extends BaseBackActivity implements View.OnClickListener {
 
@@ -131,25 +132,25 @@ public class PayDetailActivity extends BaseBackActivity implements View.OnClickL
         if (PackageUtil.isClient()) {
             if (first != null && last != null) {
                 //设置实际支付
-                text_paydetail_money.setText(first.getActualPay() + last.getActualPay() + "");
+                text_paydetail_money.setText(NumUtil.num2half(first.getActualPay() + last.getActualPay()) + "");
                 //设置总金额
                 text_paydetail_total.setText(trip.getPayMoney() + "元");
                 //预付款
-                text_paydetail_first.setText(first.getActualPay() + "元");
+                text_paydetail_first.setText(NumUtil.num2half(first.getActualPay()) + "元");
                 setPayWay(text_paydetail_first, first.getPayMethed());
                 //尾款
-                text_paydetail_last.setText(last.getActualPay() + "元");
+                text_paydetail_last.setText(NumUtil.num2half(last.getActualPay()) + "元");
                 setPayWay(text_paydetail_last, last.getPayMethed());
                 //设置优惠券
-                text_paydetail_coupon.setText("-" + (first.getCoupon() + last.getCoupon()) + "元");
+                text_paydetail_coupon.setText("-" + NumUtil.num2half(first.getCoupon() + last.getCoupon()) + "元");
                 //设置余额
-                text_paydetail_balance.setText((first.getBalance() + last.getBalance()) + "元");
+                text_paydetail_balance.setText(NumUtil.num2half(first.getBalance() + last.getBalance()) + "元");
             }
         } else {
             if (payDataDriver != null) {
-                text_paydetail_money.setText(payDataDriver.getActualCheques() + "");
-                text_paydetail_first.setText(payDataDriver.getDepositPay() + "元");
-                text_paydetail_last.setText(payDataDriver.getBosses() + "元");
+                text_paydetail_money.setText(NumUtil.num2half(payDataDriver.getActualCheques()) + "");
+                text_paydetail_first.setText(NumUtil.num2half(payDataDriver.getDepositPay()) + "元");
+                text_paydetail_last.setText(NumUtil.num2half(payDataDriver.getBosses()) + "元");
             }
         }
     }

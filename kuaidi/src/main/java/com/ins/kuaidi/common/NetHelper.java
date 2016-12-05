@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.ins.kuaidi.entity.LineConfig;
 import com.ins.kuaidi.ui.activity.HomeActivity;
 import com.ins.middle.entity.CommonEntity;
+import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.MapHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
@@ -185,6 +186,35 @@ public class NetHelper {
 
             @Override
             public void netSetError(int code, String text) {
+            }
+        });
+    }
+
+    public void netCancleOrder(int orderId) {
+        RequestParams params = new RequestParams(AppData.Url.cancleOrder);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("orderId", orderId + "");//0:当前行程
+        CommonNet.samplepost(params, new TypeToken<List<Trip>>() {
+        }.getType(), new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+                HomeHelper.setFresh(activity);
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void netEnd(int status) {
+                activity.dialogLoading.hide();
+            }
+
+            @Override
+            public void netStart(int status) {
+                activity.dialogLoading.show();
             }
         });
     }

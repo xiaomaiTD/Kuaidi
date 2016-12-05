@@ -104,7 +104,7 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
 
     private void initCtrl() {
         if (trip != null) {
-            driverView.setDriver(trip.getDriver());
+            driverView.setDriver(trip.getDriver(),trip);
         }
     }
 
@@ -120,7 +120,7 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
                 break;
             case R.id.btn_go:
                 String detail = edit_eva_describe.getText().toString();
-                int rating = rating_eva.getNumStars();
+                int rating = (int) rating_eva.getRating();
                 String msg = AppVali.evaadd(rating, detail);
                 if (msg != null) {
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

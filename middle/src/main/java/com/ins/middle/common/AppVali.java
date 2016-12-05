@@ -111,9 +111,9 @@ public class AppVali {
         }
     }
 
-    public static String evaadd(int start, String detail) {
+    public static String evaadd(float start, String detail) {
         if (start == 0) {
-            return "请还没有打分";
+            return "您还没有打分";
         } else {
             return null;
         }

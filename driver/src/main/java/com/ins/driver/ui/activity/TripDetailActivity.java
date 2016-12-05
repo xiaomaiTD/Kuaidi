@@ -87,17 +87,20 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
             Gson gson = new Gson();
             PayDataDriver payDataDriver = gson.fromJson(driverDetail, PayDataDriver.class);
 
-            text_tripdetail_money.setText(payDataDriver.getActualCheques() + "");
+            if (payDataDriver != null) {
+                text_tripdetail_money.setText(payDataDriver.getActualCheques() + "");
+            }
         }
         setEvaData(null);
     }
 
     private void setEvaData(Eva eva) {
         if (eva != null) {
-            rating_tripdetail.setRating(((float) eva.getScoreCount()) / 5);
+            rating_tripdetail.setRating(((float) eva.getScoreCount()));
             text_tripdetail_describe.setText(!StrUtils.isEmpty(eva.getContent()) ? eva.getContent() : "");
             text_tripdetail_describe.setTextColor(ContextCompat.getColor(this, R.color.com_text_blank));
         } else {
+            rating_tripdetail.setRating(0);
             text_tripdetail_describe.setText("该乘客还未做出评价");
             text_tripdetail_describe.setTextColor(ContextCompat.getColor(this, R.color.kd_yellow));
         }
