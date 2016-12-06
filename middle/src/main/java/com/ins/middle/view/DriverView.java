@@ -182,7 +182,7 @@ public class DriverView extends FrameLayout {
             }
         } else {
             img_dirver_cancel.setVisibility(GONE);
-            img_dirver_call.setVisibility(GONE);
+            img_dirver_call.setVisibility(VISIBLE);
         }
     }
 

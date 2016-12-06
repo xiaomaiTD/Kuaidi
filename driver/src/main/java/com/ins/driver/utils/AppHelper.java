@@ -118,6 +118,23 @@ public class AppHelper {
         }
         return carMaps;
     }
+    //从车辆列表中查询不存在的司机车辆集合
+    public static List<CarMap> findOutCarByDriver(List<CarMap> cars, List<User> dirvers) {
+        ArrayList<CarMap> carMaps = new ArrayList<>();
+        for (CarMap car : cars) {
+            boolean isfind = false;
+            for (User driver : dirvers) {
+                if (car.getDriver() != null && car.getDriver().getId() == driver.getId()) {
+                    isfind = true;
+                    break;
+                }
+            }
+            if (!isfind){
+                carMaps.add(car);
+            }
+        }
+        return carMaps;
+    }
 
 //    从行程列表中查询已知司机的行程
 //    public static Trip findCarByDriver(User driver, List<Trip> trips) {
@@ -126,7 +143,7 @@ public class AppHelper {
     //检查车辆标注是否过期并移除
     public static void reMoveCar(List<CarMap> cars, List<User> dirvers) {
         //查询过期的车辆标注
-        List<CarMap> carRemoves = findCarByDriver(cars, dirvers);
+        List<CarMap> carRemoves = findOutCarByDriver(cars, dirvers);
         //把这些标注从地图上移除
         for (CarMap carRemove : carRemoves) {
             carRemove.removeFromMap();

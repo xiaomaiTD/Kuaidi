@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.ins.kuaidi.entity.LineConfig;
 import com.ins.kuaidi.ui.activity.HomeActivity;
 import com.ins.middle.entity.CommonEntity;
+import com.ins.middle.entity.User;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.MapHelper;
 import com.ins.middle.common.AppData;
@@ -47,6 +48,8 @@ public class NetHelper {
                 MapHelper.removeOverlays(areasLay);
                 activity.ptsArray = MapHelper.str2LatLngsArray(areas);
                 areasLay = MapHelper.drawAreas(activity.mapView, activity.ptsArray);
+                //获取到围栏时检测下是否在围栏内
+                activity.setBubbleOn(activity.nowLatLng);
             }
 
             @Override
@@ -107,11 +110,15 @@ public class NetHelper {
         params.addBodyParameter("fromCityName", fromCity);
         params.addBodyParameter("toCityName", toCity);
         params.addBodyParameter("message", msg);
-        CommonNet.samplepost(params, LineConfig.class, new CommonNet.SampleNetHander() {
+        CommonNet.samplepost(params, new TypeToken<List<Integer>>() {
+        }.getType(), new CommonNet.SampleNetHander() {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-//                LineConfig lineConfig = (LineConfig) pojo;
+                ArrayList<Integer> ids = (ArrayList<Integer>) pojo;
+                if (!StrUtils.isEmpty(ids)) {
+                    activity.dialogSure.setObject(ids.get(0));
+                }
                 HomeHelper.setMatching(activity);
             }
 
@@ -215,6 +222,30 @@ public class NetHelper {
             @Override
             public void netStart(int status) {
                 activity.dialogLoading.show();
+            }
+        });
+    }
+
+    private void getUserInfo() {
+        RequestParams params = new RequestParams(AppData.Url.getInfo);
+        params.addHeader("token", AppData.App.getToken());
+        CommonNet.samplepost(params, User.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(int code, final Object pojo, String text, Object obj) {
+                if (pojo == null) netSetError(code, "接口异常");
+                else {
+                    User user = (User) pojo;
+                    AppData.App.removeUser();
+                    AppData.App.saveUser(user);
+                    activity.setUserData();
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+                AppData.App.removeUser();
+                AppData.App.removeToken();
             }
         });
     }

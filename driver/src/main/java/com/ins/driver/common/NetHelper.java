@@ -1,10 +1,13 @@
 package com.ins.driver.common;
 
+import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.reflect.TypeToken;
 import com.ins.driver.ui.activity.HomeActivity;
+import com.ins.driver.ui.activity.LoadUpActivity;
 import com.ins.driver.utils.AppHelper;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.User;
@@ -132,9 +135,7 @@ public class NetHelper {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 List<User> drivers = (ArrayList<User>) pojo;
-                if (!StrUtils.isEmpty(drivers)) {
-                    activity.setDriversPosiotin(drivers);
-                }
+                activity.setDriversPosiotin(drivers);
             }
 
             @Override
@@ -154,6 +155,30 @@ public class NetHelper {
 
             @Override
             public void netSetError(int code, String text) {
+            }
+        });
+    }
+
+    private void getUserInfo() {
+        RequestParams params = new RequestParams(AppData.Url.getInfo);
+        params.addHeader("token", AppData.App.getToken());
+        CommonNet.samplepost(params, User.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(int code, final Object pojo, String text, Object obj) {
+                if (pojo == null) netSetError(code, "接口异常");
+                else {
+                    User user = (User) pojo;
+                    AppData.App.removeUser();
+                    AppData.App.saveUser(user);
+                    activity.setUserData();
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+                AppData.App.removeUser();
+                AppData.App.removeToken();
             }
         });
     }

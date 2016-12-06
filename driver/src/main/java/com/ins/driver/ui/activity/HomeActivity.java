@@ -38,6 +38,7 @@ import com.ins.middle.common.AppData;
 import com.ins.middle.common.Locationer;
 import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.EventOrder;
+import com.ins.middle.entity.EventIdentify;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
@@ -143,23 +144,33 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     @Subscribe
+    public void onEventMainThread(EventIdentify eventIdentify) {
+        String aboutsystem = eventIdentify.getAboutsystem();
+        if ("15".equals(aboutsystem)) {
+            //审核通过
+            User user = AppData.App.getUser();
+            user.setStatus(User.AUTHENTICATED);
+            AppData.App.saveUser(user);
+            setUserData();
+            Toast.makeText(this,"司机认证审核未通过，请到系统消息中查看详情",Toast.LENGTH_SHORT).show();
+        } else if ("16".equals(aboutsystem)) {
+            //审核不通过
+            User user = AppData.App.getUser();
+            user.setStatus(User.UNAUTHORIZED);
+            AppData.App.saveUser(user);
+            setUserData();
+            Toast.makeText(this,"司机认证审核未通过，请到系统消息中查看详情",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Subscribe
     public void onEventMainThread(EventOrder eventOrder) {
         String aboutOrder = eventOrder.getAboutOrder();
-        Log.e("liao", "aboutOrder:" + aboutOrder);
         if ("3".equals(aboutOrder)) {
             //请求支付定金
-//            Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
-//            if (trip != null) trip.setStatus(Trip.STA_2003);
         } else if ("4".equals(aboutOrder)) {
             //接到乘客,乘客已经上车（本地推送）
             netHelper.netGetTrip();
-//            if (eventOrder.getOrderId() != 0) {
-//                Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
-//                //把已经上车的乘客从地图上移除
-//                if (trip.getMark() != null) trip.getMark().remove();
-//                trips.remove(trip);
-//                setTrip(trips);
-//            }
         } else if ("5".equals(aboutOrder)) {
             //已经到达目的地
         } else if ("6".equals(aboutOrder)) {
@@ -172,15 +183,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else if ("8".equals(aboutOrder)) {
             //司机端 ： 定金支付成功
             netHelper.netGetTrip();
-//            if (eventOrder.getOrderId() != 0) {
-//                Trip trip = com.ins.driver.utils.AppHelper.getTripById(trips, eventOrder.getOrderId());
-//                if (trip.getStatus() == Trip.STA_2003) {
-//                    trip.setStatus(2004);
-//                } else {
-//                    Toast.makeText(this, "推送拦截代码8:定金支付成功", Toast.LENGTH_SHORT).show();
-//                    Log.e("liao", "推送被拦截8");
-//                }
-//            }
         } else if ("9".equals(aboutOrder)) {
             //司机出发
         } else if ("14".equals(aboutOrder)) {

@@ -58,7 +58,7 @@ public class RecycleAdapterTrip extends RecyclerView.Adapter<RecycleAdapterTrip.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isTocheck) {
+                if (isTocheck && (trip.getStatus() == Trip.STA_2006 || trip.getStatus() == Trip.STA_2007)) {
                     holder.check.setChecked(!holder.check.isChecked());
                 } else {
                     if (listener != null) listener.onItemClick(holder);
@@ -77,10 +77,10 @@ public class RecycleAdapterTrip extends RecyclerView.Adapter<RecycleAdapterTrip.
         holder.text_trip_end.setText(trip.getToAdd());
         holder.text_trip_cartype.setText(trip.getOrderType() == 0 ? "包车" : "拼车");
         holder.text_trip_status.setText(AppHelper.getOrderType(trip.getStatus()));
-
         holder.check.setChecked(trip.isCheck());
+        holder.lay_trip_linetitle.setVisibility(trip.isLineFlag() ? View.VISIBLE : View.GONE);
 
-        if (isTocheck) {
+        if (isTocheck && (trip.getStatus() == Trip.STA_2006 || trip.getStatus() == Trip.STA_2007)) {
             holder.check.setVisibility(View.VISIBLE);
             holder.img_trip_next.setVisibility(View.GONE);
         } else {
@@ -107,6 +107,7 @@ public class RecycleAdapterTrip extends RecyclerView.Adapter<RecycleAdapterTrip.
 
     public class Holder extends RecyclerView.ViewHolder {
 
+        private View lay_trip_linetitle;
         private TextView text_trip_time;
         private TextView text_trip_cartype;
         private TextView text_trip_status;
@@ -117,6 +118,7 @@ public class RecycleAdapterTrip extends RecyclerView.Adapter<RecycleAdapterTrip.
 
         public Holder(View itemView) {
             super(itemView);
+            lay_trip_linetitle = itemView.findViewById(R.id.lay_trip_linetitle);
             text_trip_time = (TextView) itemView.findViewById(R.id.text_trip_time);
             text_trip_cartype = (TextView) itemView.findViewById(R.id.text_trip_cartype);
             text_trip_status = (TextView) itemView.findViewById(R.id.text_trip_status);

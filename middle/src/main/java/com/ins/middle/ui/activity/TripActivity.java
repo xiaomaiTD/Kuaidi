@@ -22,6 +22,7 @@ import com.ins.middle.entity.Eva;
 import com.ins.middle.entity.EventOrder;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
+import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.entity.TestEntity;
@@ -114,14 +115,9 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
                 netGetTrips(2);
             }
         });
-
+        btn_right.setOnClickListener(this);
         //只有乘客可以删除行程
-        if (PackageUtil.isClient()) {
-            btn_right.setVisibility(View.VISIBLE);
-            btn_right.setOnClickListener(this);
-        } else {
-            btn_right.setVisibility(View.GONE);
-        }
+        setBtnRight();
     }
 
     private void freshCtrl() {
@@ -186,14 +182,19 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
     }
 
     public void setBtnRight() {
-        if (!adapter.isTocheck()) {
-            btn_right.setText("编辑");
-        } else {
-            if (StrUtils.isEmpty(adapter.getSelectIds())) {
-                btn_right.setText("取消");
+        if (PackageUtil.isClient()) {
+            btn_right.setVisibility(View.VISIBLE);
+            if (!adapter.isTocheck()) {
+                btn_right.setText("编辑");
             } else {
-                btn_right.setText("删除");
+                if (StrUtils.isEmpty(adapter.getSelectIds())) {
+                    btn_right.setText("取消");
+                } else {
+                    btn_right.setText("删除");
+                }
             }
+        } else {
+            btn_right.setVisibility(View.GONE);
         }
     }
 
@@ -233,8 +234,13 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
                         } else {
                             page++;
                         }
+                        //刷新后设置为非勾选状态
+                        adapter.setTocheck(false);
                         results.addAll(trips);
+                        //添加分割线
+                        AppHelper.setLineFlagInTrips(results);
                         freshCtrl();
+                        setBtnRight();
 
                         if (type == 0) {
                             LoadingViewUtil.showout(showingroup, showin);

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
+import com.ins.middle.entity.EventIdentify;
 import com.ins.middle.entity.EventOrder;
 import com.sobey.common.utils.StrUtils;
 
@@ -119,16 +120,28 @@ public class JGReceiver extends BroadcastReceiver {
         if (!StrUtils.isEmpty(extras)) {
             try {
                 JSONObject datajson = new JSONObject(extras);
-                EventOrder eventOrder = new EventOrder();
+                //订单推送
                 if (datajson.has("aboutOrder")) {
-                    String aboutOrder = datajson.getString("aboutOrder");
-                    eventOrder.setAboutOrder(aboutOrder);
+                    EventOrder eventOrder = new EventOrder();
+                    if (datajson.has("aboutOrder")) {
+                        String aboutOrder = datajson.getString("aboutOrder");
+                        eventOrder.setAboutOrder(aboutOrder);
+                    }
+                    if (datajson.has("advance_order_id")) {
+                        int orderId = Integer.parseInt(datajson.getString("advance_order_id"));
+                        eventOrder.setOrderId(orderId);
+                    }
+                    EventBus.getDefault().post(eventOrder);
                 }
-                if (datajson.has("advance_order_id")) {
-                    int orderId = Integer.parseInt(datajson.getString("advance_order_id"));
-                    eventOrder.setOrderId(orderId);
+                //系统推送
+                else if (datajson.has("abloutIdentify")) {
+                    EventIdentify eventIdentify = new EventIdentify();
+                    if (datajson.has("abloutIdentify")) {
+                        String aboutIdentify = datajson.getString("abloutIdentify");
+                        eventIdentify.setAboutsystem(aboutIdentify);
+                    }
+                    EventBus.getDefault().post(eventIdentify);
                 }
-                EventBus.getDefault().post(eventOrder);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("startapp", "启动消息页面失败");

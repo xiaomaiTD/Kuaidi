@@ -20,9 +20,11 @@ public class HomeHelper {
                 setMatching(activity);
                 break;
             case 2002:
+                //司机发送支付定金状态
                 setMatched(activity);
                 break;
             case 2003:
+                //司机等待乘客支付定金状态
                 setPayFirst(activity);
                 break;
             case 2004:
@@ -54,6 +56,7 @@ public class HomeHelper {
 
     //2001
     public static void setMatching(HomeActivity activity) {
+        activity.img_home_cancel.setVisibility(View.VISIBLE);
         activity.driverView.setVisibility(View.GONE);
         activity.lay_map_center.setVisibility(View.GONE);
         activity.holdcarView.setVisibility(View.GONE);
@@ -65,6 +68,7 @@ public class HomeHelper {
     //2002
     //司机发送支付定金状态
     public static void setMatched(HomeActivity activity) {
+        activity.img_home_cancel.setVisibility(View.GONE);
         activity.driverView.setVisibility(View.VISIBLE);
         activity.holdcarView.setVisibility(View.GONE);
         activity.lay_map_center.setVisibility(View.GONE);

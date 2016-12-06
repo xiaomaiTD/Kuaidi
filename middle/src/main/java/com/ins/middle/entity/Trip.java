@@ -10,9 +10,9 @@ import java.io.Serializable;
  */
 public class Trip implements Serializable{
 
-    public static final int STA_2001 = 2001;//匹配成功
-    public static final int STA_2002 = 2002;//司机发送支付定金状态
-    public static final int STA_2003 = 2003;//司机等待乘客支付定金状态
+    public static final int STA_2001 = 2001;//正在匹配
+    public static final int STA_2002 = 2002;//匹配成功
+    public static final int STA_2003 = 2003;//司机请求预付款，等待乘客支付定金状态
     public static final int STA_2004 = 2004;//2004 乘客已支付预付款
     public static final int STA_2005 = 2005;//2005 司机接到乘客
     public static final int STA_2006 = 2006;//2006 乘客已抵达
@@ -103,6 +103,15 @@ public class Trip implements Serializable{
 //    @Expose
     private transient  Overlay mark;
     private boolean isCheck;
+    private boolean isLineFlag = false;
+
+    public boolean isLineFlag() {
+        return isLineFlag;
+    }
+
+    public void setLineFlag(boolean lineFlag) {
+        isLineFlag = lineFlag;
+    }
 
     public boolean isCheck() {
         return isCheck;

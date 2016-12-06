@@ -56,19 +56,12 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/img_home_order"
+                    android:id="@+id/img_home_cancel"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="center"
-                    android:src="@drawable/icon_home_order" />
+                    android:src="@drawable/icon_home_cancle" />
 
-                <ImageView
-                    android:layout_gravity="right|bottom"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/shape_oval_red"/>
             </FrameLayout>
 
         </android.support.v7.widget.Toolbar>

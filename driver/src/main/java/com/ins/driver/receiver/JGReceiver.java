@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
 import com.ins.middle.entity.EventOrder;
+import com.ins.middle.entity.EventIdentify;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,8 +19,6 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
-
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * 自定义接收器
@@ -119,20 +117,32 @@ public class JGReceiver extends BroadcastReceiver {
         if (!StrUtils.isEmpty(extras)) {
             try {
                 JSONObject datajson = new JSONObject(extras);
-                EventOrder eventOrder = new EventOrder();
+                //订单推送
                 if (datajson.has("aboutOrder")) {
-                    String aboutOrder = datajson.getString("aboutOrder");
-                    eventOrder.setAboutOrder(aboutOrder);
+                    EventOrder eventOrder = new EventOrder();
+                    if (datajson.has("aboutOrder")) {
+                        String aboutOrder = datajson.getString("aboutOrder");
+                        eventOrder.setAboutOrder(aboutOrder);
+                    }
+                    if (datajson.has("advance_order_id")) {
+                        int orderId = Integer.parseInt(datajson.getString("advance_order_id"));
+                        eventOrder.setOrderId(orderId);
+                    }
+                    if (datajson.has("money")) {
+                        float money = Float.parseFloat(datajson.getString("money"));
+                        eventOrder.setMoney(money);
+                    }
+                    EventBus.getDefault().post(eventOrder);
                 }
-                if (datajson.has("advance_order_id")) {
-                    int orderId = Integer.parseInt(datajson.getString("advance_order_id"));
-                    eventOrder.setOrderId(orderId);
+                //系统推送
+                else if (datajson.has("abloutIdentify")) {
+                    EventIdentify eventIdentify = new EventIdentify();
+                    if (datajson.has("abloutIdentify")) {
+                        String aboutIdentify = datajson.getString("abloutIdentify");
+                        eventIdentify.setAboutsystem(aboutIdentify);
+                    }
+                    EventBus.getDefault().post(eventIdentify);
                 }
-                if (datajson.has("money")) {
-                    float money = Float.parseFloat(datajson.getString("money"));
-                    eventOrder.setMoney(money);
-                }
-                EventBus.getDefault().post(eventOrder);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("startapp", "启动消息页面失败");
@@ -141,45 +151,5 @@ public class JGReceiver extends BroadcastReceiver {
     }
 
     private void processNotifyClick(Context context, Bundle bundle) {
-//        String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-//        Log.e("push", "push message:" + extras);
-//
-//        if (!StrUtils.isEmpty(extras)) {
-//            //有拖拽字段，跳转消息页面
-//            try {
-//                JSONObject datajson = new JSONObject(extras);
-//                if (datajson.has("info_type")) {
-//                    String type = datajson.getString("info_type");
-//                    Intent intent = new Intent();
-//                    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-//                    if ("2".equals(type)) {
-//                        //跳转订单消息页面
-//                    } else if ("1".equals(type)){
-//                        //系统消息
-//                        context.startActivity(intent);
-//                    }else if ("3".equals(type)){
-//                        //丁一定
-//                    }else if ("4".equals(type)){
-//                    }
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                Log.e("startapp", "启动消息页面失败");
-//            }
-//        } else {
-        //////////启动app
-//            try {
-//                String appPackageName = "com.ins.wojia";
-//                boolean runningApp = AppUtils.isRunningApp(context, appPackageName);
-//                if (!runningApp) {
-//                    AppUtils.startAPP(context, appPackageName);
-//                } else {
-//                    Log.e("liao", "isRunning");
-//                }
-//            } catch (Exception e) {
-//                Log.e("startapp", "启动app失败");
-//                e.printStackTrace();
-//            }
-//        }
     }
 }

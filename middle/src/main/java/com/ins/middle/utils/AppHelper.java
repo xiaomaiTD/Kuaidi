@@ -161,4 +161,14 @@ public class AppHelper {
         String last = banknum.substring(banknum.length() - 4);
         return "**** **** **** " + last;
     }
+
+    public static void setLineFlagInTrips(List<Trip> trips) {
+        for (Trip trip : trips) {
+            //寻找第一条已完成或已取消的订单，添加分割线标志
+            if (trip.getStatus() == Trip.STA_2006 || trip.getStatus() == Trip.STA_2007){
+                trip.setLineFlag(true);
+                return;
+            }
+        }
+    }
 }

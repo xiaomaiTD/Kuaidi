@@ -37,7 +37,9 @@ public class CarMap {
             animator.cancel();
         }
         //设置角度
-        mMoveMarker.setRotate((float) MapUtil.getAngle(start, latLng));
+        float angle = (float) MapUtil.getAngle(start, latLng);
+        //angle==180，表示两次坐标位置一致，不设置角度
+        if (angle != 180) mMoveMarker.setRotate(angle);
         final double latdis = latLng.latitude - start.latitude;
         final double londis = latLng.longitude - start.longitude;
         //设置平滑移动

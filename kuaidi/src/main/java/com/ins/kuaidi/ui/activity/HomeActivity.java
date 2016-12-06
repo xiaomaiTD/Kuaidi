@@ -32,6 +32,7 @@ import com.ins.kuaidi.R;
 import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
 import com.ins.middle.entity.CarMap;
+import com.ins.middle.entity.EventIdentify;
 import com.ins.middle.entity.EventOrder;
 import com.ins.middle.ui.activity.CityActivity;
 import com.ins.middle.ui.activity.MsgClassActivity;
@@ -93,18 +94,19 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public TextView btn_go;
     public View btn_fresh;
     private View btn_relocate;
+    public View img_home_cancel;
 
     public DialogLoading dialogLoading;
     private DialogMouthPicker dialogTime;
     private DialogPopupMsg dialogPopupMsg;
-    private DialogSure dialogSure;
+    public DialogSure dialogSure;
 
     //    private static final int RESULT_SEARCHADDRESS = 0xf101;
     private int type = 0;   //0:点击出发地点 1:点击目的地
     private String city;
     private String nowcity;
     //当前定位位置
-    private LatLng nowLatLng;
+    public LatLng nowLatLng;
     boolean isIn;
     //地理围栏
     public List<List<LatLng>> ptsArray;
@@ -159,6 +161,26 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             }
         } else if (flag == AppConstant.EVENT_UPDATE_ME) {
             setUserData();
+        }
+    }
+
+    @Subscribe
+    public void onEventMainThread(EventIdentify eventIdentify) {
+        String aboutsystem = eventIdentify.getAboutsystem();
+        if ("15".equals(aboutsystem)) {
+            //审核通过
+            User user = AppData.App.getUser();
+            user.setStatus(User.AUTHENTICATED);
+            AppData.App.saveUser(user);
+            setUserData();
+            Toast.makeText(this, "实名认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
+        } else if ("16".equals(aboutsystem)) {
+            //审核不通过
+            User user = AppData.App.getUser();
+            user.setStatus(User.UNAUTHORIZED);
+            AppData.App.saveUser(user);
+            setUserData();
+            Toast.makeText(this, "实名认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -272,8 +294,12 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         dialogSure.setOnOkListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int orderId = (int) dialogSure.getObject();
-                netHelper.netCancleOrder(orderId);
+                if (trip != null) {
+                    netHelper.netCancleOrder(trip.getId());
+                } else {
+                    int orderId = (int) dialogSure.getObject();
+                    netHelper.netCancleOrder(orderId);
+                }
                 dialogSure.hide();
             }
         });
@@ -302,9 +328,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
         btn_fresh.setOnClickListener(this);
         findViewById(R.id.img_home_msg).setOnClickListener(this);
-        findViewById(R.id.img_home_order).setOnClickListener(this);
+        img_home_cancel = findViewById(R.id.img_home_cancel);
+        img_home_cancel.setOnClickListener(this);
         btn_relocate.setOnClickListener(this);
 
+        img_home_cancel.setVisibility(View.GONE);
         lay_map_bubble.setVisibility(View.GONE);
         btn_go.setVisibility(View.GONE);
         btn_go.setEnabled(false);
@@ -341,8 +369,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         driverView.setOnCancleClickListener(new DriverView.OnCancleClickListener() {
             @Override
             public void onCancleClick(int orderId) {
-                dialogSure.setObject(orderId);
-                dialogSure.show();
+                if (trip != null) {
+                    dialogSure.show();
+                }
             }
         });
 
@@ -402,6 +431,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         if (trip != null && trip.getDriver() != null) {
             driverView.setDriver(trip.getDriver(), trip);
         }
+        //设置取消行程按钮
+        //订单尚未匹配成功时(2001)，才显示该按钮
+        if (trip != null && trip.getStatus() == Trip.STA_2001) {
+            img_home_cancel.setVisibility(View.VISIBLE);
+        } else {
+            img_home_cancel.setVisibility(View.GONE);
+        }
     }
 
     //设置司机位置
@@ -413,6 +449,42 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         this.city = city;
         text_title.setText(city);
         netHelper.netGetArea(city);
+    }
+
+    //移动大头针开始，显示消失动画
+    public void setBubbleOff(){
+        if (isIn) {
+            //打车面板不可见并且中心面板可见的时候才显示打车气泡
+            if (holdcarView.getVisibility() != View.VISIBLE && lay_map_center.getVisibility() == View.VISIBLE) {
+                //只有没有行程并且行程为初始状态才显示摇杆
+                if (trip == null || trip.getStatus() == Trip.STA_2001) {
+                    YoYo.with(Techniques.TakingOff).duration(200).playOn(lay_map_bubble);
+                }
+            }
+        }
+    }
+
+    //移动大头针结束，显示渐出动画
+    public void setBubbleOn(LatLng latLng){
+        if (StrUtils.isEmpty(ptsArray)||latLng==null){
+            return;
+        }
+        isIn = MapHelper.isInAreas(ptsArray, latLng);
+        if (isIn) {
+            //只有没有行程才显示摇杆
+            if (trip == null) {
+                //打车面板不可见并且中心面板可见的时候才显示打车气泡
+                if (holdcarView.getVisibility() != View.VISIBLE && lay_map_center.getVisibility() == View.VISIBLE) {
+                    lay_map_bubble.setVisibility(View.VISIBLE);
+                    YoYo.with(Techniques.Landing).duration(200).playOn(lay_map_bubble);
+                }
+                //检索地址
+                mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
+            }
+        } else {
+            //不在围栏里面则清除上车地点
+            holdcarView.setStartPosition(null);
+        }
     }
 
     ////////////////////////////////////
@@ -478,9 +550,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 intent.setClass(this, MsgClassActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.img_home_order:
-//                intent.setClass(this, MsgClassActivity.class);
-//                startActivity(intent);
+            case R.id.img_home_cancel:
+                dialogSure.show();
                 break;
             case R.id.img_navi_header:
                 if (AppData.App.getUser() != null) {
@@ -518,7 +589,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 break;
             case R.id.btn_go:
                 //屏蔽快速双击事件
-                if (ClickUtils.isFastDoubleClick()){
+                if (ClickUtils.isFastDoubleClick()) {
                     return;
                 }
                 if ("呼叫快车".equals(btn_go.getText())) {
@@ -560,15 +631,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         @Override
         public void onMapStatusChangeStart(MapStatus mapStatus) {
             holdcarView.setAlpha(0.1f);
-            if (isIn) {
-                //打车面板不可见并且中心面板可见的时候才显示打车气泡
-                if (holdcarView.getVisibility() != View.VISIBLE && lay_map_center.getVisibility() == View.VISIBLE) {
-                    //只有没有行程并且行程为初始状态才显示摇杆
-                    if (trip == null || trip.getStatus() == Trip.STA_2001) {
-                        YoYo.with(Techniques.TakingOff).duration(200).playOn(lay_map_bubble);
-                    }
-                }
-            }
+            setBubbleOff();
         }
 
         @Override
@@ -578,22 +641,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         @Override
         public void onMapStatusChangeFinish(MapStatus mapStatus) {
             holdcarView.setAlpha(1f);
-            isIn = MapHelper.isInAreas(ptsArray, mapStatus.target);
-            if (isIn) {
-                //只有没有行程才显示摇杆
-                if (trip == null) {
-                    //打车面板不可见并且中心面板可见的时候才显示打车气泡
-                    if (holdcarView.getVisibility() != View.VISIBLE && lay_map_center.getVisibility() == View.VISIBLE) {
-                        lay_map_bubble.setVisibility(View.VISIBLE);
-                        YoYo.with(Techniques.Landing).duration(200).playOn(lay_map_bubble);
-                    }
-                    //检索地址
-                    mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(mapStatus.target));
-                }
-            } else {
-                //不在围栏里面则清除上车地点
-                holdcarView.setStartPosition(null);
-            }
+            setBubbleOn(mapStatus.target);
         }
     };
 

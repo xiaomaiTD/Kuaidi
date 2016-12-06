@@ -39,7 +39,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:text="编辑"
-                android:textColor="@color/kd_yellow"
+                android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_big_nomal" />
 
         </android.support.v7.widget.Toolbar>

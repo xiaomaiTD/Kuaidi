@@ -242,7 +242,7 @@ public class IdentifyFourFragment extends BaseFragment implements View.OnClickLi
         params.addBodyParameter("driveLicenseImg", urls.get(0));
         params.addBodyParameter("driveingLicenseImg", urls.get(1));
         params.addBodyParameter("idCardNum", identifyBus.idcardnum);
-        params.addBodyParameter("idCardImgs", identifyBus.pathIdcardFirst + "," + identifyBus.pathIdcardLast);      //身份证图片(以,隔开)
+        params.addBodyParameter("idCardImgs", urls.get(2) + "," + urls.get(3));      //身份证图片(以,隔开)
 
         CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
             @Override
