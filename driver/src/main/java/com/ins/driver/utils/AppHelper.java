@@ -118,6 +118,7 @@ public class AppHelper {
         }
         return carMaps;
     }
+
     //从车辆列表中查询不存在的司机车辆集合
     public static List<CarMap> findOutCarByDriver(List<CarMap> cars, List<User> dirvers) {
         ArrayList<CarMap> carMaps = new ArrayList<>();
@@ -129,7 +130,7 @@ public class AppHelper {
                     break;
                 }
             }
-            if (!isfind){
+            if (!isfind) {
                 carMaps.add(car);
             }
         }

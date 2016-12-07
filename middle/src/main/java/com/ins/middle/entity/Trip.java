@@ -2,13 +2,14 @@ package com.ins.middle.entity;
 
 import com.baidu.mapapi.map.Overlay;
 import com.google.gson.annotations.Expose;
+import com.ins.middle.utils.AppHelper;
 
 import java.io.Serializable;
 
 /**
  * Created by Administrator on 2016/6/12 0012.
  */
-public class Trip implements Serializable{
+public class Trip implements Serializable,Comparable<Trip>{
 
     public static final int STA_2001 = 2001;//正在匹配
     public static final int STA_2002 = 2002;//匹配成功
@@ -375,5 +376,14 @@ public class Trip implements Serializable{
                 ", isReceivePassenger=" + isReceivePassenger +
                 ", isArrive=" + isArrive +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Trip trip) {
+        if (AppHelper.isFinishOrder(trip)){
+            return -1;
+        }else {
+            return 1;
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.ins.middle.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,14 +17,11 @@ import com.ins.middle.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
-import com.ins.middle.entity.Eva;
 import com.ins.middle.entity.EventOrder;
 import com.ins.middle.entity.Trip;
-import com.ins.middle.entity.User;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
-import com.ins.middle.entity.TestEntity;
 import com.ins.middle.ui.adapter.RecycleAdapterTrip;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
@@ -35,7 +31,6 @@ import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ins.middle.ui.activity.BaseBackActivity;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -158,8 +153,8 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
         Trip trip = adapter.getResults().get(viewHolder.getLayoutPosition());
         //客户端点击进行中的行程会回到主页
         if (PackageUtil.isClient()) {
-            //已送达或者已取消的订单进入详情页，否则退回主页
-            if (trip.getStatus() == Trip.STA_2006 || trip.getStatus() == Trip.STA_2007) {
+            //不能取消的订单（未支付或者已取消）的订单进入详情页，否则退回主页
+            if (AppHelper.isFinishOrder(trip)) {
                 Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
                 intent.putExtra("orderId", trip.getId());
                 intent.putExtra("trip", trip);
@@ -169,7 +164,7 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
                 finish();
             }
         } else {
-            if (trip.getStatus() == Trip.STA_2006 || trip.getStatus() == Trip.STA_2007) {
+            if (AppHelper.isFinishOrder(trip)) {
                 Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
                 intent.putExtra("orderId", trip.getId());
                 intent.putExtra("trip", trip);

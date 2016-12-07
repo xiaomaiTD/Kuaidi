@@ -35,15 +35,16 @@ public class HomeHelper {
                 //2005 司机接到乘客
                 if (trip.getIsPay() == 1) {
                     setHasPayLast(activity);
-                }else {
+                } else {
                     setPayLast(activity);
                 }
                 break;
             case 2006:
                 //2006 乘客已抵达
                 if (trip.getIsPay() == 1) {
-                    setHasPayLast(activity);
-                }else {
+//                    setHasPayLast(activity);
+                    setFresh(activity);
+                } else {
                     setPayLast(activity);
                 }
                 break;
@@ -130,11 +131,16 @@ public class HomeHelper {
         activity.holdcarView.clear();
     }
 
-    public static void setFresh(HomeActivity activity){
+    public static void setFresh(HomeActivity activity) {
+        setFresh(activity, 0);
+    }
+
+    public static void setFresh(HomeActivity activity, int afterId) {
         activity.setUserData();
         activity.baiduMap.clear();
         activity.ptsArray.clear();
-        activity.netHelper.netGetTrip();
+        activity.netHelper.netGetTrip(afterId);
         activity.locationer.isFirstLoc = true;
+        activity.carMap.removeFromMap();
     }
 }

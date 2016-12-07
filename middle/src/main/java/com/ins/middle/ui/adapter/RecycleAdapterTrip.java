@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.middle.R;
-import com.ins.middle.entity.Complaint;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.ui.activity.TripActivity;
 import com.ins.middle.utils.AppHelper;
@@ -58,7 +57,7 @@ public class RecycleAdapterTrip extends RecyclerView.Adapter<RecycleAdapterTrip.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isTocheck && (trip.getStatus() == Trip.STA_2006 || trip.getStatus() == Trip.STA_2007)) {
+                if (isTocheck && AppHelper.isFinishOrder(trip)) {
                     holder.check.setChecked(!holder.check.isChecked());
                 } else {
                     if (listener != null) listener.onItemClick(holder);
@@ -76,11 +75,11 @@ public class RecycleAdapterTrip extends RecyclerView.Adapter<RecycleAdapterTrip.
         holder.text_trip_start.setText(trip.getFromAdd());
         holder.text_trip_end.setText(trip.getToAdd());
         holder.text_trip_cartype.setText(trip.getOrderType() == 0 ? "包车" : "拼车");
-        holder.text_trip_status.setText(AppHelper.getOrderType(trip.getStatus()));
+        holder.text_trip_status.setText(AppHelper.getOrderType(trip));
         holder.check.setChecked(trip.isCheck());
         holder.lay_trip_linetitle.setVisibility(trip.isLineFlag() ? View.VISIBLE : View.GONE);
 
-        if (isTocheck && (trip.getStatus() == Trip.STA_2006 || trip.getStatus() == Trip.STA_2007)) {
+        if (isTocheck && AppHelper.isFinishOrder(trip)) {
             holder.check.setVisibility(View.VISIBLE);
             holder.img_trip_next.setVisibility(View.GONE);
         } else {

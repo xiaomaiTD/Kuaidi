@@ -11,6 +11,7 @@ import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.PswView;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -131,7 +132,9 @@ public class AppHelper {
         return ret;
     }
 
-    public static String getOrderType(int orderType) {
+    public static String getOrderType(Trip trip) {
+        int orderType = trip.getStatus();
+        int isPay = trip.getIsPay();
         switch (orderType) {
             case 2001:
                 return "正在派单";
@@ -144,7 +147,11 @@ public class AppHelper {
             case 2005:
                 return "正在前往目的地";
             case 2006:
-                return "已完成";
+                if (isPay==1) {
+                    return "已完成";
+                }else {
+                    return "待付款";
+                }
             case 2007:
                 return "已取消";
         }
@@ -163,12 +170,33 @@ public class AppHelper {
     }
 
     public static void setLineFlagInTrips(List<Trip> trips) {
+        Collections.sort(trips);
         for (Trip trip : trips) {
             //寻找第一条已完成或已取消的订单，添加分割线标志
-            if (trip.getStatus() == Trip.STA_2006 || trip.getStatus() == Trip.STA_2007){
+            if (AppHelper.isFinishOrder(trip)){
                 trip.setLineFlag(true);
                 return;
             }
+        }
+    }
+
+    /**
+     * true 已取消 和 已支付的订单
+     * false 其他
+     */
+    public static boolean isFinishOrder(Trip trip) {
+        int status = trip.getStatus();
+        int isPay = trip.getIsPay();
+        if (status == Trip.STA_2006) {
+            if (isPay == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } else if (status == Trip.STA_2007) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

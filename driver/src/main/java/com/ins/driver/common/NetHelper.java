@@ -128,6 +128,10 @@ public class NetHelper {
     }
 
     public void netDriverLat() {
+        //如果没有登录（被挤下线），则不请求
+        if (AppData.App.getUser() == null) {
+            return;
+        }
         RequestParams params = new RequestParams(AppData.Url.getDriLatDriver);
         params.addHeader("token", AppData.App.getToken());
         CommonNet.samplepost(params, new TypeToken<List<User>>() {
@@ -140,6 +144,10 @@ public class NetHelper {
 
             @Override
             public void netSetError(int code, String text) {
+                //未登录
+                if (code == 1005) {
+                    AppData.App.removeUser();
+                }
             }
         });
     }

@@ -110,6 +110,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     boolean isIn;
     //地理围栏
     public List<List<LatLng>> ptsArray;
+    public ArrayList<Overlay> areasLay;
     public Trip trip;
     public CarMap carMap;
 
@@ -190,10 +191,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         Log.e("liao", "aboutOrder:" + aboutOrder);
         if ("3".equals(aboutOrder)) {
             //请求支付定金
-            netHelper.netGetTrip();
+            netHelper.netGetTrip(eventOrder.getOrderId());
         } else if ("4".equals(aboutOrder)) {
             //接到乘客
-            netHelper.netGetTrip();
+            netHelper.netGetTrip(eventOrder.getOrderId());
         } else if ("5".equals(aboutOrder)) {
             //已经到达目的地
             HomeHelper.setFresh(this);
@@ -442,7 +443,19 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     //设置司机位置
     public void setCarData(LatLng latLng) {
-        carMap.addMove(baiduMap, latLng);
+        User driver = carMap.getDriver();
+        if (driver != null && trip != null) {
+            if (driver.getId() == trip.getDriver().getId()) {
+                carMap.addMove(baiduMap, latLng);
+            } else {
+                carMap.removeFromMap();
+                carMap.addMove(baiduMap, latLng);
+            }
+            carMap.setDriver(trip.getDriver());
+        } else {
+            carMap.addMove(baiduMap, latLng);
+            if (trip != null) carMap.setDriver(trip.getDriver());
+        }
     }
 
     private void setCity(String city) {
@@ -452,7 +465,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     //移动大头针开始，显示消失动画
-    public void setBubbleOff(){
+    public void setBubbleOff() {
         if (isIn) {
             //打车面板不可见并且中心面板可见的时候才显示打车气泡
             if (holdcarView.getVisibility() != View.VISIBLE && lay_map_center.getVisibility() == View.VISIBLE) {
@@ -465,8 +478,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     //移动大头针结束，显示渐出动画
-    public void setBubbleOn(LatLng latLng){
-        if (StrUtils.isEmpty(ptsArray)||latLng==null){
+    public void setBubbleOn(LatLng latLng) {
+        if (StrUtils.isEmpty(ptsArray) || latLng == null) {
             return;
         }
         isIn = MapHelper.isInAreas(ptsArray, latLng);
@@ -621,7 +634,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 MapHelper.zoomByPoint(baiduMap, nowLatLng);
                 break;
             case R.id.btn_fresh:
-                HomeHelper.setFresh(this);
+                if (trip != null) {
+                    HomeHelper.setFresh(this, trip.getId());
+                } else {
+                    HomeHelper.setFresh(this);
+                }
                 break;
         }
     }

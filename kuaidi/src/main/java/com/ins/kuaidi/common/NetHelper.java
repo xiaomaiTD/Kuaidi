@@ -29,7 +29,6 @@ import java.util.List;
 public class NetHelper {
 
     private HomeActivity activity;
-    private ArrayList<Overlay> areasLay;
 
     public NetHelper(HomeActivity activity) {
         this.activity = activity;
@@ -45,9 +44,9 @@ public class NetHelper {
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 List<List<String>> areas = (ArrayList<List<String>>) pojo;
                 //如果区域图层不是空，那么先清除掉
-                MapHelper.removeOverlays(areasLay);
+                MapHelper.removeOverlays(activity.areasLay);
                 activity.ptsArray = MapHelper.str2LatLngsArray(areas);
-                areasLay = MapHelper.drawAreas(activity.mapView, activity.ptsArray);
+                activity.areasLay = MapHelper.drawAreas(activity.mapView, activity.ptsArray);
                 //获取到围栏时检测下是否在围栏内
                 activity.setBubbleOn(activity.nowLatLng);
             }
@@ -136,6 +135,10 @@ public class NetHelper {
     }
 
     public void netGetTrip() {
+        netGetTrip(0);
+    }
+
+    public void netGetTrip(final int afterId) {
         RequestParams params = new RequestParams(AppData.Url.getOrders);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("flag", "0");//0:当前行程
@@ -146,12 +149,9 @@ public class NetHelper {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 List<Trip> trips = (ArrayList<Trip>) pojo;
-                if (!StrUtils.isEmpty(trips)) {
-                    Trip trip = trips.get(0);
-                    activity.setTrip(trip);
-                } else {
-                    activity.setTrip(null);
-                }
+                //如果afterId 为0 则取第一个行程，如果不为0则查找该id的行程
+                Trip trip = com.ins.kuaidi.utils.AppHelper.getTripById(trips, afterId);
+                activity.setTrip(trip);
             }
 
             @Override

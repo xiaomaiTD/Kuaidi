@@ -24,6 +24,8 @@ import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.PswView;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/8/9.
  */
@@ -102,5 +104,21 @@ public class AppHelper {
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.icon_map_pick);
         OverlayOptions startpop = new MarkerOptions().position(latLng).icon(bitmap).zIndex(101);
         return baiduMap.addOverlay(startpop);
+    }
+
+    //从集合中查询该Id的行程，如果找不到则返回第一个，如果集合为空返回null
+    public static Trip getTripById(List<Trip> trips, int orderId) {
+        if (StrUtils.isEmpty(trips)) {
+            return null;
+        }
+        if (orderId == 0) {
+            return trips.get(0);
+        }
+        for (Trip trip : trips) {
+            if (trip.getId() == orderId) {
+                return trip;
+            }
+        }
+        return trips.get(0);
     }
 }
