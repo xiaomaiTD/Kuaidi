@@ -64,6 +64,7 @@
                     android:id="@+id/img_server_header"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:src="@drawable/header_server"
                     android:scaleType="centerCrop" />
 
                 <TextView

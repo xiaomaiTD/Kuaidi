@@ -46,6 +46,7 @@ public class HomeHelper {
 
     public static void setInit(HomeActivity activity) {
         activity.btn_new.setVisibility(View.GONE);
+        activity.img_new.setVisibility(View.GONE);
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.check_lu.setVisibility(View.GONE);
         activity.driverView.setVisibility(View.GONE);
@@ -96,6 +97,7 @@ public class HomeHelper {
 
     public static void setNewMsg(HomeActivity activity) {
         activity.btn_new.setVisibility(View.VISIBLE);
+        activity.img_new.setVisibility(View.VISIBLE);
         YoYo.with(Techniques.Landing)
                 .duration(200)
                 .playOn(activity.btn_new);

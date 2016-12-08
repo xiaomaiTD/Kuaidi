@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/lay_map_bubble"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginBottom="5dp"
+android:background="@drawable/icon_map_bubble"
+android:gravity="center_vertical"
+android:orientation="horizontal"
+android:paddingBottom="3dp">
+
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/header_server"/>
+
+    <ImageView
+        android:layout_marginLeft="30dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/header_server"/>
+
+</LinearLayout>

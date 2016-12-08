@@ -42,27 +42,10 @@ public class ServerActivity extends BaseBackActivity implements View.OnClickList
     }
 
     private void initData() {
-//        showin = LoadingViewUtil.showin(showingroup, R.layout.layout_loading, showin);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                //加载成功
-//                initCtrl();
-//                LoadingViewUtil.showout(showingroup, showin);
-//
-//                //加载失败
-////                LoadingViewUtil.showin(showingroup,R.layout.layout_lack,showin,new View.OnClickListener(){
-////                    @Override
-////                    public void onClick(View v) {
-////                        initData();
-////                    }
-////                });
-//            }
-//        }, 500);
     }
 
     private void initCtrl() {
-        GlideUtil.LoadCircleImgTest(this, img_server_header);
+//        GlideUtil.LoadCircleImgTest(this, img_server_header);
     }
 
     @Override

@@ -31,6 +31,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
+import com.ins.kuaidi.common.WaitingHelper;
 import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.EventIdentify;
 import com.ins.middle.entity.EventOrder;
@@ -72,6 +73,7 @@ import java.util.List;
 
 public class HomeActivity extends BaseAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, Locationer.LocationCallback, OnGetGeoCoderResultListener {
 
+    public WaitingHelper waitingHelper;
     private UpdateHelper updateHelper;
     public NetHelper netHelper;
     public Locationer locationer;
@@ -103,14 +105,16 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     //    private static final int RESULT_SEARCHADDRESS = 0xf101;
     private int type = 0;   //0:点击出发地点 1:点击目的地
-    private String city;
-    private String nowcity;
+    //当前选择城市
+    public String city;
+    //当前定位城市
+    public String nowcity;
     //当前定位位置
     public LatLng nowLatLng;
     boolean isIn;
     //地理围栏
-    public List<List<LatLng>> ptsArray;
-    public ArrayList<Overlay> areasLay;
+    public List<List<LatLng>> ptsArray = new ArrayList<>();
+    public ArrayList<Overlay> areasLay = new ArrayList<>();
     public Trip trip;
     public CarMap carMap;
 
@@ -133,6 +137,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         if (type == 0) {
             //选择了出发点
             MapHelper.zoomToPosition(mapView, position.getLatLng());
+            //如果改变了出发城市，那么重新拉取地理围栏
+            if (!position.getCity().equals(city)) {
+                setCity(position.getCity());
+            }
         } else {
             //选择了目的地
             if (com.ins.kuaidi.utils.AppHelper.needNetConfigEnd(holdcarView, position.getCity())) {
@@ -319,6 +327,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         lay_map_bubble = findViewById(R.id.lay_map_bubble);
         lay_map_center = findViewById(R.id.lay_map_center);
         btn_go = (TextView) findViewById(R.id.btn_go);
+        waitingHelper = new WaitingHelper(btn_go);
         btn_fresh = findViewById(R.id.btn_fresh);
         btn_relocate = findViewById(R.id.btn_map_relocate);
 
@@ -458,7 +467,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         }
     }
 
-    private void setCity(String city) {
+    public void setCity(String city) {
         this.city = city;
         text_title.setText(city);
         netHelper.netGetArea(city);
@@ -514,10 +523,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             case RESULT_CITY:
                 if (resultCode == RESULT_OK) {
                     String city = data.getStringExtra("city");
-                    if (!StrUtils.isEmpty(city)) {
-                        this.city = city;
+                    String latlng = data.getStringExtra("latlng");
+                    if (!StrUtils.isEmpty(city) && !StrUtils.isEmpty(latlng)) {
                         setCity(city);
-                        mSearch.geocode(new GeoCodeOption().city(city).address(city));
+//                        mSearch.geocode(new GeoCodeOption().city(city).address(city));
+                        MapHelper.zoomToPosition(mapView, MapHelper.str2LatLng(latlng));
                     }
                 }
                 break;
@@ -581,7 +591,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             case R.id.text_home_title:
                 if (!StrUtils.isEmpty(city)) {
                     intent.setClass(this, CityActivity.class);
-                    intent.putExtra("city", city);
+                    intent.putExtra("city", nowcity);
+                    intent.putExtra("latlng", MapHelper.LatLng2Str(nowLatLng));
                     startActivityForResult(intent, RESULT_CITY);
                 } else {
                     Toast.makeText(this, "正在定位中...", Toast.LENGTH_SHORT).show();
@@ -710,12 +721,12 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //检索回调
     @Override
     public void onGetGeoCodeResult(GeoCodeResult result) {
-        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-            Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG).show();
-            return;
-        }
-        LatLng location = result.getLocation();
-        MapHelper.zoomToPosition(mapView, location);
+//        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+//            Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        LatLng location = result.getLocation();
+//        MapHelper.zoomToPosition(mapView, location);
     }
 
     //反检索回调
@@ -723,6 +734,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
         if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
             Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG).show();
+        } else if (result.getAddressDetail() == null) {
+            return;
         } else {
             String newCity = result.getAddressDetail().city;
             //移动标杆，重新设置出发地

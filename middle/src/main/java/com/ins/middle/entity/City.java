@@ -17,7 +17,18 @@ public class City implements CharSort, Serializable {
     private String sortLetters;  //显示数据拼音的首字母
     private String car_title_html;
 
+    @SerializedName("coreSpot")
+    private String coreSpot;
+
     public City() {
+    }
+
+    public String getCoreSpot() {
+        return coreSpot;
+    }
+
+    public void setCoreSpot(String coreSpot) {
+        this.coreSpot = coreSpot;
     }
 
     public Integer getId() {

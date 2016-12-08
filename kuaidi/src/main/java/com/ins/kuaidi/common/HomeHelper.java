@@ -1,9 +1,14 @@
 package com.ins.kuaidi.common;
 
+import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
 import android.view.View;
 
+import com.ins.kuaidi.R;
 import com.ins.kuaidi.ui.activity.HomeActivity;
 import com.ins.middle.entity.Trip;
+import com.ins.middle.utils.MapHelper;
+import com.sobey.common.utils.DensityUtil;
 
 /**
  * Created by Administrator on 2016/11/10.
@@ -55,6 +60,22 @@ public class HomeHelper {
         }
     }
 
+    private static void setTextMatching(HomeActivity activity) {
+        activity.btn_go.setTextColor(ContextCompat.getColor(activity, R.color.com_text_dark));
+        activity.btn_go.setBackgroundResource(R.drawable.shape_rect_corner_white_line_dark);
+        activity.btn_go.setGravity(Gravity.CENTER_VERTICAL);
+        activity.btn_go.setPadding(DensityUtil.dp2px(activity, 105), 0, 0, 0);
+        activity.waitingHelper.start();
+    }
+
+    private static void setTextMatched(HomeActivity activity) {
+        activity.btn_go.setTextColor(ContextCompat.getColor(activity, R.color.white));
+        activity.btn_go.setBackgroundResource(R.drawable.hot_rect_coner_yellow);
+        activity.btn_go.setGravity(Gravity.CENTER);
+        activity.btn_go.setPadding(0, 0, 0, 0);
+        activity.waitingHelper.reset();
+    }
+
     //2001
     public static void setMatching(HomeActivity activity) {
         activity.img_home_cancel.setVisibility(View.VISIBLE);
@@ -63,7 +84,9 @@ public class HomeHelper {
         activity.holdcarView.setVisibility(View.GONE);
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.btn_go.setEnabled(false);
-        activity.btn_go.setText("正在为您安排车辆...");
+        //activity.btn_go.setText("正在为您安排车辆...");
+
+        setTextMatching(activity);
     }
 
     //2002
@@ -76,6 +99,8 @@ public class HomeHelper {
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.btn_go.setEnabled(false);
         activity.btn_go.setText("支付定金");
+
+        setTextMatched(activity);
     }
 
     //2003
@@ -87,6 +112,8 @@ public class HomeHelper {
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.btn_go.setEnabled(true);
         activity.btn_go.setText("支付定金");
+
+        setTextMatched(activity);
     }
 
     //2004 乘客已支付预付款
@@ -98,6 +125,8 @@ public class HomeHelper {
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.btn_go.setEnabled(true);
         activity.btn_go.setText("支付尾款");
+
+        setTextMatched(activity);
     }
 
     public static void setPayLastFalse(HomeActivity activity) {
@@ -129,6 +158,8 @@ public class HomeHelper {
         activity.btn_go.setText("呼叫快车");
 
         activity.holdcarView.clear();
+
+        setTextMatched(activity);
     }
 
     public static void setFresh(HomeActivity activity) {
@@ -138,9 +169,12 @@ public class HomeHelper {
     public static void setFresh(HomeActivity activity, int afterId) {
         activity.setUserData();
         activity.baiduMap.clear();
-        activity.ptsArray.clear();
+        activity.areasLay = MapHelper.drawAreas(activity.mapView, activity.ptsArray);
+//        activity.ptsArray.clear();
         activity.netHelper.netGetTrip(afterId);
         activity.locationer.isFirstLoc = true;
         activity.carMap.removeFromMap();
+
+        setTextMatched(activity);
     }
 }

@@ -89,8 +89,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public TextView btn_go;
     public View btn_fresh;
     public TextView btn_new;
+    public View img_new;
     public CheckBox check_lu;
     private View btn_relocate;
+
 
     private DialogLoading dialogLoading;
 
@@ -275,6 +277,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         btn_go = (TextView) findViewById(R.id.btn_go);
         btn_fresh = findViewById(R.id.btn_fresh);
         btn_new = (TextView) findViewById(R.id.btn_new);
+        img_new = findViewById(R.id.img_home_order_new);
         btn_relocate = findViewById(R.id.btn_map_relocate);
         check_lu = (CheckBox) findViewById(R.id.check_map_lu);
 
@@ -349,6 +352,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         locationer.startlocation();
         //消息面板初始不可见
         btn_new.setVisibility(View.GONE);
+        img_new.setVisibility(View.GONE);
         //不需要
 //        //司机面板初始设置为未登录状态
 //        HomeHelper.setUnLogin(this);
@@ -560,6 +564,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 break;
             case R.id.btn_new:
                 btn_new.setVisibility(View.GONE);
+                img_new.setVisibility(View.GONE);
                 intent.setClass(HomeActivity.this, ProgActivity.class);
                 startActivity(intent);
                 break;

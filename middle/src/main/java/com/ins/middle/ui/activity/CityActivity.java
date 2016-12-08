@@ -12,6 +12,7 @@ public class CityActivity extends BaseAppCompatActivity {
     private Fragment contactFragment;
 
     private String city;
+    private String latlng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class CityActivity extends BaseAppCompatActivity {
 
         initBase();
 
-        contactFragment = CityFragment.newInstance(0, city);
+        contactFragment = CityFragment.newInstance(0, city, latlng);
 
         // 添加显示第一个fragment
         FragmentTransaction ftx = getSupportFragmentManager().beginTransaction();
@@ -36,6 +37,9 @@ public class CityActivity extends BaseAppCompatActivity {
     private void initBase() {
         if (getIntent().hasExtra("city")) {
             city = getIntent().getStringExtra("city");
+        }
+        if (getIntent().hasExtra("latlng")) {
+            latlng = getIntent().getStringExtra("latlng");
         }
     }
 }

@@ -34,12 +34,14 @@ public class CityFragment extends BaseSelectFragment implements View.OnClickList
 
     private TextView text_city_nowcity;
     private String city;
+    private String latlng;
 
-    public static Fragment newInstance(int position, String city) {
+    public static Fragment newInstance(int position, String city, String latlng) {
         CityFragment f = new CityFragment();
         Bundle b = new Bundle();
         b.putInt("position", position);
         b.putString("city", city);
+        b.putString("latlng", latlng);
         f.setArguments(b);
         return f;
     }
@@ -48,6 +50,7 @@ public class CityFragment extends BaseSelectFragment implements View.OnClickList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.city = getArguments().getString("city");
+        this.latlng = getArguments().getString("latlng");
     }
 
     @Nullable
@@ -81,6 +84,7 @@ public class CityFragment extends BaseSelectFragment implements View.OnClickList
 //                getActivity().finish();
                 Intent intent = new Intent();
                 intent.putExtra("city", city.getCar_title());
+                intent.putExtra("latlng",city.getCoreSpot());
                 getActivity().setResult(Activity.RESULT_OK, intent);
                 getActivity().finish();
             }
@@ -92,6 +96,7 @@ public class CityFragment extends BaseSelectFragment implements View.OnClickList
 //                getActivity().finish();
                 Intent intent = new Intent();
                 intent.putExtra("city", city);
+                intent.putExtra("latlng", latlng);
                 getActivity().setResult(Activity.RESULT_OK, intent);
                 getActivity().finish();
             }
