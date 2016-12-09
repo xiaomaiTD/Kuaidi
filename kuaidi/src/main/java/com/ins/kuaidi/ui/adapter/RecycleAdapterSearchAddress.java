@@ -35,16 +35,18 @@ public class RecycleAdapterSearchAddress extends RecyclerView.Adapter<RecycleAda
 
     @Override
     public void onBindViewHolder(final RecycleAdapterSearchAddress.Holder holder, final int position) {
+        final Position pstion = results.get(holder.getLayoutPosition());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) listener.onItemClick(holder);
+                if (listener != null && pstion.isIn()) listener.onItemClick(holder);
             }
         });
-        Position pstion = results.get(holder.getLayoutPosition());
 
         holder.text_address.setText(pstion.getKey());
         holder.text_detail.setText(pstion.getDistrict());
+
+        holder.text_error.setVisibility(pstion.isIn() ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -56,11 +58,13 @@ public class RecycleAdapterSearchAddress extends RecyclerView.Adapter<RecycleAda
 
         private TextView text_address;
         private TextView text_detail;
+        private TextView text_error;
 
         public Holder(View itemView) {
             super(itemView);
             text_address = (TextView) itemView.findViewById(R.id.text_item_search_address);
             text_detail = (TextView) itemView.findViewById(R.id.text_item_search_detail);
+            text_error = (TextView) itemView.findViewById(R.id.text_item_search_error);
         }
     }
 

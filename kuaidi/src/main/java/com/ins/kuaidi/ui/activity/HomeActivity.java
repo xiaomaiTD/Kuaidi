@@ -643,6 +643,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 break;
             case R.id.btn_map_relocate:
                 MapHelper.zoomByPoint(baiduMap, nowLatLng);
+                if (!city.equals(nowcity)) {
+                    setCity(nowcity);
+                }
                 break;
             case R.id.btn_fresh:
                 if (trip != null) {

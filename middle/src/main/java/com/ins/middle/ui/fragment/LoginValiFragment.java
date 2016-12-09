@@ -29,7 +29,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.xutils.http.RequestParams;
 
 /**
- * Created by Administrator on 2016/6/2 0002.
+ * type 2：//已通过分销注册的情况 0，普通注册
  */
 public class LoginValiFragment extends BaseFragment implements View.OnClickListener {
 
@@ -45,6 +45,8 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
     private TextView btn_go_vali;
     private TextView text_login_phone;
     private EditText edit_login_vali;
+
+    private int type;
 
     public static Fragment newInstance(int position) {
         LoginValiFragment f = new LoginValiFragment();
@@ -70,6 +72,12 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
             valiHelper.valicode = split[1];
             text_login_phone.setText(valiHelper.phone + "");
             valiHelper.start();
+
+            if (split.length == 3) {
+                type = Integer.parseInt(split[2]);
+            } else {
+                type = 0;
+            }
         }
     }
 
@@ -139,7 +147,14 @@ public class LoginValiFragment extends BaseFragment implements View.OnClickListe
                 AppHelper.progOk2dle(btn_go, new AppHelper.ProgressCallback() {
                     @Override
                     public void callback() {
-                        String phone_flag = valiHelper.phone + "|" + "1";
+                        String phone_flag;
+                        if (type == 2) {
+                            //已通过分销注册的情况
+                            phone_flag = valiHelper.phone + "|" + "2";
+                        } else {
+                            //普通注册
+                            phone_flag = valiHelper.phone + "|" + "1";
+                        }
                         EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_DIALOGLOGON_PHONE, phone_flag));
                         activity.next();
                         btn_go.setClickable(true);

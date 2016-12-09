@@ -43,7 +43,7 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/shape_rect_croner_none_dashline_white"
             android:gravity="center"
-            android:text="请对准身份证"
+            android:text="请对准要拍摄的证件"
             android:textColor="@color/white"
             android:textSize="@dimen/text_big" />
 

@@ -100,6 +100,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private List<CarMap> cars = new ArrayList<>();
     //当前城市
     private String city;
+    private String nowcity;
     //是否在线
     public boolean isOnline = false;
     //当前行程
@@ -570,6 +571,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 break;
             case R.id.btn_map_relocate:
                 MapHelper.zoomByPoint(baiduMap, nowLatLng);
+                if (!city.equals(nowcity)) {
+                    setCity(nowcity);
+                }
                 break;
             case R.id.btn_fresh:
                 HomeHelper.setFresh(this);
@@ -609,7 +613,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         //定位成功后保存定位坐标
         this.nowLatLng = latLng;
         //定位成功后保存定位城市
-        this.city = city;
+        this.nowcity = city;
         //第一次定位成功后设置Title
         if (isFirst) setCity(city);
         //每次定位成功后检查司机是否在线，在线则不断上传自己位置

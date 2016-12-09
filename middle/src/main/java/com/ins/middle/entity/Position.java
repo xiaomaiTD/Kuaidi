@@ -20,6 +20,8 @@ public class Position implements Serializable{
     private String district;
     //坐标
     private LatLng latLng;
+    //是否在区域内
+    private boolean isIn;
 
     public Position(LatLng latLng, String key, String city) {
         this.latLng = latLng;
@@ -45,6 +47,14 @@ public class Position implements Serializable{
         city = poi.city;
         district = poi.address;
         latLng = poi.location;
+    }
+
+    public boolean isIn() {
+        return isIn;
+    }
+
+    public void setIn(boolean in) {
+        isIn = in;
     }
 
     public String getKey() {

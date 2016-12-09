@@ -129,11 +129,14 @@ public class LoginPhoneFragment extends BaseFragment implements View.OnClickList
                             String phone_type = phone + "|" + "0";
                             EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_DIALOGLOGON_PHONE, phone_type));
                             activity.goPosition(2);
-                            //已注册（没有密码），跳转设置密码
+                            //已注册（没有密码），跳转设置密码（2016.12.9 改为调整验证码页面）
                         } else if (code == 1012) {
-                            String phone_type = phone + "|" + "2";
+//                            String phone_type = phone + "|" + "2";
+//                            EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_DIALOGLOGON_PHONE, phone_type));
+//                            activity.goPosition(2);
+                            String phone_type = phone + "|" + com.getValicode() + "|" + "2";
                             EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_DIALOGLOGON_PHONE, phone_type));
-                            activity.goPosition(2);
+                            activity.goPosition(1);
                         }
                     }
                 });
