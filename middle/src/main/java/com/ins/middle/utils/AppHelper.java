@@ -169,7 +169,12 @@ public class AppHelper {
         return "**** **** **** " + last;
     }
 
+
+    /**
+     * 为trip设置分割线标志
+     */
     public static void setLineFlagInTrips(List<Trip> trips) {
+        removeLineFlagInTrips(trips);
         Collections.sort(trips);
         for (Trip trip : trips) {
             //寻找第一条已完成或已取消的订单，添加分割线标志
@@ -177,6 +182,15 @@ public class AppHelper {
                 trip.setLineFlag(true);
                 return;
             }
+        }
+    }
+
+    /**
+     * 删除分割线标志
+     */
+    public static void removeLineFlagInTrips(List<Trip> trips) {
+        for (Trip trip : trips) {
+            trip.setLineFlag(false);
         }
     }
 

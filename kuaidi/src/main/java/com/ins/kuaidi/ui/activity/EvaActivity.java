@@ -104,8 +104,13 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
 
     private void initCtrl() {
         if (trip != null) {
-            driverView.setDriver(trip.getDriver(),trip);
+            driverView.setDriver(trip.getDriver(), trip);
         }
+    }
+
+    private void showEva() {
+        lay_eva_detail.setVisibility(View.VISIBLE);
+        btn_show.setVisibility(View.GONE);
     }
 
     @Override
@@ -115,8 +120,7 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
                 popupSingle.showPopupWindow(v);
                 break;
             case R.id.btn_show:
-                lay_eva_detail.setVisibility(View.VISIBLE);
-                btn_show.setVisibility(View.GONE);
+                showEva();
                 break;
             case R.id.btn_go:
                 String detail = edit_eva_describe.getText().toString();

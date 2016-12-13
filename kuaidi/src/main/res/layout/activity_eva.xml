@@ -104,6 +104,7 @@
                     android:layout_marginRight="16dp"
                     android:isIndicator="false"
                     android:numStars="5"
+                    android:rating="5"
                     android:progressDrawable="@drawable/rating_bar"
                     android:stepSize="1" />
 

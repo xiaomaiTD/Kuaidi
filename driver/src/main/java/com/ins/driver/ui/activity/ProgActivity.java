@@ -69,6 +69,9 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
             float money = eventOrder.getMoney();
             dialogPayStatus.setPrice(money + "");
             dialogPayStatus.show();
+        }else if("14".equals(aboutOrder)) {
+            //乘客取消了订单
+            netGetTrips(1);
         }
     }
 

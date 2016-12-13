@@ -51,6 +51,7 @@ import com.ins.middle.ui.activity.SettingActivity;
 import com.ins.middle.ui.activity.TripActivity;
 import com.ins.middle.ui.activity.WalletActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
+import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.ins.middle.utils.MapHelper;
@@ -95,6 +96,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
 
     private DialogLoading dialogLoading;
+    private DialogSure dialogSure;
 
     //前后司机集合
     private List<CarMap> cars = new ArrayList<>();
@@ -254,6 +256,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         EventBus.getDefault().unregister(this);
         if (updateHelper != null) updateHelper.onDestory();
         if (dialogLoading != null) dialogLoading.dismiss();
+        if (dialogSure != null) dialogSure.dismiss();
     }
 
     private void initBase() {
@@ -264,6 +267,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         updateHelper.check();
         netHelper = new NetHelper(this);
         dialogLoading = new DialogLoading(this, "正在处理");
+        dialogSure = new DialogSure(this,"您确定要上线？");
+        dialogSure.setOnOkListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSure.hide();
+                netHelper.netOnOff(!btn_go.isSelected(), city, MapHelper.LatLng2Str(nowLatLng));
+            }
+        });
     }
 
     private void initView() {
@@ -557,10 +568,20 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 }
                 break;
             case R.id.btn_go:
-                if (!StrUtils.isEmpty(city)) {
-                    netHelper.netOnOff(!btn_go.isSelected(), city, MapHelper.LatLng2Str(nowLatLng));
-                } else {
-                    Toast.makeText(this, "定位中，稍后再试", Toast.LENGTH_SHORT).show();
+                if (AppData.App.getUser()!=null) {
+                    if (!StrUtils.isEmpty(city)) {
+                        if (btn_go.isSelected()) {
+                            dialogSure.setMsg("您确定要下线吗？");
+                        } else {
+                            dialogSure.setMsg("您确定要上线吗？");
+                        }
+                        dialogSure.show();
+                    } else {
+                        Toast.makeText(this, "定位中，稍后再试", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    intent.setClass(this,LoginActivity.class);
+                    startActivity(intent);
                 }
                 break;
             case R.id.btn_new:

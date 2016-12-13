@@ -60,6 +60,7 @@ public class IdentifyFourFragment extends BaseFragment implements View.OnClickLi
     private EditText edit_identify_cartype;
     private EditText edit_identify_carcolor;
     private EditText edit_identify_carowner;
+    private EditText edit_identify_travelcardnum;
 
     private static final int RESULT_CAMERA = 0xf104;
 
@@ -124,6 +125,7 @@ public class IdentifyFourFragment extends BaseFragment implements View.OnClickLi
         edit_identify_cartype = (EditText) getView().findViewById(R.id.edit_identify_cartype);
         edit_identify_carcolor = (EditText) getView().findViewById(R.id.edit_identify_carcolor);
         edit_identify_carowner = (EditText) getView().findViewById(R.id.edit_identify_carowner);
+        edit_identify_travelcardnum = (EditText) getView().findViewById(R.id.edit_identify_travelcardnum);
         btn_go = (TextView) getView().findViewById(R.id.btn_go);
 
         img_identify_travelcard.setOnClickListener(this);
@@ -154,8 +156,9 @@ public class IdentifyFourFragment extends BaseFragment implements View.OnClickLi
                 String cartype = edit_identify_cartype.getText().toString();
                 String carcolor = edit_identify_carcolor.getText().toString();
                 String carowner = edit_identify_carowner.getText().toString();
+                String travelcardnum = edit_identify_travelcardnum.getText().toString();
 
-                String msg = AppVali.vali_identify_drivertwo(path, carnum, cartype, carcolor, carowner);
+                String msg = AppVali.vali_identify_drivertwo(path, carnum, cartype, carcolor, carowner, travelcardnum);
                 if (!StrUtils.isEmpty(msg)) {
                     Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
                     btn_go.setEnabled(true);
@@ -230,6 +233,7 @@ public class IdentifyFourFragment extends BaseFragment implements View.OnClickLi
         String cartype = edit_identify_cartype.getText().toString();
         String carcolor = edit_identify_carcolor.getText().toString();
         String carowner = edit_identify_carowner.getText().toString();
+        String travelcardnum = edit_identify_travelcardnum.getText().toString();
 
         RequestParams params = new RequestParams(AppData.Url.identify);
         params.addHeader("token", AppData.App.getToken());
@@ -239,6 +243,7 @@ public class IdentifyFourFragment extends BaseFragment implements View.OnClickLi
         params.addBodyParameter("carBrand", cartype);
         params.addBodyParameter("carColor", carcolor);
         params.addBodyParameter("carOwner", carowner);
+        params.addBodyParameter("travelcardnum", travelcardnum);
         params.addBodyParameter("driveLicenseImg", urls.get(0));
         params.addBodyParameter("driveingLicenseImg", urls.get(1));
         params.addBodyParameter("idCardNum", identifyBus.idcardnum);

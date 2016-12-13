@@ -78,6 +78,8 @@ public class HomeHelper {
 
     //2001
     public static void setMatching(HomeActivity activity) {
+        setTextMatching(activity);
+
         activity.img_home_cancel.setVisibility(View.VISIBLE);
         activity.driverView.setVisibility(View.GONE);
         activity.lay_map_center.setVisibility(View.GONE);
@@ -85,13 +87,13 @@ public class HomeHelper {
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.btn_go.setEnabled(false);
         //activity.btn_go.setText("正在为您安排车辆...");
-
-        setTextMatching(activity);
     }
 
     //2002
     //司机发送支付定金状态
     public static void setMatched(HomeActivity activity) {
+        setTextMatched(activity);
+
         activity.img_home_cancel.setVisibility(View.GONE);
         activity.driverView.setVisibility(View.VISIBLE);
         activity.holdcarView.setVisibility(View.GONE);
@@ -99,34 +101,32 @@ public class HomeHelper {
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.btn_go.setEnabled(false);
         activity.btn_go.setText("支付定金");
-
-        setTextMatched(activity);
     }
 
     //2003
     //司机等待乘客支付定金状态
     public static void setPayFirst(HomeActivity activity) {
+        setTextMatched(activity);
+
         activity.driverView.setVisibility(View.VISIBLE);
         activity.lay_map_center.setVisibility(View.GONE);
         activity.holdcarView.setVisibility(View.GONE);
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.btn_go.setEnabled(true);
         activity.btn_go.setText("支付定金");
-
-        setTextMatched(activity);
     }
 
     //2004 乘客已支付预付款
     //2006 乘客已抵达
     public static void setPayLast(HomeActivity activity) {
+        setTextMatched(activity);
+
         activity.driverView.setVisibility(View.VISIBLE);
         activity.lay_map_center.setVisibility(View.GONE);
         activity.holdcarView.setVisibility(View.GONE);
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.btn_go.setEnabled(true);
         activity.btn_go.setText("支付尾款");
-
-        setTextMatched(activity);
     }
 
     public static void setPayLastFalse(HomeActivity activity) {
@@ -150,6 +150,8 @@ public class HomeHelper {
     //2007
     //初始状态
     public static void setInit(HomeActivity activity) {
+        setTextMatched(activity);
+
         activity.driverView.setVisibility(View.GONE);
         activity.holdcarView.setVisibility(View.GONE);
         activity.lay_map_center.setVisibility(View.VISIBLE);
@@ -159,7 +161,7 @@ public class HomeHelper {
 
         activity.holdcarView.clear();
 
-        setTextMatched(activity);
+
     }
 
     public static void setFresh(HomeActivity activity) {
@@ -167,6 +169,8 @@ public class HomeHelper {
     }
 
     public static void setFresh(HomeActivity activity, int afterId) {
+        setTextMatched(activity);
+
         activity.setUserData();
         activity.baiduMap.clear();
         activity.areasLay = MapHelper.drawAreas(activity.mapView, activity.ptsArray);
@@ -174,7 +178,5 @@ public class HomeHelper {
         activity.netHelper.netGetTrip(afterId);
         activity.locationer.isFirstLoc = true;
         activity.carMap.removeFromMap();
-
-        setTextMatched(activity);
     }
 }

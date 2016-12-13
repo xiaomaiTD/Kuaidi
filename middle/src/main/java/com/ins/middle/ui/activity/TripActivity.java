@@ -177,19 +177,14 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
     }
 
     public void setBtnRight() {
-        if (PackageUtil.isClient()) {
-            btn_right.setVisibility(View.VISIBLE);
-            if (!adapter.isTocheck()) {
-                btn_right.setText("编辑");
-            } else {
-                if (StrUtils.isEmpty(adapter.getSelectIds())) {
-                    btn_right.setText("取消");
-                } else {
-                    btn_right.setText("删除");
-                }
-            }
+        if (!adapter.isTocheck()) {
+            btn_right.setText("编辑");
         } else {
-            btn_right.setVisibility(View.GONE);
+            if (StrUtils.isEmpty(adapter.getSelectIds())) {
+                btn_right.setText("取消");
+            } else {
+                btn_right.setText("删除");
+            }
         }
     }
 

@@ -127,28 +127,36 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
             PayData first = gson.fromJson(payDetail, PayData.class);
             PayData last = gson.fromJson(bossesPayDetail, PayData.class);
 
-            driverView.setDriver(trip.getDriver(),trip);
+            driverView.setDriver(trip.getDriver(), trip);
             if (first != null && last != null) {
                 text_tripdetail_money.setText(first.getActualPay() + last.getActualPay() + "");
             }
         }
-        lay_tripdetail_eva.setVisibility(View.GONE);
+
+//        lay_tripdetail_eva.setVisibility(View.GONE);
         setEvaData(null);
     }
 
     private void setEvaData(Eva eva) {
-        if (eva != null) {
-            rating_tripdetail.setIsIndicator(true);
-            rating_tripdetail.setRating(((float) eva.getScoreCount()));
-            text_tripdetail_describe.setText(!StrUtils.isEmpty(eva.getContent()) ? eva.getContent() : "您的评价，让我们做得更好");
-            text_tripdetail_describe.setTextColor(ContextCompat.getColor(this, R.color.com_text_blank));
-            text_tripdetail_describe.setClickable(false);
-        } else {
-            rating_tripdetail.setIsIndicator(false);
-            rating_tripdetail.setRating(0);
-            text_tripdetail_describe.setText("您还未做出评价");
-            text_tripdetail_describe.setTextColor(ContextCompat.getColor(this, R.color.kd_yellow));
-            text_tripdetail_describe.setClickable(true);
+        if (trip.getStatus() == Trip.STA_2007) {
+            lay_tripdetail_eva.setVisibility(View.GONE);
+            text_tripdetail_describe.setVisibility(View.GONE);
+        }else {
+            if (eva != null) {
+                rating_tripdetail.setIsIndicator(true);
+                rating_tripdetail.setRating(((float) eva.getScoreCount()));
+                text_tripdetail_describe.setText(!StrUtils.isEmpty(eva.getContent()) ? eva.getContent() : "您的评价，让我们做得更好");
+                text_tripdetail_describe.setTextColor(ContextCompat.getColor(this, R.color.com_text_blank));
+                text_tripdetail_describe.setClickable(false);
+                lay_tripdetail_eva.setVisibility(View.GONE);
+            } else {
+                rating_tripdetail.setIsIndicator(false);
+                rating_tripdetail.setRating(0);
+                text_tripdetail_describe.setText("您还未做出评价");
+                text_tripdetail_describe.setTextColor(ContextCompat.getColor(this, R.color.kd_yellow));
+                text_tripdetail_describe.setClickable(true);
+                lay_tripdetail_eva.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -169,7 +177,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
                 popupSingle.showPopupWindow(v);
                 break;
             case R.id.text_tripdetail_describe:
-                lay_tripdetail_eva.setVisibility(View.VISIBLE);
+                //lay_tripdetail_eva.setVisibility(View.VISIBLE);
                 break;
             case R.id.text_tripdetail_totaydetail:
                 Intent intent = new Intent(this, PayDetailActivity.class);

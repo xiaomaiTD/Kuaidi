@@ -71,7 +71,7 @@ public class RecycleAdapterTrip extends RecyclerView.Adapter<RecycleAdapterTrip.
                 ((TripActivity) context).setBtnRight();
             }
         });
-        holder.text_trip_time.setText(TimeUtil.getTimeFor("MM月dd日 HH:mm", new Date(trip.getCreateTime())));
+        holder.text_trip_time.setText(TimeUtil.getTimeFor("MM月dd日 HH:mm", new Date(trip.getCreateTime()*1000)));
         holder.text_trip_start.setText(trip.getFromAdd());
         holder.text_trip_end.setText(trip.getToAdd());
         holder.text_trip_cartype.setText(trip.getOrderType() == 0 ? "包车" : "拼车");

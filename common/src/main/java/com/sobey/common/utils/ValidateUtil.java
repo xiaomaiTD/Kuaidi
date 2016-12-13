@@ -113,6 +113,9 @@ public class ValidateUtil {
 
 	/** 验证一个月的31天 */
 	private static final String V_31DAYS = "^((0?[1-9])|((1|2)[0-9])|30|31)$";
+
+	/** 验证密码，必须有数字和字母组成 6-32位*/
+	private static final String V_PASSWORD = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,32}$";
 	
 	private ValidateUtil() {
 	}

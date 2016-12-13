@@ -70,8 +70,8 @@
 	<QQ
 		Id="3"
 		SortId="7"
-		AppId="1105601028"
-		AppKey="BlrSqfrsDvD2HKkv"
+		AppId="1105873522"
+		AppKey="hzr2lVsByLOwvQpR"
 		ShareByAppClient="true"
 		Enable="true" />
 
@@ -79,8 +79,8 @@
 	<QZone
 		Id="4"
 		SortId="3"
-		AppId="100371282"
-		AppKey="aed9b0303e3ed1e27bae87c33761161d"
+		AppId="1105873522"
+		AppKey="hzr2lVsByLOwvQpR"
 		Enable="true" />
     
     <!-- 
@@ -98,16 +98,16 @@
 	<Wechat
 		Id="1"
 		SortId="4"
-		AppId="wx5ef3f3faddf16022"
-		AppSecret="66146ac867af8d624389e40984cef37a"
+		AppId="wxa3fb670d7394832e"
+		AppSecret="45df3c49cb3257623921617b29dc250a"
 		BypassApproval="false"
 		Enable="true" />
 
 	<WechatMoments
 		Id="2"
 		SortId="5"
-		AppId="wx5ef3f3faddf16022"
-		AppSecret="66146ac867af8d624389e40984cef37a"
+		AppId="wxa3fb670d7394832e"
+		AppSecret="45df3c49cb3257623921617b29dc250a"
 		BypassApproval="false"
 		Enable="true" />
         

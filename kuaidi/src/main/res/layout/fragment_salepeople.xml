@@ -17,6 +17,7 @@
         android:paddingRight="20dp">
 
         <TextView
+            android:id="@+id/text_salepeople_level"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

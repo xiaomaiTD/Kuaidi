@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ins.middle.ui.fragment.BaseFragment;
+import com.sobey.common.utils.NumUtil;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,10 +61,12 @@ public class SalePeopleFragment extends BaseFragment implements OnRecycleItemCli
     private List<User> results = new ArrayList<>();
     private RecycleAdapterSale adapter;
 
+    private TextView text_salepeople_level;
     private TextView text_salepeople_money;
 
     private SaleActivity activity;
 
+    //分销等级1,2,3
     private int type;
 
     public static Fragment newInstance(int position) {
@@ -80,6 +83,7 @@ public class SalePeopleFragment extends BaseFragment implements OnRecycleItemCli
             String value = AppConstant.getStr(flagSpc);
             String[] split = value.split("\\|");
             type = Integer.parseInt(split[0]);
+            text_salepeople_level.setText(NumUtil.intToZH(type) + "级分销");
             text_salepeople_money.setText("累计获得，" + split[1]);
             netGetSalePeople(0);
         }
@@ -122,6 +126,7 @@ public class SalePeopleFragment extends BaseFragment implements OnRecycleItemCli
         showingroup = (ViewGroup) getView().findViewById(R.id.showingroup);
         recyclerView = (RecyclerView) getView().findViewById(R.id.recycle);
         springView = (SpringView) getView().findViewById(R.id.spring);
+        text_salepeople_level = (TextView) getView().findViewById(R.id.text_salepeople_level);
         text_salepeople_money = (TextView) getView().findViewById(R.id.text_salepeople_money);
     }
 
@@ -179,7 +184,7 @@ public class SalePeopleFragment extends BaseFragment implements OnRecycleItemCli
         if (cancelable != null) cancelable.cancel();
         final RequestParams params = new RequestParams(AppData.Url.salepeople);
         params.addHeader("token", AppData.App.getToken());
-        params.addBodyParameter("level", this.type + "");//1:所有行程
+        params.addBodyParameter("level", this.type + "");
         params.addBodyParameter("pageNO", type == 0 || type == 1 ? "1" : page + 1 + "");
         params.addBodyParameter("pageSize", PAGE_COUNT + "");
         cancelable = CommonNet.samplepost(params, SalePeoplePojo.class, new CommonNet.SampleNetHander() {

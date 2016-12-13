@@ -36,7 +36,7 @@ public class AppVali {
             return "密码长度必须为6-16位";
         } else if (!length(psw, 6, 16)) {
             return "密码长度必须为6-16位";
-        } else {
+        }else {
             return null;
         }
     }
@@ -81,7 +81,7 @@ public class AppVali {
         }
     }
 
-    public static String vali_identify_drivertwo(String path, String carnum, String cartype, String carcolor, String carowner) {
+    public static String vali_identify_drivertwo(String path, String carnum, String cartype, String carcolor, String carowner,String travelcardnum) {
         if (isEmpty(carnum)) {
             return "请输入车牌号";
         } else if (isEmpty(cartype)) {
@@ -90,6 +90,8 @@ public class AppVali {
             return "请输入车辆颜色";
         } else if (isEmpty(carowner)) {
             return "请输入车辆所有人";
+        } else if (isEmpty(travelcardnum)) {
+            return "请输入行驶证号";
         } else if (isEmpty(path)) {
             return "拍摄行驶证正面照";
         } else {
@@ -190,6 +192,8 @@ public class AppVali {
     public static String modifypswuser(String vali, String valicode, String psw, String repetpsw) {
         if (isEmpty(psw)) {
             return "请输入新密码";
+        } else if (!length(psw, 6, 16)) {
+            return "密码长度必须为6-16位";
         } else if (isEmpty(repetpsw)) {
             return "请再次输入新密码";
         } else if (!psw.equals(repetpsw)) {
