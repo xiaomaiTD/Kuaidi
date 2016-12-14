@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.entity.LineConfig;
 import com.ins.middle.entity.Seat;
+import com.sobey.common.utils.NumUtil;
 import com.sobey.common.utils.SpannableStringUtils;
 
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class RecycleAdapterSeat extends RecyclerView.Adapter<RecycleAdapterSeat.
         if (text_price != null) {
             if (lineConfig != null) {
                 float price = seat.getCount() * lineConfig.getPayMoney() * lineConfig.getDiscount() / 10;
-                text_price.setText(price + "元起");
+                text_price.setText(NumUtil.num2half(price) + "元起");
             } else {
                 text_price.setText("价格获取中");
             }

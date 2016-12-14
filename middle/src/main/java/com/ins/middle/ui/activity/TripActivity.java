@@ -153,8 +153,8 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
         Trip trip = adapter.getResults().get(viewHolder.getLayoutPosition());
         //客户端点击进行中的行程会回到主页
         if (PackageUtil.isClient()) {
-            //不能取消的订单（未支付或者已取消）的订单进入详情页，否则退回主页
-            if (AppHelper.isFinishOrder(trip)) {
+            //已经结束或已支付的订单进入详情页（对乘客来说已支付的订单就算结束了ispay=1），否则退回主页
+            if (AppHelper.isFinishOrder(trip) || trip.getIsPay() == 1) {
                 Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
                 intent.putExtra("orderId", trip.getId());
                 intent.putExtra("trip", trip);
@@ -238,6 +238,9 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
                             springView.onFinishFreshAndLoad();
                         }
                     } else {
+                        //刷新后设置为非勾选状态
+                        adapter.setTocheck(false);
+                        setBtnRight();
                         if (type == 0 || type == 1) {
                             showin = LoadingViewUtil.showin(showingroup, R.layout.layout_lack, showin, new View.OnClickListener() {
                                 @Override

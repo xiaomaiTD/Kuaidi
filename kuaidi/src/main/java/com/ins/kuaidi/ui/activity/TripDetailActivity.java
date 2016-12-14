@@ -26,6 +26,7 @@ import com.ins.middle.utils.PackageUtil;
 import com.ins.middle.view.DriverView;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.utils.GlideUtil;
+import com.sobey.common.utils.NumUtil;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.singlepopview.MySinglePopupWindow;
 
@@ -129,7 +130,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
 
             driverView.setDriver(trip.getDriver(), trip);
             if (first != null && last != null) {
-                text_tripdetail_money.setText(first.getActualPay() + last.getActualPay() + "");
+                text_tripdetail_money.setText(NumUtil.num2half(first.getActualPay() + last.getActualPay()) + "");
             }
         }
 

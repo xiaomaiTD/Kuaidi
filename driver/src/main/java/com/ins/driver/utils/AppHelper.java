@@ -49,51 +49,51 @@ import java.util.List;
  */
 public class AppHelper {
 
-    public static void addPassengerMark(MapView mapView, final Trip trip, final LatLng latlng) {
-        if (trip == null || trip.getPassenger() == null || mapView == null || latlng == null) {
-            return;
-        }
-        //已经有添加了标注，不再添加
-        if (trip.getMark() != null) {
-            return;
-        }
-        final int width = DensityUtil.dp2px(mapView.getContext(), 35);
-        final User passenger = trip.getPassenger();
-        final Context context = mapView.getContext();
-        final BaiduMap baiduMap = mapView.getMap();
-        //加载布局
-        final View root = LayoutInflater.from(context).inflate(R.layout.layout_map_passenger, null, false);
-        final ImageView imgview = (ImageView) root.findViewById(R.id.img_map_passenger);
-        //开始下载网络头像
-        Glide.with(context).load(com.ins.middle.utils.AppHelper.getRealImgPath(passenger.getAvatar())).asBitmap().into(new SimpleTarget<Bitmap>() {
-            @Override
-            public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> arg1) {
-                //下载成功，生成marker
-                imgview.setImageBitmap(BitmapUtil.zoomImage(BitmapUtil.makeRoundCorner(bitmap), width, width));
-                //在地图上添加marker
-                addMark(baiduMap, root, latlng, trip);
-            }
-
-            @Override
-            public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                //下载失败，设置默认头像
-                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_header);
-                imgview.setImageBitmap(BitmapUtil.zoomImage(BitmapUtil.makeRoundCorner(bitmap), width, width));
-                //在地图上添加marker
-                addMark(baiduMap, root, latlng, trip);
-            }
-        });
-    }
-
-    private static Overlay addMark(BaiduMap baiduMap, View view, LatLng latLng, Trip trip) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("trip", trip);
-        BitmapDescriptor startbitsp = BitmapDescriptorFactory.fromView(view);
-        OverlayOptions startpop = new MarkerOptions().position(latLng).icon(startbitsp).zIndex(101).extraInfo(bundle);
-        Overlay overlay = baiduMap.addOverlay(startpop);
-        trip.setMark(overlay);
-        return overlay;
-    }
+//    public static void addPassengerMark(MapView mapView, final Trip trip, final LatLng latlng) {
+//        if (trip == null || trip.getPassenger() == null || mapView == null || latlng == null) {
+//            return;
+//        }
+//        //已经有添加了标注，不再添加
+//        if (trip.getMark() != null) {
+//            return;
+//        }
+//        final int width = DensityUtil.dp2px(mapView.getContext(), 35);
+//        final User passenger = trip.getPassenger();
+//        final Context context = mapView.getContext();
+//        final BaiduMap baiduMap = mapView.getMap();
+//        //加载布局
+//        final View root = LayoutInflater.from(context).inflate(R.layout.layout_map_passenger, null, false);
+//        final ImageView imgview = (ImageView) root.findViewById(R.id.img_map_passenger);
+//        //开始下载网络头像
+//        Glide.with(context).load(com.ins.middle.utils.AppHelper.getRealImgPath(passenger.getAvatar())).asBitmap().into(new SimpleTarget<Bitmap>() {
+//            @Override
+//            public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> arg1) {
+//                //下载成功，生成marker
+//                imgview.setImageBitmap(BitmapUtil.zoomImage(BitmapUtil.makeRoundCorner(bitmap), width, width));
+//                //在地图上添加marker
+//                addMark(baiduMap, root, latlng, trip);
+//            }
+//
+//            @Override
+//            public void onLoadFailed(Exception e, Drawable errorDrawable) {
+//                //下载失败，设置默认头像
+//                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.default_header);
+//                imgview.setImageBitmap(BitmapUtil.zoomImage(BitmapUtil.makeRoundCorner(bitmap), width, width));
+//                //在地图上添加marker
+//                addMark(baiduMap, root, latlng, trip);
+//            }
+//        });
+//    }
+//
+//    private static Overlay addMark(BaiduMap baiduMap, View view, LatLng latLng, Trip trip) {
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("trip", trip);
+//        BitmapDescriptor startbitsp = BitmapDescriptorFactory.fromView(view);
+//        OverlayOptions startpop = new MarkerOptions().position(latLng).icon(startbitsp).zIndex(101).extraInfo(bundle);
+//        Overlay overlay = baiduMap.addOverlay(startpop);
+//        trip.setMark(overlay);
+//        return overlay;
+//    }
 
     //从车辆列表中查询已知id的车辆实体
     public static CarMap findCarByDriver(List<CarMap> cars, int driverId) {

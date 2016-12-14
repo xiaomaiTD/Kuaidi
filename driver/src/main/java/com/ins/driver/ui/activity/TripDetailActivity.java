@@ -24,6 +24,7 @@ import com.ins.middle.ui.activity.BaseBackActivity;
 import com.ins.middle.ui.activity.PayDetailActivity;
 import com.ins.middle.view.DriverView;
 import com.sobey.common.common.LoadingViewUtil;
+import com.sobey.common.utils.NumUtil;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.singlepopview.MySinglePopupWindow;
 
@@ -88,7 +89,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
             PayDataDriver payDataDriver = gson.fromJson(driverDetail, PayDataDriver.class);
 
             if (payDataDriver != null) {
-                text_tripdetail_money.setText(payDataDriver.getActualCheques() + "");
+                text_tripdetail_money.setText(NumUtil.num2half(payDataDriver.getActualCheques()) + "");
             }
         }
         setEvaData(null);

@@ -24,6 +24,7 @@ import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.PswView;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -120,5 +121,21 @@ public class AppHelper {
             }
         }
         return trips.get(0);
+    }
+
+    //移除已经支付的行程
+    public static List<Trip> removeHasPayTrip(List<Trip> trips) {
+        if (StrUtils.isEmpty(trips)) {
+            return trips;
+        }
+        Iterator<Trip> iter = trips.iterator();
+        while (iter.hasNext()) {
+            Trip trip = iter.next();
+            //订单状态为上车以后（>=2005），则移除该行程
+            if (trip.getIsPay() == 1) {
+                iter.remove();
+            }
+        }
+        return trips;
     }
 }

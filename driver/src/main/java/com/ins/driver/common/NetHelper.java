@@ -69,26 +69,6 @@ public class NetHelper {
         });
     }
 
-    public void netUpdateLat(LatLng latLng) {
-        String lat = latLng.latitude + "," + latLng.longitude;
-        RequestParams params = new RequestParams(AppData.Url.updateLat);
-        params.addHeader("token", AppData.App.getToken());
-        params.addBodyParameter("lat", lat);
-        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
-            @Override
-            public void netGo(final int code, Object pojo, String text, Object obj) {
-            }
-
-            @Override
-            public void netSetError(int code, String text) {
-            }
-
-            @Override
-            public void netStart(int code) {
-            }
-        });
-    }
-
     public void netGetTrip() {
         RequestParams params = new RequestParams(AppData.Url.getOrders);
         params.addHeader("token", AppData.App.getToken());
@@ -127,7 +107,35 @@ public class NetHelper {
         });
     }
 
+    public void netUpdateLat(LatLng latLng) {
+        //如果没有登录（被挤下线），则不请求
+        if (AppData.App.getUser() == null) {
+            return;
+        }
+        String lat = latLng.latitude + "," + latLng.longitude;
+        RequestParams params = new RequestParams(AppData.Url.updateLat);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("lat", lat);
+        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                //未登录
+                if (code == 1005) {
+                    AppData.App.removeUser();
+                }
+            }
+        });
+    }
+
     public void netDriverLat() {
+        //不在线则不请求
+        if (!activity.isOnline){
+            return;
+        }
         //如果没有登录（被挤下线），则不请求
         if (AppData.App.getUser() == null) {
             return;

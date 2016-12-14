@@ -7,11 +7,15 @@ import android.util.Log;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 import com.ins.middle.R;
+import com.ins.middle.utils.MapHelper;
 import com.ins.middle.utils.MapUtil;
+import com.ins.middle.utils.MarkHelper;
 
 /**
  * Created by Administrator on 2016/10/24.
@@ -23,13 +27,37 @@ public class CarMap {
     private LatLng end;
 
     private Marker mMoveMarker;
+    private Marker mBubbleMarker;
     private ValueAnimator animator;
     private int lastvalue;
+    //是否显示气泡（车主端又改成了这样的需求，尼玛币）
+    private boolean needBubble = false;
 
-    private void addToMap(BaiduMap baiduMap, LatLng latLng) {
+    public CarMap() {
+    }
+
+    public CarMap(boolean needBubble) {
+        this.needBubble = needBubble;
+    }
+
+    private void addToMap(MapView mapView, LatLng latLng) {
         MarkerOptions markerOptions = new MarkerOptions().flat(true).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_map_car)).position(latLng);
-        mMoveMarker = (Marker) baiduMap.addOverlay(markerOptions);
+        mMoveMarker = (Marker) mapView.getMap().addOverlay(markerOptions);
         start = latLng;
+
+        if (needBubble) {
+//            MarkerOptions bubbleMarkerOptions = new MarkerOptions().flat(true).anchor(0.5f, 1.0f).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_map_bubble_car)).position(latLng);
+//            mBubbleMarker = (Marker) baiduMap.addOverlay(bubbleMarkerOptions);
+            MarkHelper.addDriverMark(mapView, driver, latLng, new MarkHelper.CallBack() {
+                @Override
+                public void onGetMark(Overlay overlay) {
+                    mBubbleMarker = (Marker) overlay;
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("driver", driver);
+                    mBubbleMarker.setExtraInfo(bundle);
+                }
+            });
+        }
     }
 
     private void moveTo(final LatLng latLng) {
@@ -57,6 +85,7 @@ public class CarMap {
                 double lonper = londis / 30 * value;
                 end = new LatLng(start.latitude + latper, start.longitude + lonper);
                 if (mMoveMarker != null) mMoveMarker.setPosition(end);
+                if (needBubble && mBubbleMarker != null) mBubbleMarker.setPosition(end);
             }
         });
         animator.addListener(new Animator.AnimatorListener() {
@@ -80,12 +109,12 @@ public class CarMap {
         animator.start();
     }
 
-    public void addMove(BaiduMap baiduMap, LatLng latLng) {
-        if (baiduMap == null || latLng == null) {
+    public void addMove(MapView mapView, LatLng latLng) {
+        if (mapView == null || latLng == null) {
             return;
         }
         if (mMoveMarker == null) {
-            addToMap(baiduMap, latLng);
+            addToMap(mapView, latLng);
         } else {
             moveTo(latLng);
         }
@@ -95,9 +124,9 @@ public class CarMap {
 
     public void setDriver(User driver) {
         this.driver = driver;
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("driver", driver);
-        mMoveMarker.setExtraInfo(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable("driver", driver);
+//        mMoveMarker.setExtraInfo(bundle);
     }
 
     public User getDriver() {
@@ -108,6 +137,10 @@ public class CarMap {
         if (mMoveMarker != null) {
             mMoveMarker.remove();
             mMoveMarker = null;
+        }
+        if (mBubbleMarker != null) {
+            mBubbleMarker.remove();
+            mBubbleMarker = null;
         }
     }
 }

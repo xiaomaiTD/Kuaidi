@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lay_map_bubble"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/img_map_driver"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="1dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/header_server" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/icon_map_bubble_car"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="3dp" />
+
+</FrameLayout>

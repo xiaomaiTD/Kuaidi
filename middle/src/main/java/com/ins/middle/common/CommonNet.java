@@ -130,11 +130,14 @@ public class CommonNet {
                     case 1005:
                     case 1007:
                         hander.netSetError(status, msg);
-                        if (!ActivityUtil.isForeground(ApplicationHelp.getApplicationContext(), "com.ins.middle.ui.activity.LoginActivity")) {
-                            Intent intent = new Intent(ApplicationHelp.getApplicationContext(), LoginActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            ApplicationHelp.getApplicationContext().startActivity(intent);
-                        }
+                        //如果用户数据为null（未登录）
+//                        if(AppData.App.getUser()==null) {
+                            if (!ActivityUtil.isForeground(ApplicationHelp.getApplicationContext(), "com.ins.middle.ui.activity.LoginActivity")) {
+                                Intent intent = new Intent(ApplicationHelp.getApplicationContext(), LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                ApplicationHelp.getApplicationContext().startActivity(intent);
+                            }
+//                        }
                         break;
                     default:
                         hander.netSetFalse(status, msg);

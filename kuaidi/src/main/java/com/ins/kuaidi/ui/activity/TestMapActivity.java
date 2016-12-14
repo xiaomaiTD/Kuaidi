@@ -243,7 +243,7 @@ public class TestMapActivity extends BaseAppCompatActivity {
         clicktimes++;
         int count = cars.size();
         int index = clicktimes % count;
-        cars.get(index).addMove(baiduMap, latLng);
+        cars.get(index).addMove(mapView, latLng);
 
     }
 }

@@ -33,6 +33,7 @@ import com.ins.driver.R;
 import com.ins.driver.common.HomeHelper;
 import com.ins.driver.common.NetHelper;
 import com.ins.driver.map.MyOnGetRoutePlanResultListener;
+import com.ins.middle.utils.MarkHelper;
 import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.Locationer;
@@ -58,6 +59,7 @@ import com.ins.middle.utils.MapHelper;
 import com.ins.middle.view.DriverView;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.PermissionsUtil;
+import com.sobey.common.utils.PhoneUtils;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -93,13 +95,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public View img_new;
     public CheckBox check_lu;
     private View btn_relocate;
+    private View btn_mapfresh;
 
 
     private DialogLoading dialogLoading;
     private DialogSure dialogSure;
 
     //前后司机集合
-    private List<CarMap> cars = new ArrayList<>();
+    public List<CarMap> cars = new ArrayList<>();
     //当前城市
     private String city;
     private String nowcity;
@@ -157,14 +160,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             user.setStatus(User.AUTHENTICATED);
             AppData.App.saveUser(user);
             setUserData();
-            Toast.makeText(this,"司机认证审核未通过，请到系统消息中查看详情",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "司机认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
         } else if ("16".equals(aboutsystem)) {
             //审核不通过
             User user = AppData.App.getUser();
             user.setStatus(User.UNAUTHORIZED);
             AppData.App.saveUser(user);
             setUserData();
-            Toast.makeText(this,"司机认证审核未通过，请到系统消息中查看详情",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "司机认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -267,7 +270,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         updateHelper.check();
         netHelper = new NetHelper(this);
         dialogLoading = new DialogLoading(this, "正在处理");
-        dialogSure = new DialogSure(this,"您确定要上线？");
+        dialogSure = new DialogSure(this, "您确定要上线？");
         dialogSure.setOnOkListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -291,6 +294,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         btn_new = (TextView) findViewById(R.id.btn_new);
         img_new = findViewById(R.id.img_home_order_new);
         btn_relocate = findViewById(R.id.btn_map_relocate);
+        btn_mapfresh = findViewById(R.id.btn_map_fresh);
         check_lu = (CheckBox) findViewById(R.id.check_map_lu);
 
         btn_fresh.setOnClickListener(this);
@@ -302,6 +306,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         btn_go.setOnClickListener(this);
         btn_new.setOnClickListener(this);
         btn_relocate.setOnClickListener(this);
+        btn_mapfresh.setOnClickListener(this);
     }
 
     private void initCtrl() {
@@ -433,7 +438,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 if (!StrUtils.isEmpty(trip.getFromLat()) && !StrUtils.isEmpty(trip.getToLat())) {
                     final LatLng formLat = MapHelper.str2LatLng(trip.getFromLat());
                     LatLng toLat = MapHelper.str2LatLng(trip.getToLat());
-                    com.ins.driver.utils.AppHelper.addPassengerMark(mapView, trip, formLat);
+                    MarkHelper.addPassengerMark(mapView, trip, formLat);
                 }
             }
         }
@@ -451,11 +456,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         for (User driver : drivers) {
             CarMap carfind = com.ins.driver.utils.AppHelper.findCarByDriver(cars, driver.getId());
             if (carfind != null) {
-                carfind.addMove(baiduMap, MapHelper.str2LatLng(driver.getLatAndLongit()));
+                carfind.addMove(mapView, MapHelper.str2LatLng(driver.getLatAndLongit()));
             } else {
-                carfind = new CarMap();
-                carfind.addMove(baiduMap, MapHelper.str2LatLng(driver.getLatAndLongit()));
+                carfind = new CarMap(true);
                 carfind.setDriver(driver);  //setDriver必须在addMove之后，因为addMove前可能mark还未生成，故无法获取点击事件
+                carfind.addMove(mapView, MapHelper.str2LatLng(driver.getLatAndLongit()));
                 cars.add(carfind);
             }
         }
@@ -568,7 +573,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 }
                 break;
             case R.id.btn_go:
-                if (AppData.App.getUser()!=null) {
+                if (AppData.App.getUser() != null) {
                     if (!StrUtils.isEmpty(city)) {
                         if (btn_go.isSelected()) {
                             dialogSure.setMsg("您确定要下线吗？");
@@ -579,8 +584,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                     } else {
                         Toast.makeText(this, "定位中，稍后再试", Toast.LENGTH_SHORT).show();
                     }
-                }else {
-                    intent.setClass(this,LoginActivity.class);
+                } else {
+                    intent.setClass(this, LoginActivity.class);
                     startActivity(intent);
                 }
                 break;
@@ -599,6 +604,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             case R.id.btn_fresh:
                 HomeHelper.setFresh(this);
                 break;
+            case R.id.btn_map_fresh:
+                if (isOnline) netHelper.netDriverLat();
+                else Toast.makeText(this, "请先上线", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -607,7 +616,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         @Override
         public boolean onMarkerClick(Marker marker) {
             Bundle bundle = marker.getExtraInfo();
-
+            if (bundle == null) {
+                return true;
+            }
             //有trip，说明是用户标注
             if (bundle.containsKey("trip")) {
                 Trip trip = (Trip) bundle.getSerializable("trip");
@@ -617,12 +628,16 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 //点击头像重新规划路线
                 setPassengerRoute(nowLatLng, trip, false);
             } else if (bundle.containsKey("driver")) {
-                //driver，说明是司机标注
+                //这个功能又不要了，我艹你麻痹
+//                //driver，说明是司机标注
+//                User driver = (User) bundle.getSerializable("driver");
+//                MapHelper.zoomByPoint(baiduMap, marker.getPosition());
+//                driverView.setVisibility(View.VISIBLE);
+//                driverView.setDriver(driver, null);
                 User driver = (User) bundle.getSerializable("driver");
-                MapHelper.zoomByPoint(baiduMap, marker.getPosition());
-                driverView.setVisibility(View.VISIBLE);
-                //TODO 需要获取到订单的数据（id ,status）
-                driverView.setDriver(driver, null);
+                if (driver != null) {
+                    PhoneUtils.call(HomeActivity.this, driver.getMobile());
+                }
             }
             return true;
         }
@@ -635,12 +650,16 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         this.nowLatLng = latLng;
         //定位成功后保存定位城市
         this.nowcity = city;
-        //第一次定位成功后设置Title
-        if (isFirst) setCity(city);
+        if (isFirst) {
+            //第一次定位成功后设置城市
+            setCity(city);
+            //第一次定位成功后请求周围司机
+            netHelper.netDriverLat();
+        }
         //每次定位成功后检查司机是否在线，在线则不断上传自己位置
         if (isOnline) netHelper.netUpdateLat(latLng);
         //每次定位成功后检查司机是否在线，在线则不断获取前后司机的位置
-        if (isOnline) netHelper.netDriverLat();
+        //if (isOnline) netHelper.netDriverLat();//现在不是每次定位请求了，改成手动刷新
         //每次定位成功后检查查询路线标准位，如果允许则进行路线查询
         if (needSearchRout) setPassengerRoute(latLng, trips, true);
     }

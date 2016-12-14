@@ -7,6 +7,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.ins.driver.ui.activity.HomeActivity;
 import com.ins.middle.common.AppData;
+import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.sobey.common.utils.StrUtils;
@@ -83,14 +84,14 @@ public class HomeHelper {
 
     public static void setOnline(HomeActivity activity) {
         //当前用户在线
-        activity.btn_go.setText("下线");
+        activity.btn_go.setText("点击下线");
         activity.btn_go.setSelected(true);
         activity.isOnline = true;
     }
 
     public static void setOffline(HomeActivity activity) {
         //当前用户不在线
-        activity.btn_go.setText("上线");
+        activity.btn_go.setText("点击上线");
         activity.btn_go.setSelected(false);
         activity.isOnline = false;
     }
@@ -104,6 +105,10 @@ public class HomeHelper {
     }
 
     public static void setFresh(HomeActivity activity) {
+        //移除所有司机标注
+        for (CarMap carMap:activity.cars){
+            carMap.removeFromMap();
+        }
         activity.baiduMap.clear();
         activity.netHelper.netGetTrip();
         activity.locationer.isFirstLoc = true;

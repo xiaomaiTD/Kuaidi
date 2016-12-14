@@ -135,8 +135,8 @@ public class LoginPhoneFragment extends BaseFragment implements View.OnClickList
 //                            EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_DIALOGLOGON_PHONE, phone_type));
 //                            activity.goPosition(2);
                             String phone_type = phone + "|" + com.getValicode() + "|" + "2";
-                            EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_DIALOGLOGON_PHONE, phone_type));
-                            activity.goPosition(1);
+                            EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_DIALOGLOGON_VALI, phone_type));
+                            activity.next();
                         }
                     }
                 });

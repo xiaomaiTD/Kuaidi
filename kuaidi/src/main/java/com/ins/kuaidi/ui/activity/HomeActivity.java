@@ -205,7 +205,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             netHelper.netGetTrip(eventOrder.getOrderId());
         } else if ("5".equals(aboutOrder)) {
             //已经到达目的地
-            HomeHelper.setFresh(this);
+            //因为乘客支付后可继续下单的改动，这里不需要再刷新了
+            //HomeHelper.setFresh(this);
         } else if ("6".equals(aboutOrder)) {
             //司机端 ： 匹配到有新的订单
         } else if ("7".equals(aboutOrder)) {
@@ -220,7 +221,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //司机出发
         } else if ("101".equals(aboutOrder)) {
             //乘客已经支付尾款(乘客端本地的推送)
-            netHelper.netGetTrip();
+            //netHelper.netGetTrip();
+            HomeHelper.setFresh(this);
         }
     }
 
@@ -455,14 +457,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         User driver = carMap.getDriver();
         if (driver != null && trip != null) {
             if (driver.getId() == trip.getDriver().getId()) {
-                carMap.addMove(baiduMap, latLng);
+                carMap.addMove(mapView, latLng);
             } else {
                 carMap.removeFromMap();
-                carMap.addMove(baiduMap, latLng);
+                carMap.addMove(mapView, latLng);
             }
             carMap.setDriver(trip.getDriver());
         } else {
-            carMap.addMove(baiduMap, latLng);
+            carMap.addMove(mapView, latLng);
             if (trip != null) carMap.setDriver(trip.getDriver());
         }
     }

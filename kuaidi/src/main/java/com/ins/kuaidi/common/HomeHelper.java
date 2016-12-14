@@ -39,7 +39,9 @@ public class HomeHelper {
             case 2005:
                 //2005 司机接到乘客
                 if (trip.getIsPay() == 1) {
-                    setHasPayLast(activity);
+                    //又改成乘客支付尾款后就可以再下单了
+                    setInit(activity);
+//                    setHasPayLast(activity);
                 } else {
                     setPayLast(activity);
                 }

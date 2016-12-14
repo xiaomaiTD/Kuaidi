@@ -13,6 +13,7 @@ import com.ins.middle.R;
 import com.ins.middle.entity.MoneyDetail;
 import com.ins.middle.entity.TestEntity;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
+import com.sobey.common.utils.NumUtil;
 import com.sobey.common.utils.TimeUtil;
 
 import java.util.Date;
@@ -52,10 +53,10 @@ public class RecycleAdapterMoney extends RecyclerView.Adapter<RecycleAdapterMone
         holder.text_moneydetail_time.setText(TimeUtil.getTimeFor("yyyy-MM-dd HH:mm", new Date(moneyDetail.getCreateDate())));
         if (moneyDetail.getType() == 0) {
             holder.text_moneydetail_money.setTextColor(ContextCompat.getColor(context, R.color.kd_yellow));
-            holder.text_moneydetail_money.setText("+" + moneyDetail.getMoney() + "元");
+            holder.text_moneydetail_money.setText("+" + NumUtil.num2half(moneyDetail.getMoney()) + "元");
         } else {
             holder.text_moneydetail_money.setTextColor(ContextCompat.getColor(context, R.color.kd_weixin_green));
-            holder.text_moneydetail_money.setText("-" + moneyDetail.getMoney() + "元");
+            holder.text_moneydetail_money.setText("-" + NumUtil.num2half(moneyDetail.getMoney()) + "元");
         }
     }
 

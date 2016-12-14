@@ -147,9 +147,9 @@ public class AppHelper {
             case 2005:
                 return "正在前往目的地";
             case 2006:
-                if (isPay==1) {
+                if (isPay == 1) {
                     return "已完成";
-                }else {
+                } else {
                     return "待付款";
                 }
             case 2007:
@@ -178,7 +178,7 @@ public class AppHelper {
         Collections.sort(trips);
         for (Trip trip : trips) {
             //寻找第一条已完成或已取消的订单，添加分割线标志
-            if (AppHelper.isFinishOrder(trip)){
+            if (AppHelper.isFinishOrder(trip)) {
                 trip.setLineFlag(true);
                 return;
             }
@@ -195,7 +195,7 @@ public class AppHelper {
     }
 
     /**
-     * true 已取消 和 已支付的订单
+     * true 已取消 和 已支付并且已送达（2006）的订单
      * false 其他
      */
     public static boolean isFinishOrder(Trip trip) {
@@ -208,6 +208,20 @@ public class AppHelper {
                 return true;
             }
         } else if (status == Trip.STA_2007) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * true 已取消 和 已支付的订单
+     * false 其他
+     */
+    public static boolean isFinishOrderClient(Trip trip) {
+        int status = trip.getStatus();
+        int isPay = trip.getIsPay();
+        if (status == Trip.STA_2007 || isPay == 1) {
             return true;
         } else {
             return false;
