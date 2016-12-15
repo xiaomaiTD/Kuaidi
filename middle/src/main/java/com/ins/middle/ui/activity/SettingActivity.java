@@ -13,7 +13,9 @@ import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
+import com.ins.middle.entity.User;
 import com.ins.middle.ui.dialog.DialogSure;
+import com.ins.middle.utils.PackageUtil;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.common.MyActivityCollector;
 
@@ -31,6 +33,8 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
     private View item_setting_logout;
 
     private DialogSure dialogSureLogout;
+
+    private boolean needOffline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +64,15 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
     }
 
     private void initBase() {
+        if (getIntent().hasExtra("needOffline")) {
+            needOffline = getIntent().getBooleanExtra("needOffline", false);
+        }
         handler = new Handler();
         dialogSureLogout = new DialogSure(this, "确认退出当前账号？");
         dialogSureLogout.setOnOkListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (needOffline) netOff();
                 netLogout();
             }
         });
@@ -122,7 +130,13 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
             startActivity(intent);
 
         } else if (i == R.id.item_setting_logout) {
-            dialogSureLogout.show();
+            if (needOffline) {
+                dialogSureLogout.setMsg("当前处于在线状态，确定要下线并退出账号吗？");
+                dialogSureLogout.show();
+            } else {
+                dialogSureLogout.setMsg("确认退出当前账号？");
+                dialogSureLogout.show();
+            }
         }
     }
 
@@ -192,5 +206,22 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
         } else {
             item_setting_logout.setVisibility(View.GONE);
         }
+    }
+
+
+    public void netOff() {
+        RequestParams params = new RequestParams(AppData.Url.onOffLine);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("flag", "0");
+        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(SettingActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

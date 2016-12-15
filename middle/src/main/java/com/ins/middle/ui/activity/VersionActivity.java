@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.middle.R;
@@ -21,6 +22,7 @@ public class VersionActivity extends BaseBackActivity {
 
     private TextView vname;
     private TextView vcheck;
+    private ImageView img_version_logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class VersionActivity extends BaseBackActivity {
     private void initView() {
         vname = (TextView) findViewById(R.id.version_vname);
         vcheck = (TextView) findViewById(R.id.version_check);
+        img_version_logo = (ImageView) findViewById(R.id.img_version_logo);
     }
 
     private void initData() {
@@ -96,6 +99,11 @@ public class VersionActivity extends BaseBackActivity {
                 });
             }
         });
+        if (PackageUtil.isClient()){
+            img_version_logo.setImageResource(R.drawable.logo_kuaidi);
+        }else {
+            img_version_logo.setImageResource(R.drawable.logo_driver);
+        }
     }
 
     @Override

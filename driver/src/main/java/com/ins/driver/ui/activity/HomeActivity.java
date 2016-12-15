@@ -56,6 +56,8 @@ import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.ins.middle.utils.MapHelper;
+import com.ins.middle.utils.PackageUtil;
+import com.ins.middle.utils.SnackUtil;
 import com.ins.middle.view.DriverView;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.PermissionsUtil;
@@ -82,6 +84,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private DrawerLayout drawer;
     private ImageView img_navi_header;
     private NavigationView navi;
+
+    private View showingroup;
 
     public DriverView driverView;
     private ImageView img_user;
@@ -191,12 +195,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else if ("8".equals(aboutOrder)) {
             //司机端 ： 定金支付成功
             netHelper.netGetTrip();
+            SnackUtil.showSnack(showingroup, "乘客已支付定金");
         } else if ("9".equals(aboutOrder)) {
             //司机出发
         } else if ("14".equals(aboutOrder)) {
             //乘客取消了订单
-            Toast.makeText(this, "乘客已取消订单", Toast.LENGTH_SHORT).show();
             HomeHelper.setFresh(this);
+            SnackUtil.showSnack(showingroup, "乘客取消了订单，系统正在重新为您寻找乘客");
         } else if ("102".equals(aboutOrder)) {
             //乘客已经全部下车，司机选择继续接单，回滚初始状态(本地推送)
             baiduMap.clear();
@@ -281,6 +286,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     private void initView() {
+        showingroup = findViewById(R.id.showingroup);
         driverView = (DriverView) findViewById(R.id.driverView);
         mapView = (MapView) findViewById(R.id.mapView);
         locationer = new Locationer(mapView);
@@ -429,6 +435,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             if (MyOnGetRoutePlanResultListener.overlay != null)
                 MyOnGetRoutePlanResultListener.overlay.removeFromMap();
         }
+        //每次获取行程都拉取前后司机位置
+        netHelper.netDriverLat();
     }
 
     public void setPassengerPosition(List<Trip> trips) {
@@ -532,6 +540,16 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 break;
             case R.id.nav_setting:
                 intent.setClass(this, SettingActivity.class);
+                //司机端需要额外的参数（下线时需要下线）
+                boolean needOffline = false;
+                if (trips!=null){
+                    //在行程中不能下线
+                    needOffline = false;
+                }else {
+                    //不在行程中，在线则需要下线
+                    needOffline = isOnline;
+                }
+                intent.putExtra("needOffline", needOffline);
                 startActivity(intent);
                 break;
         }
@@ -597,7 +615,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 break;
             case R.id.btn_map_relocate:
                 MapHelper.zoomByPoint(baiduMap, nowLatLng);
-                if (!city.equals(nowcity)) {
+                if (!StrUtils.isEmpty(city) && !city.equals(nowcity)) {
                     setCity(nowcity);
                 }
                 break;
@@ -605,8 +623,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 HomeHelper.setFresh(this);
                 break;
             case R.id.btn_map_fresh:
-                if (isOnline) netHelper.netDriverLat();
-                else Toast.makeText(this, "请先上线", Toast.LENGTH_SHORT).show();
+                netHelper.netDriverLat();
                 break;
         }
     }
@@ -654,7 +671,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //第一次定位成功后设置城市
             setCity(city);
             //第一次定位成功后请求周围司机
-            netHelper.netDriverLat();
+            //netHelper.netDriverLat();
         }
         //每次定位成功后检查司机是否在线，在线则不断上传自己位置
         if (isOnline) netHelper.netUpdateLat(latLng);

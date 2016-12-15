@@ -136,6 +136,10 @@ public class NetHelper {
         if (!activity.isOnline){
             return;
         }
+        //没有行程则不请求
+        if (activity.trips==null){
+            return;
+        }
         //如果没有登录（被挤下线），则不请求
         if (AppData.App.getUser() == null) {
             return;

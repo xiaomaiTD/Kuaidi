@@ -1,5 +1,7 @@
 package com.ins.middle.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -24,6 +26,7 @@ public class PayData implements Serializable {
 	/**需要用支付宝 微信 实际支付*/
 	private double actualPay;
 
+	@SerializedName("payMethod")
 	private int payMethed;
 
 	public int getPayMethed() {

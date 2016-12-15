@@ -114,18 +114,21 @@ public class NumUtil {
     /**
      * 四舍五入保留两位小数
      */
-    public static float num2half(float f, int m) {
+    public static String num2half(float f, int m) {
         BigDecimal b = new BigDecimal(f);
-        return b.setScale(m, BigDecimal.ROUND_HALF_UP).floatValue();
+        return NumberFormat(b.setScale(m, BigDecimal.ROUND_HALF_UP).floatValue(), 2);
     }
-    public static double num2half(double f, int m) {
+
+    public static String num2half(double f, int m) {
         BigDecimal b = new BigDecimal(f);
-        return b.setScale(m, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return NumberFormat(b.setScale(m, BigDecimal.ROUND_HALF_UP).doubleValue(), 2);
     }
-    public static float num2half(float f) {
-        return num2half(f,2);
+
+    public static String num2half(float f) {
+        return num2half(f, 2);
     }
-    public static double num2half(double f) {
-        return num2half(f,2);
+
+    public static String num2half(double f) {
+        return num2half(f, 2);
     }
 }

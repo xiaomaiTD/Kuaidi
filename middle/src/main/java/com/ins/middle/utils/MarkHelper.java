@@ -90,7 +90,7 @@ public class MarkHelper {
         //加载布局
         final View root = LayoutInflater.from(context).inflate(R.layout.layout_map_driver, null, false);
         final ImageView imgview = (ImageView) root.findViewById(R.id.img_map_driver);
-        Log.e("mark",com.ins.middle.utils.AppHelper.getRealImgPath(driver.getAvatar()));
+        Log.e("mark", driver.getAvatar() != null ? com.ins.middle.utils.AppHelper.getRealImgPath(driver.getAvatar()) : "null");
         //开始下载网络头像
         Glide.with(context).load(com.ins.middle.utils.AppHelper.getRealImgPath(driver.getAvatar())).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override

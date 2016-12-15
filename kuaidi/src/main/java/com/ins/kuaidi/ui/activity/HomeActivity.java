@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -40,6 +41,8 @@ import com.ins.middle.ui.activity.MsgClassActivity;
 import com.ins.middle.ui.activity.WalletActivity;
 import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.MapHelper;
+import com.ins.middle.utils.PackageUtil;
+import com.ins.middle.utils.SnackUtil;
 import com.ins.middle.view.DriverView;
 import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
@@ -78,6 +81,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public NetHelper netHelper;
     public Locationer locationer;
     private GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
+
+    private View showingroup;
 
     private DrawerLayout drawer;
     private ImageView img_navi_header;
@@ -200,18 +205,22 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         if ("3".equals(aboutOrder)) {
             //请求支付定金
             netHelper.netGetTrip(eventOrder.getOrderId());
+            SnackUtil.showSnack(showingroup, "司机已经接到您的订单，请及时支付定金");
         } else if ("4".equals(aboutOrder)) {
             //接到乘客
             netHelper.netGetTrip(eventOrder.getOrderId());
+            SnackUtil.showSnack(showingroup, "司机已经接到您，正在接送其他乘客");
         } else if ("5".equals(aboutOrder)) {
             //已经到达目的地
             //因为乘客支付后可继续下单的改动，这里不需要再刷新了
             //HomeHelper.setFresh(this);
+            SnackUtil.showSnack(showingroup, "司机已将您送达目的地，感谢您的使用");
         } else if ("6".equals(aboutOrder)) {
             //司机端 ： 匹配到有新的订单
         } else if ("7".equals(aboutOrder)) {
             //乘客端： 订单已经匹配 已经分配给司机
             netHelper.netGetTrip();
+            SnackUtil.showSnack(showingroup, "已为您匹配到司机，等待司机确认");
         } else if ("8".equals(aboutOrder)) {
             //定金支付成功(乘客端本地的推送)
             //2004 乘客已支付预付款
@@ -219,6 +228,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             trip.setStatus(Trip.STA_2004);
         } else if ("9".equals(aboutOrder)) {
             //司机出发
+            SnackUtil.showSnack(showingroup, "司机已出发，正在前往目的地");
         } else if ("101".equals(aboutOrder)) {
             //乘客已经支付尾款(乘客端本地的推送)
             //netHelper.netGetTrip();
@@ -317,6 +327,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     private void initView() {
+        showingroup = findViewById(R.id.showingroup);
         driverView = (DriverView) findViewById(R.id.driverView);
         holdcarView = (HoldcarView) findViewById(R.id.holdcar);
         mapView = (MapView) findViewById(R.id.mapView);
@@ -645,7 +656,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 break;
             case R.id.btn_map_relocate:
                 MapHelper.zoomByPoint(baiduMap, nowLatLng);
-                if (!city.equals(nowcity)) {
+                if (!StrUtils.isEmpty(city) && !city.equals(nowcity)) {
                     setCity(nowcity);
                 }
                 break;

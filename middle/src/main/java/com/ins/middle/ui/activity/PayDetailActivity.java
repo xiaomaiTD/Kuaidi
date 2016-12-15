@@ -134,7 +134,7 @@ public class PayDetailActivity extends BaseBackActivity implements View.OnClickL
                 //设置实际支付
                 text_paydetail_money.setText(NumUtil.num2half(first.getActualPay() + last.getActualPay()) + "");
                 //设置总金额
-                text_paydetail_total.setText(trip.getPayMoney() + "元");
+                text_paydetail_total.setText(NumUtil.num2half(Float.parseFloat(trip.getPayMoney())) + "元");
                 //预付款
                 text_paydetail_first.setText(NumUtil.num2half(first.getActualPay()) + "元");
                 setPayWay(text_paydetail_first, first.getPayMethed());
@@ -151,6 +151,9 @@ public class PayDetailActivity extends BaseBackActivity implements View.OnClickL
                 text_paydetail_money.setText(NumUtil.num2half(payDataDriver.getActualCheques()) + "");
                 text_paydetail_first.setText(NumUtil.num2half(payDataDriver.getDepositPay()) + "元");
                 text_paydetail_last.setText(NumUtil.num2half(payDataDriver.getBosses()) + "元");
+                //司机端不显示支付方式图标
+                setPayWay(text_paydetail_first, 0);
+                setPayWay(text_paydetail_last, 0);
             }
         }
     }
