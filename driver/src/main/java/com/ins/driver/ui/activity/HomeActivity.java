@@ -95,7 +95,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public BaiduMap baiduMap;
     public TextView btn_go;
     public View btn_fresh;
-    public TextView btn_new;
+    //    public TextView btn_new;
     public View img_new;
     public CheckBox check_lu;
     private View btn_relocate;
@@ -187,7 +187,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //已经到达目的地
         } else if ("6".equals(aboutOrder)) {
             //司机端 ： 匹配到有新的订单
-            HomeHelper.setNewMsg(this);
+            SnackUtil.showSnack(showingroup, "您有一条新的订单", onNewMsgclickListener);
             //获取行程信息
             netHelper.netGetTrip();
         } else if ("7".equals(aboutOrder)) {
@@ -198,6 +198,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             SnackUtil.showSnack(showingroup, "乘客已支付定金");
         } else if ("9".equals(aboutOrder)) {
             //司机出发
+        } else if ("13".equals(aboutOrder)) {
+            //司机端 ： 尾款支付成功
+            SnackUtil.showSnack(showingroup, "乘客已支付尾款");
         } else if ("14".equals(aboutOrder)) {
             //乘客取消了订单
             HomeHelper.setFresh(this);
@@ -297,7 +300,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         text_title = (TextView) findViewById(R.id.text_home_title);
         btn_go = (TextView) findViewById(R.id.btn_go);
         btn_fresh = findViewById(R.id.btn_fresh);
-        btn_new = (TextView) findViewById(R.id.btn_new);
         img_new = findViewById(R.id.img_home_order_new);
         btn_relocate = findViewById(R.id.btn_map_relocate);
         btn_mapfresh = findViewById(R.id.btn_map_fresh);
@@ -310,7 +312,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         text_username = (TextView) navi.getHeaderView(0).findViewById(R.id.text_navi_username);
         img_navi_header.setOnClickListener(this);
         btn_go.setOnClickListener(this);
-        btn_new.setOnClickListener(this);
         btn_relocate.setOnClickListener(this);
         btn_mapfresh.setOnClickListener(this);
     }
@@ -374,7 +375,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         //开始定位
         locationer.startlocation();
         //消息面板初始不可见
-        btn_new.setVisibility(View.GONE);
         img_new.setVisibility(View.GONE);
         //不需要
 //        //司机面板初始设置为未登录状态
@@ -495,7 +495,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     private void setCity(String city) {
         this.city = city;
-        text_title.setText(city);
+        text_title.setText(!StrUtils.isEmpty(city) ? city : "定位失败");
     }
 
     ////////////////////////////////////
@@ -542,10 +542,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 intent.setClass(this, SettingActivity.class);
                 //司机端需要额外的参数（下线时需要下线）
                 boolean needOffline = false;
-                if (trips!=null){
+                if (trips != null) {
                     //在行程中不能下线
                     needOffline = false;
-                }else {
+                } else {
                     //不在行程中，在线则需要下线
                     needOffline = isOnline;
                 }
@@ -584,7 +584,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             case R.id.text_home_title:
                 if (!StrUtils.isEmpty(city)) {
                     intent.setClass(this, CityActivity.class);
-                    intent.putExtra("city", city);
+                    intent.putExtra("city", nowcity);
                     startActivityForResult(intent, RESULT_CITY);
                 } else {
                     Toast.makeText(this, "正在定位中...", Toast.LENGTH_SHORT).show();
@@ -607,12 +607,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                     startActivity(intent);
                 }
                 break;
-            case R.id.btn_new:
-                btn_new.setVisibility(View.GONE);
-                img_new.setVisibility(View.GONE);
-                intent.setClass(HomeActivity.this, ProgActivity.class);
-                startActivity(intent);
-                break;
             case R.id.btn_map_relocate:
                 MapHelper.zoomByPoint(baiduMap, nowLatLng);
                 if (!StrUtils.isEmpty(city) && !city.equals(nowcity)) {
@@ -627,6 +621,16 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 break;
         }
     }
+
+    //新消息按钮回调
+    private View.OnClickListener onNewMsgclickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            img_new.setVisibility(View.GONE);
+            Intent intent = new Intent(HomeActivity.this, ProgActivity.class);
+            startActivity(intent);
+        }
+    };
 
     //地图标注（乘客头像）点击回调
     private BaiduMap.OnMarkerClickListener onMarkerClickListener = new BaiduMap.OnMarkerClickListener() {

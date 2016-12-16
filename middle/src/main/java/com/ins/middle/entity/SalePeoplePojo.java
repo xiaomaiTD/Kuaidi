@@ -9,7 +9,7 @@ import java.util.List;
 public class SalePeoplePojo implements Serializable {
 
     private List<User> dlist;
-    private int totalMoney;
+    private float totalMoney;
 
     public List<User> getDlist() {
         return dlist;
@@ -19,11 +19,11 @@ public class SalePeoplePojo implements Serializable {
         this.dlist = dlist;
     }
 
-    public int getTotalMoney() {
+    public float getTotalMoney() {
         return totalMoney;
     }
 
-    public void setTotalMoney(int totalMoney) {
+    public void setTotalMoney(float totalMoney) {
         this.totalMoney = totalMoney;
     }
 }

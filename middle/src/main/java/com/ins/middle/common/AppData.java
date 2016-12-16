@@ -131,7 +131,8 @@ public class AppData {
          * 服务器域名
          */
 //		public static String domain = "http://192.168.118.110:9528/Carpooling/";								//客服测试服务器
-		public static String domain = "http://101.201.222.160:8101/Carpooling/";								//外网测试服务器
+//		public static String domain = "http://101.201.222.160:8101/Carpooling/";								//外网测试服务器(一)
+		public static String domain = "http://139.129.111.76:8101/Carpooling/";								//外网测试服务器(二)
 //		public static String domain = "http://192.168.118.110:9528/Carpooling/";								//内部测试服务器
 //      public static String domain = "http://192.168.118.196:9527/Carpooling/";                                //开发服务器(谢启谋)
 //		public static String domain = "http://192.168.0.119:8080/Carpooling/";								//开发服务器(李作焕)
@@ -168,7 +169,8 @@ public class AppData {
         public static String addeva                   = domain + "mobile/comment/add";             							        //乘客评价（乘客）
         public static String iseva                    = domain + "mobile/comment/isComment";             							    //查看订单是否评论过（乘客）
         public static String complain                 = domain + "mobile/complain/add";             							        //乘客投诉（乘客）
-        public static String sign                     = domain + "mobile/aliPay/sign";             							        //请求支付签名（乘客）
+        public static String sign                     = domain + "mobile/aliPay/sign";             							        //请求支付宝支付签名（乘客）
+        public static String signWeixin               = domain + "mobile/wxPay/sign";             							            //请求微信支付签名（乘客）
         public static String clause                   = domain + "web/page/serviceAgreement.do";             						//服务协议
         public static String aboutUs                  = domain + "web/page/aboutUs.do";             							        //关于我们
         public static String shareUrl                 = domain + "web/page/share.do";             							            //分销链接

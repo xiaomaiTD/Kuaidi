@@ -15,6 +15,7 @@ import com.ins.middle.utils.MapHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.Trip;
+import com.ins.middle.utils.SnackUtil;
 import com.sobey.common.utils.StrUtils;
 
 import org.xutils.http.RequestParams;
@@ -35,6 +36,10 @@ public class NetHelper {
     }
 
     public void netGetArea(String city) {
+        //城市为空不请求
+        if (StrUtils.isEmpty(city)) {
+            return;
+        }
         RequestParams params = new RequestParams(AppData.Url.getArea);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("cityName", city);
@@ -96,7 +101,7 @@ public class NetHelper {
         });
     }
 
-    public void netOrderAdd(int day, String time, int count, String fromLat, String toLat, final String fromAdd, String toAdd, String fromCity, String toCity, String msg) {
+    public void netOrderAdd(final int day, String time, int count, String fromLat, String toLat, final String fromAdd, String toAdd, String fromCity, String toCity, String msg) {
         RequestParams params = new RequestParams(AppData.Url.orderadd);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("timeFlag", day + "");
@@ -119,6 +124,13 @@ public class NetHelper {
                     activity.dialogSure.setObject(ids.get(0));
                 }
                 HomeHelper.setMatching(activity);
+
+                if (day == 4) {
+                    //现在，及时打车
+                } else {
+                    //预约车辆
+                    SnackUtil.showSnack(activity.showingroup, "您已成功下单，正在预约司机");
+                }
             }
 
             @Override

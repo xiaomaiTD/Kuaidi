@@ -46,7 +46,6 @@ public class HomeHelper {
     }
 
     public static void setInit(HomeActivity activity) {
-        activity.btn_new.setVisibility(View.GONE);
         activity.img_new.setVisibility(View.GONE);
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.check_lu.setVisibility(View.GONE);
@@ -94,14 +93,6 @@ public class HomeHelper {
         activity.btn_go.setText("点击上线");
         activity.btn_go.setSelected(false);
         activity.isOnline = false;
-    }
-
-    public static void setNewMsg(HomeActivity activity) {
-        activity.btn_new.setVisibility(View.VISIBLE);
-        activity.img_new.setVisibility(View.VISIBLE);
-        YoYo.with(Techniques.Landing)
-                .duration(200)
-                .playOn(activity.btn_new);
     }
 
     public static void setFresh(HomeActivity activity) {

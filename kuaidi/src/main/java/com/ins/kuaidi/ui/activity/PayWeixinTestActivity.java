@@ -31,7 +31,6 @@ import paytest.ins.com.library_alipay.SignUtils;
 public class PayWeixinTestActivity extends Activity {
 
     public static String appid = "wxa3fb670d7394832e";
-    private String jsonret = "{\"timeStamp\":\"1480057221\",\"package\":\"Sign=WXPay\",\"sign\":\"A4738D493B7CCA3D6F0496950A1E0835\",\"partnerId\":\"1264744601\",\"prepayId\":\"wx20161125150332131a4308aa0553937731\",\"noncestr\":\"5931baafc8fe46f4b19fec618347e1f4\"}";
 
     private IWXAPI api;
 

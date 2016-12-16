@@ -53,7 +53,7 @@ public class User implements Serializable {
     //乘客特有字段
     //分享码
     private String distributionCode;
-    private int money;
+    private float money;
 
     public int getFristPayMethod() {
         return fristPayMethod;
@@ -63,11 +63,11 @@ public class User implements Serializable {
         this.fristPayMethod = fristPayMethod;
     }
 
-    public int getMoney() {
+    public float getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(float money) {
         this.money = money;
     }
 

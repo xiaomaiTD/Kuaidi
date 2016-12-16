@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,7 +20,6 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.geocode.GeoCodeOption;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
@@ -33,6 +31,7 @@ import com.ins.kuaidi.R;
 import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
 import com.ins.kuaidi.common.WaitingHelper;
+import com.ins.kuaidi.wxapi.WXPayEntryActivity;
 import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.EventIdentify;
 import com.ins.middle.entity.EventOrder;
@@ -41,7 +40,6 @@ import com.ins.middle.ui.activity.MsgClassActivity;
 import com.ins.middle.ui.activity.WalletActivity;
 import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.MapHelper;
-import com.ins.middle.utils.PackageUtil;
 import com.ins.middle.utils.SnackUtil;
 import com.ins.middle.view.DriverView;
 import com.ins.middle.common.AppConstant;
@@ -82,7 +80,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public Locationer locationer;
     private GeoCoder mSearch = null; // 搜索模块，也可去掉地图模块独立使用
 
-    private View showingroup;
+    public View showingroup;
 
     private DrawerLayout drawer;
     private ImageView img_navi_header;
@@ -187,14 +185,16 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             user.setStatus(User.AUTHENTICATED);
             AppData.App.saveUser(user);
             setUserData();
-            Toast.makeText(this, "实名认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
+            SnackUtil.showSnack(showingroup, "实名认证审核未通过，请到系统消息中查看详情");
+            //Toast.makeText(this, "实名认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
         } else if ("16".equals(aboutsystem)) {
             //审核不通过
             User user = AppData.App.getUser();
             user.setStatus(User.UNAUTHORIZED);
             AppData.App.saveUser(user);
             setUserData();
-            Toast.makeText(this, "实名认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
+            SnackUtil.showSnack(showingroup, "实名认证审核未通过，请到系统消息中查看详情");
+            //Toast.makeText(this, "实名认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -482,7 +482,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     public void setCity(String city) {
         this.city = city;
-        text_title.setText(city);
+        text_title.setText(!StrUtils.isEmpty(city) ? city : "定位失败");
         netHelper.netGetArea(city);
     }
 
@@ -643,12 +643,12 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                                 holdcarView.getMsg());
                     }
                 } else if ("支付定金".equals(btn_go.getText())) {
-                    intent.setClass(this, PayActivity.class);
+                    intent.setClass(this, WXPayEntryActivity.class);
                     intent.putExtra("type", 0);
                     intent.putExtra("trip", trip);
                     startActivity(intent);
                 } else if ("支付尾款".equals(btn_go.getText())) {
-                    intent.setClass(this, PayActivity.class);
+                    intent.setClass(this, WXPayEntryActivity.class);
                     intent.putExtra("type", 2);
                     intent.putExtra("trip", trip);
                     startActivity(intent);
@@ -737,12 +737,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //检索回调
     @Override
     public void onGetGeoCodeResult(GeoCodeResult result) {
-//        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-//            Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//        LatLng location = result.getLocation();
-//        MapHelper.zoomToPosition(mapView, location);
     }
 
     //反检索回调

@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class SaleLevel implements Serializable {
     private int level;
-    private int money;
+    private float money;
     private int peopleNum;
 
     public int getLevel() {
@@ -20,11 +20,11 @@ public class SaleLevel implements Serializable {
         this.level = level;
     }
 
-    public int getMoney() {
+    public float getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(float money) {
         this.money = money;
     }
 

@@ -18,6 +18,7 @@ import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.ui.fragment.BaseFragment;
 import com.sobey.common.common.LoadingViewUtil;
+import com.sobey.common.utils.NumUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.http.RequestParams;
@@ -128,12 +129,12 @@ public class SaleLevelFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void setLevelData(List<SaleLevel> levels) {
-        text_saleleve_moneyone.setText(levels.get(0).getMoney()+"元");
-        text_saleleve_moneytwo.setText(levels.get(1).getMoney()+"元");
-        text_saleleve_moneythree.setText(levels.get(2).getMoney()+"元");
-        text_saleleve_peopleone.setText(levels.get(0).getPeopleNum()+"人");
-        text_saleleve_peopletwo.setText(levels.get(1).getPeopleNum()+"人");
-        text_saleleve_peoplethree.setText(levels.get(2).getPeopleNum()+"人");
+        text_saleleve_moneyone.setText(NumUtil.num2half(levels.get(0).getMoney()) + "元");
+        text_saleleve_moneytwo.setText(NumUtil.num2half(levels.get(1).getMoney()) + "元");
+        text_saleleve_moneythree.setText(NumUtil.num2half(levels.get(2).getMoney()) + "元");
+        text_saleleve_peopleone.setText(levels.get(0).getPeopleNum() + "人");
+        text_saleleve_peopletwo.setText(levels.get(1).getPeopleNum() + "人");
+        text_saleleve_peoplethree.setText(levels.get(2).getPeopleNum() + "人");
     }
 
     public void netGetPayData() {
@@ -144,7 +145,7 @@ public class SaleLevelFragment extends BaseFragment implements View.OnClickListe
             @Override
             public void netGo(int code, Object pojo, String text, Object obj) {
                 if (pojo != null) {
-                    List<SaleLevel> levels = (ArrayList<SaleLevel>)pojo;
+                    List<SaleLevel> levels = (ArrayList<SaleLevel>) pojo;
                     setLevelData(levels);
                     LoadingViewUtil.showout(showingroup, showin);
                 } else {

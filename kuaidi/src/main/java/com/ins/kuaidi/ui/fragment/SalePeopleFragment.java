@@ -84,7 +84,7 @@ public class SalePeopleFragment extends BaseFragment implements OnRecycleItemCli
             String[] split = value.split("\\|");
             type = Integer.parseInt(split[0]);
             text_salepeople_level.setText(NumUtil.intToZH(type) + "级分销");
-            text_salepeople_money.setText("累计获得，" + split[1]);
+            text_salepeople_money.setText("累计获得 " + split[1]);
             netGetSalePeople(0);
         }
     }

@@ -27,12 +27,14 @@ import com.ins.middle.ui.activity.BaseBackActivity;
 import com.ins.middle.ui.activity.TripActivity;
 import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.EventBusHelper;
+import com.ins.middle.utils.SnackUtil;
 import com.ins.middle.view.ProgView;
 import com.liaoinstan.springview.container.AliFooter;
 import com.liaoinstan.springview.container.AliHeader;
 import com.liaoinstan.springview.widget.SpringView;
 import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
+import com.sobey.common.utils.NumUtil;
 import com.sobey.common.utils.StrUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -67,9 +69,16 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
                 netGetTrips(1);
             }
             float money = eventOrder.getMoney();
-            dialogPayStatus.setPrice(money + "");
+            dialogPayStatus.setMsg("已收到定金");
+            dialogPayStatus.setPrice(NumUtil.num2half(money) + "");
             dialogPayStatus.show();
-        }else if("14".equals(aboutOrder)) {
+        } else if ("13".equals(aboutOrder)) {
+            //尾款支付成功
+            float money = eventOrder.getMoney();
+            dialogPayStatus.setMsg("已收到尾款");
+            dialogPayStatus.setPrice(NumUtil.num2half(money) + "");
+            dialogPayStatus.show();
+        } else if ("14".equals(aboutOrder)) {
             //乘客取消了订单
             netGetTrips(1);
         }

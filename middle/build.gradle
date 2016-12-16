@@ -47,4 +47,6 @@ dependencies {
     compile 'com.github.techery:properratingbar:0.0.5'
     //星星评价
     compile 'com.hedgehog.ratingbar:app:1.1.2'
+    //从订单弹出的snackbar
+    compile 'com.androidadvance:topsnackbar:1.1.1'
 }
