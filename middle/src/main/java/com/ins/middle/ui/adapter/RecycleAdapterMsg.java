@@ -48,7 +48,7 @@ public class RecycleAdapterMsg extends RecyclerView.Adapter<RecycleAdapterMsg.Ho
         });
         Msg msg = results.get(holder.getLayoutPosition());
 
-        GlideUtil.loadImg(context, holder.img_msg_pic, R.drawable.default_pic, AppHelper.getRealImgPath(msg.getCover()));
+        GlideUtil.loadImg(context, holder.img_msg_pic, R.drawable.default_real, AppHelper.getRealImgPath(msg.getCover()));
         holder.text_msg_title.setText(msg.getTitle());
         holder.text_msg_content.setText(msg.getRemark());
     }

@@ -14,21 +14,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.LatLngBounds;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeOption;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiBoundSearchOption;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.poi.PoiSortType;
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.google.gson.reflect.TypeToken;
 import com.ins.kuaidi.R;
+import com.ins.kuaidi.utils.AppHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.Position;
@@ -66,6 +71,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
 
     //默认成都市
     private String city = "成都市";
+    private LatLng latLng;
     //地理围栏
     public List<List<LatLng>> ptsArray = new ArrayList<>();
 
@@ -91,6 +97,9 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
     private void initBase() {
         if (getIntent().hasExtra("city")) {
             city = getIntent().getStringExtra("city");
+        }
+        if (getIntent().hasExtra("latLng")) {
+            latLng = getIntent().getParcelableExtra("latLng");
         }
         // 初始化建议搜索模块，注册建议搜索事件监听
         mSuggestionSearch = SuggestionSearch.newInstance();
@@ -144,7 +153,8 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
                     showin = LoadingViewUtil.showin(showingroup, com.ins.middle.R.layout.layout_loading, showin);
                 }
                 //mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
-                mPoiSearch.searchInCity((new PoiCitySearchOption()).city(city).keyword(s.toString()).pageCapacity(15).pageNum(0));
+//                mPoiSearch.searchInCity(new PoiCitySearchOption().city(AppHelper.getSearchCity(city)).keyword(s.toString()).pageCapacity(15).pageNum(0));
+                mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(9999).keyword(s.toString()).pageCapacity(15).pageNum(0));//.sortType(PoiSortType.distance_from_near_to_far)
             }
         });
     }
@@ -185,8 +195,10 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
             case RESULT_CITY:
                 if (resultCode == RESULT_OK) {
                     String city = data.getStringExtra("city");
-                    if (!StrUtils.isEmpty(city)) {
+                    String latlng = data.getStringExtra("latlng");
+                    if (!StrUtils.isEmpty(city) && !StrUtils.isEmpty(latlng)) {
                         this.city = city;
+                        latLng = MapHelper.str2LatLng(latlng);
                         btn_go_left.setText(city);
                         netGetArea(city);
                     }
@@ -206,7 +218,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         List<Position> positions = new ArrayList<>();
         for (SuggestionResult.SuggestionInfo suggest : res.getAllSuggestions()) {
             if (suggest.key != null) {
-                if (suggest.city.equals(city)) {
+                if (city.contains(suggest.city)) {
                     positions.add(new Position(suggest));
                 }
             }
@@ -229,7 +241,8 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
             List<Position> positions = new ArrayList<>();
             for (PoiInfo poi : result.getAllPoi()) {
-                if (poi.city.equals(city)) {
+                Log.e("liao---search", poi.city);
+                if (city.contains(poi.city)) {
                     Position position = new Position(poi);
                     position.setIn(MapHelper.isInAreas(ptsArray, poi.location));
                     positions.add(position);
@@ -243,12 +256,12 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
 
     @Override
     public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
-
+        Log.e("liao---search", "onGetPoiDetailResult");
     }
 
     @Override
     public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
-
+        Log.e("liao---search", "onGetPoiIndoorResult");
     }
 
     public void netGetArea(String city) {

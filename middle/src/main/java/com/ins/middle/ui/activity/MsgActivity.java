@@ -117,7 +117,7 @@ public class MsgActivity extends BaseBackActivity implements OnRecycleItemClickL
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
         Msg msg = adapter.getResults().get(viewHolder.getLayoutPosition());
         Intent intent = new Intent(this, WebActivity.class);
-        intent.putExtra("url", AppData.Url.msgDetail + "?id=" + msg.getId());
+        intent.putExtra("url", AppData.Url.msgDetail + "?systemId=" + msg.getId());
         intent.putExtra("title", "消息详情");
         startActivity(intent);
     }

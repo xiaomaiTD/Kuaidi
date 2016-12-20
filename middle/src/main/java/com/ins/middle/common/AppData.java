@@ -184,7 +184,7 @@ public class AppData {
         public static String findWalletDetail         = domain + "mobile/wallet/findWalletDetail";             				        //查询余额明细
         public static String wallet                   = domain + "mobile/wallet/queryWallet";             				            //我的钱包
         public static String msgList                  = domain + "mobile/si/findSystemInfo";             				                //消息列表
-        public static String msgDetail                = domain + "web/si/systemInfoDetail";             				                //消息详情
+        public static String msgDetail                = domain + "mobile/webPage/systemInfoPage";             				        //消息详情
         public static String getcities                = domain + "mobile/mapCityMarker/findMapCityMarkerList";             		//城市列表
         public static String delOrder                 = domain + "mobile/order/delOrder";             		                            //删除订单（乘客）
         public static String cancleOrder              = domain + "mobile/order/cancleOrder";             		                        //取消订单（乘客）

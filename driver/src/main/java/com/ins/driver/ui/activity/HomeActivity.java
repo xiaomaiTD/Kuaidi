@@ -57,6 +57,7 @@ import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.ins.middle.utils.MapHelper;
 import com.ins.middle.utils.PackageUtil;
+import com.ins.middle.utils.PushValiHelper;
 import com.ins.middle.utils.SnackUtil;
 import com.ins.middle.view.DriverView;
 import com.shelwee.update.UpdateHelper;
@@ -178,33 +179,36 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     @Subscribe
     public void onEventMainThread(EventOrder eventOrder) {
         String aboutOrder = eventOrder.getAboutOrder();
-        if ("3".equals(aboutOrder)) {
-            //请求支付定金
-        } else if ("4".equals(aboutOrder)) {
+        int orderId = eventOrder.getOrderId();
+        String msg = eventOrder.getMsg();
+        if ("4".equals(aboutOrder)) {
             //接到乘客,乘客已经上车（本地推送）
             netHelper.netGetTrip();
         } else if ("5".equals(aboutOrder)) {
             //已经到达目的地
-        } else if ("6".equals(aboutOrder)) {
+            //目前司机抵达不需要在推送中处理
+        } else if ("6".equals(aboutOrder) && PushValiHelper.pushDMattch(trips, orderId)) {
             //司机端 ： 匹配到有新的订单
-            SnackUtil.showSnack(showingroup, "您有一条新的订单", onNewMsgclickListener);
+            SnackUtil.showSnack(showingroup, msg, onNewMsgclickListener);
+//            SnackUtil.showSnack(showingroup, "您有一条新的订单", onNewMsgclickListener);
             //获取行程信息
             netHelper.netGetTrip();
-        } else if ("7".equals(aboutOrder)) {
-            //乘客端： 订单已经匹配 已经分配给司机
-        } else if ("8".equals(aboutOrder)) {
+        }else if ("8".equals(aboutOrder) && PushValiHelper.pushDHasPayFirst(trips, orderId)) {
             //司机端 ： 定金支付成功
             netHelper.netGetTrip();
-            SnackUtil.showSnack(showingroup, "乘客已支付定金");
-        } else if ("9".equals(aboutOrder)) {
+            SnackUtil.showSnack(showingroup, msg);
+//            SnackUtil.showSnack(showingroup, "乘客已支付定金");
+        } else if ("9".equals(aboutOrder) && PushValiHelper.pushDStart(trips, orderId)) {
             //司机出发
-        } else if ("13".equals(aboutOrder)) {
+        } else if ("13".equals(aboutOrder) && PushValiHelper.pushDHasPayLsat(trips, orderId)) {
             //司机端 ： 尾款支付成功
-            SnackUtil.showSnack(showingroup, "乘客已支付尾款");
-        } else if ("14".equals(aboutOrder)) {
+            SnackUtil.showSnack(showingroup, msg);
+//            SnackUtil.showSnack(showingroup, "乘客已支付尾款");
+        } else if ("14".equals(aboutOrder) && PushValiHelper.pushDCancle(trips, orderId)) {
             //乘客取消了订单
             HomeHelper.setFresh(this);
-            SnackUtil.showSnack(showingroup, "乘客取消了订单，系统正在重新为您寻找乘客");
+            SnackUtil.showSnack(showingroup, msg);
+//            SnackUtil.showSnack(showingroup, "乘客取消了订单，系统正在重新为您寻找乘客");
         } else if ("102".equals(aboutOrder)) {
             //乘客已经全部下车，司机选择继续接单，回滚初始状态(本地推送)
             baiduMap.clear();

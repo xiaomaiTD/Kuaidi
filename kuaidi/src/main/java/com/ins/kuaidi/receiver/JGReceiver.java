@@ -123,6 +123,7 @@ public class JGReceiver extends BroadcastReceiver {
                 //订单推送
                 if (datajson.has("aboutOrder")) {
                     EventOrder eventOrder = new EventOrder();
+                    eventOrder.setMsg(message);
                     if (datajson.has("aboutOrder")) {
                         String aboutOrder = datajson.getString("aboutOrder");
                         eventOrder.setAboutOrder(aboutOrder);
@@ -163,12 +164,12 @@ public class JGReceiver extends BroadcastReceiver {
                     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                     if ("2".equals(type)) {
                         //跳转订单消息页面
-                    } else if ("1".equals(type)){
+                    } else if ("1".equals(type)) {
                         //系统消息
                         context.startActivity(intent);
-                    }else if ("3".equals(type)){
+                    } else if ("3".equals(type)) {
                         //丁一定
-                    }else if ("4".equals(type)){
+                    } else if ("4".equals(type)) {
                     }
                 }
             } catch (Exception e) {

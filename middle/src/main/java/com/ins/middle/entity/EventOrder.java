@@ -11,12 +11,22 @@ public class EventOrder implements Serializable{
     private int orderId;
     private float money;
 
+    private String msg;
+
     public EventOrder() {
     }
 
     public EventOrder(String aboutOrder, int orderId) {
         this.aboutOrder = aboutOrder;
         this.orderId = orderId;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public float getMoney() {

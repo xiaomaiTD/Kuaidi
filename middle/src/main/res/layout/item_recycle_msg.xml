@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/default_bk" />
+            android:src="@drawable/default_real" />
 
         <TextView
             android:id="@+id/text_msg_title"

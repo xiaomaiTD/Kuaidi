@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +30,7 @@ import com.ins.kuaidi.R;
 import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
 import com.ins.kuaidi.common.WaitingHelper;
+import com.ins.middle.utils.PushValiHelper;
 import com.ins.kuaidi.wxapi.WXPayEntryActivity;
 import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.EventIdentify;
@@ -118,6 +118,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //地理围栏
     public List<List<LatLng>> ptsArray = new ArrayList<>();
     public ArrayList<Overlay> areasLay = new ArrayList<>();
+    public List<Trip> trips = new ArrayList<>();
     public Trip trip;
     public CarMap carMap;
 
@@ -201,34 +202,43 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     @Subscribe
     public void onEventMainThread(EventOrder eventOrder) {
         String aboutOrder = eventOrder.getAboutOrder();
-        Log.e("liao", "aboutOrder:" + aboutOrder);
-        if ("3".equals(aboutOrder)) {
+        int orderId = eventOrder.getOrderId();
+        String msg = eventOrder.getMsg();
+        if ("3".equals(aboutOrder) && PushValiHelper.pushPRequestPayFirst(trips, orderId)) {
             //请求支付定金
-            netHelper.netGetTrip(eventOrder.getOrderId());
-            SnackUtil.showSnack(showingroup, "司机已经接到您的订单，请及时支付定金");
-        } else if ("4".equals(aboutOrder)) {
+            netHelper.netGetTrip(orderId);
+            SnackUtil.showSnack(showingroup, msg);
+//            SnackUtil.showSnack(showingroup, "司机已经接到您的订单，请及时支付定金");
+        } else if ("4".equals(aboutOrder) && PushValiHelper.pushPGetPassenger(trips, orderId)) {
             //接到乘客
-            netHelper.netGetTrip(eventOrder.getOrderId());
-            SnackUtil.showSnack(showingroup, "司机已经接到您，正在接送其他乘客");
-        } else if ("5".equals(aboutOrder)) {
+            netHelper.netGetTrip(orderId);
+            SnackUtil.showSnack(showingroup, msg);
+//            SnackUtil.showSnack(showingroup, "司机已经接到您，正在接送其他乘客");
+        } else if ("5".equals(aboutOrder) && PushValiHelper.pushPArrive(trips, orderId)) {
             //已经到达目的地
             //因为乘客支付后可继续下单的改动，这里不需要再刷新了
             //HomeHelper.setFresh(this);
-            SnackUtil.showSnack(showingroup, "司机已将您送达目的地，感谢您的使用");
-        } else if ("6".equals(aboutOrder)) {
-            //司机端 ： 匹配到有新的订单
-        } else if ("7".equals(aboutOrder)) {
+            SnackUtil.showSnack(showingroup, msg);
+//            SnackUtil.showSnack(showingroup, "司机已将您送达目的地，感谢您的使用");
+        } else if ("7".equals(aboutOrder) && PushValiHelper.pushPMattch(trips, orderId)) {
             //乘客端： 订单已经匹配 已经分配给司机
             netHelper.netGetTrip();
-            SnackUtil.showSnack(showingroup, "已为您匹配到司机，等待司机确认");
+            SnackUtil.showSnack(showingroup, msg);
+//            SnackUtil.showSnack(showingroup, "已为您匹配到司机，等待司机确认");
+        } else if ("9".equals(aboutOrder) && PushValiHelper.pushPStart(trips, orderId)) {
+            //司机出发
+            SnackUtil.showSnack(showingroup, msg);
+//            SnackUtil.showSnack(showingroup, "司机已出发，正在前往目的地");
+        } else if ("14".equals(aboutOrder) && PushValiHelper.pushPCancle(trips, orderId)) {
+            //(后台)乘客取消了订单
+            HomeHelper.setFresh(this);
+            SnackUtil.showSnack(showingroup, msg);
+//            SnackUtil.showSnack(showingroup, "客服人员取消了您的订单，如有疑问请联系客服");
         } else if ("8".equals(aboutOrder)) {
             //定金支付成功(乘客端本地的推送)
             //2004 乘客已支付预付款
             HomeHelper.setPayLastFalse(this);
             trip.setStatus(Trip.STA_2004);
-        } else if ("9".equals(aboutOrder)) {
-            //司机出发
-            SnackUtil.showSnack(showingroup, "司机已出发，正在前往目的地");
         } else if ("101".equals(aboutOrder)) {
             //乘客已经支付尾款(乘客端本地的推送)
             //netHelper.netGetTrip();
@@ -706,6 +716,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             type = 0;
             Intent intent = new Intent(HomeActivity.this, SearchAddressActivity.class);
             intent.putExtra("city", city);
+            intent.putExtra("latLng", nowLatLng);
             startActivity(intent);
         }
 
@@ -714,6 +725,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             type = 1;
             Intent intent = new Intent(HomeActivity.this, SearchAddressActivity.class);
             intent.putExtra("city", city);
+            intent.putExtra("latLng", nowLatLng);
             startActivity(intent);
         }
     };

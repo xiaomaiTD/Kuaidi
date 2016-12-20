@@ -138,4 +138,16 @@ public class AppHelper {
         }
         return trips;
     }
+
+    public static String getSearchCity(String address) {
+        if (StrUtils.isEmpty(address)) {
+            return "";
+        }
+        int index = address.indexOf("市");
+        if (index == -1) {
+            return "";
+        } else {
+            return address.substring(0, index + 1);
+        }
+    }
 }

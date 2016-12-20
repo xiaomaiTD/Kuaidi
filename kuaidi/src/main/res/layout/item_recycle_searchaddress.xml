@@ -37,15 +37,16 @@
 
                 <TextView
                     android:id="@+id/text_item_search_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="地址"
                     android:textColor="@color/sb_text_blank"
                     android:textSize="@dimen/text_nomal" />
 
                 <TextView
                     android:id="@+id/text_item_search_error"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"

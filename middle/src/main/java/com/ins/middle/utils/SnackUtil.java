@@ -43,7 +43,7 @@ public class SnackUtil {
         //获取textView
         TextView textView = (TextView) backView.findViewById(com.androidadvance.topsnackbar.R.id.snackbar_text);
         //设置背景
-        backView.setBackgroundColor(Color.parseColor("#7f000000"));
+        backView.setBackgroundColor(Color.parseColor("#bf000000"));
         //设置文字
         textView.setTextColor(Color.WHITE);
         textView.setMaxLines(3);

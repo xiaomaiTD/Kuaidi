@@ -120,6 +120,7 @@ public class JGReceiver extends BroadcastReceiver {
                 //订单推送
                 if (datajson.has("aboutOrder")) {
                     EventOrder eventOrder = new EventOrder();
+                    eventOrder.setMsg(message);
                     if (datajson.has("aboutOrder")) {
                         String aboutOrder = datajson.getString("aboutOrder");
                         eventOrder.setAboutOrder(aboutOrder);

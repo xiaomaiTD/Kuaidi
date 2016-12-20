@@ -226,24 +226,28 @@ public class WXPayEntryActivity extends BaseBackActivity implements View.OnClick
             text_pay_title.setText("定金费用");
             img_pay_status.setVisibility(View.GONE);
             btn_go.setVisibility(View.VISIBLE);
+            text_pay_payway.setClickable(true);
         } else if (type == 1) {
             setToolbar("定金支付");
             text_pay_this_name.setText("定金费用");
             text_pay_title.setText("支付成功");
             img_pay_status.setVisibility(View.VISIBLE);
             btn_go.setVisibility(View.GONE);
+            text_pay_payway.setClickable(false);
         } else if (type == 2) {
             setToolbar("结算");
             text_pay_this_name.setText("尾款费用");
             text_pay_title.setText("尾款支付");
             img_pay_status.setVisibility(View.GONE);
             btn_go.setVisibility(View.VISIBLE);
+            text_pay_payway.setClickable(true);
         } else if (type == 3) {
             setToolbar("结算");
             text_pay_this_name.setText("尾款费用");
             text_pay_title.setText("支付成功");
             img_pay_status.setVisibility(View.VISIBLE);
             btn_go.setVisibility(View.GONE);
+            text_pay_payway.setClickable(false);
         }
     }
 

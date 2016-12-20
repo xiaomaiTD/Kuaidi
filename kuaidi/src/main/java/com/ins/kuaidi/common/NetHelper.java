@@ -161,6 +161,7 @@ public class NetHelper {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 List<Trip> trips = (ArrayList<Trip>) pojo;
+                activity.trips = trips;
                 //又改成乘客支付尾款后就可以继续下单了，这里移除所有的已支付行程
                 trips = com.ins.kuaidi.utils.AppHelper.removeHasPayTrip(trips);
                 //如果afterId 为0 则取第一个行程，如果不为0则查找该id的行程
