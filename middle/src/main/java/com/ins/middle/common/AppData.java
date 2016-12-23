@@ -20,7 +20,7 @@ public class AppData {
         private static final String KEY_VERSIONCODE = "versioncode";
         private static final String KEY_TOKEN = "token";
         private static final String KEY_JPUSHID = "jpushid";
-        private static final String KEY_LASTUSERNAME = "lastusername";
+        private static final String KEY_PHONE = "phone";
         private static final String KEY_DOMAIN = "domain";
         private static final String KEY_USER = "user";
 
@@ -98,18 +98,18 @@ public class AppData {
             PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), key);
         }
 
-        ///////////////保存用户名
-        public static String getLastUserName() {
-            String token = PreferenceUtil.getString(ApplicationHelp.getApplicationContext(), KEY_LASTUSERNAME);
+        ///////////////保存客服电话
+        public static String getPhone() {
+            String token = PreferenceUtil.getString(ApplicationHelp.getApplicationContext(), KEY_PHONE);
             return token;
         }
 
-        public static void saveLastUserName(String username) {
-            PreferenceUtil.saveString(ApplicationHelp.getApplicationContext(), KEY_LASTUSERNAME, username);
+        public static void savePhone(String username) {
+            PreferenceUtil.saveString(ApplicationHelp.getApplicationContext(), KEY_PHONE, username);
         }
 
-        public static void removeLastUserName() {
-            PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_LASTUSERNAME);
+        public static void removePhone() {
+            PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_PHONE);
         }
     }
 
@@ -189,6 +189,10 @@ public class AppData {
         public static String delOrder                 = domain + "mobile/order/delOrder";             		                            //删除订单（乘客）
         public static String cancleOrder              = domain + "mobile/order/cancleOrder";             		                        //取消订单（乘客）
         public static String callPassenger            = domain + "mobile/order/callPassenger";             		                    //统计司机给乘客打电话（司机）
+        public static String readContactUs            = domain + "res/readContactUs";             		                                //获取客服联系方式（乘客）
+        public static String getCashConfig            = domain + "mobile/wallet/getCashConfig";             		                    //获取提现配置
+        public static String getCash                  = domain + "mobile/wallet/requestDrawCash";             		                //提现
+        public static String paypsw                   = domain + "mobile/user/verificationPayPwd";             		                //验证提现密码
 
 
     }

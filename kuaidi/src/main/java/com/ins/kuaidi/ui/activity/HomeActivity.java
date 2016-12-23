@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -180,21 +181,22 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     @Subscribe
     public void onEventMainThread(EventIdentify eventIdentify) {
         String aboutsystem = eventIdentify.getAboutsystem();
+        String msg = eventIdentify.getMsg();
         if ("15".equals(aboutsystem)) {
             //审核通过
             User user = AppData.App.getUser();
             user.setStatus(User.AUTHENTICATED);
             AppData.App.saveUser(user);
             setUserData();
-            SnackUtil.showSnack(showingroup, "实名认证审核未通过，请到系统消息中查看详情");
-            //Toast.makeText(this, "实名认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
+            SnackUtil.showSnack(showingroup, msg);
+            //Toast.makeText(this, "实名认证审核已通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
         } else if ("16".equals(aboutsystem)) {
             //审核不通过
             User user = AppData.App.getUser();
             user.setStatus(User.UNAUTHORIZED);
             AppData.App.saveUser(user);
             setUserData();
-            SnackUtil.showSnack(showingroup, "实名认证审核未通过，请到系统消息中查看详情");
+            SnackUtil.showSnack(showingroup, msg);
             //Toast.makeText(this, "实名认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
         }
     }
@@ -529,6 +531,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else {
             //不在围栏里面则清除上车地点
             holdcarView.setStartPosition(null);
+            //mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
         }
     }
 
@@ -732,7 +735,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     //定位回调
     @Override
-    public void onLocation(LatLng latLng, String city, boolean isFirst) {
+    public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
         //定位成功后保存定位坐标
         this.nowLatLng = latLng;
         //定位成功后保存定位城市
@@ -759,14 +762,23 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else if (result.getAddressDetail() == null) {
             return;
         } else {
-            String newCity = result.getAddressDetail().city;
-            //移动标杆，重新设置出发地
-            Position position = new Position(result.getLocation(), result.getAddress(), newCity);
-            if (com.ins.kuaidi.utils.AppHelper.needNetConfigStart(holdcarView, newCity)) {
-                holdcarView.setStartPosition(position);
-                netHelper.netGetLineConfig(position.getCity(), holdcarView.getEndPosition().getCity());
+            if (isIn) {
+                //县级改动引起的，这里始终修改为选择的城市
+//            String newCity = result.getAddressDetail().city;
+                String district = result.getAddressDetail().district;
+                String newCity = city;
+                //移动标杆，重新设置出发地
+                Position position = new Position(result.getLocation(), result.getAddress(), newCity);
+                if (com.ins.kuaidi.utils.AppHelper.needNetConfigStart(holdcarView, newCity)) {
+                    holdcarView.setStartPosition(position);
+                    netHelper.netGetLineConfig(position.getCity(), holdcarView.getEndPosition().getCity());
+                } else {
+                    holdcarView.setStartPosition(position);
+                }
             } else {
-                holdcarView.setStartPosition(position);
+                String district = result.getAddressDetail().district;
+                String newCity = city;
+                Log.e("liao", result.getAddressDetail().city + result.getAddressDetail().district);
             }
         }
     }

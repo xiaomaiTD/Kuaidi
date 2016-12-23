@@ -39,43 +39,93 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/showingroup"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.CardView
-            style="@style/card_noelevation"
+        <LinearLayout
+            android:id="@+id/showingroup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:foreground="?attr/selectableItemBackground"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="7dp">
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
+                style="@style/card_noelevation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="15dp">
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="7dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lay_cash_bankcard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:orientation="horizontal"
+                        android:paddingBottom="15dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:paddingTop="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="银行卡"
+                            android:textColor="@color/com_text_blank"
+                            android:textSize="@dimen/text_nomal" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/text_cash_bankcard"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="民生银行储蓄卡（9321）"
+                                android:textColor="@color/kd_cash_blue"
+                                android:textSize="@dimen/text_nomal" />
+
+                            <TextView
+                                android:id="@+id/text_cash_bankcardnote"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="提现到民生银行，收付费0.1%"
+                                android:textColor="@color/com_text_dark_blank"
+                                android:textSize="@dimen/text_nomal_small" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@color/com_line" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="银行卡"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:text="提现余额"
                         android:textColor="@color/com_text_blank"
                         android:textSize="@dimen/text_nomal" />
 
@@ -83,108 +133,119 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        android:orientation="vertical">
+                        android:layout_marginTop="20dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="民生银行储蓄卡（9321）"
+                            android:text="￥"
                             android:textColor="@color/com_text_blank"
-                            android:textSize="@dimen/text_nomal" />
+                            android:textSize="@dimen/text_big" />
+
+                        <com.sobey.common.view.EmojiEditText
+                            android:id="@+id/edit_cash_money"
+                            style="@style/edit_none"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="left|top"
+                            android:hint="0"
+                            android:inputType="phone"
+                            android:digits="1234567890"
+                            android:singleLine="true"
+                            android:textColor="@color/com_text_blank"
+                            android:textColorHint="@color/com_text_blank"
+                            android:textSize="30sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/com_line" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/text_cash_cashnote"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="提现到民生银行，收付费0.1%"
+                                android:textColor="@color/com_text_dark_blank"
+                                android:textSize="@dimen/text_nomal_small" />
+
+                            <TextView
+                                android:id="@+id/text_cash_moneynote"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="200元底金无法提现，可用于车费支付"
+                                android:textColor="@color/com_text_dark_blank"
+                                android:textSize="@dimen/text_nomal_small" />
+
+                        </LinearLayout>
 
                         <TextView
+                            android:id="@+id/text_cash_all"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="提现到民生银行，收付费0.1%"
-                            android:textColor="@color/com_text_dark_blank"
+                            android:layout_height="match_parent"
+                            android:gravity="bottom"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:text="全部提现"
+                            android:textColor="@color/kd_cash_blue"
                             android:textSize="@dimen/text_nomal" />
-
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_marginTop="20dp"
-                    android:background="@color/com_line" />
+            </android.support.v7.widget.CardView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="提现余额"
-                    android:textColor="@color/com_text_blank"
-                    android:textSize="@dimen/text_nomal" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="24小时内到账"
+                android:textColor="@color/com_text_dark_blank"
+                android:textSize="@dimen/text_nomal" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="￥"
-                        android:textColor="@color/com_text_blank"
-                        android:textSize="@dimen/text_big" />
-
-                    <com.sobey.common.view.EmojiEditText
-                        android:id="@+id/edit_feedback_describe"
-                        style="@style/edit_none"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="left|top"
-                        android:hint="0.00"
-                        android:inputType="number"
-                        android:singleLine="true"
-                        android:textColor="@color/com_text_blank"
-                        android:textColorHint="@color/com_text_blank"
-                        android:textSize="30sp" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/com_line" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="提现到民生银行，收付费0.1%"
-                    android:textColor="@color/com_text_dark_blank"
-                    android:textSize="@dimen/text_nomal" />
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="24小时内到账"
-            android:textColor="@color/com_text_dark_blank"
-            android:textSize="@dimen/text_nomal" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/shape_rect_corner_yellow"
-            android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:text="提现"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_big" />
+            <TextView
+                android:id="@+id/btn_go"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/hot_rect_coner_yellow"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="提现"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_big" />
 
 
-    </LinearLayout>
+        </LinearLayout>
+
+
+        <!--<com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView-->
+            <!--android:id="@+id/keybord"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom"-->
+            <!--android:visibility="gone" />-->
+
+    </FrameLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

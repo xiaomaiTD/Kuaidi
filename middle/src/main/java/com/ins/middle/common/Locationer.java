@@ -76,7 +76,7 @@ public class Locationer {
             baiduMap.setMyLocationData(locData);
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             if (callback != null) {
-                callback.onLocation(latLng, location.getCity(), isFirstLoc);
+                callback.onLocation(latLng, location.getCity(),location.getDistrict(), isFirstLoc);
             }
             if (isFirstLoc) {
                 isFirstLoc = false;
@@ -108,6 +108,6 @@ public class Locationer {
     }
 
     public interface LocationCallback {
-        void onLocation(LatLng latLng, String city, boolean isFirst);
+        void onLocation(LatLng latLng, String city,String district, boolean isFirst);
     }
 }

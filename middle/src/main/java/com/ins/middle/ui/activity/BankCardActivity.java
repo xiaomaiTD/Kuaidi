@@ -1,12 +1,12 @@
 package com.ins.middle.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -16,7 +16,6 @@ import com.ins.middle.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.BankCard;
-import com.ins.middle.entity.User;
 import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.AppHelper;
 import com.sobey.common.common.LoadingViewUtil;
@@ -33,6 +32,9 @@ import org.xutils.http.RequestParams;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * type: 0 银行卡列表页面 1 提现时选择银行卡页面
+ */
 public class BankCardActivity extends BaseBackActivity implements OnRecycleItemClickListener, View.OnClickListener {
 
     private RecyclerView recyclerView;
@@ -43,7 +45,9 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
     private ViewGroup showingroup;
     private View showin;
 
-    DialogSure dialogSure;
+    private DialogSure dialogSure;
+
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +68,20 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
     }
 
     private void initBase() {
+        if (getIntent().hasExtra("type")) {
+            type = getIntent().getIntExtra("type", 0);
+        }
         dialogSure = new DialogSure(this);
         dialogSure.setOnOkListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //有提现密码则提现 1，没有则设置提现密码 0
-                if (AppData.App.getUser().getHasPayPassword()==1) {
+                if (AppData.App.getUser().getHasPayPassword() == 1) {
                     Intent intent = new Intent(BankCardActivity.this, BindUnBankCardActivity.class);
                     intent.putExtra("id", cardId);
                     startActivityForResult(intent, RESULT_BINDUNBANKCARD);
                     dialogSure.dismiss();
-                }else {
+                } else {
                     //去设置提现密码
                     Toast.makeText(BankCardActivity.this, "您还没有设置提现密码，请先设置", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(BankCardActivity.this, ModifyPswPayActivity.class);
@@ -92,7 +99,7 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
     }
 
     private void initData() {
-        netGetTrips(0);
+        netGetBankCards(0);
     }
 
     private void initCtrl() {
@@ -145,10 +152,17 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
         BankCard card = adapter.getResults().get(viewHolder.getLayoutPosition());
-        cardId = card.getId();
-        dialogSure.setTitle("解绑" + card.getBankName());
-        dialogSure.setMsg(AppHelper.getUnSeeBankNum(card.getBankNum()));
-        dialogSure.show();
+        if (type == 0) {
+            cardId = card.getId();
+            dialogSure.setTitle("解绑" + card.getBankName());
+            dialogSure.setMsg(AppHelper.getUnSeeBankNum(card.getBankNum()));
+            dialogSure.show();
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra("bankcard", card);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
     }
 
     private static final int RESULT_BINDBANKCARD = 0xf101;
@@ -160,14 +174,16 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
         switch (requestCode) {
             case RESULT_BINDBANKCARD:
                 if (resultCode == RESULT_OK) {
-                    Log.e("liao", "RESULT_OK");
-                    netGetTrips(1);
+                    if (StrUtils.isEmpty(results)) {
+                        netGetBankCards(0);
+                    } else {
+                        netGetBankCards(1);
+                    }
                 }
                 break;
             case RESULT_BINDUNBANKCARD:
                 if (resultCode == RESULT_OK) {
-                    Log.e("liao", "RESULT_OK");
-                    netGetTrips(1);
+                    netGetBankCards(1);
                 }
                 break;
         }
@@ -186,7 +202,7 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
      *
      * @param type
      */
-    private void netGetTrips(final int type) {
+    private void netGetBankCards(final int type) {
         if (cancelable != null) cancelable.cancel();
         final RequestParams params = new RequestParams(AppData.Url.findBankCard);
         params.addHeader("token", AppData.App.getToken());

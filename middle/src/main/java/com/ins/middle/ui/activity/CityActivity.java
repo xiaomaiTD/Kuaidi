@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.ins.middle.R;
 import com.ins.middle.ui.fragment.CityFragment;
+import com.sobey.common.utils.KeyBoardUtil;
 
 public class CityActivity extends BaseAppCompatActivity {
 
@@ -32,6 +33,13 @@ public class CityActivity extends BaseAppCompatActivity {
             ftx.show(contactFragment);
         }
         ftx.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //关闭的时候收起键盘，魅族手机有一个小的体验性问题（妈的垃圾厂商）
+        KeyBoardUtil.hideKeybord(this);
     }
 
     private void initBase() {

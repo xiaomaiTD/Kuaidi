@@ -8,8 +8,17 @@ import java.io.Serializable;
 
 public class EventIdentify implements Serializable{
     private String aboutsystem;
+    private String msg;
 
     public EventIdentify() {
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public EventIdentify(String aboutsystem) {

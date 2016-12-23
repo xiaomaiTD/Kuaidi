@@ -63,7 +63,7 @@ public class RecycleAdapterSale extends RecyclerView.Adapter<RecycleAdapterSale.
             holder.text_sale_num.setText("");
         } else {
             holder.text_sale_num.setBackgroundResource(R.drawable.shape_oval_dark);
-            holder.text_sale_num.setText(pos + "");
+            holder.text_sale_num.setText(pos + 1 + "");
         }
     }
 

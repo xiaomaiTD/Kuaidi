@@ -121,30 +121,40 @@ public class VirtualKeyboardView extends RelativeLayout {
 
     //设置一个edittext 与之关联
     private EditText editText;
+
     public void setEditText(EditText editText) {
         this.editText = editText;
     }
+
     private OnKeyBordClickListener onKeyBordClickListener;
+
     public void setOnKeyBordClickListener(OnKeyBordClickListener onKeyBordClickListener) {
         this.onKeyBordClickListener = onKeyBordClickListener;
     }
-    public interface OnKeyBordClickListener{
+
+    public interface OnKeyBordClickListener {
         void onNumClick(int num);
+
         void onDotClick();
+
         void onDelClick();
     }
 
-    public void setClickShowKeybord(View view){
+    public void setClickShowKeybord(View view) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getVisibility()!=VISIBLE) {
-                    show();
-                }else {
-                    hide();
-                }
+                clickKeybord();
             }
         });
+    }
+
+    public void clickKeybord() {
+        if (getVisibility() != VISIBLE) {
+            show();
+        } else {
+            hide();
+        }
     }
 
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
@@ -152,10 +162,10 @@ public class VirtualKeyboardView extends RelativeLayout {
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
             if (position < 11 && position != 9) {    //点击0~9按钮
-                if (onKeyBordClickListener!=null){
+                if (onKeyBordClickListener != null) {
                     onKeyBordClickListener.onNumClick(Integer.parseInt(valueList.get(position).get("name")));
                 }
-                if (editText!=null) {
+                if (editText != null) {
                     String amount = editText.getText().toString().trim();
                     amount = amount + valueList.get(position).get("name");
                     editText.setText(amount);
@@ -164,10 +174,10 @@ public class VirtualKeyboardView extends RelativeLayout {
                 }
             } else {
                 if (position == 9) {      //点击退格键
-                    if (onKeyBordClickListener!=null){
+                    if (onKeyBordClickListener != null) {
                         onKeyBordClickListener.onDotClick();
                     }
-                    if (editText!=null) {
+                    if (editText != null) {
                         String amount = editText.getText().toString().trim();
                         if (!amount.contains(".")) {
                             amount = amount + valueList.get(position).get("name");
@@ -179,10 +189,10 @@ public class VirtualKeyboardView extends RelativeLayout {
                 }
 
                 if (position == 11) {      //点击退格键
-                    if (onKeyBordClickListener!=null){
+                    if (onKeyBordClickListener != null) {
                         onKeyBordClickListener.onDelClick();
                     }
-                    if (editText!=null) {
+                    if (editText != null) {
                         String amount = editText.getText().toString().trim();
                         if (amount.length() > 0) {
                             amount = amount.substring(0, amount.length() - 1);

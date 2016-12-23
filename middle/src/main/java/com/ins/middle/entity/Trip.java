@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2016/6/12 0012.
  */
-public class Trip implements Serializable,Comparable<Trip>{
+public class Trip implements Serializable, Comparable<Trip> {
 
     public static final int STA_2001 = 2001;//正在匹配
     public static final int STA_2002 = 2002;//匹配成功
@@ -20,89 +20,140 @@ public class Trip implements Serializable,Comparable<Trip>{
     public static final int STA_2007 = 2007;//订单已取消
 
 
-    /**主键ID*/
+    /**
+     * 主键ID
+     */
     private int id;
 
-    /**订单号*/
+    /**
+     * 订单号
+     */
     private String orderNumber;
 
-    /**创建时间*/
+    /**
+     * 创建时间
+     */
     private long createTime;
 
-    /**更新时间*/
+    /**
+     * 更新时间
+     */
     private long updateTime;
 
-    /**订单状态*/
+    /**
+     * 订单状态
+     */
     private int status;
 
-    /**出发地*/
+    /**
+     * 出发地
+     */
     private int fromCityId;
 
-    /**目的地*/
+    /**
+     * 目的地
+     */
     private int toCityId;
 
-    /**订单类型 0:包车 1:拼车*/
+    /**
+     * 订单类型 0:包车 1:拼车
+     */
     private int orderType;
 
-    /** 是否有效 0 无效 1 有效*/
+    /**
+     * 是否有效 0 无效 1 有效
+     */
     private int isValid;
 
-    /**支付详细 JSON数据*/
+    /**
+     * 支付详细 JSON数据
+     */
     private String payDetail;
 
     private String bossesPayDetail;
 
-    /**总支付金额*/
+    /**
+     * 总支付金额
+     */
     private String payMoney;
-    /**司机总支付金额*/
+    /**
+     * 司机总支付金额
+     */
     private String driverDetail;
 
-    /**预付金额*/
+    /**
+     * 预付金额
+     */
     private String payAdvance;
 
-    /** 司机ID*/
+    /**
+     * 司机ID
+     */
     private int driverId;
 
-    /**乘客ID*/
+    /**
+     * 乘客ID
+     */
     private int passengerId;
 
-    /**始发地 经纬度*/
+    /**
+     * 始发地 经纬度
+     */
     private String fromLat;
 
-    /**目的地经纬度*/
+    /**
+     * 目的地经纬度
+     */
     private String toLat;
 
-    /**订单人数*/
+    /**
+     * 订单人数
+     */
     private int peoples;
 
-    /**始发地 地址名称*/
+    /**
+     * 始发地 地址名称
+     */
     private String fromAdd;
 
-    /**目的地 地址名称*/
+    /**
+     * 目的地 地址名称
+     */
     private String toAdd;
 
-    /**是否支付定金 0:没有 1:发送了请求 但 未支付 2:已经支付成功*/
+    /**
+     * 是否支付定金 0:没有 1:发送了请求 但 未支付 2:已经支付成功
+     */
     private int isPayDeposit;
 
-    /**是否支付尾款 0:否 1:已支付*/
+    /**
+     * 是否支付尾款 0:否 1:已支付
+     */
     private int isPay;
 
-    /**是否接到乘客 0:否 1: 是*/
+    /**
+     * 是否接到乘客 0:否 1: 是
+     */
     private int isReceivePassenger;
 
-    /**是否送达目的地 0:否 1：是*/
+    /**
+     * 是否送达目的地 0:否 1：是
+     */
     private int isArrive;
 
-    /**乘客*/
+    /**
+     * 乘客
+     */
     private User passenger;
-    /**司机*/
+    /**
+     * 司机
+     */
     private User driver;
-
 
 
     //本地字段
 //    @Expose
-    private transient  Overlay mark;
+    private transient Overlay mark;
     private boolean isCheck;
     private boolean isLineFlag = false;
 
@@ -380,10 +431,19 @@ public class Trip implements Serializable,Comparable<Trip>{
 
     @Override
     public int compareTo(Trip trip) {
-        if (AppHelper.isFinishOrder(trip)){
+        boolean isFinishThat = AppHelper.isFinishOrder(trip);
+        boolean isFinishThis = AppHelper.isFinishOrder(this);
+        if (isFinishThat && !isFinishThat) {
             return -1;
-        }else {
+        } else if (!isFinishThat && isFinishThat) {
             return 1;
+        } else {
+            return 0;
         }
+//        if (AppHelper.isFinishOrder(trip)){
+//            return -1;
+//        }else {
+//            return 1;
+//        }
     }
 }

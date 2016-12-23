@@ -64,8 +64,8 @@
                     android:id="@+id/img_server_header"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/header_server"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/header_server" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -80,22 +80,33 @@
         </FrameLayout>
 
         <LinearLayout
+            android:id="@+id/lay_server_phone"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/white"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:drawableLeft="@drawable/icon_server_call"
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
-                android:text="联系电话：400-6231-2312"
+                android:text="联系电话"
+                android:textColor="@color/com_text_blank_deep_light"
+                android:textSize="@dimen/text_nomal" />
+
+            <TextView
+                android:id="@+id/text_server_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="400-0000-0000"
                 android:textColor="@color/com_text_blank"
                 android:textSize="@dimen/text_nomal" />
 

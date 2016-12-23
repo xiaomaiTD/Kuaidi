@@ -227,4 +227,19 @@ public class AppHelper {
             return false;
         }
     }
+
+    /**
+     * 判断是否可以提现
+     */
+    public static boolean enableCash(float money, float editcash, float lv, float initmoneny) {
+        return editcash <= getCashAll(money, lv, initmoneny);
+    }
+
+    /**
+     * 计算最多可提现多少
+     */
+    public static float getCashAll(float money, float lv, float initmoneny) {
+        float all = (money - initmoneny) / (lv / 100 + 1);
+        return ((int)(all/100))*100;
+    }
 }

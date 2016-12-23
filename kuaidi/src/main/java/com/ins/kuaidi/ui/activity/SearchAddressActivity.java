@@ -181,6 +181,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
         Position position = adapter.getResults().get(viewHolder.getLayoutPosition());
+        position.setCity(city);
         EventBus.getDefault().post(position);
         finish();
     }

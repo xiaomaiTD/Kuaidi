@@ -111,6 +111,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //当前城市
     private String city;
     private String nowcity;
+    private String nowdistrict;
     //是否在线
     public boolean isOnline = false;
     //当前行程
@@ -159,20 +160,23 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     @Subscribe
     public void onEventMainThread(EventIdentify eventIdentify) {
         String aboutsystem = eventIdentify.getAboutsystem();
+        String msg = eventIdentify.getMsg();
         if ("15".equals(aboutsystem)) {
             //审核通过
             User user = AppData.App.getUser();
             user.setStatus(User.AUTHENTICATED);
             AppData.App.saveUser(user);
             setUserData();
-            Toast.makeText(this, "司机认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "司机认证审核已通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
         } else if ("16".equals(aboutsystem)) {
             //审核不通过
             User user = AppData.App.getUser();
             user.setStatus(User.UNAUTHORIZED);
             AppData.App.saveUser(user);
             setUserData();
-            Toast.makeText(this, "司机认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "司机认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -193,7 +197,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 //            SnackUtil.showSnack(showingroup, "您有一条新的订单", onNewMsgclickListener);
             //获取行程信息
             netHelper.netGetTrip();
-        }else if ("8".equals(aboutOrder) && PushValiHelper.pushDHasPayFirst(trips, orderId)) {
+        } else if ("8".equals(aboutOrder) && PushValiHelper.pushDHasPayFirst(trips, orderId)) {
             //司机端 ： 定金支付成功
             netHelper.netGetTrip();
             SnackUtil.showSnack(showingroup, msg);
@@ -214,7 +218,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             baiduMap.clear();
             if (trips != null) trips.clear();
             setTrip(null);
-            netHelper.netOnOff(true, city, MapHelper.LatLng2Str(nowLatLng));
+            netHelper.netOnOff(true, nowcity + "," + nowdistrict, MapHelper.LatLng2Str(nowLatLng));
         } else if ("103".equals(aboutOrder)) {
             //乘客已经全部下车(本地推送)
             baiduMap.clear();
@@ -287,7 +291,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             @Override
             public void onClick(View v) {
                 dialogSure.hide();
-                netHelper.netOnOff(!btn_go.isSelected(), city, MapHelper.LatLng2Str(nowLatLng));
+                netHelper.netOnOff(!btn_go.isSelected(), nowcity + "," + nowdistrict, MapHelper.LatLng2Str(nowLatLng));
             }
         });
     }
@@ -630,7 +634,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private View.OnClickListener onNewMsgclickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            img_new.setVisibility(View.GONE);
             Intent intent = new Intent(HomeActivity.this, ProgActivity.class);
             startActivity(intent);
         }
@@ -670,11 +673,12 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     //定位回调
     @Override
-    public void onLocation(LatLng latLng, String city, boolean isFirst) {
+    public void onLocation(LatLng latLng, String city, String district, boolean isFirst) {
         //定位成功后保存定位坐标
         this.nowLatLng = latLng;
         //定位成功后保存定位城市
         this.nowcity = city;
+        this.nowdistrict = district;
         if (isFirst) {
             //第一次定位成功后设置城市
             setCity(city);

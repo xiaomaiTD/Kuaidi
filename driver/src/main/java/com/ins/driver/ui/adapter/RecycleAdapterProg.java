@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ins.driver.R;
+import com.ins.middle.common.AppData;
+import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.view.ProgView;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
@@ -17,6 +20,8 @@ import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.PhoneUtils;
 import com.sobey.common.utils.StrUtils;
+
+import org.xutils.http.RequestParams;
 
 import java.util.List;
 
@@ -80,6 +85,7 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
             holder.img_call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    netDriverCall(trip.getId());
                     PhoneUtils.call(context, passenger.getMobile());
                 }
             });
@@ -156,4 +162,18 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
         void onArrive(ProgView progView, Trip trip);
     }
 
+    public void netDriverCall(int orderId) {
+        RequestParams params = new RequestParams(AppData.Url.callPassenger);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("orderId", orderId + "");
+        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+            }
+        });
+    }
 }

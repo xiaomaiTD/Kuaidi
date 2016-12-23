@@ -137,6 +137,7 @@ public class JGReceiver extends BroadcastReceiver {
                 //系统推送
                 else if (datajson.has("abloutIdentify")) {
                     EventIdentify eventIdentify = new EventIdentify();
+                    eventIdentify.setMsg(message);
                     if (datajson.has("abloutIdentify")) {
                         String aboutIdentify = datajson.getString("abloutIdentify");
                         eventIdentify.setAboutsystem(aboutIdentify);

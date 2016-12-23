@@ -113,6 +113,7 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
         int i = v.getId();
         if (i == R.id.btn_go_cash) {
             Intent intent = new Intent(this, CashActivity.class);
+            intent.putExtra("money", money);
             startActivity(intent);
 
         }

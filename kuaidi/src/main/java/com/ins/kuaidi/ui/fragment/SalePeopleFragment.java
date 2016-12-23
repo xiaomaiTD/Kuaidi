@@ -161,10 +161,12 @@ public class SalePeopleFragment extends BaseFragment implements OnRecycleItemCli
 
     @Override
     public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-        User user = adapter.getResults().get(viewHolder.getLayoutPosition());
-        Intent intent = new Intent(getActivity(), MeDetailActivity.class);
-        intent.putExtra("user", user);
-        startActivity(intent);
+        if (type == 1) {
+            User user = adapter.getResults().get(viewHolder.getLayoutPosition());
+            Intent intent = new Intent(getActivity(), MeDetailActivity.class);
+            intent.putExtra("user", user);
+            startActivity(intent);
+        }
     }
 
     ///////////////////////////////////

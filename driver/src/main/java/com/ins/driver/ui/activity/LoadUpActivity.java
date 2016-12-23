@@ -35,6 +35,7 @@ public class LoadUpActivity extends BaseAppCompatActivity {
         setContentView(R.layout.activity_loadup);
 
         initBase();
+        initData();
 
         lasttime = System.currentTimeMillis();
 
@@ -68,6 +69,10 @@ public class LoadUpActivity extends BaseAppCompatActivity {
         if (!StrUtils.isEmpty(registrationID)) {
             AppData.App.saveJpushId(registrationID);
         }
+    }
+
+    private void initData(){
+        netGetPhone();
     }
 
     private void login() {
@@ -132,7 +137,7 @@ public class LoadUpActivity extends BaseAppCompatActivity {
     }
 
     private void goHomeActivity() {
-        //又不需要轮播页了，我操你妈
+        //又不需要轮播页了，fuck
 //        if (startup) {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
@@ -145,25 +150,25 @@ public class LoadUpActivity extends BaseAppCompatActivity {
     }
 
     //获取客服电话
-//    private void netGetPhone() {
-//        RequestParams params = new RequestParams(AppData.Url.readContactUs);
-//        params.addHeader("token", AppData.App.getToken());
-//        CommonNet.samplepost(params, String.class, new CommonNet.SampleNetHander() {
-//            @Override
-//            public void netGo(int code, Object pojo, String text, Object obj) {
-//                if (pojo == null) netSetError(code, "接口异常");
-//                else {
-//                    String phone = (String)pojo;
-//                    if (!StrUtils.isEmpty(phone)) {
-//                        AppData.App.removePhone();
-//                        AppData.App.savePhone(phone);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void netSetError(int code, String text) {
-//            }
-//        });
-//    }
+    private void netGetPhone() {
+        RequestParams params = new RequestParams(AppData.Url.readContactUs);
+        params.addHeader("token", AppData.App.getToken());
+        CommonNet.samplepost(params, String.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(int code, Object pojo, String text, Object obj) {
+                if (pojo == null) netSetError(code, "接口异常");
+                else {
+                    String phone = (String)pojo;
+                    if (!StrUtils.isEmpty(phone)) {
+                        AppData.App.removePhone();
+                        AppData.App.savePhone(phone);
+                    }
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+            }
+        });
+    }
 }

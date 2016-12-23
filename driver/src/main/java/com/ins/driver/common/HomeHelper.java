@@ -43,6 +43,7 @@ public class HomeHelper {
         activity.driverView.setVisibility(View.GONE);
         setOffline(activity);//未登陆状态显示离线状态
         activity.check_lu.setChecked(false);
+        activity.img_new.setVisibility(View.GONE);
     }
 
     public static void setInit(HomeActivity activity) {
@@ -50,7 +51,7 @@ public class HomeHelper {
         activity.btn_go.setVisibility(View.VISIBLE);
         activity.check_lu.setVisibility(View.GONE);
         activity.driverView.setVisibility(View.GONE);
-
+        activity.img_new.setVisibility(View.GONE);
         activity.check_lu.setChecked(false);
     }
 
@@ -58,26 +59,28 @@ public class HomeHelper {
         activity.btn_go.setVisibility(View.GONE);
         activity.check_lu.setVisibility(View.VISIBLE);
         activity.driverView.setVisibility(View.GONE);
+        activity.img_new.setVisibility(View.VISIBLE);
     }
 
 
     public static void setInProg(HomeActivity activity) {
         activity.btn_go.setVisibility(View.GONE);
         activity.check_lu.setVisibility(View.VISIBLE);
-
+        activity.img_new.setVisibility(View.VISIBLE);
         activity.check_lu.setChecked(true);
     }
 
     public static void setInProgAfter(HomeActivity activity) {
         activity.btn_go.setVisibility(View.GONE);
         activity.check_lu.setVisibility(View.VISIBLE);
+        activity.img_new.setVisibility(View.VISIBLE);
     }
 
     public static void setDisable(HomeActivity activity) {
         activity.btn_go.setVisibility(View.GONE);
         activity.check_lu.setVisibility(View.GONE);
         activity.driverView.setVisibility(View.GONE);
-
+        activity.img_new.setVisibility(View.GONE);
         activity.check_lu.setChecked(false);
     }
 

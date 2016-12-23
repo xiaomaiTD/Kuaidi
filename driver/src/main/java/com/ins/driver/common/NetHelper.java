@@ -1,5 +1,6 @@
 package com.ins.driver.common;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.reflect.TypeToken;
 import com.ins.driver.ui.activity.HomeActivity;
+import com.ins.driver.ui.activity.IdentifyActivity;
 import com.ins.driver.ui.activity.LoadUpActivity;
 import com.ins.driver.utils.AppHelper;
 import com.ins.middle.entity.CommonEntity;
@@ -59,6 +61,11 @@ public class NetHelper {
                 Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
                 //dialogLoading.hide();
                 activity.btn_go.setEnabled(true);
+                if (code == 202) {
+                    //返回的错误是未通过审核，则跳转审核页面
+                    Intent intent = new Intent(activity, IdentifyActivity.class);
+                    activity.startActivity(intent);
+                }
             }
 
             @Override
@@ -133,11 +140,11 @@ public class NetHelper {
 
     public void netDriverLat() {
         //不在线则不请求
-        if (!activity.isOnline){
+        if (!activity.isOnline) {
             return;
         }
         //没有行程则不请求
-        if (activity.trips==null){
+        if (activity.trips == null) {
             return;
         }
         //如果没有登录（被挤下线），则不请求
