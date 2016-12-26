@@ -1,16 +1,15 @@
 package com.ins.kuaidi.common;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
-import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.reflect.TypeToken;
 import com.ins.kuaidi.entity.LineConfig;
 import com.ins.kuaidi.ui.activity.HomeActivity;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.User;
-import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.MapHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
@@ -18,6 +17,7 @@ import com.ins.middle.entity.Trip;
 import com.ins.middle.utils.SnackUtil;
 import com.sobey.common.utils.StrUtils;
 
+import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
 import java.util.ArrayList;
@@ -29,13 +29,18 @@ import java.util.List;
 
 public class NetHelper {
 
+    private Callback.Cancelable cancelable;
+
     private HomeActivity activity;
 
     public NetHelper(HomeActivity activity) {
         this.activity = activity;
     }
 
-    public void netGetArea(String city) {
+    public void netGetArea(final String city) {
+        if (cancelable != null) {
+            cancelable.cancel();
+        }
         //城市为空不请求
         if (StrUtils.isEmpty(city)) {
             return;
@@ -43,7 +48,7 @@ public class NetHelper {
         RequestParams params = new RequestParams(AppData.Url.getArea);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("cityName", city);
-        CommonNet.samplepost(params, new TypeToken<List<List<String>>>() {
+        cancelable = CommonNet.samplepost(params, new TypeToken<List<List<String>>>() {
         }.getType(), new CommonNet.SampleNetHander() {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
@@ -53,22 +58,27 @@ public class NetHelper {
                 activity.ptsArray = MapHelper.str2LatLngsArray(areas);
                 activity.areasLay = MapHelper.drawAreas(activity.mapView, activity.ptsArray);
                 //获取到围栏时检测下是否在围栏内
-                activity.setBubbleOn(activity.nowLatLng);
+                activity.setBubbleOn(activity.baiduMap.getMapStatus().target, false);
+                if (StrUtils.isEmpty(areas)) {
+                    Toast.makeText(activity, city + "：该区域未开通", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void netSetError(int code, String text) {
-                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, city + "：该区域未开通", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void netEnd(int status) {
-                activity.dialogLoading.hide();
+//                activity.dialogLoading.hide();
+                activity.progress_title.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void netStart(int status) {
-                activity.dialogLoading.show();
+//                activity.dialogLoading.show();
+                activity.progress_title.setVisibility(View.VISIBLE);
             }
         });
     }

@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -101,6 +102,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public View btn_fresh;
     private View btn_relocate;
     public View img_home_cancel;
+    public ProgressBar progress_title;
 
     public DialogLoading dialogLoading;
     private DialogMouthPicker dialogTime;
@@ -115,7 +117,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public String nowcity;
     //当前定位位置
     public LatLng nowLatLng;
-    boolean isIn;
+    public boolean isIn;
     //地理围栏
     public List<List<LatLng>> ptsArray = new ArrayList<>();
     public ArrayList<Overlay> areasLay = new ArrayList<>();
@@ -355,6 +357,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         waitingHelper = new WaitingHelper(btn_go);
         btn_fresh = findViewById(R.id.btn_fresh);
         btn_relocate = findViewById(R.id.btn_map_relocate);
+        progress_title = (ProgressBar) findViewById(R.id.progress_home_title);
 
         img_navi_header = (ImageView) navi.getHeaderView(0).findViewById(R.id.img_navi_header);
         text_username = (TextView) navi.getHeaderView(0).findViewById(R.id.text_navi_username);
@@ -367,6 +370,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         img_home_cancel.setOnClickListener(this);
         btn_relocate.setOnClickListener(this);
 
+        progress_title.setVisibility(View.INVISIBLE);
         img_home_cancel.setVisibility(View.GONE);
         lay_map_bubble.setVisibility(View.GONE);
         btn_go.setVisibility(View.GONE);
@@ -512,8 +516,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     //移动大头针结束，显示渐出动画
-    public void setBubbleOn(LatLng latLng) {
-        if (StrUtils.isEmpty(ptsArray) || latLng == null) {
+    public void setBubbleOn(LatLng latLng, boolean needSearch) {
+        if (latLng == null) {
             return;
         }
         isIn = MapHelper.isInAreas(ptsArray, latLng);
@@ -526,13 +530,17 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                     YoYo.with(Techniques.Landing).duration(200).playOn(lay_map_bubble);
                 }
                 //检索地址
-                mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
+                if (needSearch) mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
             }
         } else {
             //不在围栏里面则清除上车地点
             holdcarView.setStartPosition(null);
-            //mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
+            if (needSearch) mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
         }
+    }
+
+    public void setBubbleOn(LatLng latLng) {
+        setBubbleOn(latLng, true);
     }
 
     ////////////////////////////////////
@@ -739,9 +747,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         //定位成功后保存定位坐标
         this.nowLatLng = latLng;
         //定位成功后保存定位城市
-        this.nowcity = city;
+        this.nowcity = city + district;
         if (isFirst) {
-            setCity(city);
+            setCity(city + district);
         }
         //当前有行程状态的时候（不是初始状态,并且已经匹配到司机），则要不断拉取司机位置信息
         if (trip != null && trip.getDriver() != null) {
@@ -777,8 +785,12 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 }
             } else {
                 String district = result.getAddressDetail().district;
-                String newCity = city;
-                Log.e("liao", result.getAddressDetail().city + result.getAddressDetail().district);
+                String newCity = result.getAddressDetail().city;
+                String address = newCity + district;
+                Log.e("liao", address);
+                if (!city.equals(address)) {
+                    setCity(address);
+                }
             }
         }
     }
