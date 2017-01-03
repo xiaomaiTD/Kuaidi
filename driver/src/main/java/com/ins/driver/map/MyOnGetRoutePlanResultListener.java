@@ -12,6 +12,8 @@ import com.baidu.mapapi.search.route.MassTransitRouteResult;
 import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.ins.driver.ui.activity.HomeActivity;
+import com.ins.middle.utils.AppHelper;
 
 /**
  * Created by Administrator on 2016/11/13.
@@ -19,12 +21,15 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 
 public class MyOnGetRoutePlanResultListener implements OnGetRoutePlanResultListener {
 
+    private HomeActivity activity;
     private MapView mapView;
     public static DrivingRouteOverlay overlay;
     public static boolean needzoom = true;
+    public static boolean enable = true;
 
-    public MyOnGetRoutePlanResultListener(MapView mapView) {
-        this.mapView = mapView;
+    public MyOnGetRoutePlanResultListener(HomeActivity activity) {
+        this.activity = activity;
+        this.mapView = activity.mapView;
     }
 
     @Override
@@ -41,6 +46,7 @@ public class MyOnGetRoutePlanResultListener implements OnGetRoutePlanResultListe
 
     @Override
     public void onGetDrivingRouteResult(DrivingRouteResult result) {
+        if (!enable) return;
         if (overlay != null) overlay.removeFromMap();
         if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
             Toast.makeText(mapView.getContext(), "抱歉，未找到结果", Toast.LENGTH_SHORT).show();

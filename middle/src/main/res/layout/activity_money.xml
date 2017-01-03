@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/wj_bk"
     android:fitsSystemWindows="true"
-    tools:context="com.ins.kuaidi.com.ins.middle.ui.activity.MoneyActivity">
+    tools:context=".ui.activity.MoneyActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -31,6 +31,20 @@
                 android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_big" />
 
+            <TextView
+                android:id="@+id/btn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="提现记录"
+                android:textColor="@color/kd_yellow"
+                android:textSize="@dimen/text_big_nomal" />
+
+
         </android.support.v7.widget.Toolbar>
 
         <LinearLayout
@@ -42,18 +56,18 @@
             app:layout_scrollFlags="scroll|enterAlways">
 
             <LinearLayout
-                android:layout_marginTop="20dp"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:gravity="center"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/shape_oval_yellow"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/text_money"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text="1242.34"
                     android:textColor="@color/white"
@@ -61,8 +75,8 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text="余额(元)"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_nomal" />

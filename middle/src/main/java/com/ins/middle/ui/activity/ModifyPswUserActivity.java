@@ -15,6 +15,7 @@ import com.ins.middle.common.AppVali;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.User;
+import com.ins.middle.receiver.SMSBroadcastReceiver;
 import com.ins.middle.ui.dialog.DialogMsg;
 import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.helper.ValiHelper;
@@ -27,6 +28,7 @@ import org.xutils.http.RequestParams;
 public class ModifyPswUserActivity extends BaseBackActivity implements View.OnClickListener {
 
     private ValiHelper valiHelper;
+    private SMSBroadcastReceiver smsBroadcastReceiver;
 
     private ViewGroup showingroup;
     private View showin;
@@ -46,6 +48,9 @@ public class ModifyPswUserActivity extends BaseBackActivity implements View.OnCl
         setContentView(R.layout.activity_modifypswuser);
         setToolbar();
 
+//        smsBroadcastReceiver = new SMSBroadcastReceiver();
+//        smsBroadcastReceiver.registSmsReciver(this);
+
         initBase();
         initView();
         initData();
@@ -56,6 +61,7 @@ public class ModifyPswUserActivity extends BaseBackActivity implements View.OnCl
     protected void onDestroy() {
         super.onDestroy();
         if (dialogMsg != null) dialogMsg.dismiss();
+//        if (smsBroadcastReceiver != null) smsBroadcastReceiver.unRegistSmsReciver(this);
     }
 
     private void initBase() {

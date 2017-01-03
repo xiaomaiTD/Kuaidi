@@ -16,10 +16,12 @@ import android.widget.Toast;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.google.gson.reflect.TypeToken;
 import com.ins.middle.R;
+import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.BankCard;
 import com.ins.middle.entity.Cash;
+import com.ins.middle.entity.User;
 import com.ins.middle.entity.Wallet;
 import com.ins.middle.ui.dialog.DialogLoading;
 import com.ins.middle.utils.AppHelper;
@@ -29,6 +31,7 @@ import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.http.RequestParams;
 
 import java.util.ArrayList;
@@ -119,7 +122,33 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() <= 0) return;
                 float editcash = Float.parseFloat(s.toString());
-                boolean enable = AppHelper.enableCash(money, editcash, cash.getCashRate(), PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit());
+                String input = s.subSequence(start, start + count).toString();
+                if (s.length() == 1 && "0".equals(input)) {
+                    edit_cash_money.setText("");
+                    return;
+                }
+                String msg = AppHelper.getCashMsg(money, PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit(), cash.getQuota(), editcash);
+                if (msg != null) {
+                    Snackbar.make(showingroup, msg, Snackbar.LENGTH_INDEFINITE).show();
+                }
+
+                float cashAll = AppHelper.getCashAll(money, PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit(), cash.getQuota());
+                if (editcash > cashAll) {
+                    editcash = cashAll;
+                    String content = ((int) editcash) + "";
+                    if (editcash==0) content = "";
+                    edit_cash_money.setText(content);
+                    edit_cash_money.setSelection(content.length());
+                }
+
+
+//                if (editcash > cash.getQuota()) {
+//                    editcash = cash.getQuota();
+//                    edit_cash_money.setText(((int) editcash) + "");
+//                    edit_cash_money.setSelection((((int) editcash) + "").length());
+//                    Snackbar.make(showingroup, "单次最多提现" + ((int) editcash) + "元", Snackbar.LENGTH_INDEFINITE).show();
+//                }
+                boolean enable = AppHelper.enableCash(money, editcash, PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit());
                 btn_go.setEnabled(enable);
             }
         });
@@ -142,6 +171,13 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
                 String name = card.getBankName() + "（" + card.getBankNum().substring(card.getBankNum().length() - 4) + "）";
                 text_cash_bankcard.setText(name);
             }
+        } else {
+            text_cash_bankcard.setText("请选择银行卡");
+        }
+        if (cash!=null){
+            if (money<(PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit())){
+                Snackbar.make(showingroup, "您的余额小于底金，无法提现", Snackbar.LENGTH_INDEFINITE).show();
+            }
         }
     }
 
@@ -155,15 +191,29 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
             startActivityForResult(intent, RESULT_BANKCARD);
         } else if (i == R.id.text_cash_all) {
             if (cash != null) {
-                edit_cash_money.setText("" + (int) AppHelper.getCashAll(money, cash.getCashRate(), PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit()));
+                edit_cash_money.setText("" + (int) AppHelper.getCashAll(money, PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit(), cash.getQuota()));
             }
         } else if (i == R.id.btn_go) {
             if (card != null) {
-                intent.setClass(this, BindUnBankCardActivity.class);
-                intent.putExtra("type", 1);
-                startActivityForResult(intent, RESULT_PAYPSW);
+                float editcash = Float.parseFloat(edit_cash_money.getText().toString());
+                if (editcash % 100 == 0) {
+                    User user = AppData.App.getUser();
+                    if (user.getHasPayPassword() == 1) {
+                        //已设置提现密码，直接进入提现
+                        intent.setClass(this, BindUnBankCardActivity.class);
+                        intent.putExtra("type", 1);
+                        startActivityForResult(intent, RESULT_PAYPSW);
+                    } else {
+                        //未设置提现密码，先设置提现密码
+                        intent.setClass(this, ModifyPswPayActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(this, "请先设置提现密码", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Snackbar.make(showingroup, "提现金额只能是100的整数倍", Snackbar.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(this, "没有选择银行卡，请重试", Toast.LENGTH_SHORT).show();
+                Snackbar.make(showingroup, "没有选择银行卡，请重试", Snackbar.LENGTH_SHORT).show();
             }
         }
     }
@@ -258,9 +308,12 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
             @Override
             public void netGo(int code, Object pojo, String text, Object obj) {
                 Toast.makeText(CashActivity.this, text, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent();
-                intent.putExtra("money", CashActivity.this.money - money);
-                setResult(Activity.RESULT_OK, intent);
+//                Intent intent = new Intent();
+//                intent.putExtra("money", CashActivity.this.money - money);
+//                setResult(Activity.RESULT_OK, intent);
+                finish();
+
+                EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_CASH_MONEY, CashActivity.this.money - money + ""));
                 finish();
             }
 

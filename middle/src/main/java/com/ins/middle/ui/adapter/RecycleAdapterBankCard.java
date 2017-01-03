@@ -50,13 +50,15 @@ public class RecycleAdapterBankCard extends RecyclerView.Adapter<RecycleAdapterB
 
         holder.text_bankcard_bankname.setText(card.getBankName());
         holder.text_bankcard_banknum.setText(AppHelper.getUnSeeBankNum(card.getBankNum()));
-        if (card.getBankName().equals("中国银行")){
-            holder.card_bankcard.setBackgroundResource(R.drawable.shape_bank_red);
-            GlideUtil.loadImg(context,holder.img_bankcard_logo,R.drawable.default_bk,"http://7xnfyf.com1.z0.glb.clouddn.com/zhongguo.png");
-        }else {
-            holder.card_bankcard.setBackgroundResource(R.drawable.shape_bank_blue);
-            GlideUtil.loadImg(context,holder.img_bankcard_logo,R.drawable.default_bk,"http://7xnfyf.com1.z0.glb.clouddn.com/jianse.png");
-        }
+//        if (card.getBankName().equals("中国银行")) {
+//            holder.card_bankcard.setBackgroundResource(R.drawable.shape_bank_red);
+//            GlideUtil.loadImg(context, holder.img_bankcard_logo, R.drawable.default_bk, "http://7xnfyf.com1.z0.glb.clouddn.com/zhongguo.png");
+//        } else {
+//            holder.card_bankcard.setBackgroundResource(R.drawable.shape_bank_blue);
+//            GlideUtil.loadImg(context, holder.img_bankcard_logo, R.drawable.default_bk, "http://7xnfyf.com1.z0.glb.clouddn.com/jianse.png");
+//        }
+        holder.card_bankcard.setBackgroundResource(card.getBkSrc());
+        GlideUtil.loadImg(context, holder.img_bankcard_logo, R.drawable.default_bk, AppHelper.getRealImgPath(card.getUrl()));
     }
 
     @Override

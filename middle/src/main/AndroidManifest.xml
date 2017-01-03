@@ -125,6 +125,11 @@
             android:label="@string/title_activity_paydetail"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Back"></activity>
+        <activity
+            android:name="com.ins.middle.ui.activity.CashHisActivity"
+            android:label="@string/title_activity_cashhis"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Back"></activity>
     </application>
 
 </manifest>

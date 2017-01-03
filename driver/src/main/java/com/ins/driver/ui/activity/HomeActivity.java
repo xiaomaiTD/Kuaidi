@@ -92,7 +92,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private ImageView img_user;
     private TextView text_username;
     private TextView text_title;
-    private MapView mapView;
+    public MapView mapView;
     public BaiduMap baiduMap;
     public TextView btn_go;
     public View btn_fresh;
@@ -163,20 +163,20 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         String msg = eventIdentify.getMsg();
         if ("15".equals(aboutsystem)) {
             //审核通过
-            User user = AppData.App.getUser();
-            user.setStatus(User.AUTHENTICATED);
-            AppData.App.saveUser(user);
-            setUserData();
+//            User user = AppData.App.getUser();
+//            user.setStatus(User.AUTHENTICATED);
+//            AppData.App.saveUser(user);
+//            setUserData();
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-//            Toast.makeText(this, "司机认证审核已通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
+            netHelper.getInfo();
         } else if ("16".equals(aboutsystem)) {
             //审核不通过
-            User user = AppData.App.getUser();
-            user.setStatus(User.UNAUTHORIZED);
-            AppData.App.saveUser(user);
-            setUserData();
+//            User user = AppData.App.getUser();
+//            user.setStatus(User.UNAUTHORIZED);
+//            AppData.App.saveUser(user);
+//            setUserData();
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-//            Toast.makeText(this, "司机认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
+            netHelper.getInfo();
         }
     }
 
@@ -212,6 +212,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //乘客取消了订单
             HomeHelper.setFresh(this);
             SnackUtil.showSnack(showingroup, msg);
+            //取消订单后正在规划的路线失效
+            MyOnGetRoutePlanResultListener.enable = true;
 //            SnackUtil.showSnack(showingroup, "乘客取消了订单，系统正在重新为您寻找乘客");
         } else if ("102".equals(aboutOrder)) {
             //乘客已经全部下车，司机选择继续接单，回滚初始状态(本地推送)
@@ -362,7 +364,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         locationer.setCallback(this);
         //搜索相关，初始化搜索模块，注册事件监听
         mSearch = RoutePlanSearch.newInstance();
-        mSearch.setOnGetRoutePlanResultListener(new MyOnGetRoutePlanResultListener(mapView));
+        mSearch.setOnGetRoutePlanResultListener(new MyOnGetRoutePlanResultListener(this));
         // 初始化搜索模块，注册事件监听
         geoSearch = GeoCoder.newInstance();
         geoSearch.setOnGetGeoCodeResultListener(this);
@@ -494,6 +496,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             if (!StrUtils.isEmpty(trip.getFromLat())) {
                 MyOnGetRoutePlanResultListener.needzoom = needzoom;
                 LatLng formLat = MapHelper.str2LatLng(trip.getFromLat());
+                MyOnGetRoutePlanResultListener.enable = true;
                 mSearch.drivingSearch((new DrivingRoutePlanOption()).from(PlanNode.withLocation(nowLatLng)).to(PlanNode.withLocation(formLat)));
                 //查询一次后就不再查询了
                 needSearchRout = false;

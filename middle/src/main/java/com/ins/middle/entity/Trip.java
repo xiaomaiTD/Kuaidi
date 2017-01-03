@@ -150,12 +150,22 @@ public class Trip implements Serializable, Comparable<Trip> {
      */
     private User driver;
 
+    private String msg;
 
     //本地字段
 //    @Expose
     private transient Overlay mark;
     private boolean isCheck;
     private boolean isLineFlag = false;
+    private boolean showMsg = false;
+
+    public boolean isShowMsg() {
+        return showMsg;
+    }
+
+    public void setShowMsg(boolean showMsg) {
+        this.showMsg = showMsg;
+    }
 
     public boolean isLineFlag() {
         return isLineFlag;
@@ -163,6 +173,14 @@ public class Trip implements Serializable, Comparable<Trip> {
 
     public void setLineFlag(boolean lineFlag) {
         isLineFlag = lineFlag;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public boolean isCheck() {

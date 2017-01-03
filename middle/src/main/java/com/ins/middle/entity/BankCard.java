@@ -14,6 +14,27 @@ public class BankCard implements Serializable {
     private String bankName;
     private int userId;
 
+    //本地字段
+    private String url;
+    private int bkSrc;
+
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public int getBkSrc() {
+        return bkSrc;
+    }
+
+    public void setBkSrc(int bkSrc) {
+        this.bkSrc = bkSrc;
+    }
+
     public int getId() {
         return id;
     }

@@ -15,6 +15,7 @@ public class AppConstant {
     public static final String EVENT_MODIFYPAYPSW = "EVENT_MODIFYPAYPSW";       //修改提现密码fragment页面传参
     public static final String EVENT_SALE = "EVENT_SALE";       //分享列表fragment页面传参
     public static final String EVENT_HOME_CITY = "EVENT_HOME_CITY";       //首页选择城市
+    public static final String EVENT_CASH_MONEY = "EVENT_CASH_MONEY";       //提现余额变化
 
     private static final String FLAGMODE = "LOVE&INS";
 

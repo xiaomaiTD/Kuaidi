@@ -14,8 +14,10 @@ import android.widget.Toast;
 import com.google.gson.reflect.TypeToken;
 import com.ins.middle.R;
 import com.ins.middle.common.AppData;
+import com.ins.middle.common.BankCardHelper;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.BankCard;
+import com.ins.middle.entity.User;
 import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.AppHelper;
 import com.sobey.common.common.LoadingViewUtil;
@@ -215,6 +217,7 @@ public class BankCardActivity extends BaseBackActivity implements OnRecycleItemC
                 if (pojo == null) netSetError(code, "错误：返回数据为空");
                 else {
                     List<BankCard> cards = (ArrayList<BankCard>) pojo;
+                    BankCardHelper.setBankConfigs(cards);
                     //有数据才添加，否则显示lack信息
                     if (!StrUtils.isEmpty(cards)) {
                         List<BankCard> results = adapter.getResults();

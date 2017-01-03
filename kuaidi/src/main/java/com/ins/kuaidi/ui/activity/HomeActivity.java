@@ -186,20 +186,20 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         String msg = eventIdentify.getMsg();
         if ("15".equals(aboutsystem)) {
             //审核通过
-            User user = AppData.App.getUser();
-            user.setStatus(User.AUTHENTICATED);
-            AppData.App.saveUser(user);
-            setUserData();
+//            User user = AppData.App.getUser();
+//            user.setStatus(User.AUTHENTICATED);
+//            AppData.App.saveUser(user);
+//            setUserData();
             SnackUtil.showSnack(showingroup, msg);
-            //Toast.makeText(this, "实名认证审核已通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
+            netHelper.getInfo();
         } else if ("16".equals(aboutsystem)) {
             //审核不通过
-            User user = AppData.App.getUser();
-            user.setStatus(User.UNAUTHORIZED);
-            AppData.App.saveUser(user);
-            setUserData();
+//            User user = AppData.App.getUser();
+//            user.setStatus(User.UNAUTHORIZED);
+//            AppData.App.saveUser(user);
+//            setUserData();
             SnackUtil.showSnack(showingroup, msg);
-            //Toast.makeText(this, "实名认证审核未通过，请到系统消息中查看详情", Toast.LENGTH_SHORT).show();
+            netHelper.getInfo();
         }
     }
 
@@ -222,6 +222,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //已经到达目的地
             //因为乘客支付后可继续下单的改动，这里不需要再刷新了
             //HomeHelper.setFresh(this);
+            //设置行程为已到达状态，下次定位会检查状态从地图上移除司机位置
+            if (trip!=null) trip.setStatus(Trip.STA_2006);
             SnackUtil.showSnack(showingroup, msg);
 //            SnackUtil.showSnack(showingroup, "司机已将您送达目的地，感谢您的使用");
         } else if ("7".equals(aboutOrder) && PushValiHelper.pushPMattch(trips, orderId)) {
@@ -535,7 +537,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         } else {
             //不在围栏里面则清除上车地点
             holdcarView.setStartPosition(null);
-            if (needSearch) mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
+            if (trip == null) {
+                if (needSearch) mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
+            }
         }
     }
 
@@ -752,9 +756,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             setCity(city + district);
         }
         //当前有行程状态的时候（不是初始状态,并且已经匹配到司机），则要不断拉取司机位置信息
-        if (trip != null && trip.getDriver() != null) {
-            netHelper.netLatDriver(trip.getDriver().getLineId(), trip.getDriverId());
-        }
+        reqDriverPosition();
     }
 
     //检索回调
@@ -791,6 +793,18 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 if (!city.equals(address)) {
                     setCity(address);
                 }
+            }
+        }
+    }
+
+    //请求司机位置并显示
+    private void reqDriverPosition(){
+        if (trip != null && trip.getDriver() != null) {
+            //又改了需求：乘客到达目的地后（status<2006）就看不见司机了
+            if (trip.getStatus()<Trip.STA_2006) {
+                netHelper.netLatDriver(trip.getDriver().getLineId(), trip.getDriverId());
+            }else {
+                if (carMap!=null)carMap.removeFromMap();
             }
         }
     }

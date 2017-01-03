@@ -18,6 +18,7 @@ import com.ins.middle.entity.User;
 import com.ins.middle.entity.Wallet;
 import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
+import com.sobey.common.utils.NumAnim;
 import com.sobey.common.utils.NumUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,6 +45,15 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
     public void onEventMainThread(Integer flag) {
         if (flag == AppConstant.EVENT_UPDATE_PAYWAY) {
             setPayWayData();
+        }
+    }
+
+    @Subscribe
+    public void onEventMainThread(String flagSpc) {
+        if (AppConstant.EVENT_CASH_MONEY.equals(AppConstant.getFlag(flagSpc))) {
+            float money = Float.parseFloat(AppConstant.getStr(flagSpc));
+            wallet.setBalance(money);
+            setWalletData(wallet);
         }
     }
 

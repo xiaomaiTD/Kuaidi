@@ -18,7 +18,7 @@ import com.ins.middle.ui.fragment.BaseFragment;
 /**
  * Created by Administrator on 2016/6/2 0002.
  */
-public class IdentifyOneFragment extends BaseFragment implements View.OnClickListener{
+public class IdentifyOneFragment extends BaseFragment implements View.OnClickListener {
 
     private int position;
     private View rootView;
@@ -85,27 +85,28 @@ public class IdentifyOneFragment extends BaseFragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.item_identify:
                 activity.next();
                 break;
         }
     }
 
-    private void setStatusData(){
+    private void setStatusData() {
         User user = AppData.App.getUser();
+        if (user == null) return;
         //设置认证状态
-        if (user.getStatus()== User.UNAUTHORIZED) {
+        if (user.getStatus() == User.UNAUTHORIZED) {
             text_identify_status.setText("未认证");
             text_identify_status.setTextColor(ContextCompat.getColor(getActivity(), com.ins.middle.R.color.com_text_dark));
             text_identify_status.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getActivity(), R.drawable.icon_setting_safe), null, null, null);
             item_identify.setClickable(true);
-        }else if (user.getStatus()==User.CERTIFICATIONING){
+        } else if (user.getStatus() == User.CERTIFICATIONING) {
             text_identify_status.setText("认证中");
             text_identify_status.setTextColor(ContextCompat.getColor(getActivity(), com.ins.middle.R.color.com_text_dark));
             text_identify_status.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getActivity(), R.drawable.icon_setting_safe), null, null, null);
             item_identify.setClickable(false);
-        }else if (user.getStatus()==User.AUTHENTICATED){
+        } else if (user.getStatus() == User.AUTHENTICATED) {
             text_identify_status.setText("已认证");
             text_identify_status.setTextColor(ContextCompat.getColor(getActivity(), com.ins.middle.R.color.com_text_blank));
             text_identify_status.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getActivity(), R.drawable.icon_setting_safe), null, null, null);

@@ -83,7 +83,8 @@ public class BindUnBankCardActivity extends BaseBackActivity implements View.OnC
         }
         //设置点击弹出自定义虚拟键盘
         keybord.setClickShowKeybord(pswView);
-        keybord.setVisibility(View.GONE);
+        //默认键盘可见
+        keybord.setVisibility(View.VISIBLE);
         //设置虚拟键盘点击事件
         AppHelper.AttachKeybordWithPswView(keybord, pswView);
     }

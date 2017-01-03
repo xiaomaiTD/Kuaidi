@@ -13,7 +13,7 @@ import android.widget.TextView;
 public class FontUtils {
 
     public static void font_ltx(final Context context, final View root) {
-        applyFont(context,root,"fonts/ltx.ttf");
+        applyFont(context, root, "fonts/ltx.ttf");
     }
 
     public static void applyFont(final Context context, final View root, final String fontName) {
@@ -30,4 +30,9 @@ public class FontUtils {
         }
     }
 
+    public static void boldText(TextView textView) {
+        if (textView != null) {
+            textView.getPaint().setFakeBoldText(true);
+        }
+    }
 }

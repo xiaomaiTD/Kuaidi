@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/wj_bk"
     android:fitsSystemWindows="true"
-    tools:context=".ui.activity.TripActivity">
+    tools:context=".ui.activity.CashHisActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -26,24 +26,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="我的行程"
+                android:text="提现记录"
                 android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_big" />
 
-            <TextView
-                android:id="@+id/btn_right"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="编辑"
-                android:textColor="@color/sb_text_blank"
-                android:textSize="@dimen/text_big_nomal" />
-
         </android.support.v7.widget.Toolbar>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/com_line" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -65,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingBottom="0dp" />
+                android:paddingBottom="20dp" />
 
         </com.liaoinstan.springview.widget.SpringView>
 

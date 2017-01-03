@@ -159,20 +159,25 @@ public class HoldcarView extends FrameLayout implements View.OnClickListener {
     //////////////设置数据的对外方法
 
     public void setStartPosition(Position position) {
+        startPosition = position;
         if (position != null) {
             text_start.setText(position.getCity() + " " + position.getKey());
-            startPosition = position;
         } else {
             text_start.setText("出发地");
-            startPosition = null;
         }
     }
 
     public void setEndPosition(Position position) {
-        text_end.setText(position.getCity() + " " + position.getKey());
         endPosition = position;
-        lay_price.setVisibility(VISIBLE);
-        lay_seat.setVisibility(VISIBLE);
+        if (position!=null) {
+            text_end.setText(position.getCity() + " " + position.getKey());
+            lay_price.setVisibility(VISIBLE);
+            lay_seat.setVisibility(VISIBLE);
+        }else {
+            text_end.setText("目的地");
+            lay_price.setVisibility(GONE);
+            lay_seat.setVisibility(GONE);
+        }
     }
 
     public void setStartTime(int day, String time) {
@@ -189,13 +194,16 @@ public class HoldcarView extends FrameLayout implements View.OnClickListener {
         this.msg = msg;
     }
 
-
     public void setLineConfig(LineConfig lineConfig){
         adapter.setLineConfig(lineConfig);
     }
 
     public void clear(){
-
+        setStartPosition(null);
+        setEndPosition(null);
+        setStartTime(4,"");
+        setMsg("");
+        setLineConfig(null);
     }
 
     /////////////////////////

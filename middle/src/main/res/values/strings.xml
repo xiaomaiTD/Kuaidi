@@ -37,6 +37,7 @@
     <string name="title_activity_msg">系统消息</string>
     <string name="title_activity_startup">引导页</string>
     <string name="title_activity_city">选择城市</string>
+    <string name="title_activity_cashhis">提现记录</string>
 
     <!--cameraview-->
     <string name="camera_permission_confirmation">This app demonstrates the usage of CameraView. In order to do that, it needs permission to access camera.</string>

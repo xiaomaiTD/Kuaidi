@@ -36,6 +36,27 @@ public class NetHelper {
         this.activity = activity;
     }
 
+    public void getInfo() {
+        RequestParams params = new RequestParams(AppData.Url.getInfo);
+        params.addHeader("token", AppData.App.getToken());
+        CommonNet.samplepost(params, User.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(int code, final Object pojo, String text, Object obj) {
+                if (pojo == null) netSetError(code, "接口异常:getInfo");
+                else {
+                    User user = (User) pojo;
+                    AppData.App.removeUser();
+                    AppData.App.saveUser(user);
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void netOnOff(final boolean onoff, String city, String latlng) {
         RequestParams params = new RequestParams(AppData.Url.onOffLine);
         params.addHeader("token", AppData.App.getToken());

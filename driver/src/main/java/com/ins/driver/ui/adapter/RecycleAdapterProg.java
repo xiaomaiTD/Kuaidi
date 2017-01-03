@@ -74,6 +74,17 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
             }
         });
 
+        setShowMsg(holder, trip);
+        holder.img_show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trip.setShowMsg(!trip.isShowMsg());
+                setShowMsg(holder, trip);
+            }
+        });
+
+        holder.text_msg.setText(!StrUtils.isEmpty(trip.getMsg()) ? trip.getMsg() : "无备注");
+
         final User passenger = trip.getPassenger();
 
         if (passenger != null) {
@@ -121,6 +132,14 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
         return results.size();
     }
 
+    private void setShowMsg(Holder holder, Trip trip) {
+        if (trip.isShowMsg()) {
+            holder.text_msg.setVisibility(View.VISIBLE);
+        } else {
+            holder.text_msg.setVisibility(View.GONE);
+        }
+    }
+
     public class Holder extends RecyclerView.ViewHolder {
 
         private ImageView img_header;
@@ -128,6 +147,8 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
         private TextView text_typecount;
         private TextView text_start;
         private TextView text_end;
+        private TextView text_msg;
+        private ImageView img_show;
         private ImageView img_call;
         private ProgView progView;
 
@@ -140,6 +161,8 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
             text_end = (TextView) itemView.findViewById(R.id.text_passenger_end);
             img_call = (ImageView) itemView.findViewById(R.id.img_passenger_call);
             progView = (ProgView) itemView.findViewById(R.id.progView);
+            text_msg = (TextView) itemView.findViewById(R.id.text_prog_msg);
+            img_show = (ImageView) itemView.findViewById(R.id.img_prog_show);
         }
     }
 

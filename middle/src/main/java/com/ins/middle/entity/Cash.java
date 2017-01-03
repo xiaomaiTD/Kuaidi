@@ -9,6 +9,15 @@ public class Cash implements Serializable {
     private float cashRate;
     private float driverDeposit;
     private float passengerDeposit;
+    private float quota;
+
+    public float getQuota() {
+        return quota;
+    }
+
+    public void setQuota(float quota) {
+        this.quota = quota;
+    }
 
     public float getCashRate() {
         return cashRate;

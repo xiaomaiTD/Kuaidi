@@ -231,15 +231,60 @@ public class AppHelper {
     /**
      * 判断是否可以提现
      */
-    public static boolean enableCash(float money, float editcash, float lv, float initmoneny) {
-        return editcash <= getCashAll(money, lv, initmoneny);
+    public static boolean enableCash(float money, float editcash, float initmoneny) {
+        if (editcash > initmoneny) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * 计算最多可提现多少
      */
-    public static float getCashAll(float money, float lv, float initmoneny) {
-        float all = (money - initmoneny) / (lv / 100 + 1);
-        return ((int)(all/100))*100;
+    public static float getCashAll(float money, float initmoneny, float maxmoney) {
+//        float all = (money - initmoneny) / (lv / 100 + 1);
+//        if (all < 0) all = 0;
+//        return ((int) (all / 100)) * 100;
+        if (money <= initmoneny) {
+            //余额小于底金,可提0
+            return 0;
+        } else {
+            if (money < maxmoney) {
+                //余额小于单次上线,可提余额的百位
+                return ((int) (money / 100)) * 100;
+            } else {
+                //余额大于单次上线,可提上线
+                return ((int) (maxmoney / 100)) * 100;
+            }
+        }
+    }
+
+    public static String getCashMsg(float money, float initmoneny, float maxmoney, float editmoney) {
+        if (money <= initmoneny) {
+            //余额小于底金,可提0
+            return "您的余额小于底金，无法提现";
+        } else {
+            if (money < maxmoney) {
+                //余额小于单次上线,可提余额的百位
+                if (editmoney > money) {
+                    return "当前余额最多可提现" + getBSint(money) + "元";
+                }else {
+                    return null;
+                }
+            } else {
+                //余额大于单次上线,可提上线
+                if (editmoney > maxmoney) {
+                    return "单次最多提现" + getBSint(maxmoney) + "元";
+                }else {
+                    return null;
+                }
+            }
+        }
+    }
+
+
+    private static int getBSint(float money) {
+        return ((int) (money / 100)) * 100;
     }
 }

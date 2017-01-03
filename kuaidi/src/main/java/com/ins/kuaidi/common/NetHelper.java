@@ -37,6 +37,27 @@ public class NetHelper {
         this.activity = activity;
     }
 
+    public void getInfo() {
+        RequestParams params = new RequestParams(AppData.Url.getInfo);
+        params.addHeader("token", AppData.App.getToken());
+        CommonNet.samplepost(params, User.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(int code, final Object pojo, String text, Object obj) {
+                if (pojo == null) netSetError(code, "接口异常:getInfo");
+                else {
+                    User user = (User) pojo;
+                    AppData.App.removeUser();
+                    AppData.App.saveUser(user);
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void netGetArea(final String city) {
         if (cancelable != null) {
             cancelable.cancel();
@@ -132,8 +153,11 @@ public class NetHelper {
                 ArrayList<Integer> ids = (ArrayList<Integer>) pojo;
                 if (!StrUtils.isEmpty(ids)) {
                     activity.dialogSure.setObject(ids.get(0));
+                    activity.trip = new Trip();
                 }
                 HomeHelper.setMatching(activity);
+                //下单成功后清除上次打车记录
+                activity.holdcarView.clear();
 
                 if (day == 4) {
                     //现在，及时打车

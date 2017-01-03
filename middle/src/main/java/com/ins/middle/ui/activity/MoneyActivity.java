@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
 import com.ins.middle.R;
+import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.MoneyDetail;
@@ -26,6 +27,8 @@ import com.sobey.common.interfaces.OnRecycleItemClickListener;
 import com.sobey.common.utils.NumAnim;
 import com.sobey.common.utils.StrUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 
@@ -46,16 +49,31 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
 
     private float money;
 
+    @Subscribe
+    public void onEventMainThread(String flagSpc) {
+        if (AppConstant.EVENT_CASH_MONEY.equals(AppConstant.getFlag(flagSpc))) {
+            money = Float.parseFloat(AppConstant.getStr(flagSpc));
+            NumAnim.startAnim(text_money, money);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_money);
+        EventBus.getDefault().register(this);
         setToolbar();
 
         initBase();
         initView();
         initCtrl();
         initData();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void initBase() {
@@ -70,6 +88,7 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
         swipe = (SwipeRefreshLayout) findViewById(R.id.swipe);
         text_money = (TextView) findViewById(R.id.text_money);
         findViewById(R.id.btn_go_cash).setOnClickListener(this);
+        findViewById(R.id.btn_right).setOnClickListener(this);
     }
 
     private void initData() {
@@ -116,6 +135,9 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
             intent.putExtra("money", money);
             startActivity(intent);
 
+        } else if (i == R.id.btn_right) {
+            Intent intent = new Intent(this, CashHisActivity.class);
+            startActivity(intent);
         }
     }
 

@@ -32,7 +32,9 @@ public class SnackUtil {
         //设置TSnackbar
         final TSnackbar snackbar = TSnackbar.make(showingroup, msg, TSnackbar.LENGTH_LONG);
         if (listener != null) {
-            snackbar.setDuration(TSnackbar.LENGTH_INDEFINITE);
+            //又改成消息可以自动消失了，fuck，注释掉算了，不打算优化结构了，心累
+            //snackbar.setDuration(TSnackbar.LENGTH_INDEFINITE);
+            snackbar.setDuration(TSnackbar.LENGTH_LONG);
         } else {
             snackbar.setDuration(TSnackbar.LENGTH_LONG);
         }

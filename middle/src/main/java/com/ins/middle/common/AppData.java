@@ -193,6 +193,7 @@ public class AppData {
         public static String getCashConfig            = domain + "mobile/wallet/getCashConfig";             		                    //获取提现配置
         public static String getCash                  = domain + "mobile/wallet/requestDrawCash";             		                //提现
         public static String paypsw                   = domain + "mobile/user/verificationPayPwd";             		                //验证提现密码
+        public static String cashhis                  = domain + "mobile/wallet/getDrawDetail";             		                    //提现记录列表
 
 
     }
