@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -26,10 +27,13 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.dd.CircularProgressButton;
 import com.ins.driver.R;
+import com.ins.driver.ui.activity.HomeActivity;
+import com.ins.driver.ui.dialog.DialogNavi;
 import com.ins.middle.common.AppData;
 import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
+import com.ins.middle.utils.MapHelper;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.DensityUtil;
@@ -181,5 +185,20 @@ public class AppHelper {
             }
         }
         return null;
+    }
+
+    public static void onStartNavi(DialogNavi dialogNavi, Trip trip) {
+        if (trip != null) {
+            LatLng goLat;
+            if (trip.getStatus() >= Trip.STA_2005) {
+                goLat = MapHelper.str2LatLng(trip.getToLat());
+            } else {
+                goLat = MapHelper.str2LatLng(trip.getFromLat());
+            }
+            dialogNavi.setLocation(DialogNavi.baidu2Entity(HomeActivity.nowLatLng), DialogNavi.baidu2Entity(goLat));
+            dialogNavi.show();
+        } else {
+            Toast.makeText(dialogNavi.getContext(), "未获取到行程，请稍后再试", Toast.LENGTH_SHORT).show();
+        }
     }
 }

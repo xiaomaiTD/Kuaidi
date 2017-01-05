@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.baidu.mapapi.model.LatLng;
 import com.google.gson.reflect.TypeToken;
 import com.ins.driver.common.HomeHelper;
 import com.ins.driver.common.ProgNetHelper;
 import com.ins.driver.ui.adapter.RecycleAdapterProg;
 import com.ins.driver.R;
+import com.ins.driver.ui.dialog.DialogNavi;
 import com.ins.driver.ui.dialog.DialogPayStatus;
+import com.ins.driver.utils.AppHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
@@ -27,6 +30,7 @@ import com.ins.middle.ui.activity.BaseBackActivity;
 import com.ins.middle.ui.activity.TripActivity;
 import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.EventBusHelper;
+import com.ins.middle.utils.MapHelper;
 import com.ins.middle.utils.SnackUtil;
 import com.ins.middle.view.ProgView;
 import com.liaoinstan.springview.container.AliFooter;
@@ -57,6 +61,7 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
 
     private DialogPayStatus dialogPayStatus;
     private DialogSure dialogSure;
+    private DialogNavi dialogNavi;
 
     @Subscribe
     public void onEventMainThread(EventOrder eventOrder) {
@@ -103,6 +108,7 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
         EventBus.getDefault().unregister(this);
         if (dialogSure != null) dialogSure.dismiss();
         if (dialogPayStatus != null) dialogPayStatus.dismiss();
+        if (dialogNavi != null) dialogNavi.dismiss();
     }
 
     private void initBase() {
@@ -122,6 +128,7 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
                 finish();
             }
         });
+        dialogNavi = new DialogNavi(this);
     }
 
     private void initView() {
@@ -140,6 +147,7 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
         recyclerView.setAdapter(adapter);
         adapter.setOnRecycleProgListener(onRecycleProgListener);
         adapter.setOnItemClickListener(this);
+        adapter.setOnProgNaviClickListener(onProgNaviClickListener);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(this));
         springView.setHeader(new AliHeader(this, false));
         springView.setFooter(new AliFooter(this, false));
@@ -173,12 +181,19 @@ public class ProgActivity extends BaseBackActivity implements OnRecycleItemClick
 
         @Override
         public void onGetPassenger(ProgView progView, Trip trip) {
-            ProgNetHelper.netReqGetPassenger(progView, trip.getId());
+            ProgNetHelper.netReqGetPassenger(progView, trip);
         }
 
         @Override
         public void onArrive(ProgView progView, Trip trip) {
             netArrive(progView, trip.getId());
+        }
+    };
+
+    private RecycleAdapterProg.OnProgNaviClickListener onProgNaviClickListener = new RecycleAdapterProg.OnProgNaviClickListener() {
+        @Override
+        public void onNaviClick(Trip trip) {
+            AppHelper.onStartNavi(dialogNavi, trip);
         }
     };
 

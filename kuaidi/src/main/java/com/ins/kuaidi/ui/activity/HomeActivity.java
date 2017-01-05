@@ -333,10 +333,11 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             public void onClick(View v) {
                 if (trip != null) {
                     netHelper.netCancleOrder(trip.getId());
-                } else {
-                    int orderId = (int) dialogSure.getObject();
-                    netHelper.netCancleOrder(orderId);
                 }
+//                else {
+//                    int orderId = (int) dialogSure.getObject();
+//                    netHelper.netCancleOrder(orderId);
+//                }
                 dialogSure.hide();
             }
         });

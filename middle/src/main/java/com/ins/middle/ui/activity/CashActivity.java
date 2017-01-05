@@ -136,7 +136,7 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
                 if (editcash > cashAll) {
                     editcash = cashAll;
                     String content = ((int) editcash) + "";
-                    if (editcash==0) content = "";
+                    if (editcash == 0) content = "";
                     edit_cash_money.setText(content);
                     edit_cash_money.setSelection(content.length());
                 }
@@ -174,8 +174,8 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
         } else {
             text_cash_bankcard.setText("请选择银行卡");
         }
-        if (cash!=null){
-            if (money<(PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit())){
+        if (cash != null) {
+            if (money < (PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit())) {
                 Snackbar.make(showingroup, "您的余额小于底金，无法提现", Snackbar.LENGTH_INDEFINITE).show();
             }
         }
@@ -190,6 +190,8 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
             intent.putExtra("type", 1);
             startActivityForResult(intent, RESULT_BANKCARD);
         } else if (i == R.id.text_cash_all) {
+            //又改成了，只需把余额全部显示出来
+//            edit_cash_money.setText((int) money + "");
             if (cash != null) {
                 edit_cash_money.setText("" + (int) AppHelper.getCashAll(money, PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit(), cash.getQuota()));
             }

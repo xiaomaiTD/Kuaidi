@@ -13,7 +13,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/shape_rect_corner_white"
         android:gravity="left|top"
-        android:hint="在这里输入您对本次行程的建议或要求。司机师傅会收到您的信息。"
+        android:hint="给司机捎句话吧"
         android:inputType="textMultiLine"
         android:lineSpacingExtra="8dp"
         android:minLines="10"

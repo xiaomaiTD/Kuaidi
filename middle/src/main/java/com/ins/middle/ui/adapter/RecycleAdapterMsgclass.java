@@ -47,7 +47,7 @@ public class RecycleAdapterMsgclass extends RecyclerView.Adapter<RecycleAdapterM
         MsgClass msgClass = results.get(holder.getLayoutPosition());
 
         holder.text_msgclass_title.setText(msgClass.getTitle());
-        GlideUtil.LoadCircleImgTest(context, holder.img_msgclass_header);
+        holder.img_msgclass_header.setImageResource(msgClass.getType() == 1 ? R.drawable.icon_msgclass_line : R.drawable.icon_msgclass_sys);
     }
 
     @Override

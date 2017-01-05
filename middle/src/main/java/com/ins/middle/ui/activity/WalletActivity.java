@@ -33,6 +33,7 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
     private TextView text_wallet_payway;
     private TextView text_wallet_money;
     private TextView text_wallet_couponcount;
+    private TextView text_wallet_bankcount;
 
     private View lay_wallet_payway;
     private View lay_wallet_money;
@@ -89,6 +90,7 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
         text_wallet_payway = (TextView) findViewById(R.id.text_wallet_payway);
         text_wallet_money = (TextView) findViewById(R.id.text_wallet_money);
         text_wallet_couponcount = (TextView) findViewById(R.id.text_wallet_couponcount);
+        text_wallet_bankcount = (TextView) findViewById(R.id.text_wallet_bankcount);
 
         lay_wallet_payway.setOnClickListener(this);
         lay_wallet_money.setOnClickListener(this);
@@ -140,6 +142,7 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
         if (wallet != null) {
             text_wallet_money.setText(NumUtil.NumberFormat(wallet.getBalance(), 2) + "元");
             text_wallet_couponcount.setText(wallet.getCoupon() + "张");
+            text_wallet_bankcount.setText(wallet.getBanks() + "张");
         }
     }
 

@@ -33,6 +33,7 @@ import com.ins.driver.R;
 import com.ins.driver.common.HomeHelper;
 import com.ins.driver.common.NetHelper;
 import com.ins.driver.map.MyOnGetRoutePlanResultListener;
+import com.ins.driver.ui.dialog.DialogNavi;
 import com.ins.middle.utils.MarkHelper;
 import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
@@ -56,7 +57,6 @@ import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
 import com.ins.middle.utils.MapHelper;
-import com.ins.middle.utils.PackageUtil;
 import com.ins.middle.utils.PushValiHelper;
 import com.ins.middle.utils.SnackUtil;
 import com.ins.middle.view.DriverView;
@@ -105,6 +105,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     private DialogLoading dialogLoading;
     private DialogSure dialogSure;
+    private DialogNavi dialogNavi;
 
     //前后司机集合
     public List<CarMap> cars = new ArrayList<>();
@@ -119,7 +120,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //是否需要查询路线
     private boolean needSearchRout = false;
     //当前定位位置
-    private LatLng nowLatLng;
+    public static LatLng nowLatLng;
 
 
     private long exitTime;
@@ -188,6 +189,12 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         if ("4".equals(aboutOrder)) {
             //接到乘客,乘客已经上车（本地推送）
             netHelper.netGetTrip();
+            //把driverview中的订单状态修改
+            driverView.setVisibility(View.GONE);
+            Trip trip = driverView.getTrip();
+            if (trip != null) {
+                trip.setStatus(Trip.STA_2005);
+            }
         } else if ("5".equals(aboutOrder)) {
             //已经到达目的地
             //目前司机抵达不需要在推送中处理
@@ -278,6 +285,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         if (updateHelper != null) updateHelper.onDestory();
         if (dialogLoading != null) dialogLoading.dismiss();
         if (dialogSure != null) dialogSure.dismiss();
+        if (dialogNavi != null) dialogNavi.dismiss();
     }
 
     private void initBase() {
@@ -296,6 +304,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 netHelper.netOnOff(!btn_go.isSelected(), nowcity + "," + nowdistrict, MapHelper.LatLng2Str(nowLatLng));
             }
         });
+        dialogNavi = new DialogNavi(this);
     }
 
     private void initView() {
@@ -358,6 +367,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             @Override
             public void onDriverCall(int orderId) {
                 netHelper.netDriverCall(orderId);
+            }
+        });
+        //导航按钮点击事件
+        driverView.setOnNaviListenner(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Trip trip = driverView.getTrip();
+                com.ins.driver.utils.AppHelper.onStartNavi(dialogNavi, trip);
             }
         });
         //定位回调

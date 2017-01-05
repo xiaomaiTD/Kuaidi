@@ -7,6 +7,7 @@ import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.EventOrder;
+import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.ins.middle.utils.EventBusHelper;
 import com.ins.middle.view.ProgView;
@@ -42,19 +43,22 @@ public class ProgNetHelper {
         });
     }
 
-    public static void netReqGetPassenger(final ProgView progView, final int orderId) {
+    public static void netReqGetPassenger(final ProgView progView, final Trip trip) {
         RequestParams params = new RequestParams(AppData.Url.orderStatus);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("flag", "1");
-        params.addBodyParameter("orderId", orderId + "");
+        params.addBodyParameter("orderId", trip.getId() + "");
         CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 Toast.makeText(progView.getContext(), text, Toast.LENGTH_SHORT).show();
                 progView.setStart();
+
+                trip.setStatus(Trip.STA_2005);
+
                 EventOrder eventOrder = new EventOrder();
                 eventOrder.setAboutOrder("4");
-                eventOrder.setOrderId(orderId);
+                eventOrder.setOrderId(trip.getId());
                 EventBus.getDefault().post(eventOrder);
             }
 

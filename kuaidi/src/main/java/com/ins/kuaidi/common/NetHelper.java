@@ -152,8 +152,14 @@ public class NetHelper {
                 Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
                 ArrayList<Integer> ids = (ArrayList<Integer>) pojo;
                 if (!StrUtils.isEmpty(ids)) {
-                    activity.dialogSure.setObject(ids.get(0));
-                    activity.trip = new Trip();
+                    for (int id:ids){
+                        Trip trip = new Trip();
+                        trip.setId(id);
+                        activity.trips.clear();
+                        activity.trips.add(trip);
+                        activity.trip = trip;
+                    }
+                    //activity.dialogSure.setObject(ids.get(0));
                 }
                 HomeHelper.setMatching(activity);
                 //下单成功后清除上次打车记录

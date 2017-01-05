@@ -152,11 +152,15 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
                 if (showin == null) {
                     showin = LoadingViewUtil.showin(showingroup, com.ins.middle.R.layout.layout_loading, showin);
                 }
-                //mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
-//                mPoiSearch.searchInCity(new PoiCitySearchOption().city(AppHelper.getSearchCity(city)).keyword(s.toString()).pageCapacity(15).pageNum(0));
-                mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(9999).keyword(s.toString()).pageCapacity(15).pageNum(0));//.sortType(PoiSortType.distance_from_near_to_far)
+                search(latLng, s.toString());
             }
         });
+    }
+
+    private void search(LatLng latLng, String key) {
+        //mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(s.toString()).city(city));
+        //mPoiSearch.searchInCity(new PoiCitySearchOption().city(AppHelper.getSearchCity(city)).keyword(s.toString()).pageCapacity(15).pageNum(0));
+        mPoiSearch.searchNearby(new PoiNearbySearchOption().location(latLng).radius(9999).keyword(key).pageCapacity(15).pageNum(0));//.sortType(PoiSortType.distance_from_near_to_far)
     }
 
     private void freshCtrl() {
@@ -275,6 +279,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 List<List<String>> areas = (ArrayList<List<String>>) pojo;
                 ptsArray = MapHelper.str2LatLngsArray(areas);
+                search(latLng, edit_search.getText().toString());
             }
 
             @Override

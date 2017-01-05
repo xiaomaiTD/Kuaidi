@@ -155,20 +155,24 @@ public class TripActivity extends BaseBackActivity implements OnRecycleItemClick
         if (PackageUtil.isClient()) {
             //已经结束或已支付的订单进入详情页（对乘客来说已支付的订单就算结束了ispay=1），否则退回主页
             if (AppHelper.isFinishOrder(trip) || trip.getIsPay() == 1) {
-                Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
-                intent.putExtra("orderId", trip.getId());
-                intent.putExtra("trip", trip);
-                startActivity(intent);
+                if (trip.getDriver()!=null) {
+                    Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
+                    intent.putExtra("orderId", trip.getId());
+                    intent.putExtra("trip", trip);
+                    startActivity(intent);
+                }
             } else {
                 EventBus.getDefault().post(trip);
                 finish();
             }
         } else {
             if (AppHelper.isFinishOrder(trip)) {
-                Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
-                intent.putExtra("orderId", trip.getId());
-                intent.putExtra("trip", trip);
-                startActivity(intent);
+                if (trip.getDriver()!=null) {
+                    Intent intent = PackageUtil.getSmIntent("TripDetailActivity");
+                    intent.putExtra("orderId", trip.getId());
+                    intent.putExtra("trip", trip);
+                    startActivity(intent);
+                }
             } else {
                 EventBus.getDefault().post(trip);
                 finish();

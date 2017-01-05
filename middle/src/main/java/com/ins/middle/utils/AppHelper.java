@@ -252,10 +252,10 @@ public class AppHelper {
         } else {
             if (money < maxmoney) {
                 //余额小于单次上线,可提余额的百位
-                return ((int) (money / 100)) * 100;
+                return getBSint(money - initmoneny);
             } else {
                 //余额大于单次上线,可提上线
-                return ((int) (maxmoney / 100)) * 100;
+                return getBSint(maxmoney);
             }
         }
     }
@@ -268,15 +268,15 @@ public class AppHelper {
             if (money < maxmoney) {
                 //余额小于单次上线,可提余额的百位
                 if (editmoney > money) {
-                    return "当前余额最多可提现" + getBSint(money) + "元";
-                }else {
+                    return "当前余额最多可提现" + getBSint(money - initmoneny) + "元";
+                } else {
                     return null;
                 }
             } else {
                 //余额大于单次上线,可提上线
                 if (editmoney > maxmoney) {
                     return "单次最多提现" + getBSint(maxmoney) + "元";
-                }else {
+                } else {
                     return null;
                 }
             }

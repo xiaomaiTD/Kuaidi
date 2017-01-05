@@ -48,6 +48,8 @@ public class DriverView extends FrameLayout {
     private TextView text_passenger_start;
     private TextView text_passenger_end;
     private View img_passenger_call;
+    private View img_passenger_navi;
+    private View lay_prog_msg;
     private ProgView prog_passenger;
 
     private User user;
@@ -107,6 +109,8 @@ public class DriverView extends FrameLayout {
         text_passenger_start = (TextView) root.findViewById(R.id.text_passenger_start);
         text_passenger_end = (TextView) root.findViewById(R.id.text_passenger_end);
         img_passenger_call = root.findViewById(R.id.img_passenger_call);
+        img_passenger_navi = root.findViewById(R.id.img_passenger_navi);
+        lay_prog_msg = root.findViewById(R.id.lay_prog_msg);
         prog_passenger = (ProgView) root.findViewById(R.id.progView);
 
         //可能没有这个功能
@@ -115,6 +119,8 @@ public class DriverView extends FrameLayout {
         img_dirver_cancel.setVisibility(GONE);
         //乘客打电话给司机钮默认不可见
         img_dirver_call.setVisibility(GONE);
+        //消息菜单不可见
+        lay_prog_msg.setVisibility(GONE);
     }
 
     private void initCtrl() {
@@ -211,6 +217,14 @@ public class DriverView extends FrameLayout {
         } else {
             img_passenger_call.setVisibility(GONE);
         }
+    }
+
+    public void setOnNaviListenner(OnClickListener onClickListener){
+        img_passenger_navi.setOnClickListener(onClickListener);
+    }
+
+    public Trip getTrip() {
+        return trip;
     }
 
     public void setOnCancleClickListener(OnCancleClickListener onCancleClickListener) {

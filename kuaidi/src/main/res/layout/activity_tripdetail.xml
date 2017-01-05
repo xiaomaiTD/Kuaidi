@@ -180,11 +180,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:isIndicator="true"
-                        android:minHeight="26dp"
                         android:maxHeight="26dp"
+                        android:minHeight="26dp"
                         android:numStars="5"
-                        android:rating="0"
                         android:progressDrawable="@drawable/rating_bar"
+                        android:rating="0"
                         android:stepSize="1" />
 
                     <TextView
@@ -203,23 +203,24 @@
                         android:id="@+id/lay_tripdetail_eva"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/com_text_blank"
                             android:layout_marginLeft="20dp"
                             android:text="留言评价："
-                            android:textSize="@dimen/text_subig"/>
+                            android:textColor="@color/com_text_blank"
+                            android:textSize="@dimen/text_subig" />
 
                         <com.sobey.common.view.EmojiEditText
                             android:id="@+id/edit_tripdetail_describe"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
-                            android:layout_marginBottom="20dp"
                             android:layout_marginTop="10dp"
                             android:background="@drawable/shape_rect_dark_line"
                             android:gravity="left|top"
@@ -244,6 +245,63 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_big" />
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lay_tripdetail_share"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:id="@+id/text_share_wechat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="6dp"
+                            android:drawableTop="@drawable/share_weixin"
+                            android:gravity="center"
+                            android:text="微信"
+                            android:textColor="@color/com_text_blank"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/text_share_wechatmoments"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="6dp"
+                            android:drawableTop="@drawable/share_frends"
+                            android:gravity="center"
+                            android:text="朋友圈"
+                            android:textColor="@color/com_text_blank"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/text_share_qq"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="6dp"
+                            android:drawableTop="@drawable/share_qq"
+                            android:gravity="center"
+                            android:text="QQ"
+                            android:textColor="@color/com_text_blank"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/text_share_xinlangweibo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="6dp"
+                            android:drawableTop="@drawable/share_xinlangweibo"
+                            android:gravity="center"
+                            android:text="微博"
+                            android:textColor="@color/com_text_blank"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                 </LinearLayout>

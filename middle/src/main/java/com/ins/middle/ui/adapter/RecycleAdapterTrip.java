@@ -79,12 +79,18 @@ public class RecycleAdapterTrip extends RecyclerView.Adapter<RecycleAdapterTrip.
         holder.check.setChecked(trip.isCheck());
         holder.lay_trip_linetitle.setVisibility(trip.isLineFlag() ? View.VISIBLE : View.GONE);
 
+        if (trip.getDriver()!=null){
+            holder.img_trip_next.setVisibility(View.VISIBLE);
+        }else {
+            holder.img_trip_next.setVisibility(View.GONE);
+        }
+
         if (isTocheck && AppHelper.isFinishOrder(trip)) {
             holder.check.setVisibility(View.VISIBLE);
             holder.img_trip_next.setVisibility(View.GONE);
         } else {
             holder.check.setVisibility(View.GONE);
-            holder.img_trip_next.setVisibility(View.VISIBLE);
+            if (trip.getDriver()!=null) holder.img_trip_next.setVisibility(View.VISIBLE);
         }
     }
 

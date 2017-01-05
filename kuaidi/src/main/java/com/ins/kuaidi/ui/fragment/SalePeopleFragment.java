@@ -84,7 +84,7 @@ public class SalePeopleFragment extends BaseFragment implements OnRecycleItemCli
             String[] split = value.split("\\|");
             type = Integer.parseInt(split[0]);
             text_salepeople_level.setText(NumUtil.intToZH(type) + "级分销");
-            text_salepeople_money.setText("累计获得 " + split[1]);
+            //text_salepeople_money.setText("累计获得 " + split[1]);
             netGetSalePeople(0);
         }
     }
@@ -196,6 +196,7 @@ public class SalePeopleFragment extends BaseFragment implements OnRecycleItemCli
                 else {
                     SalePeoplePojo salePeoplePojo = (SalePeoplePojo) pojo;
                     List<User> peoples = salePeoplePojo.getDlist();
+                    text_salepeople_money.setText("累计获得 " + salePeoplePojo.getTotalMoney());
                     //有数据才添加，否则显示lack信息
                     if (!StrUtils.isEmpty(peoples)) {
                         List<User> results = adapter.getResults();

@@ -73,6 +73,12 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
                     onRecycleProgListener.onArrive(holder.progView, trip);
             }
         });
+        holder.img_navi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onProgNaviClickListener != null) onProgNaviClickListener.onNaviClick(trip);
+            }
+        });
 
         setShowMsg(holder, trip);
         holder.img_show.setOnClickListener(new View.OnClickListener() {
@@ -135,8 +141,10 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
     private void setShowMsg(Holder holder, Trip trip) {
         if (trip.isShowMsg()) {
             holder.text_msg.setVisibility(View.VISIBLE);
+            holder.img_show.setRotation(180);
         } else {
             holder.text_msg.setVisibility(View.GONE);
+            holder.img_show.setRotation(0);
         }
     }
 
@@ -150,6 +158,7 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
         private TextView text_msg;
         private ImageView img_show;
         private ImageView img_call;
+        private ImageView img_navi;
         private ProgView progView;
 
         public Holder(View itemView) {
@@ -160,6 +169,7 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
             text_start = (TextView) itemView.findViewById(R.id.text_passenger_start);
             text_end = (TextView) itemView.findViewById(R.id.text_passenger_end);
             img_call = (ImageView) itemView.findViewById(R.id.img_passenger_call);
+            img_navi = (ImageView) itemView.findViewById(R.id.img_passenger_navi);
             progView = (ProgView) itemView.findViewById(R.id.progView);
             text_msg = (TextView) itemView.findViewById(R.id.text_prog_msg);
             img_show = (ImageView) itemView.findViewById(R.id.img_prog_show);
@@ -168,6 +178,11 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
 
     private OnRecycleProgListener onRecycleProgListener;
     private OnRecycleItemClickListener onItemClickListener;
+    private OnProgNaviClickListener onProgNaviClickListener;
+
+    public void setOnProgNaviClickListener(OnProgNaviClickListener onProgNaviClickListener) {
+        this.onProgNaviClickListener = onProgNaviClickListener;
+    }
 
     public void setOnItemClickListener(OnRecycleItemClickListener listener) {
         this.onItemClickListener = listener;
@@ -183,6 +198,10 @@ public class RecycleAdapterProg extends RecyclerView.Adapter<RecycleAdapterProg.
         void onGetPassenger(ProgView progView, Trip trip);
 
         void onArrive(ProgView progView, Trip trip);
+    }
+
+    public interface OnProgNaviClickListener {
+        void onNaviClick(Trip trip);
     }
 
     public void netDriverCall(int orderId) {

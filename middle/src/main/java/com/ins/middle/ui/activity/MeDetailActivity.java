@@ -133,12 +133,15 @@ public class MeDetailActivity extends BaseBackActivity implements View.OnClickLi
             if (user.getStatus() == User.UNAUTHORIZED) {
                 text_me_identifystatus.setText("未认证");
                 text_me_identifystatus.setTextColor(ContextCompat.getColor(this, R.color.com_text_dark));
+                text_me_identifystatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_me_identify, 0, 0, 0);
             } else if (user.getStatus() == User.CERTIFICATIONING) {
                 text_me_identifystatus.setText("认证中");
                 text_me_identifystatus.setTextColor(ContextCompat.getColor(this, R.color.com_text_dark));
+                text_me_identifystatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_me_identify, 0, 0, 0);
             } else if (user.getStatus() == User.AUTHENTICATED) {
                 text_me_identifystatus.setText("已认证");
                 text_me_identifystatus.setTextColor(ContextCompat.getColor(this, R.color.com_text_blank));
+                text_me_identifystatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_me_identify_hot, 0, 0, 0);
             }
         }
     }

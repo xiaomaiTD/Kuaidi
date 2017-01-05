@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/wj_bk"
     android:fitsSystemWindows="true"
-    tools:context="com.ins.kuaidi.ui.activity.PayDetailActivity">
+    tools:context=".ui.activity.WalletActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -191,12 +191,13 @@
                     android:textSize="@dimen/text_nomal" />
 
                 <TextView
+                    android:id="@+id/text_wallet_bankcount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="8dp"
                     android:drawableRight="@drawable/icon_item_next"
                     android:gravity="center_vertical"
-                    android:text="绑定银行卡"
+                    android:text="0张"
                     android:textColor="@color/com_text_blank"
                     android:textSize="@dimen/text_nomal" />
 

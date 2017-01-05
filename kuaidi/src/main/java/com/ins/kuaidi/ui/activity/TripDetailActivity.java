@@ -24,6 +24,8 @@ import com.ins.middle.entity.Trip;
 import com.ins.middle.ui.activity.PayDetailActivity;
 import com.ins.middle.utils.PackageUtil;
 import com.ins.middle.view.DriverView;
+import com.ins.sharesdk.dialog.ShareDialog;
+import com.ins.sharesdk.dialog.ShareHelper;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.utils.GlideUtil;
 import com.sobey.common.utils.NumUtil;
@@ -48,6 +50,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
     private TextView text_tripdetail_describe;
     private EditText edit_tripdetail_describe;
     private View lay_tripdetail_eva;
+    private View lay_tripdetail_share;
     private View btn_go;
 
     private Trip trip;
@@ -101,6 +104,10 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
 
         findViewById(R.id.text_tripdetail_totaydetail).setOnClickListener(this);
         findViewById(R.id.btn_right).setOnClickListener(this);
+        findViewById(R.id.text_share_wechat).setOnClickListener(this);
+        findViewById(R.id.text_share_wechatmoments).setOnClickListener(this);
+        findViewById(R.id.text_share_qq).setOnClickListener(this);
+        findViewById(R.id.text_share_xinlangweibo).setOnClickListener(this);
 
         driverView = (DriverView) findViewById(R.id.driverView);
         text_tripdetail_money = (TextView) findViewById(R.id.text_tripdetail_money);
@@ -108,6 +115,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
         text_tripdetail_describe = (TextView) findViewById(R.id.text_tripdetail_describe);
         edit_tripdetail_describe = (EditText) findViewById(R.id.edit_tripdetail_describe);
         lay_tripdetail_eva = findViewById(R.id.lay_tripdetail_eva);
+        lay_tripdetail_share = findViewById(R.id.lay_tripdetail_share);
         btn_go = findViewById(R.id.btn_go);
 
         btn_go.setOnClickListener(this);
@@ -141,8 +149,9 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
     private void setEvaData(Eva eva) {
         if (trip.getStatus() == Trip.STA_2007) {
             lay_tripdetail_eva.setVisibility(View.GONE);
+            lay_tripdetail_share.setVisibility(View.GONE);
             text_tripdetail_describe.setVisibility(View.GONE);
-        }else {
+        } else {
             if (eva != null) {
                 rating_tripdetail.setIsIndicator(true);
                 rating_tripdetail.setRating(((float) eva.getScoreCount()));
@@ -150,6 +159,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
                 text_tripdetail_describe.setTextColor(ContextCompat.getColor(this, R.color.com_text_blank));
                 text_tripdetail_describe.setClickable(false);
                 lay_tripdetail_eva.setVisibility(View.GONE);
+                lay_tripdetail_share.setVisibility(View.VISIBLE);
             } else {
                 rating_tripdetail.setIsIndicator(false);
                 rating_tripdetail.setRating(0);
@@ -157,12 +167,14 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
                 text_tripdetail_describe.setTextColor(ContextCompat.getColor(this, R.color.kd_yellow));
                 text_tripdetail_describe.setClickable(true);
                 lay_tripdetail_eva.setVisibility(View.VISIBLE);
+                lay_tripdetail_share.setVisibility(View.GONE);
             }
         }
     }
 
     @Override
     public void onClick(View v) {
+        String url = AppData.Url.shareUrl + "?distributionCode=" + AppData.App.getUser().getDistributionCode();
         switch (v.getId()) {
             case R.id.btn_go:
                 String detail = edit_tripdetail_describe.getText().toString();
@@ -184,6 +196,18 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
                 Intent intent = new Intent(this, PayDetailActivity.class);
                 intent.putExtra("trip", trip);
                 startActivity(intent);
+                break;
+            case R.id.text_share_wechat:
+                ShareHelper.showShareWeixin(this, "陛下", "您有一封新的奏折~", url, "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
+                break;
+            case R.id.text_share_wechatmoments:
+                ShareHelper.showSharePengyouquan(this, "陛下", "您有一封新的奏折~", url, "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
+                break;
+            case R.id.text_share_qq:
+                ShareHelper.showShareQQ(this, "陛下", "您有一封新的奏折~", url, "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
+                break;
+            case R.id.text_share_xinlangweibo:
+                ShareHelper.showShareSina(this, "陛下", "您有一封新的奏折~", url, "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
                 break;
         }
     }
