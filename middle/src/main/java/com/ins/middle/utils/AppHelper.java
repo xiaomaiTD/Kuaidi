@@ -287,4 +287,11 @@ public class AppHelper {
     private static int getBSint(float money) {
         return ((int) (money / 100)) * 100;
     }
+
+    public static String getDriverNickName(String realName) {
+        if (StrUtils.isEmpty(realName)) {
+            return "";
+        }
+        return realName.substring(0, 1) + "师傅";
+    }
 }

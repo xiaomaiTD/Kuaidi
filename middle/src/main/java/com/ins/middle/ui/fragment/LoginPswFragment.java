@@ -192,7 +192,9 @@ public class LoginPswFragment extends BaseFragment implements View.OnClickListen
                             //如果是车主登录后，且没有认证则打开认证页面
                             //////////////////////////////
                             if (!PackageUtil.isClient() && user.getStatus() == User.UNAUTHORIZED) {
-                                startActivity(PackageUtil.getSmIntent("IdentifyActivity"));
+                                Intent identifyIntent = PackageUtil.getSmIntent("IdentifyActivity");
+                                identifyIntent.putExtra("type", 1);
+                                startActivity(identifyIntent);
                             }
                             //////////////////////////////
                             EventBus.getDefault().post(AppConstant.EVENT_UPDATE_LOGIN);

@@ -61,6 +61,7 @@ import com.ins.middle.utils.PushValiHelper;
 import com.ins.middle.utils.SnackUtil;
 import com.ins.middle.view.DriverView;
 import com.shelwee.update.UpdateHelper;
+import com.sobey.common.utils.ClickUtils;
 import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.PhoneUtils;
 import com.sobey.common.utils.StrUtils;
@@ -552,6 +553,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        //屏蔽快速双击事件
+        if (ClickUtils.isFastDoubleClick()) return false;
+
         Intent intent = new Intent();
         switch (item.getItemId()) {
             case R.id.nav_trip:
@@ -587,6 +591,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     @Override
     public void onClick(View v) {
+        //屏蔽快速双击事件
+        if (ClickUtils.isFastDoubleClick()) return;
+
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.img_home_msg:

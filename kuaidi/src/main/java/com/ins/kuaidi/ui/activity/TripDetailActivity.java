@@ -3,6 +3,7 @@ package com.ins.kuaidi.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,9 +89,7 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
             @Override
             public void OnPopClick(String name) {
                 if (trip != null) {
-                    Intent intent = new Intent(TripDetailActivity.this, ComplaintActivity.class);
-                    intent.putExtra("orderId", trip.getId());
-                    startActivity(intent);
+                    netIsComplain(trip.getId());
                 } else {
                     Toast.makeText(TripDetailActivity.this, "错误：没有获取到订单", Toast.LENGTH_SHORT).show();
                 }
@@ -268,6 +267,32 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
             @Override
             public void netEnd(int status) {
                 btn_go.setEnabled(true);
+            }
+        });
+    }
+
+    public void netIsComplain(int orderId) {
+        RequestParams params = new RequestParams(AppData.Url.addeva);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("orderId", orderId + "");
+        CommonNet.samplepost(params, Integer.class, new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                int isComplain = (Integer) pojo;
+                if (isComplain == 0) {
+                    Intent intent = new Intent(TripDetailActivity.this, ComplaintActivity.class);
+                    intent.putExtra("orderId", trip.getId());
+                    startActivity(intent);
+                }else {
+                    Snackbar.make(showingroup, "您已经投诉过了", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                Intent intent = new Intent(TripDetailActivity.this, ComplaintActivity.class);
+                intent.putExtra("orderId", trip.getId());
+                startActivity(intent);
             }
         });
     }

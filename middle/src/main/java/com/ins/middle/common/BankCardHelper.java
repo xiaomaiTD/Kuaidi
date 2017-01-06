@@ -14,15 +14,15 @@ import java.util.List;
 
 public class BankCardHelper {
     private static List<BankCardConfig> bankConfigs = new ArrayList<BankCardConfig>() {{
-        add(new BankCardConfig("中国银行", R.drawable.shape_bank_red, "http://7xnfyf.com1.z0.glb.clouddn.com/zhongguo.png"));
-        add(new BankCardConfig("工商银行", R.drawable.shape_bank_red, "http://7xnfyf.com1.z0.glb.clouddn.com/gongshang.png"));
+        add(new BankCardConfig("中国银行", R.drawable.shape_bank_red, AppData.Url.bank_icon + "zhongguo.png"));
+        add(new BankCardConfig("工商银行", R.drawable.shape_bank_red, AppData.Url.bank_icon + "gongshang.png"));
 
-        add(new BankCardConfig("建设银行", R.drawable.shape_bank_blue, "http://7xnfyf.com1.z0.glb.clouddn.com/jianse.png"));
-        add(new BankCardConfig("交通银行", R.drawable.shape_bank_blue, "http://7xnfyf.com1.z0.glb.clouddn.com/jiaotong.png"));
+        add(new BankCardConfig("建设银行", R.drawable.shape_bank_blue, AppData.Url.bank_icon + "jianse.png"));
+        add(new BankCardConfig("交通银行", R.drawable.shape_bank_blue, AppData.Url.bank_icon + "jiaotong.png"));
 
-        add(new BankCardConfig("农业银行", R.drawable.shape_bank_green, "http://7xnfyf.com1.z0.glb.clouddn.com/nongye.png"));
-        add(new BankCardConfig("民生银行", R.drawable.shape_bank_green, "http://7xnfyf.com1.z0.glb.clouddn.com/minsheng.png"));
-        add(new BankCardConfig("邮政储蓄银行", R.drawable.shape_bank_green, "http://7xnfyf.com1.z0.glb.clouddn.com/youzheng.png"));
+        add(new BankCardConfig("农业银行", R.drawable.shape_bank_green, AppData.Url.bank_icon + "nongye.png"));
+        add(new BankCardConfig("民生银行", R.drawable.shape_bank_green, AppData.Url.bank_icon + "minsheng.png"));
+        add(new BankCardConfig("邮政储蓄银行", R.drawable.shape_bank_green, AppData.Url.bank_icon + "youzheng.png"));
     }};
 
     public static void setBankConfigs(List<BankCard> banks) {

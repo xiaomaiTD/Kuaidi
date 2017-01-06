@@ -133,7 +133,9 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
                 startActivity(intent);
             } else {
                 Toast.makeText(this, "请先进行实名认证", Toast.LENGTH_SHORT).show();
-                startActivity(PackageUtil.getSmIntent("IdentifyActivity"));
+                Intent identifyIntent = PackageUtil.getSmIntent("IdentifyActivity");
+                identifyIntent.putExtra("type", 1);
+                startActivity(identifyIntent);
             }
         }
     }

@@ -242,7 +242,7 @@ public class WXPayEntryActivity extends BaseBackActivity implements View.OnClick
             btn_go.setVisibility(View.VISIBLE);
             text_pay_payway.setClickable(true);
         } else if (type == 3) {
-            setToolbar("结算");
+            setToolbar("尾款支付");
             text_pay_this_name.setText("尾款费用");
             text_pay_title.setText("支付成功");
             img_pay_status.setVisibility(View.VISIBLE);
@@ -256,9 +256,12 @@ public class WXPayEntryActivity extends BaseBackActivity implements View.OnClick
         text_pay_total.setText(NumUtil.num2half(paydata.getTotal(), 2) + "元");
         text_pay_this.setText(NumUtil.num2half(paydata.getThisTotalPay(), 2) + "元");
         text_pay_coupon.setText("-" + NumUtil.num2half(paydata.getCoupon(), 2) + "元");
-        text_pay_balance.setText(NumUtil.num2half(paydata.getBalance(), 2) + "元");
-        lay_pay_coupon.setVisibility(paydata.getCoupon() == 0 ? View.GONE : View.VISIBLE);
-        lay_pay_balance.setVisibility(paydata.getBalance() == 0 ? View.GONE : View.VISIBLE);
+        text_pay_balance.setText("-" + NumUtil.num2half(paydata.getBalance(), 2) + "元");
+        //改成了 直接显示，没有优惠券也不隐藏
+        //lay_pay_coupon.setVisibility(paydata.getCoupon() == 0 ? View.GONE : View.VISIBLE);
+        //lay_pay_balance.setVisibility(paydata.getBalance() == 0 ? View.GONE : View.VISIBLE);
+        lay_pay_coupon.setVisibility(View.VISIBLE);
+        lay_pay_balance.setVisibility(View.VISIBLE);
 
         if (paydata.getActualPay() == 0) {
             setPayType(2);
@@ -578,11 +581,11 @@ public class WXPayEntryActivity extends BaseBackActivity implements View.OnClick
                     break;
                 case -1:
                     //失败
-                    Toast.makeText(this, "失败：-1", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "支付失败", Toast.LENGTH_SHORT).show();
                     break;
                 case -2:
                     //用户取消
-                    Toast.makeText(this, "用户取消：-2", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "用户取消：-2", Toast.LENGTH_SHORT).show();
                     break;
             }
         }

@@ -36,7 +36,7 @@ public class AppVali {
             return "密码长度必须为6-16位";
         } else if (!length(psw, 6, 16)) {
             return "密码长度必须为6-16位";
-        }else {
+        } else {
             return null;
         }
     }
@@ -74,6 +74,8 @@ public class AppVali {
     public static String vali_identify_driverthree(String path, String drivernum) {
         if (isEmpty(drivernum)) {
             return "请输入驾驶证证号";
+        } else if (!ValidateUtil.IDcard(drivernum)) {
+            return "驾驶证证号格式不正确";
         } else if (isEmpty(path)) {
             return "拍摄驾驶证正面照";
         } else {
@@ -81,7 +83,7 @@ public class AppVali {
         }
     }
 
-    public static String vali_identify_drivertwo(String path, String carnum, String cartype, String carcolor, String carowner,String travelcardnum) {
+    public static String vali_identify_drivertwo(String path, String carnum, String cartype, String carcolor, String carowner, String travelcardnum) {
         if (isEmpty(carnum)) {
             return "请输入车牌号";
         } else if (isEmpty(cartype)) {
@@ -323,7 +325,7 @@ public class AppVali {
     public static String feedback(String describe) {
         if (isEmpty(describe)) {
             return "描述不能为空";
-        }else {
+        } else {
             return null;
         }
     }

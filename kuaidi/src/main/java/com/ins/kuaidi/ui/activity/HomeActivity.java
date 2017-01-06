@@ -223,7 +223,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //因为乘客支付后可继续下单的改动，这里不需要再刷新了
             //HomeHelper.setFresh(this);
             //设置行程为已到达状态，下次定位会检查状态从地图上移除司机位置
-            if (trip!=null) trip.setStatus(Trip.STA_2006);
+            if (trip != null) trip.setStatus(Trip.STA_2006);
             SnackUtil.showSnack(showingroup, msg);
 //            SnackUtil.showSnack(showingroup, "司机已将您送达目的地，感谢您的使用");
         } else if ("7".equals(aboutOrder) && PushValiHelper.pushPMattch(trips, orderId)) {
@@ -576,6 +576,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //导航菜单选择回调
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        //屏蔽快速双击事件
+        if (ClickUtils.isFastDoubleClick()) return false;
+
         Intent intent = new Intent();
         switch (item.getItemId()) {
             case R.id.nav_trip:
@@ -606,6 +609,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     //页面内点击事件回调
     @Override
     public void onClick(View v) {
+        //屏蔽快速双击事件
+        if (ClickUtils.isFastDoubleClick()) return;
+
         Intent intent = new Intent();
         switch (v.getId()) {
             case R.id.img_home_msg:
@@ -651,10 +657,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 }
                 break;
             case R.id.btn_go:
-                //屏蔽快速双击事件
-                if (ClickUtils.isFastDoubleClick()) {
-                    return;
-                }
                 if ("呼叫快车".equals(btn_go.getText())) {
                     Position startPosition = holdcarView.getStartPosition();
                     Position endPosition = holdcarView.getEndPosition();
@@ -799,13 +801,13 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     //请求司机位置并显示
-    private void reqDriverPosition(){
+    private void reqDriverPosition() {
         if (trip != null && trip.getDriver() != null) {
             //又改了需求：乘客到达目的地后（status<2006）就看不见司机了
-            if (trip.getStatus()<Trip.STA_2006) {
+            if (trip.getStatus() < Trip.STA_2006) {
                 netHelper.netLatDriver(trip.getDriver().getLineId(), trip.getDriverId());
-            }else {
-                if (carMap!=null)carMap.removeFromMap();
+            } else {
+                if (carMap != null) carMap.removeFromMap();
             }
         }
     }

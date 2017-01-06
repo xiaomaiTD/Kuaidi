@@ -65,7 +65,7 @@ public class MsgActivity extends BaseBackActivity implements OnRecycleItemClickL
             type = getIntent().getIntExtra("type", 1);
         }
         if (type==1){
-            setToolbar("路线消息");
+            setToolbar("线路消息");
         }else {
             setToolbar("系统消息");
         }

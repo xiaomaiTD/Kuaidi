@@ -101,7 +101,7 @@ public class SaleActivity extends BaseBackActivity implements View.OnClickListen
                 if (user != null) {
                     String url = AppData.Url.shareUrl + "?distributionCode=" + AppData.App.getUser().getDistributionCode();
                     ShareDialog shareDialog = new ShareDialog(this);
-                    shareDialog.setShareData("陛下", "您有一封新的奏折~", url, "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
+                    shareDialog.setShareData("黑马出行，你我通行", "黑马出行，你我通行，出行有我，城际无忧", url, AppData.Url.logo + "logo_kuaidi.png");
                     shareDialog.show();
                 } else {
                     Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show();

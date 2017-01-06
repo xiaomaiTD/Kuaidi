@@ -79,6 +79,7 @@ public class EvaActivity extends BaseBackActivity implements View.OnClickListene
             @Override
             public void OnPopClick(String name) {
                 Intent intent = new Intent(EvaActivity.this, ComplaintActivity.class);
+                intent.putExtra("orderId", trip.getId());
                 startActivity(intent);
                 popupSingle.dismiss();
             }

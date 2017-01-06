@@ -166,7 +166,7 @@ public class DriverView extends FrameLayout {
         this.trip = trip;
         if (user != null) {
             GlideUtil.loadCircleImg(context, img_driver_header, R.drawable.default_header, AppHelper.getRealImgPath(user.getAvatar()));
-            text_driver_name.setText(user.getRealName());
+            text_driver_name.setText(AppHelper.getDriverNickName(user.getRealName()));
             text_driver_ordercount.setText(user.getOrderCount() + "单");
             Car car = user.getCar();
             if (!StrUtils.isEmpty(car)) {

@@ -2,6 +2,7 @@ package com.ins.driver.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils.TruncateAt;
 import android.util.DisplayMetrics;
@@ -93,6 +94,10 @@ public class DialogNavi extends Dialog {
 
                 TextView textView = new TextView(context);
                 textView.setCompoundDrawablesWithIntrinsicBounds(null, app.getAppIcon(), null, null);    //设置图标
+
+//                Drawable appIcon = app.getAppIcon();
+//                appIcon.setBounds();
+
                 textView.setText(app.getAppName());                                                        //设置文字
                 //textView.setTextAppearance(context, R.style.text_small_dark);	                        //设置风格
                 textView.setTextSize(14);                                                               //设置大小

@@ -126,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="5dp"
                         android:gravity="center_vertical"
-                        android:text="0元"
+                        android:text="0.00元"
                         android:textColor="@color/com_text_blank"
                         android:textSize="@dimen/text_big_nomal" />
 
@@ -155,7 +155,7 @@
                         android:drawableLeft="@drawable/icon_weixin"
                         android:drawablePadding="5dp"
                         android:gravity="center_vertical"
-                        android:text="0元"
+                        android:text="0.00元"
                         android:textColor="@color/com_text_blank"
                         android:textSize="@dimen/text_big_nomal" />
 
@@ -184,7 +184,7 @@
                         android:drawableLeft="@drawable/icon_zhifubao"
                         android:drawablePadding="5dp"
                         android:gravity="center_vertical"
-                        android:text="0元"
+                        android:text="0.00元"
                         android:textColor="@color/com_text_blank"
                         android:textSize="@dimen/text_big_nomal" />
 
@@ -212,7 +212,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="5dp"
                         android:gravity="center_vertical"
-                        android:text="-0元"
+                        android:text="-0.00元"
                         android:textColor="@color/com_text_blank"
                         android:textSize="@dimen/text_big_nomal" />
 
@@ -229,7 +229,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="余额支付"
+                        android:text="余额抵扣"
                         android:textColor="@color/com_text_blank"
                         android:textSize="@dimen/text_big_nomal" />
 
@@ -240,7 +240,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="5dp"
                         android:gravity="center_vertical"
-                        android:text="0元"
+                        android:text="-0.00元"
                         android:textColor="@color/com_text_blank"
                         android:textSize="@dimen/text_big_nomal" />
 

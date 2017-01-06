@@ -82,9 +82,10 @@ public class NetHelper {
                 Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
                 //dialogLoading.hide();
                 activity.btn_go.setEnabled(true);
-                if (code == 202) {
+                if (code == 205) {
                     //返回的错误是未通过审核，则跳转审核页面
                     Intent intent = new Intent(activity, IdentifyActivity.class);
+                    intent.putExtra("type", 1);
                     activity.startActivity(intent);
                 }
             }

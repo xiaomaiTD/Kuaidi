@@ -18,6 +18,8 @@ import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.MoneyDetail;
+import com.ins.middle.entity.User;
+import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.DividerItemDecoration;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.entity.TestEntity;
@@ -131,10 +133,18 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.btn_go_cash) {
-            Intent intent = new Intent(this, CashActivity.class);
-            intent.putExtra("money", money);
-            startActivity(intent);
-
+            User user = AppData.App.getUser();
+            if (user != null && user.getStatus() == User.AUTHENTICATED) {
+                //已认证，进入提现
+                Intent intent = new Intent(this, CashActivity.class);
+                intent.putExtra("money", money);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "请先进行实名认证", Toast.LENGTH_SHORT).show();
+                Intent identifyIntent = PackageUtil.getSmIntent("IdentifyActivity");
+                identifyIntent.putExtra("type", 1);
+                startActivity(identifyIntent);
+            }
         } else if (i == R.id.btn_right) {
             Intent intent = new Intent(this, CashHisActivity.class);
             startActivity(intent);

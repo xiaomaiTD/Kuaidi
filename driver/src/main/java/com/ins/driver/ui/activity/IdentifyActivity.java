@@ -18,7 +18,7 @@ import com.ins.middle.ui.activity.BaseAppCompatActivity;
 
 
 /**
- * type:0 急修项目 1:保养项目
+ * type:0 直接进入，显示第一页（状态页） 1:直接进入第二页
  */
 public class IdentifyActivity extends BaseAppCompatActivity {
 
@@ -29,10 +29,6 @@ public class IdentifyActivity extends BaseAppCompatActivity {
     private TextView text_toolbar_title;
 
     private int type;
-
-    public int getType() {
-        return type;
-    }
 
     public void next() {
         int position = viewPager.getCurrentItem();
@@ -82,6 +78,10 @@ public class IdentifyActivity extends BaseAppCompatActivity {
         pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(2);
+
+        if (type == 1) {
+            viewPager.setCurrentItem(1, false);
+        }
     }
 
     private void setPage(int pos) {
@@ -109,9 +109,9 @@ public class IdentifyActivity extends BaseAppCompatActivity {
         public Fragment getItem(int position) {
             if (position == 0) {
                 return IdentifyOneFragment.newInstance(position);
-            }else if (position == 1) {
+            } else if (position == 1) {
                 return IdentifyTwoFragment.newInstance(position);
-            }else if (position == 2) {
+            } else if (position == 2) {
                 return IdentifyThreeFragment.newInstance(position);
             } else if (position == 3) {
                 return IdentifyFourFragment.newInstance(position);

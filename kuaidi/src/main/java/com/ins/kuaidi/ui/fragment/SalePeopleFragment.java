@@ -166,6 +166,8 @@ public class SalePeopleFragment extends BaseFragment implements OnRecycleItemCli
             Intent intent = new Intent(getActivity(), MeDetailActivity.class);
             intent.putExtra("user", user);
             startActivity(intent);
+        }else {
+            Snackbar.make(showingroup, "您无权限查看该用户的详细资料", Snackbar.LENGTH_SHORT).show();
         }
     }
 

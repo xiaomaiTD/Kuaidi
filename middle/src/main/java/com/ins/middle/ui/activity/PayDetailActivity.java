@@ -132,10 +132,10 @@ public class PayDetailActivity extends BaseBackActivity implements View.OnClickL
         PayData first = gson.fromJson(payDetail, PayData.class);
         PayData last = gson.fromJson(bossesPayDetail, PayData.class);
 
-        if (first==null){
+        if (first == null) {
             first = new PayData();
         }
-        if (last==null){
+        if (last == null) {
             last = new PayData();
         }
 
@@ -146,15 +146,15 @@ public class PayDetailActivity extends BaseBackActivity implements View.OnClickL
                 //设置总金额
                 text_paydetail_total.setText(NumUtil.num2half(Float.parseFloat(trip.getPayMoney())) + "元");
                 //预付款
-                text_paydetail_first.setText(NumUtil.num2half(first.getActualPay()+first.getBalance()) + "元");
+                text_paydetail_first.setText(NumUtil.num2half(first.getActualPay() + first.getBalance()) + "元");
                 setPayWay(text_paydetail_first, first.getPayMethed());
                 //尾款
-                text_paydetail_last.setText(NumUtil.num2half(last.getActualPay()+last.getBalance()) + "元");
+                text_paydetail_last.setText(NumUtil.num2half(last.getActualPay() + last.getBalance()) + "元");
                 setPayWay(text_paydetail_last, last.getPayMethed());
                 //设置优惠券
                 text_paydetail_coupon.setText("-" + NumUtil.num2half(first.getCoupon() + last.getCoupon()) + "元");
                 //设置余额
-                text_paydetail_balance.setText(NumUtil.num2half(first.getBalance() + last.getBalance()) + "元");
+                text_paydetail_balance.setText("-" + NumUtil.num2half(first.getBalance() + last.getBalance()) + "元");
             }
         } else {
             if (payDataDriver != null) {

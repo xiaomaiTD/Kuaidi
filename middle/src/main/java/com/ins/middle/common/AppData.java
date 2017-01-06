@@ -168,6 +168,7 @@ public class AppData {
         public static String pay                      = domain + "mobile/order/payMoney";             							        //乘客模拟支付定金（乘客）
         public static String addeva                   = domain + "mobile/comment/add";             							        //乘客评价（乘客）
         public static String iseva                    = domain + "mobile/comment/isComment";             							    //查看订单是否评论过（乘客）
+        public static String isComplain               = domain + "mobile/comment/isComplain";             							//查看订单是否投诉过（乘客）
         public static String complain                 = domain + "mobile/complain/add";             							        //乘客投诉（乘客）
         public static String sign                     = domain + "mobile/aliPay/sign";             							        //请求支付宝支付签名（乘客）
         public static String signWeixin               = domain + "mobile/wxPay/sign";             							            //请求微信支付签名（乘客）
@@ -194,7 +195,7 @@ public class AppData {
         public static String getCash                  = domain + "mobile/wallet/requestDrawCash";             		                //提现
         public static String paypsw                   = domain + "mobile/user/verificationPayPwd";             		                //验证提现密码
         public static String cashhis                  = domain + "mobile/wallet/getDrawDetail";             		                    //提现记录列表
-
-
+        public static String bank_icon                = domain + "mobile_img/bank_icon/";             		                            //网络银行图标
+        public static String logo                     = domain + "mobile_img/logo/";             		                                //网络app图标
     }
 }

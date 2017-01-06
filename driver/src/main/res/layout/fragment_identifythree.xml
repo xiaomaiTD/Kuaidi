@@ -40,8 +40,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:hint="请填写"
-                android:inputType="number"
-                android:maxLength="16"
+                android:inputType="textPersonName"
+                android:maxLength="18"
                 android:singleLine="true"
                 android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_nomal" />

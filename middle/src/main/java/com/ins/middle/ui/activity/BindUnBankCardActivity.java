@@ -141,12 +141,17 @@ public class BindUnBankCardActivity extends BaseBackActivity implements View.OnC
         RequestParams params = new RequestParams(AppData.Url.paypsw);
         params.addHeader("token", AppData.App.getToken());
         params.addBodyParameter("payPassword", MD5Util.md5(psw));
-        CommonNet.samplepost(params, CommonEntity.class, new CommonNet.SampleNetHander() {
+        CommonNet.samplepost(params, Boolean.class, new CommonNet.SampleNetHander() {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
                 Toast.makeText(BindUnBankCardActivity.this, text, Toast.LENGTH_SHORT).show();
-                setResult(Activity.RESULT_OK);
-                finish();
+                boolean success = (Boolean) pojo;
+                if (success) {
+                    setResult(Activity.RESULT_OK);
+                    finish();
+                } else {
+                    netSetError(0, "密码错误");
+                }
             }
 
             @Override

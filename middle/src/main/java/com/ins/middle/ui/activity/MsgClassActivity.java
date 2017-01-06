@@ -61,8 +61,8 @@ public class MsgClassActivity extends BaseBackActivity implements OnRecycleItemC
                 //加载成功
                 List<MsgClass> results = adapter.getResults();
                 results.clear();
-                results.add(new MsgClass(1, "线路消息", "内容摘要"));
                 results.add(new MsgClass(2, "系统消息", "内容摘要"));
+                results.add(new MsgClass(1, "线路消息", "内容摘要"));
                 freshCtrl();
                 LoadingViewUtil.showout(showingroup, showin);
 

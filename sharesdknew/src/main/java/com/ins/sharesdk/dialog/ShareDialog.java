@@ -49,7 +49,7 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         text_qq.setOnClickListener(this);
         text_xinlangweibo.setOnClickListener(this);
 
-        this.setCanceledOnTouchOutside(false);    //点击外部关闭
+        this.setCanceledOnTouchOutside(true);    //点击外部关闭
 
         Window win = this.getWindow();
 //        win.setGravity(Gravity.BOTTOM);	//从下方弹出
