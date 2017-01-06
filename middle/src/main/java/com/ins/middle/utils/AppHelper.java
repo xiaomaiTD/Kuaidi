@@ -232,7 +232,7 @@ public class AppHelper {
      * 判断是否可以提现
      */
     public static boolean enableCash(float money, float editcash, float initmoneny) {
-        if (editcash > initmoneny) {
+        if (editcash + initmoneny <= money) {
             return true;
         } else {
             return false;

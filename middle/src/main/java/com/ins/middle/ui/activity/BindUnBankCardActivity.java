@@ -144,7 +144,6 @@ public class BindUnBankCardActivity extends BaseBackActivity implements View.OnC
         CommonNet.samplepost(params, Boolean.class, new CommonNet.SampleNetHander() {
             @Override
             public void netGo(final int code, Object pojo, String text, Object obj) {
-                Toast.makeText(BindUnBankCardActivity.this, text, Toast.LENGTH_SHORT).show();
                 boolean success = (Boolean) pojo;
                 if (success) {
                     setResult(Activity.RESULT_OK);
