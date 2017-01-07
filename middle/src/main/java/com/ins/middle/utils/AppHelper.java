@@ -250,7 +250,7 @@ public class AppHelper {
             //余额小于底金,可提0
             return 0;
         } else {
-            if (money < maxmoney) {
+            if (money - initmoneny < maxmoney) {
                 //余额小于单次上线,可提余额的百位
                 return getBSint(money - initmoneny);
             } else {
@@ -265,7 +265,7 @@ public class AppHelper {
             //余额小于底金,可提0
             return "您的余额小于底金，无法提现";
         } else {
-            if (money < maxmoney) {
+            if (money - initmoneny < maxmoney) {
                 //余额小于单次上线,可提余额的百位
                 if (editmoney > money) {
                     return "当前余额最多可提现" + getBSint(money - initmoneny) + "元";

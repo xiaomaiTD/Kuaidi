@@ -120,7 +120,10 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() <= 0) return;
+                if (s.length() <= 0) {
+                    btn_go.setEnabled(false);
+                    return;
+                }
                 float editcash = Float.parseFloat(s.toString());
                 String input = s.subSequence(start, start + count).toString();
                 if (s.length() == 1 && "0".equals(input)) {
@@ -196,8 +199,10 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
                 edit_cash_money.setText("" + (int) AppHelper.getCashAll(money, PackageUtil.isClient() ? cash.getPassengerDeposit() : cash.getDriverDeposit(), cash.getQuota()));
             }
         } else if (i == R.id.btn_go) {
+            String input = edit_cash_money.getText().toString();
+            if (StrUtils.isEmpty(input)) return;
             if (card != null) {
-                float editcash = Float.parseFloat(edit_cash_money.getText().toString());
+                float editcash = Float.parseFloat(input);
                 if (editcash % 100 == 0) {
                     User user = AppData.App.getUser();
                     if (user.getHasPayPassword() == 1) {
