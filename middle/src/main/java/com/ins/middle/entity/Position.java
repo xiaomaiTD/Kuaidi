@@ -3,6 +3,7 @@ package com.ins.middle.entity;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.sug.SuggestionResult;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 

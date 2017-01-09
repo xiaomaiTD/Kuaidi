@@ -8,12 +8,12 @@ import com.baidu.mapapi.model.LatLng;
 import com.google.gson.reflect.TypeToken;
 import com.ins.kuaidi.entity.LineConfig;
 import com.ins.kuaidi.ui.activity.HomeActivity;
-import com.ins.middle.entity.CommonEntity;
-import com.ins.middle.entity.User;
-import com.ins.middle.utils.MapHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
+import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.Trip;
+import com.ins.middle.entity.User;
+import com.ins.middle.utils.MapHelper;
 import com.ins.middle.utils.SnackUtil;
 import com.sobey.common.utils.StrUtils;
 
@@ -152,7 +152,7 @@ public class NetHelper {
                 Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
                 ArrayList<Integer> ids = (ArrayList<Integer>) pojo;
                 if (!StrUtils.isEmpty(ids)) {
-                    for (int id:ids){
+                    for (int id : ids) {
                         Trip trip = new Trip();
                         trip.setId(id);
                         activity.trips.clear();
@@ -301,6 +301,32 @@ public class NetHelper {
                 Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
                 AppData.App.removeUser();
                 AppData.App.removeToken();
+            }
+        });
+    }
+
+    public void netNearDrivers(LatLng latLng) {
+        //不在线则不请求
+        //没有行程则不请求
+        //如果没有登录（被挤下线），则不请求
+        RequestParams params = new RequestParams(AppData.Url.NearDriver);
+        params.addHeader("token", AppData.App.getToken());
+        params.addBodyParameter("lat", latLng.latitude + "");
+        params.addBodyParameter("lng", latLng.longitude + "");
+        CommonNet.samplepost(params, new TypeToken<List<User>>() {
+        }.getType(), new CommonNet.SampleNetHander() {
+            @Override
+            public void netGo(final int code, Object pojo, String text, Object obj) {
+                List<User> drivers = (ArrayList<User>) pojo;
+                activity.setNearDrivers(drivers);
+            }
+
+            @Override
+            public void netSetError(int code, String text) {
+                //未登录
+                if (code == 1005) {
+                    AppData.App.removeUser();
+                }
             }
         });
     }

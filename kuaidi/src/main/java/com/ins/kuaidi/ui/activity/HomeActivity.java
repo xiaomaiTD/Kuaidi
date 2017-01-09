@@ -32,37 +32,37 @@ import com.ins.kuaidi.R;
 import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
 import com.ins.kuaidi.common.WaitingHelper;
-import com.ins.middle.utils.PushValiHelper;
+import com.ins.kuaidi.ui.dialog.DialogMouthPicker;
+import com.ins.kuaidi.ui.dialog.DialogPopupMsg;
+import com.ins.kuaidi.view.HoldcarView;
 import com.ins.kuaidi.wxapi.WXPayEntryActivity;
-import com.ins.middle.entity.CarMap;
-import com.ins.middle.entity.EventIdentify;
-import com.ins.middle.entity.EventOrder;
-import com.ins.middle.ui.activity.CityActivity;
-import com.ins.middle.ui.activity.MsgClassActivity;
-import com.ins.middle.ui.activity.WalletActivity;
-import com.ins.middle.ui.dialog.DialogSure;
-import com.ins.middle.utils.MapHelper;
-import com.ins.middle.utils.SnackUtil;
-import com.ins.middle.view.DriverView;
 import com.ins.middle.common.AppConstant;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.AppVali;
 import com.ins.middle.common.Locationer;
+import com.ins.middle.entity.CarMap;
+import com.ins.middle.entity.EventIdentify;
+import com.ins.middle.entity.EventOrder;
 import com.ins.middle.entity.Position;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.entity.User;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
+import com.ins.middle.ui.activity.CityActivity;
 import com.ins.middle.ui.activity.LoginActivity;
 import com.ins.middle.ui.activity.MeDetailActivity;
+import com.ins.middle.ui.activity.MsgClassActivity;
 import com.ins.middle.ui.activity.ServerActivity;
 import com.ins.middle.ui.activity.SettingActivity;
 import com.ins.middle.ui.activity.TripActivity;
+import com.ins.middle.ui.activity.WalletActivity;
 import com.ins.middle.ui.dialog.DialogLoading;
-import com.ins.kuaidi.ui.dialog.DialogMouthPicker;
-import com.ins.kuaidi.ui.dialog.DialogPopupMsg;
+import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.AppHelper;
 import com.ins.middle.utils.GlideUtil;
-import com.ins.kuaidi.view.HoldcarView;
+import com.ins.middle.utils.MapHelper;
+import com.ins.middle.utils.PushValiHelper;
+import com.ins.middle.utils.SnackUtil;
+import com.ins.middle.view.DriverView;
 import com.shelwee.update.UpdateHelper;
 import com.sobey.common.utils.ClickUtils;
 import com.sobey.common.utils.PermissionsUtil;
@@ -518,6 +518,24 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         }
     }
 
+    public List<CarMap> carNears = new ArrayList<>();
+
+    public void setNearDrivers(List<User> drivers) {
+        //检查车辆标注是否过期并移除
+        AppHelper.reMoveCar(carNears, drivers);
+        for (User driver : drivers) {
+            CarMap carfind = AppHelper.findCarByDriver(carNears, driver.getId());
+            if (carfind != null) {
+                carfind.addMove(mapView, AppHelper.driver2LatLng(driver));
+            } else {
+                carfind = new CarMap();
+                carfind.setDriver(driver);  //setDriver必须在addMove之后，因为addMove前可能mark还未生成，故无法获取点击事件
+                carfind.addMove(mapView, AppHelper.driver2LatLng(driver));
+                carNears.add(carfind);
+            }
+        }
+    }
+
     //移动大头针结束，显示渐出动画
     public void setBubbleOn(LatLng latLng, boolean needSearch) {
         if (latLng == null) {
@@ -757,6 +775,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         this.nowcity = city + district;
         if (isFirst) {
             setCity(city + district);
+        }
+        if (AppData.Config.needNeardriver) {
+            netHelper.netNearDrivers(nowLatLng);
         }
         //当前有行程状态的时候（不是初始状态,并且已经匹配到司机），则要不断拉取司机位置信息
         reqDriverPosition();

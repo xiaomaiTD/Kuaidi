@@ -120,6 +120,7 @@ public class AppData {
         public static boolean showVali = false;                 //显示验证码（仅测试）
         public static boolean showTestToast = false;            //打印测试信息到窗口（仅测试）
         public static boolean showFreshBtn = false;             //首页显示刷新按钮（仅测试）
+        public static boolean needNeardriver = false;           //是否启用周边司机（仅测试）
     }
 
     /**
@@ -197,5 +198,6 @@ public class AppData {
         public static String cashhis                  = domain + "mobile/wallet/getDrawDetail";             		                    //提现记录列表
         public static String bank_icon                = domain + "mobile_img/bank_icon/";             		                            //网络银行图标
         public static String logo                     = domain + "mobile_img/logo/";             		                                //网络app图标
+        public static String NearDriver               = domain + "mobile/user/getDriversByPLat";             		                //乘客获取周围司机坐标（乘客）
     }
 }

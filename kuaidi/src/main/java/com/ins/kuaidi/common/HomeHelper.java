@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.ins.kuaidi.R;
 import com.ins.kuaidi.ui.activity.HomeActivity;
+import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.utils.MapHelper;
 import com.sobey.common.utils.DensityUtil;
@@ -180,5 +181,10 @@ public class HomeHelper {
         activity.netHelper.netGetTrip(afterId);
         activity.locationer.isFirstLoc = true;
         activity.carMap.removeFromMap();
+
+        //移除所有司机标注
+        for (CarMap carMap:activity.carNears){
+            carMap.removeFromMap();
+        }
     }
 }

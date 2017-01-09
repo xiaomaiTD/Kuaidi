@@ -33,6 +33,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
     private CheckBox check_domain_vali;
     private CheckBox check_domain_toast;
     private CheckBox check_domain_fresh;
+    private CheckBox check_domain_near;
 
     private ListView listView;
     private ListAdapterDomain adapter;
@@ -63,6 +64,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
         check_domain_vali = (CheckBox) findViewById(R.id.check_domain_vali);
         check_domain_toast = (CheckBox) findViewById(R.id.check_domain_toast);
         check_domain_fresh = (CheckBox) findViewById(R.id.check_domain_fresh);
+        check_domain_near = (CheckBox) findViewById(R.id.check_domain_near);
 
         findViewById(R.id.btn_go).setOnClickListener(this);
     }
@@ -80,6 +82,7 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
         AppData.Config.showVali = true;
         AppData.Config.showTestToast = true;
         AppData.Config.showFreshBtn = true;
+        AppData.Config.needNeardriver = true;
         check_domain_vali.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -96,6 +99,12 @@ public class DomainActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 AppData.Config.showFreshBtn = isChecked;
+            }
+        });
+        check_domain_near.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                AppData.Config.needNeardriver = isChecked;
             }
         });
         String domain = AppData.App.getDomain();

@@ -50,10 +50,30 @@ public class User implements Serializable {
     private int isStart;    //是否出发 0：否，1：出发
     private float evaFen;    //司机评分
 
+    //司机坐标位置
+    private double lat;
+    private double lng;
+
     //乘客特有字段
     //分享码
     private String distributionCode;
     private float money;
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
 
     public int getFristPayMethod() {
         return fristPayMethod;

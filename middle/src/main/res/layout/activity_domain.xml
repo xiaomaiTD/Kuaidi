@@ -60,6 +60,16 @@
             android:textColor="@color/com_text_blank" />
 
         <CheckBox
+            android:id="@+id/check_domain_near"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="20dp"
+            android:checked="true"
+            android:text="是否启用周边司机(仅乘客端)"
+            android:textColor="@color/com_text_blank" />
+
+        <CheckBox
             android:id="@+id/check_domain_debug"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

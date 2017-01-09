@@ -99,63 +99,13 @@ public class AppHelper {
 //        return overlay;
 //    }
 
-    //从车辆列表中查询已知id的车辆实体
-    public static CarMap findCarByDriver(List<CarMap> cars, int driverId) {
-        for (CarMap car : cars) {
-            if (car.getDriver() != null && car.getDriver().getId() == driverId) {
-                return car;
-            }
-        }
-        return null;
-    }
 
-    //从车辆列表中查询已存在的司机车辆集合
-    public static List<CarMap> findCarByDriver(List<CarMap> cars, List<User> dirvers) {
-        ArrayList<CarMap> carMaps = new ArrayList<>();
-        for (CarMap car : cars) {
-            for (User driver : dirvers) {
-                if (car.getDriver() != null && car.getDriver().getId() == driver.getId()) {
-                    carMaps.add(car);
-                    break;
-                }
-            }
-        }
-        return carMaps;
-    }
-
-    //从车辆列表中查询不存在的司机车辆集合
-    public static List<CarMap> findOutCarByDriver(List<CarMap> cars, List<User> dirvers) {
-        ArrayList<CarMap> carMaps = new ArrayList<>();
-        for (CarMap car : cars) {
-            boolean isfind = false;
-            for (User driver : dirvers) {
-                if (car.getDriver() != null && car.getDriver().getId() == driver.getId()) {
-                    isfind = true;
-                    break;
-                }
-            }
-            if (!isfind) {
-                carMaps.add(car);
-            }
-        }
-        return carMaps;
-    }
 
 //    从行程列表中查询已知司机的行程
 //    public static Trip findCarByDriver(User driver, List<Trip> trips) {
 //    }
 
-    //检查车辆标注是否过期并移除
-    public static void reMoveCar(List<CarMap> cars, List<User> dirvers) {
-        //查询过期的车辆标注
-        List<CarMap> carRemoves = findOutCarByDriver(cars, dirvers);
-        //把这些标注从地图上移除
-        for (CarMap carRemove : carRemoves) {
-            carRemove.removeFromMap();
-        }
-        //把这些标注从车辆集合中移除
-        cars.removeAll(carRemoves);
-    }
+
 
     /**
      * 如果获取的行程为null ,那么返回null 标示没有行程，获取行程不为null，过滤后size为0那么返回size为0的集合标示还在行程中，但是size为0

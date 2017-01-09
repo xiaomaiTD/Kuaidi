@@ -2,15 +2,19 @@ package com.ins.middle.utils;
 
 import android.os.Handler;
 
+import com.baidu.mapapi.model.LatLng;
 import com.dd.CircularProgressButton;
 import com.ins.middle.common.AppData;
+import com.ins.middle.entity.CarMap;
 import com.ins.middle.entity.Trip;
+import com.ins.middle.entity.User;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.utils.ApplicationHelp;
 import com.sobey.common.utils.StrUtils;
 import com.sobey.common.view.PswView;
 import com.sobey.common.view.virtualKeyboardView.VirtualKeyboardView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -293,5 +297,63 @@ public class AppHelper {
             return "";
         }
         return realName.substring(0, 1) + "师傅";
+    }
+
+    //检查车辆标注是否过期并移除
+    public static void reMoveCar(List<CarMap> cars, List<User> dirvers) {
+        //查询过期的车辆标注
+        List<CarMap> carRemoves = findOutCarByDriver(cars, dirvers);
+        //把这些标注从地图上移除
+        for (CarMap carRemove : carRemoves) {
+            carRemove.removeFromMap();
+        }
+        //把这些标注从车辆集合中移除
+        cars.removeAll(carRemoves);
+    }
+
+    //从车辆列表中查询已知id的车辆实体
+    public static CarMap findCarByDriver(List<CarMap> cars, int driverId) {
+        for (CarMap car : cars) {
+            if (car.getDriver() != null && car.getDriver().getId() == driverId) {
+                return car;
+            }
+        }
+        return null;
+    }
+
+    //从车辆列表中查询已存在的司机车辆集合
+    public static List<CarMap> findCarByDriver(List<CarMap> cars, List<User> dirvers) {
+        ArrayList<CarMap> carMaps = new ArrayList<>();
+        for (CarMap car : cars) {
+            for (User driver : dirvers) {
+                if (car.getDriver() != null && car.getDriver().getId() == driver.getId()) {
+                    carMaps.add(car);
+                    break;
+                }
+            }
+        }
+        return carMaps;
+    }
+
+    //从车辆列表中查询不存在的司机车辆集合
+    public static List<CarMap> findOutCarByDriver(List<CarMap> cars, List<User> dirvers) {
+        ArrayList<CarMap> carMaps = new ArrayList<>();
+        for (CarMap car : cars) {
+            boolean isfind = false;
+            for (User driver : dirvers) {
+                if (car.getDriver() != null && car.getDriver().getId() == driver.getId()) {
+                    isfind = true;
+                    break;
+                }
+            }
+            if (!isfind) {
+                carMaps.add(car);
+            }
+        }
+        return carMaps;
+    }
+
+    public static LatLng driver2LatLng(User user) {
+        return new LatLng(user.getLat(), user.getLng());
     }
 }

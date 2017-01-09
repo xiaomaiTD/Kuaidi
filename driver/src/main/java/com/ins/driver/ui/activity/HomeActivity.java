@@ -29,6 +29,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
 import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.ins.driver.R;
 import com.ins.driver.common.HomeHelper;
 import com.ins.driver.common.NetHelper;
@@ -488,9 +489,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
     public void setDriversPosiotin(List<User> drivers) {
         //检查车辆标注是否过期并移除
-        com.ins.driver.utils.AppHelper.reMoveCar(cars, drivers);
+        AppHelper.reMoveCar(cars, drivers);
         for (User driver : drivers) {
-            CarMap carfind = com.ins.driver.utils.AppHelper.findCarByDriver(cars, driver.getId());
+            CarMap carfind = AppHelper.findCarByDriver(cars, driver.getId());
             if (carfind != null) {
                 carfind.addMove(mapView, MapHelper.str2LatLng(driver.getLatAndLongit()));
             } else {
