@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="XX客服中心"
+                    android:text="客服中心"
                     android:textColor="@color/com_text_blank"
                     android:textSize="@dimen/text_big" />
 
@@ -96,7 +96,7 @@
                 android:drawableLeft="@drawable/icon_server_call"
                 android:drawablePadding="10dp"
                 android:gravity="center_vertical"
-                android:text="联系电话"
+                android:text="客服电话"
                 android:textColor="@color/com_text_blank_deep_light"
                 android:textSize="@dimen/text_nomal" />
 

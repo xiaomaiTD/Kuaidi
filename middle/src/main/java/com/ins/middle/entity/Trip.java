@@ -1,5 +1,7 @@
 package com.ins.middle.entity;
 
+import android.util.Log;
+
 import com.baidu.mapapi.map.Overlay;
 import com.google.gson.annotations.Expose;
 import com.ins.middle.utils.AppHelper;
@@ -451,17 +453,12 @@ public class Trip implements Serializable, Comparable<Trip> {
     public int compareTo(Trip trip) {
         boolean isFinishThat = AppHelper.isFinishOrder(trip);
         boolean isFinishThis = AppHelper.isFinishOrder(this);
-        if (isFinishThat && !isFinishThat) {
-            return -1;
-        } else if (!isFinishThat && isFinishThat) {
+        if (isFinishThis && !isFinishThat) {
             return 1;
+        } else if (!isFinishThis && isFinishThat) {
+            return -1;
         } else {
             return 0;
         }
-//        if (AppHelper.isFinishOrder(trip)){
-//            return -1;
-//        }else {
-//            return 1;
-//        }
     }
 }

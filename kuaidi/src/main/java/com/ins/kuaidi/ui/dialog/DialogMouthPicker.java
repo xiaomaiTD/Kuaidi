@@ -80,12 +80,21 @@ public class DialogMouthPicker extends Dialog implements View.OnClickListener {
     }
 
     private void initData() {
+        dataDays.clear();
+        dataHours.clear();
+        dataMins.clear();
         dataDays.add("今天");
         dataDays.add("明天");
         dataDays.add("后天");
         dataDays.add("大后天");
         dataHours.addAll(initTodayHoursData());
         dataMins.addAll(initNowMinsData());
+    }
+
+    public void fresh(){
+        initData();
+        adapter_hour.notifyDataSetChanged();
+        adapter_mins.notifyDataSetChanged();
     }
 
     private List<String> initAllHoursData() {

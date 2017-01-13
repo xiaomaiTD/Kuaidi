@@ -44,15 +44,6 @@ public class MapUtil {
     }
 
     /**
-     * 根据点和斜率算取截距
-     */
-    public static double getInterception(double slope, LatLng point) {
-
-        double interception = point.latitude - slope * point.longitude;
-        return interception;
-    }
-
-    /**
      * 算斜率
      */
     public static double getSlope(LatLng fromPoint, LatLng toPoint) {
@@ -61,6 +52,15 @@ public class MapUtil {
         }
         double slope = ((toPoint.latitude - fromPoint.latitude) / (toPoint.longitude - fromPoint.longitude));
         return slope;
+    }
+
+    /**
+     * 根据点和斜率算取截距
+     */
+    public static double getInterception(double slope, LatLng point) {
+
+        double interception = point.latitude - slope * point.longitude;
+        return interception;
     }
 
 

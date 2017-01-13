@@ -163,8 +163,7 @@ public class HomeHelper {
         activity.btn_go.setText("呼叫快车");
 
         activity.holdcarView.clear();
-
-
+        activity.dialogPopupMsg.setMsg("");
     }
 
     public static void setFresh(HomeActivity activity) {

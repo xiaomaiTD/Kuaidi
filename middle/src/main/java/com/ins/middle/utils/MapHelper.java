@@ -121,4 +121,13 @@ public class MapHelper {
         MapStatusUpdate u = MapStatusUpdateFactory.newMapStatus(ms);
         if (baiduMap != null) baiduMap.animateMapStatus(u);
     }
+
+    public static boolean isEqueleLat(LatLng latLng1, LatLng latLng2) {
+        if (latLng1 == null && latLng2 == null) return false;
+        if (latLng1.latitude == latLng2.latitude && latLng1.longitude == latLng2.longitude) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/wj_bk"
     android:fitsSystemWindows="true"
-    tools:context="com.ins.kuaidi.com.ins.middle.ui.activity.FeedbackActivity">
+    tools:context=".ui.activity.FeedbackActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -70,6 +70,7 @@
             android:gravity="left|top"
             android:hint="输入您的意见"
             android:inputType="textMultiLine"
+            android:maxLength="255"
             android:minLines="10"
             android:padding="8dp"
             android:textColor="@color/cc_text_blank"

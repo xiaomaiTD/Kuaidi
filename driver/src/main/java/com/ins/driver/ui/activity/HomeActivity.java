@@ -620,7 +620,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             case R.id.text_home_title:
                 if (!StrUtils.isEmpty(city)) {
                     intent.setClass(this, CityActivity.class);
-                    intent.putExtra("city", nowcity);
+                    intent.putExtra("city", nowcity + nowdistrict);
                     startActivityForResult(intent, RESULT_CITY);
                 } else {
                     Toast.makeText(this, "正在定位中...", Toast.LENGTH_SHORT).show();
@@ -709,7 +709,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         this.nowdistrict = district;
         if (isFirst) {
             //第一次定位成功后设置城市
-            setCity(city);
+            setCity(city + district);
             //第一次定位成功后请求周围司机
             //netHelper.netDriverLat();
         }

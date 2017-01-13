@@ -105,8 +105,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     public ProgressBar progress_title;
 
     public DialogLoading dialogLoading;
-    private DialogMouthPicker dialogTime;
-    private DialogPopupMsg dialogPopupMsg;
+    public DialogMouthPicker dialogTime;
+    public DialogPopupMsg dialogPopupMsg;
     public DialogSure dialogSure;
 
     //    private static final int RESULT_SEARCHADDRESS = 0xf101;
@@ -334,10 +334,6 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 if (trip != null) {
                     netHelper.netCancleOrder(trip.getId());
                 }
-//                else {
-//                    int orderId = (int) dialogSure.getObject();
-//                    netHelper.netCancleOrder(orderId);
-//                }
                 dialogSure.hide();
             }
         });
@@ -739,6 +735,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private HoldcarView.OnHoldcarListener onHoldcarListener = new HoldcarView.OnHoldcarListener() {
         @Override
         public void onSelectTimeClick(View v) {
+            dialogTime.fresh();
             dialogTime.show();
         }
 

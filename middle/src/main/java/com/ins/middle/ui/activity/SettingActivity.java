@@ -18,6 +18,7 @@ import com.ins.middle.ui.dialog.DialogSure;
 import com.ins.middle.utils.PackageUtil;
 import com.shelwee.update.utils.VersionUtil;
 import com.sobey.common.common.MyActivityCollector;
+import com.sobey.common.utils.ClickUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -100,6 +101,9 @@ public class SettingActivity extends BaseBackActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        //屏蔽快速双击事件
+        if (ClickUtils.isFastDoubleClick()) return;
+
         Intent intent = new Intent();
         int i = v.getId();
         if (i == R.id.item_setting_suggest) {

@@ -84,7 +84,7 @@
                         android:id="@+id/img_meedit_header"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
-                        android:scaleType="centerCrop"/>
+                        android:scaleType="centerCrop" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -117,11 +117,11 @@
                         android:textSize="@dimen/text_nomal" />
 
                     <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="尼古拉斯·凯奇"-->
-                        <!--android:textColor="@color/com_text_blank"-->
-                        <!--android:textSize="@dimen/text_nomal" />-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="尼古拉斯·凯奇"-->
+                    <!--android:textColor="@color/com_text_blank"-->
+                    <!--android:textSize="@dimen/text_nomal" />-->
 
                     <com.sobey.common.view.EmojiEditText
                         android:id="@+id/edit_meedit_nike"
@@ -229,6 +229,7 @@
                         android:gravity="left|top"
                         android:hint="还未输入个性签名，简单介绍下自己吧。"
                         android:inputType="textMultiLine"
+                        android:maxLength="255"
                         android:minLines="1"
                         android:textColor="@color/com_text_blank"
                         android:textColorHint="@color/sb_text_dark"

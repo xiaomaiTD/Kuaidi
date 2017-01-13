@@ -127,11 +127,16 @@ public class WalletActivity extends BaseBackActivity implements View.OnClickList
             startActivity(PackageUtil.getSmIntent("CouponActivity"));
         } else if (i == R.id.lay_wallet_bankcard) {
             User user = AppData.App.getUser();
-            if (user != null && user.getStatus() == User.AUTHENTICATED) {
-                //已认证，调整银行卡页面
+            if (user == null) return;
+            if (user.getStatus() == User.AUTHENTICATED) {
+                //已认证，跳转银行卡页面
                 intent.setClass(this, BankCardActivity.class);
                 startActivity(intent);
+            } else if (user.getStatus() == User.CERTIFICATIONING) {
+                //认证中，跳转认证状态页面
+                Toast.makeText(this, "实名认证中，等待工作人员审核通过后才可使用该功能", Toast.LENGTH_SHORT).show();
             } else {
+                //未认证
                 Toast.makeText(this, "请先进行实名认证", Toast.LENGTH_SHORT).show();
                 Intent identifyIntent = PackageUtil.getSmIntent("IdentifyActivity");
                 identifyIntent.putExtra("type", 1);

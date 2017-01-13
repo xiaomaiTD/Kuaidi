@@ -125,8 +125,14 @@ public class CashActivity extends BaseBackActivity implements View.OnClickListen
                     return;
                 }
                 float editcash = Float.parseFloat(s.toString());
+                if (editcash==0){
+                    edit_cash_money.setText("");
+                    btn_go.setEnabled(false);
+                    return;
+                }
                 String input = s.subSequence(start, start + count).toString();
                 if (s.length() == 1 && "0".equals(input)) {
+                    btn_go.setEnabled(false);
                     edit_cash_money.setText("");
                     return;
                 }

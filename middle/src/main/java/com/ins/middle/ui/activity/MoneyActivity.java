@@ -134,12 +134,16 @@ public class MoneyActivity extends BaseBackActivity implements OnRecycleItemClic
         int i = v.getId();
         if (i == R.id.btn_go_cash) {
             User user = AppData.App.getUser();
-            if (user != null && user.getStatus() == User.AUTHENTICATED) {
+            if (user == null) return;
+            if (user.getStatus() == User.AUTHENTICATED) {
                 //已认证，进入提现
                 Intent intent = new Intent(this, CashActivity.class);
                 intent.putExtra("money", money);
                 startActivity(intent);
-            } else {
+            } else if (user.getStatus() == User.CERTIFICATIONING) {
+                //认证中，跳转认证状态页面
+                Toast.makeText(this, "实名认证中，等待工作人员审核通过后才可使用该功能", Toast.LENGTH_SHORT).show();
+            }  else {
                 Toast.makeText(this, "请先进行实名认证", Toast.LENGTH_SHORT).show();
                 Intent identifyIntent = PackageUtil.getSmIntent("IdentifyActivity");
                 identifyIntent.putExtra("type", 1);
