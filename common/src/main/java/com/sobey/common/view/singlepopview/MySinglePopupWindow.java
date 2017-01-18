@@ -86,7 +86,8 @@ public class MySinglePopupWindow extends PopupWindow {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                if (onPopSingleClickListenner != null) onPopSingleClickListenner.OnPopClick(adapter.getResults().get(position));
+                if (onPopSingleClickListenner != null)
+                    onPopSingleClickListenner.OnPopClick(adapter.getResults().get(position));
             }
         });
     }
@@ -134,17 +135,17 @@ public class MySinglePopupWindow extends PopupWindow {
     ////////背景变暗
     //////////////////////////
     private void turnBackgroundDark() {
-        if (shadowView!=null){
+        if (shadowView != null) {
             turnDarkByView();
-        }else {
+        } else {
             turnDarkByAlpha();
         }
     }
 
     private void resetBackground() {
-        if (shadowView!=null){
+        if (shadowView != null) {
             turnLightByView();
-        }else {
+        } else {
             turnLightByAlpha();
         }
     }
@@ -158,7 +159,7 @@ public class MySinglePopupWindow extends PopupWindow {
     private void turnDarkByAlpha() {
         final Activity activity = (Activity) context;
         ValueAnimator animator = ValueAnimator.ofFloat(1f, 0.7f);
-        animator.setDuration(200).start();
+        animator.setDuration(300).start();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -172,7 +173,7 @@ public class MySinglePopupWindow extends PopupWindow {
     private void turnLightByAlpha() {
         final Activity activity = (Activity) context;
         ValueAnimator animator = ValueAnimator.ofFloat(0.7f, 1f);
-        animator.setDuration(200).start();
+        animator.setDuration(300).start();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -184,7 +185,7 @@ public class MySinglePopupWindow extends PopupWindow {
     }
 
     private void turnDarkByView() {
-        if (shadowView!=null) {
+        if (shadowView != null) {
             shadowView.setVisibility(View.VISIBLE);
             ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
             animator.setDuration(300).start();
@@ -195,7 +196,7 @@ public class MySinglePopupWindow extends PopupWindow {
                     shadowView.setAlpha(alpha);
                 }
             });
-        }else {
+        } else {
             final Activity activity = (Activity) context;
             ValueAnimator animator = ValueAnimator.ofFloat(1f, 0.7f);
             animator.setDuration(300).start();
@@ -211,9 +212,9 @@ public class MySinglePopupWindow extends PopupWindow {
     }
 
     private void turnLightByView() {
-        if (shadowView!=null) {
+        if (shadowView != null) {
             ValueAnimator animator = ValueAnimator.ofFloat(1f, 0f);
-            animator.setDuration(200).start();
+            animator.setDuration(300).start();
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -221,10 +222,10 @@ public class MySinglePopupWindow extends PopupWindow {
                     shadowView.setAlpha(alpha);
                 }
             });
-        }else {
+        } else {
             final Activity activity = (Activity) context;
             ValueAnimator animator = ValueAnimator.ofFloat(0.7f, 1f);
-            animator.setDuration(200).start();
+            animator.setDuration(300).start();
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {

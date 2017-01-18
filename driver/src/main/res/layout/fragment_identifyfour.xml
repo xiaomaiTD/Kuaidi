@@ -149,11 +149,13 @@
         </LinearLayout>
 
         <View
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/com_line" />
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_vertical"
@@ -175,8 +177,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:hint="请填写"
-                android:inputType="phone"
-                android:maxLength="16"
+                android:inputType="textPersonName"
+                android:maxLength="18"
                 android:singleLine="true"
                 android:textColor="@color/sb_text_blank"
                 android:textSize="@dimen/text_nomal" />

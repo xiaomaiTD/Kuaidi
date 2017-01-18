@@ -29,6 +29,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.ins.kuaidi.R;
+import com.ins.kuaidi.common.AnimHelper;
 import com.ins.kuaidi.common.HomeHelper;
 import com.ins.kuaidi.common.NetHelper;
 import com.ins.kuaidi.common.WaitingHelper;
@@ -76,6 +77,7 @@ import java.util.List;
 
 public class HomeActivity extends BaseAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, Locationer.LocationCallback, OnGetGeoCoderResultListener {
 
+    private AnimHelper animHelper;
     public WaitingHelper waitingHelper;
     private UpdateHelper updateHelper;
     public NetHelper netHelper;
@@ -156,6 +158,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             } else {
                 holdcarView.setEndPosition(position);
             }
+            btn_go.setVisibility(View.VISIBLE);
         }
     }
 
@@ -312,6 +315,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         updateHelper.check();
         carMap = new CarMap();
         netHelper = new NetHelper(this);
+        animHelper = new AnimHelper();
         dialogLoading = new DialogLoading(this, "正在处理");
         dialogPopupMsg = new DialogPopupMsg(this);
         dialogSure = new DialogSure(this, "确定取消订单？");
@@ -433,8 +437,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         }
         //开始定位
         locationer.startlocation();
-        //打车界面初始不可见
-        holdcarView.setVisibility(View.GONE);
+        //打车界面初始可见
+        holdcarView.setVisibility(View.VISIBLE);
         //车主面板默认不可见
         driverView.setVisibility(View.GONE);
     }
@@ -508,7 +512,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             if (holdcarView.getVisibility() != View.VISIBLE && lay_map_center.getVisibility() == View.VISIBLE) {
                 //只有没有行程并且行程为初始状态才显示摇杆
                 if (trip == null || trip.getStatus() == Trip.STA_2001) {
-                    YoYo.with(Techniques.TakingOff).duration(200).playOn(lay_map_bubble);
+//                    YoYo.with(Techniques.TakingOff).duration(200).playOn(lay_map_bubble);
                 }
             }
         }
@@ -544,7 +548,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 //打车面板不可见并且中心面板可见的时候才显示打车气泡
                 if (holdcarView.getVisibility() != View.VISIBLE && lay_map_center.getVisibility() == View.VISIBLE) {
                     lay_map_bubble.setVisibility(View.VISIBLE);
-                    YoYo.with(Techniques.Landing).duration(200).playOn(lay_map_bubble);
+//                    YoYo.with(Techniques.Landing).duration(200).playOn(lay_map_bubble);
                 }
                 //检索地址
                 if (needSearch) mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
@@ -662,9 +666,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                     btn_go.setVisibility(View.VISIBLE);
                     lay_map_bubble.setVisibility(View.GONE);
                     holdcarView.setVisibility(View.VISIBLE);
-                    YoYo.with(Techniques.Landing)
-                            .duration(200)
-                            .playOn(holdcarView);
+                    holdcarView.setLineConfig(null);
+//                    YoYo.with(Techniques.Landing)
+//                            .duration(200)
+//                            .playOn(holdcarView);
                 } else {
                     intent.setClass(this, LoginActivity.class);
                     startActivity(intent);
@@ -698,6 +703,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 break;
             case R.id.btn_map_relocate:
                 MapHelper.zoomByPoint(baiduMap, nowLatLng);
+                locationer.isFirstLoc = true;
+                locationer.needMoveToLoc = false;
                 if (!StrUtils.isEmpty(city) && !city.equals(nowcity)) {
                     setCity(nowcity);
                 }
@@ -716,7 +723,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     private BaiduMap.OnMapStatusChangeListener onMapStatusChangeListener = new BaiduMap.OnMapStatusChangeListener() {
         @Override
         public void onMapStatusChangeStart(MapStatus mapStatus) {
-            holdcarView.setAlpha(0.1f);
+//            holdcarView.setAlpha(0.1f);
+            animHelper.turnDark(holdcarView);
             setBubbleOff();
         }
 
@@ -726,7 +734,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
         @Override
         public void onMapStatusChangeFinish(MapStatus mapStatus) {
-            holdcarView.setAlpha(1f);
+//            holdcarView.setAlpha(1f);
+            animHelper.turnLight(holdcarView);
             setBubbleOn(mapStatus.target);
         }
     };
@@ -755,11 +764,25 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
 
         @Override
         public void onEndClick(View v) {
-            type = 1;
-            Intent intent = new Intent(HomeActivity.this, SearchAddressActivity.class);
-            intent.putExtra("city", city);
-            intent.putExtra("latLng", nowLatLng);
-            startActivity(intent);
+            User user = AppData.App.getUser();
+            if (user == null) {
+                Toast.makeText(HomeActivity.this, "请登录", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                startActivity(intent);
+            } else {
+                type = 1;
+                Intent intent = new Intent(HomeActivity.this, CityActivity.class);
+                //非常规启调，需求改动导致，详见CityActivity
+                intent.putExtra("type", 1);
+                intent.putExtra("city", nowcity);
+                intent.putExtra("latlng", MapHelper.LatLng2Str(nowLatLng));
+                startActivityForResult(intent, RESULT_CITY);
+
+//            Intent intent = new Intent(HomeActivity.this, SearchAddressActivity.class);
+//            intent.putExtra("city", city);
+//            intent.putExtra("latLng", nowLatLng);
+//            startActivity(intent);
+            }
         }
     };
 
@@ -811,7 +834,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 String newCity = result.getAddressDetail().city;
                 String address = newCity + district;
                 Log.e("liao", address);
-                if (!city.equals(address)) {
+                if (!StrUtils.isEmpty(city) && !city.equals(address)) {
                     setCity(address);
                 }
             }

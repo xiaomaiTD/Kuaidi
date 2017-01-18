@@ -156,7 +156,7 @@ public class HomeHelper {
         setTextMatched(activity);
 
         activity.driverView.setVisibility(View.GONE);
-        activity.holdcarView.setVisibility(View.GONE);
+        activity.holdcarView.setVisibility(View.VISIBLE);
         activity.lay_map_center.setVisibility(View.VISIBLE);
         activity.btn_go.setVisibility(View.GONE);
         activity.btn_go.setEnabled(true);

@@ -28,7 +28,7 @@ public class RecycleAdapterSeat extends RecyclerView.Adapter<RecycleAdapterSeat.
     private TextView text_count;
 
     private int maxseat = 4;
-    private int selectPosition = 3;
+    private int selectPosition = 0;
     private LineConfig lineConfig;
 
     public void setLineConfig(LineConfig lineConfig) {
@@ -37,7 +37,9 @@ public class RecycleAdapterSeat extends RecyclerView.Adapter<RecycleAdapterSeat.
         if (lineConfig != null) {
             //设置车容量和默认选中位置
             maxseat = lineConfig.getCarCapacity();
-            selectPosition = maxseat - 1;
+            //需求变更，默认人数为1人
+            //selectPosition = maxseat - 1;
+            selectPosition = 0;
             results.clear();
             results.addAll(getInitSeats(maxseat));
             notifyDataSetChanged();

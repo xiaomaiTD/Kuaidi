@@ -182,6 +182,7 @@
                     android:id="@+id/holdcar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp" />
 
@@ -189,7 +190,9 @@
                     android:id="@+id/btn_go"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_margin="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/hot_rect_coner_yellow"
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"

@@ -17,7 +17,10 @@ import com.ins.middle.R;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.City;
+import com.ins.middle.ui.activity.CityActivity;
 import com.ins.middle.ui.adapter.ListAdapterCity;
+import com.ins.middle.utils.MapHelper;
+import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.common.LoadingViewUtil;
 import com.sobey.common.ui.fragment.BaseSelectFragment;
 import com.sobey.common.utils.StrUtils;
@@ -35,13 +38,15 @@ public class CityFragment extends BaseSelectFragment implements View.OnClickList
     private TextView text_city_nowcity;
     private String city;
     private String latlng;
+    private int type;
 
-    public static Fragment newInstance(int position, String city, String latlng) {
+    public static Fragment newInstance(int position, String city, String latlng,int type) {
         CityFragment f = new CityFragment();
         Bundle b = new Bundle();
         b.putInt("position", position);
         b.putString("city", city);
         b.putString("latlng", latlng);
+        b.putInt("type", type);
         f.setArguments(b);
         return f;
     }
@@ -51,6 +56,7 @@ public class CityFragment extends BaseSelectFragment implements View.OnClickList
         super.onCreate(savedInstanceState);
         this.city = getArguments().getString("city");
         this.latlng = getArguments().getString("latlng");
+        this.type = getArguments().getInt("type");
     }
 
     @Nullable
@@ -82,11 +88,22 @@ public class CityFragment extends BaseSelectFragment implements View.OnClickList
                 City city = (City) adapter.getResults().get(pos);
 //                EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_HOME_CITY, city.getCar_title()));
 //                getActivity().finish();
-                Intent intent = new Intent();
-                intent.putExtra("city", city.getCar_title());
-                intent.putExtra("latlng",city.getCoreSpot());
-                getActivity().setResult(Activity.RESULT_OK, intent);
-                getActivity().finish();
+                if (type == 0) {
+                    //正常启调
+                    Intent intent = new Intent();
+                    intent.putExtra("city", city.getCar_title());
+                    intent.putExtra("latlng", city.getCoreSpot());
+                    getActivity().setResult(Activity.RESULT_OK, intent);
+                    getActivity().finish();
+                } else {
+                    //选择出发地启调方式
+                    Intent intent = PackageUtil.getSmIntent("SearchAddressActivity");
+                    intent.putExtra("city", city.getCar_title());
+                    intent.putExtra("latLng", MapHelper.str2LatLng(city.getCoreSpot()));
+                    intent.putExtra("type", type);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
             }
         });
         text_city_nowcity.setOnClickListener(new View.OnClickListener() {
@@ -94,11 +111,22 @@ public class CityFragment extends BaseSelectFragment implements View.OnClickList
             public void onClick(View v) {
 //                EventBus.getDefault().post(AppConstant.makeFlagStr(AppConstant.EVENT_HOME_CITY, city));
 //                getActivity().finish();
-                Intent intent = new Intent();
-                intent.putExtra("city", city);
-                intent.putExtra("latlng", latlng);
-                getActivity().setResult(Activity.RESULT_OK, intent);
-                getActivity().finish();
+                if (type == 0) {
+                    //正常启调
+                    Intent intent = new Intent();
+                    intent.putExtra("city", city);
+                    intent.putExtra("latlng", latlng);
+                    getActivity().setResult(Activity.RESULT_OK, intent);
+                    getActivity().finish();
+                } else {
+                    //选择出发地启调方式
+                    Intent intent = PackageUtil.getSmIntent("SearchAddressActivity");
+                    intent.putExtra("city", city);
+                    intent.putExtra("latLng", MapHelper.str2LatLng(latlng));
+                    intent.putExtra("type", type);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
             }
         });
     }

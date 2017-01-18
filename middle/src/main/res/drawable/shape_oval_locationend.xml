@@ -1,0 +1,16 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval" >
+
+    <!-- 填充 -->
+    <solid android:color="@color/none" />
+
+    <!-- 描边 -->
+    <stroke
+        android:width="3dp"
+        android:color="@color/kd_zhifubao_blue"/>
+
+    <size
+        android:width="12dp"
+        android:height="12dp" />
+
+</shape>

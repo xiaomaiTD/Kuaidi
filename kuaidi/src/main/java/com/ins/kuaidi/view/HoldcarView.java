@@ -17,6 +17,7 @@ import com.ins.kuaidi.entity.LineConfig;
 import com.ins.kuaidi.utils.AppHelper;
 import com.ins.middle.entity.Position;
 import com.ins.kuaidi.ui.adapter.RecycleAdapterSeat;
+import com.sobey.common.utils.ClickUtils;
 
 /**
  * Created by Administrator on 2016/11/1.
@@ -124,7 +125,9 @@ public class HoldcarView extends FrameLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
+        if (!isEnabled()) return;
+        //屏蔽快速双击事件
+        if (ClickUtils.isFastDoubleClick()) return;
         switch (v.getId()) {
             case R.id.img_holdcar_hide:
                 img_show.setVisibility(VISIBLE);

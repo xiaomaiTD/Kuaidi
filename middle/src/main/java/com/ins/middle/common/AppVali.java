@@ -36,9 +36,9 @@ public class AppVali {
             return "请输入密码";
         } else if (!length(psw, 6, 16)) {
             return "密码长度必须为6-16位";
-        } else if (!length(psw, 6, 16)) {
-            return "密码长度必须为6-16位";
-        } else {
+        } else if (ValidateUtil.Empty(psw)){
+            return "密码不能包含空格";
+        }else {
             return null;
         }
     }
@@ -94,9 +94,12 @@ public class AppVali {
             return "请输入车辆颜色";
         } else if (isEmpty(carowner)) {
             return "请输入车辆所有人";
-        } else if (isEmpty(travelcardnum)) {
-            return "请输入行驶证号";
-        } else if (isEmpty(path)) {
+        }
+        //取消了行驶证
+        //else if (isEmpty(travelcardnum)) {
+        //    return "请输入行驶证号";
+        //}
+        else if (isEmpty(path)) {
             return "拍摄行驶证正面照";
         } else {
             return null;
@@ -198,6 +201,8 @@ public class AppVali {
             return "请输入新密码";
         } else if (!length(psw, 6, 16)) {
             return "密码长度必须为6-16位";
+        }  else if (ValidateUtil.Empty(psw)){
+            return "密码不能包含空格";
         } else if (isEmpty(repetpsw)) {
             return "请再次输入新密码";
         } else if (!psw.equals(repetpsw)) {
@@ -347,7 +352,7 @@ public class AppVali {
             return "确认密码输入不一致";
         } else if (!ValidateUtil.Email(mail)) {
             return "输入邮箱格式不正确";
-        } else {
+        }else {
             return null;
         }
     }

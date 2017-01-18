@@ -243,7 +243,7 @@ public class IdentifyFourFragment extends BaseFragment implements View.OnClickLi
         params.addBodyParameter("carBrand", cartype);
         params.addBodyParameter("carColor", carcolor);
         params.addBodyParameter("carOwner", carowner);
-        params.addBodyParameter("travelcardnum", travelcardnum);
+        //params.addBodyParameter("travelcardnum", travelcardnum);
         params.addBodyParameter("driveLicenseImg", urls.get(0));
         params.addBodyParameter("driveingLicenseImg", urls.get(1));
         params.addBodyParameter("idCardNum", identifyBus.idcardnum);

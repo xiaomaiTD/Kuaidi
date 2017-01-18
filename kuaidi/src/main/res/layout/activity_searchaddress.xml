@@ -50,7 +50,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_rect_corner_none_line_light"
                     android:drawablePadding="10dp"
-                    android:hint="请输入上车地点"
+                    android:hint="请输入详细地址"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:textColor="@color/sb_text_blank_deep"

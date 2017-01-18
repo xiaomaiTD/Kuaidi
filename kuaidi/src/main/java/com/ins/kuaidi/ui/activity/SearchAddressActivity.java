@@ -75,6 +75,8 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
     //地理围栏
     public List<List<LatLng>> ptsArray = new ArrayList<>();
 
+    public int type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +97,9 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
     }
 
     private void initBase() {
+        if (getIntent().hasExtra("type")) {
+            type = getIntent().getIntExtra("type", 0);
+        }
         if (getIntent().hasExtra("city")) {
             city = getIntent().getStringExtra("city");
         }
@@ -117,6 +122,12 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
 
         btn_cancel.setOnClickListener(this);
         btn_go_left.setOnClickListener(this);
+
+        if (type == 0) {
+            btn_go_left.setVisibility(View.VISIBLE);
+        } else {
+            btn_go_left.setVisibility(View.GONE);
+        }
     }
 
     private void initData() {
@@ -177,6 +188,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
             case R.id.btn_go_left:
                 intent.setClass(this, CityActivity.class);
                 intent.putExtra("city", city);
+                intent.putExtra("latlng", MapHelper.LatLng2Str(latLng));
                 startActivityForResult(intent, RESULT_CITY);
                 break;
         }
@@ -291,6 +303,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
             public void netEnd(int status) {
                 edit_search.setEnabled(true);
                 LoadingViewUtil.showout(showingroup, showin);
+                showin = null;
             }
 
             @Override

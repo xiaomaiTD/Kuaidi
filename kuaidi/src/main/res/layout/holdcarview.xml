@@ -125,12 +125,13 @@
                         android:id="@+id/text_holdcar_start"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:drawableLeft="@drawable/icon_trip_location_start"
+                        android:drawableLeft="@drawable/shape_oval_locationstart"
                         android:drawablePadding="10dp"
+                        android:foreground="?attr/selectableItemBackground"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
-                        android:text="当前位置"
+                        android:text="出发地"
                         android:textColor="@color/com_text_blank"
                         android:textSize="@dimen/text_nomal" />
 
@@ -145,8 +146,9 @@
                         android:id="@+id/text_holdcar_end"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:drawableLeft="@drawable/icon_trip_location_end"
+                        android:drawableLeft="@drawable/shape_oval_locationend"
                         android:drawablePadding="10dp"
+                        android:foreground="?attr/selectableItemBackground"
                         android:gravity="center_vertical"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
@@ -173,9 +175,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:orientation="vertical"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:orientation="vertical">
+                android:paddingRight="15dp">
 
                 <View
                     android:layout_width="match_parent"
@@ -185,15 +187,15 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycle"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_height="40dp"/>
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp" />
 
                 <TextView
                     android:id="@+id/text_holdcar_notice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
                     android:text="若要包2辆车，请选择8人"
                     android:textColor="@color/com_text_dark_light"
                     android:textSize="@dimen/text_nomal" />

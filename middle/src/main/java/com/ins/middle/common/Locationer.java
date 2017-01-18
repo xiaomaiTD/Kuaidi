@@ -26,6 +26,7 @@ public class Locationer {
     private MyLocationListenner locationListenner = new MyLocationListenner();
     public LocationClient locationClient;
     public boolean isFirstLoc = true; // 是否首次定位
+    public boolean needMoveToLoc = true;
 
     public Locationer(MapView mapView) {
         this.mapView = mapView;
@@ -78,12 +79,12 @@ public class Locationer {
             if (callback != null) {
                 callback.onLocation(latLng, location.getCity(),location.getDistrict(), isFirstLoc);
             }
-            if (isFirstLoc) {
-                isFirstLoc = false;
+            if (isFirstLoc && needMoveToLoc) {
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(latLng).zoom(13.0f);
                 baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             }
+            isFirstLoc = false;
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
