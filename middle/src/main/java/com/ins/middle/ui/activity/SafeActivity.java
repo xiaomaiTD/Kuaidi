@@ -9,6 +9,7 @@ import com.ins.middle.R;
 import com.ins.middle.ui.activity.BaseAppCompatActivity;
 import com.ins.middle.ui.activity.BaseBackActivity;
 import com.ins.middle.utils.PackageUtil;
+import com.sobey.common.utils.ClickUtils;
 
 public class SafeActivity extends BaseBackActivity implements View.OnClickListener {
 
@@ -50,6 +51,9 @@ public class SafeActivity extends BaseBackActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        //屏蔽快速双击事件
+        if (ClickUtils.isFastDoubleClick()) return;
+
         int i = v.getId();
         if (i == R.id.item_safe_pswuser) {
             Intent intent = new Intent(this, ModifyPswUserActivity.class);

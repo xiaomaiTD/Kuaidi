@@ -13,10 +13,12 @@ import com.ins.driver.ui.activity.LoadUpActivity;
 import com.ins.driver.utils.AppHelper;
 import com.ins.middle.entity.CommonEntity;
 import com.ins.middle.entity.User;
+import com.ins.middle.ui.activity.BankCardActivity;
 import com.ins.middle.utils.MapHelper;
 import com.ins.middle.common.AppData;
 import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.Trip;
+import com.ins.middle.utils.PackageUtil;
 import com.sobey.common.utils.StrUtils;
 
 import org.xutils.http.RequestParams;
@@ -84,9 +86,26 @@ public class NetHelper {
                 activity.btn_go.setEnabled(true);
                 if (code == 205) {
                     //返回的错误是未通过审核，则跳转审核页面
-                    Intent intent = new Intent(activity, IdentifyActivity.class);
-                    intent.putExtra("type", 1);
-                    activity.startActivity(intent);
+//                    Intent intent = new Intent(activity, IdentifyActivity.class);
+//                    intent.putExtra("type", 1);
+//                    activity.startActivity(intent);
+
+                    User user = AppData.App.getUser();
+                    if (user == null) return;
+                    if (user.getStatus() == User.AUTHENTICATED) {
+                        //已认证，跳转银行卡页面
+                        //不可能出现这种情况
+                    } else if (user.getStatus() == User.CERTIFICATIONING) {
+                        //认证中，跳转认证状态页面
+                        Toast.makeText(activity, "实名认证中，等待工作人员审核通过后才可使用该功能", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //未认证
+                        Toast.makeText(activity, "请先进行实名认证", Toast.LENGTH_SHORT).show();
+                        Intent identifyIntent = PackageUtil.getSmIntent("IdentifyActivity");
+                        identifyIntent.putExtra("type", 1);
+                        activity.startActivity(identifyIntent);
+                    }
+
                 }
             }
 

@@ -500,9 +500,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
     }
 
     public void setCity(String city) {
-        this.city = city;
-        text_title.setText(!StrUtils.isEmpty(city) ? city : "定位失败");
-        netHelper.netGetArea(city);
+        //TODO: 验证是不是拼音，如果是则定位失败
+        if (StrUtils.isChineseChar(city)) {
+            this.city = city;
+            text_title.setText(!StrUtils.isEmpty(city) ? city : "定位失败");
+            netHelper.netGetArea(city);
+        }else {
+            text_title.setText("定位失败");
+        }
     }
 
     //移动大头针开始，显示消失动画
@@ -652,14 +657,15 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 drawer.openDrawer(Gravity.LEFT);
                 break;
             case R.id.text_home_title:
-                if (!StrUtils.isEmpty(city)) {
-                    intent.setClass(this, CityActivity.class);
-                    intent.putExtra("city", nowcity);
-                    intent.putExtra("latlng", MapHelper.LatLng2Str(nowLatLng));
-                    startActivityForResult(intent, RESULT_CITY);
-                } else {
-                    Toast.makeText(this, "正在定位中...", Toast.LENGTH_SHORT).show();
-                }
+                //取消了该功能
+//                if (!StrUtils.isEmpty(city)) {
+//                    intent.setClass(this, CityActivity.class);
+//                    intent.putExtra("city", nowcity);
+//                    intent.putExtra("latlng", MapHelper.LatLng2Str(nowLatLng));
+//                    startActivityForResult(intent, RESULT_CITY);
+//                } else {
+//                    Toast.makeText(this, "正在定位中...", Toast.LENGTH_SHORT).show();
+//                }
                 break;
             case R.id.lay_map_bubble:
                 if (AppData.App.getUser() != null) {
@@ -724,8 +730,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         @Override
         public void onMapStatusChangeStart(MapStatus mapStatus) {
 //            holdcarView.setAlpha(0.1f);
-            animHelper.turnDark(holdcarView);
-            setBubbleOff();
+            if (trip == null) {
+                animHelper.turnDark(holdcarView);
+                setBubbleOff();
+            }
         }
 
         @Override
@@ -735,8 +743,10 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         @Override
         public void onMapStatusChangeFinish(MapStatus mapStatus) {
 //            holdcarView.setAlpha(1f);
-            animHelper.turnLight(holdcarView);
-            setBubbleOn(mapStatus.target);
+            if (trip == null) {
+                animHelper.turnLight(holdcarView);
+                setBubbleOn(mapStatus.target);
+            }
         }
     };
 
@@ -757,7 +767,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         public void onStartClick(View v) {
             type = 0;
             Intent intent = new Intent(HomeActivity.this, SearchAddressActivity.class);
-            intent.putExtra("city", city);
+            intent.putExtra("city", nowcity);
             intent.putExtra("latLng", nowLatLng);
             startActivity(intent);
         }
@@ -794,7 +804,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         //定位成功后保存定位城市
         this.nowcity = city + district;
         if (isFirst) {
-            setCity(city + district);
+            setCity(this.nowcity);
         }
         if (AppData.Config.needNeardriver) {
             netHelper.netNearDrivers(nowLatLng);

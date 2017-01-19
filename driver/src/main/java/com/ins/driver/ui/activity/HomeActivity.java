@@ -618,13 +618,14 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
                 drawer.openDrawer(Gravity.LEFT);
                 break;
             case R.id.text_home_title:
-                if (!StrUtils.isEmpty(city)) {
-                    intent.setClass(this, CityActivity.class);
-                    intent.putExtra("city", nowcity + nowdistrict);
-                    startActivityForResult(intent, RESULT_CITY);
-                } else {
-                    Toast.makeText(this, "正在定位中...", Toast.LENGTH_SHORT).show();
-                }
+                //取消了该功能
+//                if (!StrUtils.isEmpty(city)) {
+//                    intent.setClass(this, CityActivity.class);
+//                    intent.putExtra("city", nowcity + nowdistrict);
+//                    startActivityForResult(intent, RESULT_CITY);
+//                } else {
+//                    Toast.makeText(this, "正在定位中...", Toast.LENGTH_SHORT).show();
+//                }
                 break;
             case R.id.btn_go:
                 if (AppData.App.getUser() != null) {

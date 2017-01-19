@@ -108,13 +108,13 @@ public class StrUtils {
         if (isEmpty(str)) {
             return "";
         }
-        if (isEmpty(c)){
+        if (isEmpty(c)) {
             return str;
         }
         if (str.length() <= c.length()) {
-            if (str.equals(c)){
+            if (str.equals(c)) {
                 return "";
-            }else {
+            } else {
                 return str;
             }
         }
@@ -126,5 +126,17 @@ public class StrUtils {
         }
     }
 
+    public static boolean isChineseChar(String str) {
+        if (isEmpty(str)){
+            return false;
+        }
+        boolean temp = false;
+        Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+        Matcher m = p.matcher(str);
+        if (m.find()) {
+            temp = true;
+        }
+        return temp;
+    }
 
 }

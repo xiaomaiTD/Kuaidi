@@ -43,11 +43,12 @@
                     android:layout_height="match_parent"
                     android:drawableLeft="@drawable/logo_home_top"
                     android:drawablePadding="5dp"
-                    android:drawableRight="@drawable/icon_home_show"
                     android:gravity="center"
                     android:text="定位中"
                     android:textColor="@color/sb_text_dark"
                     android:textSize="@dimen/text_big" />
+
+                <!--android:drawableRight="@drawable/icon_home_show"-->
 
                 <ProgressBar
                     android:id="@+id/progress_home_title"
