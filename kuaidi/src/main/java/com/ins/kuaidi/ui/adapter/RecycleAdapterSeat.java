@@ -43,9 +43,13 @@ public class RecycleAdapterSeat extends RecyclerView.Adapter<RecycleAdapterSeat.
             results.clear();
             results.addAll(getInitSeats(maxseat));
             notifyDataSetChanged();
-            setNotice(new Seat(maxseat));
-            setCount(new Seat(maxseat));
-            setPrice(new Seat(maxseat));
+//            setNotice(new Seat(maxseat));
+//            setCount(new Seat(maxseat));
+//            setPrice(new Seat(maxseat));
+            //需求改动，默认1人
+            setNotice(new Seat(1));
+            setCount(new Seat(1));
+            setPrice(new Seat(1));
         } else {
             setPrice(new Seat(maxseat));
         }
