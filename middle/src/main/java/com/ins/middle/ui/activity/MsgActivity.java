@@ -17,6 +17,7 @@ import com.ins.middle.common.CommonNet;
 import com.ins.middle.entity.Msg;
 import com.ins.middle.entity.Trip;
 import com.ins.middle.ui.activity.WebActivity;
+import com.sobey.common.common.DividerItemDecoration;
 import com.sobey.common.common.LoadingViewUtil;
 import com.ins.middle.entity.TestEntity;
 import com.ins.middle.ui.adapter.RecycleAdapterMsg;
@@ -85,7 +86,7 @@ public class MsgActivity extends BaseBackActivity implements OnRecycleItemClickL
         adapter = new RecycleAdapterMsg(this, results);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
-//        recyclerView.addItemDecoration(new DividerItemDecoration(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this));
         adapter.setOnItemClickListener(this);
         springView.setHeader(new AliHeader(this, false));
         springView.setFooter(new AliFooter(this, false));

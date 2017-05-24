@@ -88,6 +88,11 @@ public class AppData {
             PreferenceUtil.saveString(ApplicationHelp.getApplicationContext(), KEY_JPUSHID, token);
         }
 
+
+
+
+
+
         public static void removeJpushId() {
             PreferenceUtil.remove(ApplicationHelp.getApplicationContext(), KEY_JPUSHID);
         }
@@ -131,9 +136,10 @@ public class AppData {
         /**
          * 服务器域名
          */
+		public static String domain = "http://59.110.66.87:80/Carpooling/";								//正式服务器
 //		public static String domain = "http://192.168.118.110:9528/Carpooling/";								//客服测试服务器
 //		public static String domain = "http://101.201.222.160:8101/Carpooling/";								//外网测试服务器(一)
-		public static String domain = "http://139.129.111.76:8101/Carpooling/";								//外网测试服务器(二)
+//		public static String domain = "http://139.129.111.76:8101/Carpooling/";								//外网测试服务器(二)
 //		public static String domain = "http://192.168.118.110:9528/Carpooling/";								//内部测试服务器
 //      public static String domain = "http://192.168.118.196:9527/Carpooling/";                                //开发服务器(谢启谋)
 //		public static String domain = "http://192.168.0.119:8080/Carpooling/";								//开发服务器(李作焕)

@@ -202,7 +202,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             //目前司机抵达不需要在推送中处理
         } else if ("6".equals(aboutOrder) && PushValiHelper.pushDMattch(trips, orderId)) {
             //司机端 ： 匹配到有新的订单
-            SnackUtil.showSnack(showingroup, msg, onNewMsgclickListener);
+            SnackUtil.showSnack(showingroup, msg, onNewMsgclickListener, 15 * 1000);//悬停15秒
 //            SnackUtil.showSnack(showingroup, "您有一条新的订单", onNewMsgclickListener);
             //获取行程信息
             netHelper.netGetTrip();
@@ -712,7 +712,8 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         this.nowdistrict = district;
         if (isFirst) {
             //第一次定位成功后设置城市
-            setCity(city + district);
+//            setCity(city + district);//需求变更：又不需要区级了
+            setCity(city);
             //第一次定位成功后请求周围司机
             //netHelper.netDriverLat();
         }

@@ -802,7 +802,7 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
         //定位成功后保存定位坐标
         this.nowLatLng = latLng;
         //定位成功后保存定位城市
-        this.nowcity = city + district;
+        this.nowcity = city;// + district;  需求又改回去了，现在不加区级了
         if (isFirst) {
             setCity(this.nowcity);
         }
@@ -842,9 +842,9 @@ public class HomeActivity extends BaseAppCompatActivity implements NavigationVie
             } else {
                 String district = result.getAddressDetail().district;
                 String newCity = result.getAddressDetail().city;
-                String address = newCity + district;
-                Log.e("liao", address);
+                String address = newCity;//不再需要区级了 + district;
                 if (!StrUtils.isEmpty(city) && !city.equals(address)) {
+                    Log.e("liao", address);
                     setCity(address);
                 }
             }

@@ -53,12 +53,12 @@
         android:layout_marginTop="20dp"
         android:gravity="left"
         android:lineSpacingExtra="10dp"
+        android:maxLines="9"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:maxLines="9"
         android:scrollbarThumbVertical="@drawable/none"
-        android:textColor="@color/cc_text_blank"
-        android:text="1：更新城市\n2：修复部分bug\n3：更新界面" />
+        android:text="1：更新城市\n2：修复部分bug\n3：更新界面"
+        android:textColor="@color/cc_text_blank" />
 
     <ImageView
         android:layout_width="match_parent"

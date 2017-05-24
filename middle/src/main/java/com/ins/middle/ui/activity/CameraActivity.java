@@ -48,6 +48,7 @@ import android.widget.Toast;
 import com.google.android.cameraview.CameraView;
 import com.ins.middle.R;
 import com.sobey.common.utils.FileUtil;
+import com.sobey.common.utils.PermissionsUtil;
 import com.sobey.common.utils.others.BitmapUtil;
 import com.sobey.common.view.IDCardView;
 
@@ -92,7 +93,9 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
             int i = v.getId();
             if (i == R.id.take_picture) {
                 if (mCameraView != null) {
-                    mCameraView.takePicture();
+                    if (PermissionsUtil.requsetPhoto(CameraActivity.this, findViewById(R.id.showingroup))) {
+                        mCameraView.takePicture();
+                    }
                 }
             }
         }

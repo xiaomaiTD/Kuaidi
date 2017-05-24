@@ -14,7 +14,7 @@ import com.ins.middle.ui.fragment.LoginPhoneFragment;
 import com.ins.middle.ui.fragment.LoginPswFragment;
 import com.ins.middle.ui.fragment.LoginValiFragment;
 
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private LoginActivity.MyPagerAdapter pagerAdapter;
@@ -43,8 +43,8 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 
-    public void goPosition(int position){
-        if (position>=0&&position<title.length) {
+    public void goPosition(int position) {
+        if (position >= 0 && position < title.length) {
             setPage(position);
         }
     }
@@ -123,15 +123,16 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     public boolean back2first = false;
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (viewPager.getCurrentItem()!=0) {
+            if (viewPager.getCurrentItem() != 0) {
                 if (back2first) {
                     goPosition(0);
                 } else {
                     last();
                 }
-            }else {
+            } else {
                 finish();
             }
             return true;

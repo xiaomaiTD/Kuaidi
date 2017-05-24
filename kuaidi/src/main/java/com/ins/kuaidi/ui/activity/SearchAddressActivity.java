@@ -71,6 +71,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
 
     //默认成都市
     private String city = "成都市";
+    private String nowCity = "成都市";
     private LatLng latLng;
     //地理围栏
     public List<List<LatLng>> ptsArray = new ArrayList<>();
@@ -102,6 +103,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
         }
         if (getIntent().hasExtra("city")) {
             city = getIntent().getStringExtra("city");
+            nowCity = city;
         }
         if (getIntent().hasExtra("latLng")) {
             latLng = getIntent().getParcelableExtra("latLng");
@@ -187,7 +189,7 @@ public class SearchAddressActivity extends BaseBackActivity implements OnRecycle
                 break;
             case R.id.btn_go_left:
                 intent.setClass(this, CityActivity.class);
-                intent.putExtra("city", city);
+                intent.putExtra("city", nowCity);
                 intent.putExtra("latlng", MapHelper.LatLng2Str(latLng));
                 startActivityForResult(intent, RESULT_CITY);
                 break;

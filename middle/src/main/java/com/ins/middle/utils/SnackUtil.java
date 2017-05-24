@@ -20,23 +20,25 @@ import com.ins.middle.R;
 
 public class SnackUtil {
 
+    private static int TIME = 15 * 1000; //15秒
+
     public static void showSnack(final View showingroup, String msg) {
-        showSnack(showingroup, msg, null);
+        showSnack(showingroup, msg, null, 0);
     }
 
     public static void showSnack(final View showingroup, String msg, final View.OnClickListener listener) {
+        showSnack(showingroup, msg, listener, 0);
+    }
+
+    public static void showSnack(final View showingroup, String msg, final View.OnClickListener listener, int time) {
         String title = "黑马出行：\n";
         SpannableString msp = new SpannableString(title + msg);
         msp.setSpan(new RelativeSizeSpan(1.3f), 0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         //设置TSnackbar
         final TSnackbar snackbar = TSnackbar.make(showingroup, msg, TSnackbar.LENGTH_LONG);
-        if (listener != null) {
-            //又改成消息可以自动消失了，fuck，注释掉算了，不打算优化结构了，心累
-            //snackbar.setDuration(TSnackbar.LENGTH_INDEFINITE);
-            snackbar.setDuration(TSnackbar.LENGTH_LONG);
-        } else {
-            snackbar.setDuration(TSnackbar.LENGTH_LONG);
+        if (time != 0) {
+            snackbar.setDuration(time);
         }
         snackbar.setIconLeft(R.drawable.logo_kuaidi, 60);
         snackbar.setIconPadding(30);

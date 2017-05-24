@@ -197,16 +197,16 @@ public class TripDetailActivity extends BaseBackActivity implements View.OnClick
                 startActivity(intent);
                 break;
             case R.id.text_share_wechat:
-                ShareHelper.showShareWeixin(this, "陛下", "您有一封新的奏折~", url, "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
+                ShareHelper.showShareWeixin(this, "黑马出行，你我通行", "黑马出行，你我通行，出行有我，城际无忧", url, AppData.Url.logo + "logo_kuaidi.png");
                 break;
             case R.id.text_share_wechatmoments:
-                ShareHelper.showSharePengyouquan(this, "陛下", "您有一封新的奏折~", url, "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
+                ShareHelper.showSharePengyouquan(this, "黑马出行，你我通行", "黑马出行，你我通行，出行有我，城际无忧", url, AppData.Url.logo + "logo_kuaidi.png");
                 break;
             case R.id.text_share_qq:
-                ShareHelper.showShareQQ(this, "陛下", "您有一封新的奏折~", url, "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
+                ShareHelper.showShareQQ(this, "黑马出行，你我通行", "黑马出行，你我通行，出行有我，城际无忧", url, AppData.Url.logo + "logo_kuaidi.png");
                 break;
             case R.id.text_share_xinlangweibo:
-                ShareHelper.showShareSina(this, "陛下", "您有一封新的奏折~", url, "http://v1.qzone.cc/avatar/201408/04/16/16/53df416d26b6c338.jpg%21200x200.jpg");
+                ShareHelper.showShareSina(this, "黑马出行，你我通行", "黑马出行，你我通行，出行有我，城际无忧", url, AppData.Url.logo + "logo_kuaidi.png");
                 break;
         }
     }
