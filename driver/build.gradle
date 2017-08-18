@@ -55,7 +55,7 @@ dependencies {
     //加载自定义字体
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     //bughd
-    compile 'im.fir:fir-sdk:latest.integration@aar'
+    //compile 'im.fir:fir-sdk:latest.integration@aar'
     //侧滑退出
     //compile 'com.github.liuguangqiang.swipeback:library:1.0.2@aar'
     //支付密码框

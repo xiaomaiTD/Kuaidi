@@ -54,7 +54,7 @@ dependencies {
     //
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     //bughd
-    compile 'im.fir:fir-sdk:latest.integration@aar'
+    //compile 'im.fir:fir-sdk:latest.integration@aar'
     //spring
     compile 'com.liaoinstan.springview:library:1.2.7'
     //仿IOS swichbutton

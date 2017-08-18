@@ -26,7 +26,6 @@ import org.xutils.x;
 
 //import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.JPushInterface;
-import im.fir.sdk.FIR;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class DriverApplication extends Application {
@@ -75,11 +74,12 @@ public class DriverApplication extends Application {
     }
 
 
-    private void initbugHd(){
-        FIR.init(this);
+    private void initbugHd() {
+        //bugHd已经下线
+        //FIR.init(this);
     }
 
-    private void initBaiduMap(){
+    private void initBaiduMap() {
         SDKInitializer.initialize(this);
     }
 }

@@ -122,7 +122,7 @@ public class AppData {
      * 记录了app中所有全局控制常量
      */
     public static class Config {
-        public static boolean showVali = false;                 //显示验证码（仅测试）
+        public static boolean showVali = true;                 //显示验证码（仅测试）
         public static boolean showTestToast = false;            //打印测试信息到窗口（仅测试）
         public static boolean showFreshBtn = false;             //首页显示刷新按钮（仅测试）
         public static boolean needNeardriver = false;           //是否启用周边司机（仅测试）

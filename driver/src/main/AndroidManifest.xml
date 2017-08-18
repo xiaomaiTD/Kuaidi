@@ -26,7 +26,7 @@
         <!-- 百度地图 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="eFBGg7x1yPyRjhVywtPYe0fmw4RDup4Y" /><!--2ZBmXf3oVx5tSkrgGFbMsgLyGZynhIei-->
+            android:value="2ZBmXf3oVx5tSkrgGFbMsgLyGZynhIei" /><!--eFBGg7x1yPyRjhVywtPYe0fmw4RDup4Y-->
 
         <!-- bugHD -->
         <meta-data
@@ -55,19 +55,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.activity.LoadUpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoTitleFullscreen">
-            <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
             <intent-filter>
                 <action android:name="driver.LoadUpActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
